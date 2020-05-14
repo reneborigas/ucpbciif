@@ -27,6 +27,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login', ensure_csrf_cookie(TemplateView.as_view(template_name="index.html"))),
     path('dashboard', ensure_csrf_cookie(TemplateView.as_view(template_name="index.html"))),
+    
+    #loans
+    path('loans', ensure_csrf_cookie(TemplateView.as_view(template_name="index.html"))),
+    path('loans/add', ensure_csrf_cookie(TemplateView.as_view(template_name="index.html"))),
+
+    #borrowers
     path('borrowers', ensure_csrf_cookie(TemplateView.as_view(template_name="index.html"))),
     path('borrowers/add', ensure_csrf_cookie(TemplateView.as_view(template_name="index.html"))),
     path('borrowers/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="index.html"))),
@@ -36,6 +42,7 @@ urlpatterns = [
     # App Urls
     path('api/auth/',include('auth.urls')),
     path('api/borrowers/',include('borrowers.urls'),name='borrowers'),
+    path('api/loans/',include('loans.urls'),name='loans'),
     path('api/users/',include('users.urls'),name='users'),
     path('api/settings/',include('settings.urls'),name='settings'),
 ]

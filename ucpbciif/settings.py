@@ -25,7 +25,7 @@ SECRET_KEY = 'e(8gylz126+de=nb(#(4v=3g3b$)$g)m**k0%jud0so9lm_b1i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['35.240.176.124']
+ALLOWED_HOSTS = ['35.240.176.124','*']
 
 # Application definition
 
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'settings',
-    'borrowers'
+    'borrowers',
+    'loans'
 ]
 
 MIDDLEWARE = [

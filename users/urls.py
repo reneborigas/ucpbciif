@@ -8,4 +8,4 @@ router.register(r'userlogs',UserLogsViewSet)
 router.register(r'contenttype',ContentTypeViewSet)
 router.register(r'accounttype',AccountTypeViewSet)
 
-urlpatterns = router.urls
+urlpatterns = router.urls 

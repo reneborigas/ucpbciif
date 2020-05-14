@@ -178,8 +178,72 @@ define(function() {
 					// 	}]
 					// },
 				})
-
-
+				.state('app.loans', {
+					url: '/loans',
+					template: '<ui-view></ui-view>',
+					abstract: true,
+					ncyBreadcrumb: {
+						label: 'Loans',
+						skip:true
+					},
+					params: { title:'Loans', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+					resolve: {
+						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
+							return $ocLazyLoad.load({
+								files: [
+									'/statics/scripts/angular-scripts/controllers/loans.js'
+								]
+							});
+						}]
+					},
+				})
+				.state('app.loans.list', {
+					url: '',
+					templateUrl: '/statics/partials/pages/loans/loans-list.html',
+					ncyBreadcrumb: {
+						label: 'Loans',
+						skip:true
+					},
+					params: { title:'Loans', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+					resolve: {
+						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
+							return $ocLazyLoad.load({
+								files: [
+									'/statics/scripts/angular-scripts/controllers/loans.js'
+								]
+							});
+						}]
+					},
+				})
+				.state('app.loans.add', {
+					url: '/add',
+					templateUrl: '/statics/partials/pages/loans/loans-add.html',
+					ncyBreadcrumb: {
+						label: 'Add',
+						parent: 'app.loans.list'
+					},
+					// resolve: {
+					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load files for an existing module
+					// 		return $ocLazyLoad.load([
+					// 			{
+					// 				serie: true,
+					// 				name: 'chart.js',
+					// 				files: [
+					// 					'node_modules/chart.js/dist/Chart.min.js',
+					// 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
+					// 				]
+					// 			},
+					// 		]);
+					// 	}],
+					// 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load controllers
+					// 		return $ocLazyLoad.load({
+					// 			files: ['js/controllers/main.js']
+					// 		});
+					// 	}]
+					// },
+				})
 
 				.state('simple', {
 					abstract: true,

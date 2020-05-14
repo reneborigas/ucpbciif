@@ -1,0 +1,66 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <div class="card card-custom" ng-controller="LoanListController">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h5 class="card-title mb-0">Traffic</h5>
+                            <div class="small text-muted">November 2017</div>
+                        </div>
+                        <div class="col-sm-7 d-none d-md-block">
+                            <button type="button" class="btn btn-primary float-right" ui-sref="app.loans.add">
+                                <i class="fad fa-user-plus mr-2"></i>New Loan</i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-primary float-right mr-3">
+                                <i class="icon-cloud-download"></i>
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless" ng-table="tableLoans">
+                        <tr ng-repeat="loan in $data">
+                            <td data-title="'Loan Name'" sortable="'loanName'">
+                                {{ loan.loanName }}
+                            </td>
+                            <td data-title="'Loan Amount'" sortable="'loanAmount'">
+                                {{ loan.loanAmount }}
+                            </td>
+                           
+                            <td data-title="'Borrower'" sortable="'borrower'">
+                                {{ loan.borrower }}
+                            </td>
+                            <td data-title="'Actions'">
+                                <div class="dropdown dropdown-inline">
+                                    <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <i class="flaticon-more-1"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="" ng-click="view(loan.loanId)"><i
+                                                class="la la-eye"></i> View</a>
+                                        <a class="dropdown-item" href="" ng-click="edit(loan.loanId)"><i
+                                                class="la la-edit"></i> Edit</a>
+                                        <a class="dropdown-item" href="" ng-click="delete(loan.loanId)"><i
+                                                class="la la-trash"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -278,7 +278,7 @@ class StandingCommittee(models.Model):
         blank = False
     )
 
-    yearsInCooop = models.IntegerField(
+    yearsInCoop = models.IntegerField(
         blank = False
     )
     oSLoanWithCoop = models.DecimalField(
@@ -399,8 +399,4 @@ class Borrower(models.Model):
     )
 
     def __str__(self):
-        if self.cooperative:
-            return "%s" % (self.cooperative)
-        elif self.contactPerson:
-            return "%s" % (self.contactPerson)
-    
+        return "%s" % (self.cooperative)

@@ -12,7 +12,7 @@ define(function(){
                 },
                 {
                 getData: function(params){
-                    return $http.get('/api/borrowers/borrowers/').then(
+                    return $http.get('/api/borrowers/cooperatives/').then(
                         function(response){
                             var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
                             var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
@@ -30,12 +30,12 @@ define(function(){
                 }
             });
 
-            // $scope.view = function(id){
-            //     $state.go('borrowers.info', {borrowerId:id});
-            // }
+            $scope.view = function(id){
+                $state.go('app.borrowers.info', {borrowerId:id});
+            }
 
             // $scope.edit = function(id){
-            //     $state.go('borrowers.edit', {borrowerId:id});
+            //     $state.go('app.borrowers.edit', {id:id});
             // }
 
             // $scope.delete = function(id){
@@ -106,51 +106,27 @@ define(function(){
                 $scope.genders = data
             });
 
-
-            // $scope.newBorrower = {
-            //     firstname: '',
-            //     middlename: '',
-            //     lastname: '',
-            //     status: 'Active',
-            //     description: '',
-            //     remarks: '',                
-            //     createdBy: appFactory.getCurrentUser(),
-            //     borrowerPersonalInfo: [{
-            //         birthdate: '',
-            //         birthplace: '',
-            //         gender: '',
-            //         weight: '',
-            //         height: '',
-            //     }],
-            // }
-
-            // $scope.newBorrower = {
-            //     status: '',
-            //     clientSince: '',
-            //     remarks: '',
-            //     createdBy: appFactory.getCurrentUser(),
-            //     dateCreated: '',
-            //     dateUpdated: '',
-            //     isDeleted: '',
-            // }
+            appFactory.getCooperativeType().then(function(data) {
+                $scope.cooperativetypes = data
+            });
 
             $scope.borrower = {
                 name : '',
                 icRiskRating : '',
                 tin : '',
                 cdaRegistrationDate : '',
-                initialMembershipSize : '',
-                membershipSize : '',
-                paidUpCapitalInitial : '',
-                noOfCooperators : '',
-                coconutFarmers : '',
-                authorized : '',
-                fullyPaidSharesNo : '',
-                bookValue : '',
-                parValue : '',
-                paidUp : '',
-                fullyPaidPercent : '',
-                initialPaidUpShare : '',
+                initialMembershipSize : 0,
+                membershipSize : 0,
+                paidUpCapitalInitial : 0,
+                noOfCooperators : 0,
+                coconutFarmers : 0,
+                authorized : 0,
+                fullyPaidSharesNo : 0,
+                bookValue : 0,
+                parValue : 0,
+                paidUp : 0,
+                fullyPaidPercent : 0,
+                initialPaidUpShare : 0,
                 address : '',
                 telNo : '',
                 emailAddress : '',
@@ -159,47 +135,47 @@ define(function(){
                 cooperativeType : '',
                 description : '',
                 remarks : '',
-                createdBy : '',
-                dateCreated : '',
-                dateUpdated : '',
-                isDeleted : '',
+                createdBy : appFactory.getCurrentUser(),
+                // dateCreated : '',
+                // dateUpdated : '',
+                // isDeleted : '',
                 directors: [{
                     name : '',
                     department : '',
                     position : '',
                     educationalAttainment : '',
                     age : '',
-                    yearsInCooop : '',
+                    yearsInCoop : '',
                     oSLoanWithCoop : '',
                     status : '',
-                    createdBy : '',
-                    dateCreated : '',
-                    dateUpdated : '',
-                    isDeleted : '',
+                    createdBy : appFactory.getCurrentUser(),
+                    // dateCreated : '',
+                    // dateUpdated : '',
+                    // isDeleted : '',
                 }],
                 standingCommittees: [{
                     name : '',
                     position : '',
                     educationalAttainment : '',
                     age : '',
-                    yearsInCooop : '',
+                    yearsInCoop : '',
                     oSLoanWithCoop : '',
                     status : '',
-                    createdBy : '',
-                    dateCreated : '',
-                    dateUpdated : '',
-                    isDeleted : '',
+                    createdBy : appFactory.getCurrentUser(),
+                    // dateCreated : '',
+                    // dateUpdated : '',
+                    // isDeleted : '',
                 }],
                 grants: [{
                     cooperative : '',
                     donor : '',
                     projectType : '',
-                    amount : '',
+                    amount : 0,
                     projectStatus : '',
-                    createdBy : '',
-                    dateCreated : '',
-                    dateUpdated : '',
-                    isDeleted : '',
+                    createdBy : appFactory.getCurrentUser(),
+                    // dateCreated : '',
+                    // dateUpdated : '',
+                    // isDeleted : '',
                 }],
             }
 
@@ -209,7 +185,7 @@ define(function(){
                     position : '',
                     educationalAttainment : '',
                     age : '',
-                    yearsInCooop : '',
+                    yearsInCoop : '',
                     oSLoanWithCoop : '',
                     status : '',
                     createdBy : '',
@@ -238,27 +214,30 @@ define(function(){
 
 
             $scope.save = function(){
-                swal({
-                    title: "Create Borrower",
-                    text: "Do you want to save and create this borrower?",
-                    icon: "info",
-                    buttons:{
-                        cancel: true,
-                        confirm: "Create",
-                    }
-                }).then((isConfirm)=>{                              
-                        if (isConfirm){
-                            $http.post('/api/borrowers/borrowers/', $scope.newBorrower)
-                                .then(function(){                      
-                                    toastr.success('Success','New borrower created.');     
-                                    swal("Success!", "New Borrower Created.", "success");      
-                                    $state.go('borrowers.list');
-                            },
-                            function(error){
-                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new record. Please contact System Administrator.'); 
-                            }); 
+                console.log($scope.borrower)
+                if ($scope.wizardForm.$valid){
+                    swal({
+                        title: "Create Borrower",
+                        text: "Do you want to save and create this borrower?",
+                        icon: "info",
+                        buttons:{
+                            cancel: true,
+                            confirm: "Create",
                         }
-                });
+                    }).then((isConfirm)=>{                              
+                            if (isConfirm){
+                                $http.post('/api/borrowers/cooperatives/', $scope.borrower)
+                                    .then(function(){                      
+                                        toastr.success('Success','New borrower created.');     
+                                        swal("Success!", "New Borrower Created.", "success");      
+                                        $state.go('app.borrowers.list');
+                                },
+                                function(error){
+                                    toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new record. Please contact System Administrator.'); 
+                                }); 
+                            }
+                    });
+                }
             }
 
         }        
