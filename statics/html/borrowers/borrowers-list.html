@@ -1,0 +1,120 @@
+<div class="kt-portlet kt-portlet--mobile" ng-controller="BorrowerListController">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="kt-font-brand flaticon2-line-chart"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+                Borrowers
+            </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+                <div class="kt-portlet__head-actions">
+                    <!-- <div class="dropdown dropdown-inline">
+                        <button type="button" class="btn btn-default btn-icon-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-download"></i> Export  	
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <ul class="kt-nav">
+                                <li class="kt-nav__section kt-nav__section--first">
+                                    <span class="kt-nav__section-text">Choose an option</span>
+                                </li>
+                                <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                        <i class="kt-nav__link-icon la la-print"></i>
+                                        <span class="kt-nav__link-text">Print</span>
+                                    </a>
+                                </li>
+                                <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                        <i class="kt-nav__link-icon la la-copy"></i>
+                                        <span class="kt-nav__link-text">Copy</span>
+                                    </a>
+                                </li>
+                                <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                        <i class="kt-nav__link-icon la la-file-excel-o"></i>
+                                        <span class="kt-nav__link-text">Excel</span>
+                                    </a>
+                                </li>
+                                <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                        <i class="kt-nav__link-icon la la-file-text-o"></i>
+                                        <span class="kt-nav__link-text">CSV</span>
+                                    </a>
+                                </li>
+                                <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                        <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                                        <span class="kt-nav__link-text">PDF</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> -->
+                    <a ui-sref="borrowers.add" class="btn btn-brand btn-elevate btn-icon-sm">
+                        <i class="la la-plus"></i>
+                        New Borrower
+                    </a>
+                </div>	
+            </div>		
+        </div>
+    </div>                        
+    <div class="kt-portlet__body">
+        <!--begin: Search Form -->
+        <div class="kt-form kt-form--label-right kt-margin-b-10">
+            <div class="row align-items-center">
+                <div class="col-xl-8 order-2 order-xl-1">
+                    <div class="row align-items-center">				
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                            <div class="kt-input-icon kt-input-icon--left">
+                                <input type="text" class="form-control" placeholder="Search..." id="generalSearch">
+                                <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                    <span><i class="la la-search"></i></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end: Search Form -->
+    </div>
+    <div class="kt-portlet__body">
+        <!--begin::Section-->
+        <div class="kt-section">
+            <div class="kt-section__content">
+                <table class="table" ng-table="tableBorrowers">
+                    <tr ng-repeat="borrower in $data" align="center">
+                        <td data-title="'Firstname'" sortable="'firstname'">
+                            {{ borrower.firstname }}
+                        </td>
+                        <td data-title="'Middlename'" sortable="'middlename'">
+                            {{ borrower.middlename }}
+                        </td>
+                        <td data-title="'Lastname'" sortable="'lastname'">
+                            {{ borrower.lastname }}
+                        </td>
+                        <td data-title="'Status'" sortable="'status'">
+                            {{ borrower.status }}
+                        </td>
+                        <td data-title="'Actions'">
+                            <div class="dropdown dropdown-inline">
+                                <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="flaticon-more-1"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="" ng-click="view(borrower.borrowerId)"><i class="la la-eye"></i> View</a>
+                                    <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="la la-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="la la-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--end::Section-->
+    </div>
+</div>
