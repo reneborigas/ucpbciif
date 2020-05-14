@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date
+from django.utils import timezone
 
 
 class ContactPerson(models.Model):
@@ -68,17 +68,17 @@ class Cooperative(models.Model):
         blank = True,
         null = True, 
     )
-    #ncorporations
-    cdaRegistrateionDate  = models.DateTimeField(
-        default = date.today
-    ) 
-    
+    #ncorporations  
+    cdaRegistrationDate  = models.DateTimeField(
+        default=timezone.now
+    )
     initialMembershipSize = models.IntegerField(
         blank = False
     )
     membershipSize = models.IntegerField(
         blank = False
     )
+
     paidUpCapitalInitial = models.DecimalField(
         default = 0,
         max_length = 256,
@@ -93,7 +93,6 @@ class Cooperative(models.Model):
     coconutFarmers = models.IntegerField(
         blank = False
     )
-
     #capital structure
     authorized =  models.DecimalField(
         default = 0,
@@ -102,7 +101,7 @@ class Cooperative(models.Model):
         max_digits = 20,
         blank = True,
         null = True
-    )    
+    )
     fullyPaidSharesNo = models.IntegerField(
         blank = False
     )    
@@ -214,7 +213,7 @@ class Director(models.Model):
     age = models.IntegerField(
         blank = False
     )
-    yearsInCooop = models.IntegerField(
+    yearsInCoop = models.IntegerField(
         blank = False
     )
     oSLoanWithCoop = models.DecimalField(
@@ -230,6 +229,7 @@ class Director(models.Model):
         blank = True,
         null = True, 
     )
+    
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,

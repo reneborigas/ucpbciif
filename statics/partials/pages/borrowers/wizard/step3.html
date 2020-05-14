@@ -1,0 +1,159 @@
+<div>
+    <div class="mb-3 font-weight-bold text-dark">Enter your Director and Standing Committee Information</div>
+    <div ng-repeat="director in borrower.directors">
+        <h6 class="font-weight-bolder mb-3">
+            Director:
+        </h6>
+        <div class="form-group">
+            <label for="directorName">Name</label>
+            <span>*</span>
+            <input type="text" class="form-control" id="directorName" name="directorName" ng-model="director.name" 
+            ng-class="{'is-invalid' : wizardForm.directorName.$invalid && wizardForm.directorName.$touched, 'is-valid' : wizardForm.directorName.$valid && wizardForm.directorName.$touched }" required/>
+            <span class="form-text text-muted" ng-show="wizardForm.directorName.$touched && wizardForm.directorName.$invalid">Please enter Director's Name.</span>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorPosition">Cooperative Position</label>
+                    <input type="text" class="form-control" id="directorPosition" name="directorPosition" ng-model="director.position"
+                    ng-class="{'is-invalid' : wizardForm.directorPosition.$invalid && wizardForm.directorPosition.$touched, 'is-valid' : wizardForm.directorPosition.$valid && wizardForm.directorPosition.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.directorPosition.$touched && wizardForm.directorPosition.$invalid">Please enter Director's Position in Cooperative.</span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorEducationalAttainment">Educational Attainment</label>
+                    <input type="text" class="form-control" id="directorEducationalAttainment" name="directorEducationalAttainment" ng-model="director.educationalAttainment"
+                    ng-class="{'is-invalid' : wizardForm.directorEducationalAttainment.$invalid && wizardForm.directorEducationalAttainment.$touched, 'is-valid' : wizardForm.directorEducationalAttainment.$valid && wizardForm.directorEducationalAttainment.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.directorEducationalAttainment.$touched && wizardForm.directorEducationalAttainment.$invalid">Please enter Director's Educational Attainment.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorAge">Age</label>
+                    <input type="text" class="form-control" id="directorAge" name="directorAge" ng-model="director.age"
+                    ng-class="{'is-invalid' : wizardForm.directorAge.$invalid && wizardForm.directorAge.$touched, 'is-valid' : wizardForm.directorAge.$valid && wizardForm.directorAge.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.directorAge.$touched && wizardForm.directorAge.$invalid">Please enter Director's Age.</span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorYearsInCoop">Years in Cooperative</label>
+                    <input type="text" class="form-control" id="directorYearsInCoop" name="directorYearsInCoop" ng-model="director.yearsInCoop"
+                    ng-class="{'is-invalid' : wizardForm.directorYearsInCoop.$invalid && wizardForm.directorYearsInCoop.$touched, 'is-valid' : wizardForm.directorYearsInCoop.$valid && wizardForm.directorYearsInCoop.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.directorYearsInCoop.$touched && wizardForm.directorYearsInCoop.$invalid">Please enter Director's Years in Cooperative.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorOsLoanWithCoop">OS Loan with Cooperative</label>
+                    <input type="text" class="form-control" id="directorOsLoanWithCoop" name="directorOsLoanWithCoop" ng-model="director.oSLoanWithCoop"
+                    ng-class="{'is-invalid' : wizardForm.directorOsLoanWithCoop.$invalid && wizardForm.directorOsLoanWithCoop.$touched, 'is-valid' : wizardForm.directorOsLoanWithCoop.$valid && wizardForm.directorOsLoanWithCoop.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.directorOsLoanWithCoop.$touched && wizardForm.directorOsLoanWithCoop.$invalid">Please enter Director's OS Loan with Cooperative.</span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorStatus">Status</label>
+                    <input type="text" class="form-control" id="directorStatus" name="directorStatus" ng-model="director.status"
+                    ng-class="{'is-invalid' : wizardForm.directorStatus.$invalid && wizardForm.directorStatus.$touched, 'is-valid' : wizardForm.directorStatus.$valid && wizardForm.directorStatus.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.directorStatus.$touched && wizardForm.directorStatus.$invalid">Please enter Director's Status.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between border-top-dashed pt-5 mt-5 mb-3">
+        <div class="mr-2">                
+            <h6 class="font-weight-bolder">
+                Standing Committee:
+            </h6>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary" type="button" ng-click="addCommittee()">
+                <i class="fal fa-plus mr-2"></i>Add Committee
+            </button>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="standingCommittee in borrower.standingCommittees">
+        <div class="form-group">
+            <label for="committeeName">Name</label>
+            <span>*</span>
+            <input type="text" class="form-control" id="committeeName" name="committeeName" ng-model="standingCommittee.name" 
+            ng-class="{'is-invalid' : wizardForm.committeeName.$invalid && wizardForm.committeeName.$touched, 'is-valid' : wizardForm.committeeName.$valid && wizardForm.committeeName.$touched }" required/>
+            <span class="form-text text-muted" ng-show="wizardForm.committeeName.$touched && wizardForm.committeeName.$invalid">Please enter Committee's Name.</span>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeeDepartment">Cooperative Department</label>
+                    <input type="text" class="form-control" id="committeeDepartment" name="committeeDepartment" ng-model="standingCommittee.department"
+                    ng-class="{'is-invalid' : wizardForm.committeeDepartment.$invalid && wizardForm.committeeDepartment.$touched, 'is-valid' : wizardForm.committeeDepartment.$valid && wizardForm.committeeDepartment.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.committeeDepartment.$touched && wizardForm.committeeDepartment.$invalid">Please enter Committee's Department in Cooperative.</span>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeePosition">Cooperative Position</label>
+                    <input type="text" class="form-control" id="committeePosition" name="committeePosition" ng-model="standingCommittee.position"
+                    ng-class="{'is-invalid' : wizardForm.committeePosition.$invalid && wizardForm.committeePosition.$touched, 'is-valid' : wizardForm.committeePosition.$valid && wizardForm.committeePosition.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.committeePosition.$touched && wizardForm.committeePosition.$invalid">Please enter Committee's Position in Cooperative.</span>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeeEducationalAttainment">Educational Attainment</label>
+                    <input type="text" class="form-control" id="committeeEducationalAttainment" name="committeeEducationalAttainment" ng-model="standingCommittee.educationalAttainment"
+                    ng-class="{'is-invalid' : wizardForm.committeeEducationalAttainment.$invalid && wizardForm.committeeEducationalAttainment.$touched, 'is-valid' : wizardForm.committeeEducationalAttainment.$valid && wizardForm.committeeEducationalAttainment.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.committeeEducationalAttainment.$touched && wizardForm.committeeEducationalAttainment.$invalid">Please enter Committee's Educational Attainment.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeAge">Age</label>
+                    <input type="text" class="form-control" id="committeeAge" name="committeeAge" ng-model="standingCommittee.age"
+                    ng-class="{'is-invalid' : wizardForm.committeeAge.$invalid && wizardForm.committeeAge.$touched, 'is-valid' : wizardForm.committeeAge.$valid && wizardForm.committeeAge.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.committeeAge.$touched && wizardForm.committeeAge.$invalid">Please enter Committee's Age.</span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeYearsInCoop">Years in Cooperative</label>
+                    <input type="text" class="form-control" id="committeeYearsInCoop" name="committeeYearsInCoop" ng-model="standingCommittee.yearsInCoop"
+                    ng-class="{'is-invalid' : wizardForm.committeeYearsInCoop.$invalid && wizardForm.committeeYearsInCoop.$touched, 'is-valid' : wizardForm.committeeYearsInCoop.$valid && wizardForm.committeeYearsInCoop.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.committeeYearsInCoop.$touched && wizardForm.committeeYearsInCoop.$invalid">Please enter Committee's Years in Cooperative.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeOsLoanWithCoop">OS Loan with Cooperative</label>
+                    <input type="text" class="form-control" id="committeeOsLoanWithCoop" name="committeeOsLoanWithCoop" ng-model="standingCommittee.oSLoanWithCoop"
+                    ng-class="{'is-invalid' : wizardForm.committeeOsLoanWithCoop.$invalid && wizardForm.committeeOsLoanWithCoop.$touched, 'is-valid' : wizardForm.committeeOsLoanWithCoop.$valid && wizardForm.committeeOsLoanWithCoop.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.committeeOsLoanWithCoop.$touched && wizardForm.committeeOsLoanWithCoop.$invalid">Please enter Committee's OS Loan with Cooperative.</span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeStatus">Status</label>
+                    <input type="text" class="form-control" id="committeeStatus" name="committeeStatus" ng-model="standingCommitee.status"
+                    ng-class="{'is-invalid' : wizardForm.committeeStatus.$invalid && wizardForm.committeeStatus.$touched, 'is-valid' : wizardForm.committeeStatus.$valid && wizardForm.committeeStatus.$touched }" required/>
+                    <span class="form-text text-muted" ng-show="wizardForm.committeeStatus.$touched && wizardForm.committeeStatus.$invalid">Please enter Committee's Status</span>
+                </div>
+            </div>
+        </div>
+        <divl class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning" type="button" ng-click="removeCommittee($index)">
+                    <i class="fal fa-minus mr-2"></i>Remove Committee
+                </button>
+            </div>
+        </divl>
+    </div>
+</div>

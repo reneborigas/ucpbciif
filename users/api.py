@@ -65,3 +65,17 @@ class ContentTypeViewSet(ModelViewSet):
             queryset = queryset.filter(model=model)
 
         return queryset
+
+class AccountTypeViewSet(ModelViewSet):
+    queryset = AccountType.objects.all()
+    serializer_class = AccountTypeSerializer
+
+    def get_queryset(self):
+        queryset = AccountType.objects.all()
+        account_type = self.request.query_params.get('account_type', None)
+        
+        if account_type is not None:
+            queryset = queryset.filter(account_type=account_type)
+
+        return queryset
+

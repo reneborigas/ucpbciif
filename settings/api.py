@@ -7,3 +7,8 @@ class GenderTypeViewSet(ModelViewSet):
     queryset = GenderType.objects.exclude(isDeleted=True).order_by('id')
     serializer_class = GenderTypeSerializer
     # permission_classes = (permissions.IsAuthenticated, )
+
+class CooperativeTypeViewSet(ModelViewSet):
+    queryset = CooperativeType.objects.exclude(isDeleted=True).order_by('id')
+    serializer_class = CooperativeTypeSerializer
+    # permission_classes = (permissions.IsAuthenticated, )

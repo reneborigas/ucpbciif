@@ -6,3 +6,8 @@ class GenderTypeSerializer(ModelSerializer):
     class Meta:
         model = GenderType
         fields = '__all__'
+
+class CooperativeTypeSerializer(ModelSerializer):
+    class Meta:
+        model = CooperativeType
+        fields = '__all__'

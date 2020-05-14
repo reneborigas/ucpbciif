@@ -2,6 +2,12 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework import serializers
 from .models import *
 
+class AccountTypeSerializer(ModelSerializer):
+
+    class Meta:
+        model = AccountType
+        fields = '__all__'
+
 class ContentTypeSerializer(ModelSerializer):
 
     class Meta:

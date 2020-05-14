@@ -1,16 +1,21 @@
 require.config({
 	baseUrl: '/statics/',
-	// urlArgs: 'bust=' + (new Date()).getTime(),
+	urlArgs: 'bust=' + (new Date()).getTime(),
 	paths: {
-		// 'app-options': 'assets/js/app.options',
-		// 'plugins-bundle': 'assets/plugins/global/plugins.bundle',
-		// 'scripts-bundle': 'assets/js/scripts.bundle',
 		'jquery' : 'libs/jquery/jquery.min',
+		'popper' : 'libs/popper/popper.min', 
+		'bootstrap' : 'libs/bootstrap/js/bootstrap.bundle.min',
+		// 'unison' : 'libs/unison/unison.min',
+		// 'vertical-menu' : 'assets/js/scripts/configs/vertical-menu-light.min',
+		// 'app-menu' : 'assets/js/core/app-menu.min',
+		// 'app' : 'assets/js/core/app.min',
+
+
+
 		'angular': 'libs/angular/angular.min',
 		'auth': 'scripts/angular-scripts/auth',
 		'ui-route': 'libs/angular/angular-ui-router',
-		'ngDatepicker': 'libs/ui-datepicker/datetime-picker.min',
-		
+		'ngDatepicker': 'libs/ui-datepicker/datetime-picker.min',		
 		'ngAnimate' : 'libs/angular/angular-animate.min',
         'ngTouch' : 'libs/angular/angular-touch.min',
 		'ngBootstrap' : 'libs/angular/angular-ui-bootstrap-tpls.min', 
@@ -26,6 +31,23 @@ require.config({
 		'ngBreadcrumb': 'libs/ngBreadcrumb/angular-breadcrumb.min',
 	},
 	shim: {
+		// 'unison' : {
+		// 	exports: 'Unison'
+		// },
+		// 'unison': { 
+		// 	exports: 'Unison' 
+		// },
+		// 'vertical-menu':{
+        //     deps: ['jquery']
+		// },
+		// 'app-menu':{
+        //     deps: ['jquery','unison']
+		// },
+		// 'app':{
+        //     deps: ['jquery']
+        // },
+
+
 		'angular': {
 			exports: 'angular'
 		},
@@ -76,8 +98,17 @@ require.config({
 	},
 });
 
-// require(['app-options', 'plugins-bundle', 'scripts-bundle','popper'], function () {
-// });
+require([
+	'jquery','popper','bootstrap'
+    ],function(){    
+		if (document.readyState == "complete" || document.readyState == "loaded") {
+			// init()
+	   } else {
+		 document.addEventListener('DOMContentLoaded', function(){
+		   // init();
+		 });
+	   }
+});
 
 require([ 'index' ], function() {
 	angular.bootstrap(document, [ 'lmsApp' ]);

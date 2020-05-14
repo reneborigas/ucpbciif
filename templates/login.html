@@ -1,78 +1,114 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
-
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
 <head>
-	<meta charset="utf-8" />
-	<title>UCPCIIF | Login Page </title>
-	<meta name="description" content="Login page example">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
-	<link href={%static "assets/css/pages/login/login-3.css" %} rel="stylesheet" type="text/css" />
-	<link href={%static "assets/plugins/global/plugins.bundle.css" %} rel="stylesheet" type="text/css" />
-	<link href={%static "assets/css/style.bundle.css" %} rel="stylesheet" type="text/css" />	
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>UCPB CIIF | Login Page</title>
+    <link rel="apple-touch-icon" href="assets/images/ico/apple-icon-120.html">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/ico/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
+    <!-- BEGIN: Vendor CSS-->
+    <link href={%static "assets/vendors/css/vendors.min.css" %} rel="stylesheet" type="text/css" />
+    <!-- END: Vendor CSS-->
+    <!-- BEGIN: Theme CSS-->
+    <link href={%static "assets/css/bootstrap.min.css" %} rel="stylesheet" type="text/css" />
+	<link href={%static "assets/css/bootstrap-extended.min.css" %} rel="stylesheet" type="text/css" />
+    <link href={%static "assets/css/colors.min.css" %} rel="stylesheet" type="text/css" />
+    <link href={%static "assets/css/components.min.css" %} rel="stylesheet" type="text/css" />
+    <link href={%static "assets/css/themes/dark-layout.min.css" %} rel="stylesheet" type="text/css" />
+    <link href={%static "assets/css/themes/semi-dark-layout.min.css" %} rel="stylesheet" type="text/css" />
+    <!-- END: Theme CSS-->
+    <!-- BEGIN: Page CSS-->
+    <link href={%static "assets/css/core/menu/menu-types/vertical-menu.min.css" %} rel="stylesheet" type="text/css" />
+	<link href={%static "assets/css/pages/authentication.css" %} rel="stylesheet" type="text/css" />
 	<link href="{%static "libs/toastr/dist/css/angular-toastr.min.css" %}" rel="stylesheet">
-	<!-- <link rel="shortcut icon" href="https://keenthemes.com/metronic/themes/metronic/theme/default/demo1/dist/assets/media/logos/favicon.ico" />  -->
-</head>
+	<!-- END: Page CSS-->
+  </head>
+  <!-- END: Head-->
+  <!-- BEGIN: Body-->
+  <body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page">
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+      <div class="content-overlay"></div>
+      <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body">
+            <!-- login page start -->
+            <section id="auth-login" class="row flexbox-container">
+                <div class="col-xl-4 col-11">
+                    <div class="card bg-authentication mb-0">
+                        <div class="row m-0">
+                            <!-- left section-login -->
+                            <div class="col-12 px-0">
+                                <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
+                                    <div class="card-header pb-1">
+                                        <div class="mx-auto pb-1" style="width: 200px;">
+                                            <img class="logo" src={%static "/logo/CF3_200x100.png" %}/>
+                                          </div>
+                                        <div class="card-title">
+                                            <h4 class="text-center mb-2">UCPB CIIF Loan Management System</h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="card-body">
+                                            <form ng-controller="LoginController">
+                                                <div class="form-group mb-50">
+                                                    <label class="text-bold-600" for="username">Username</label>
+                                                    <input type="text" class="form-control" id="username" ng-model="user.username" placeholder="Username">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="text-bold-600" for="password">Password</label>
+                                                    <input type="password" class="form-control" id="password" ng-model="user.password" placeholder="Password">
+                                                </div>
+                                                <div
+                                                    class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
+                                                    <div class="text-left">
+                                                        <div class="checkbox checkbox-sm">
+                                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                                            <label class="checkboxsmall" for="exampleCheck1"><small>Keep me logged
+                                                                    in</small></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right"><a href="auth-forgot-password.html" class="card-link"><small>Forgot Password?</small></a></div>
+                                                </div>
+                                                <button class="btn btn-primary glow w-100 position-relative" ng-click="login()">Login<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- login page ends -->
+        </div>
+      </div>
+    </div>
+    <!-- END: Content-->
 
-<body
-	class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
-	<!-- Page -->
-	<div class="kt-grid kt-grid--ver kt-grid--root">
-		<div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v3 kt-login--signin" id="kt_login">
-			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url(../../../../../themes/metronic/theme/default/demo1/dist/assets/media/bg/bg-3.jpg);">
-				<div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
-					<div class="kt-login__container">
-						<div class="kt-login__logo">
-							<a href="#">
-								<img src="../../../../../themes/metronic/theme/default/demo1/dist/assets/media/logos/logo-5.png">
-							</a>
-						</div>
-						<div class="kt-login__signin" ng-controller="LoginController">
-							<div class="kt-login__head">
-								<h3 class="kt-login__title">Sign In</h3>
-							</div>
-							<div class="kt-form">
-								<div class="input-group">
-									<input class="form-control" type="text" placeholder="Email" name="email"  ng-model="user.username" autocomplete="off">
-								</div>
-								<div class="input-group">
-									<input class="form-control" type="password" placeholder="Password" name="password" ng-model="user.password">
-								</div>
-								<div class="row kt-login__extra">
-									<div class="col kt-align-right">
-										<a href="javascript:;" id="kt_login_forgot" class="kt-login__link">Forget Password ?</a>
-									</div>
-								</div>
-								<div class="kt-login__actions">
-									<button class="btn btn-brand btn-elevate kt-login__btn-primary" ng-click="login()">Sign In</button>
-								</div>
-							</div>
-						</div>
-						<div class="kt-login__forgot">
-							<div class="kt-login__head">
-								<h3 class="kt-login__title">Forgotten Password ?</h3>
-								<div class="kt-login__desc">Enter your email to reset your password:</div>
-							</div>
-							<div class="kt-form">
-								<div class="input-group">
-									<input class="form-control" type="text" placeholder="Email" name="email" id="kt_email" autocomplete="off">
-								</div>
-								<div class="kt-login__actions">
-									<button class="btn btn-brand btn-elevate kt-login__btn-primary">Request</button>&nbsp;&nbsp;
-									<button id="kt_login_forgot_cancel" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <!-- BEGIN: Vendor JS-->
+    <!-- <script src="assets/vendors/js/vendors.min.js"></script>
+    <script src="assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.min.js"></script>
+    <script src="assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.min.js"></script>
+    <script src="assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script> -->
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <!-- <script src="assets/js/scripts/configs/vertical-menu-light.min.js"></script>
+    <script src="assets/js/core/app-menu.min.js"></script>
+    <script src="assets/js/core/app.min.js"></script>
+    <script src="assets/js/scripts/components.min.js"></script>
+    <script src="assets/js/scripts/footer.min.js"></script> -->
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->    
 	<script data-main="{%static "scripts/require.login" %}" src="{%static "libs/require/require.js" %}"></script>
-</body>
-
+    <!-- END: Page JS-->
+  </body>
+  <!-- END: Body-->
 </html>
