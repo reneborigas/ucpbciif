@@ -236,8 +236,8 @@ define(function() {
 					// },
 				})
 				.state('app.borrowers.sample', {
-					url: '/sample',
-					templateUrl: '/statics/partials/pages/borrowers/borrowers-sample.html',
+					url: '/:borrowerId/edit',
+					templateUrl: '/statics/partials/pages/borrowers/borrowers-edit-test.html',
 					data: { 
 						pageTitle: 'UCPB CIIF | Borrower Sample' 
 					},

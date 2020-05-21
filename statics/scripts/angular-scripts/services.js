@@ -3,7 +3,7 @@ define(function() {
 
 	var app =  angular.module('app');
 
-	app.service('appLoginService', function appLoginService($http, $location, $window, $timeout, toastr, appFactory) {
+	app.service('appLoginService', function appLoginService($http, $location, $window, $timeout, toastr, appFactory,$state) {
 		this.login = login;
 		this.isLoggedIn = isLoggedIn;
 		this.logout = logout;
@@ -59,7 +59,8 @@ define(function() {
 
 		function redirectIfNotLoggedIn() {
 			if (!isLoggedIn()) {
-				window.location.href = '/login';
+				// window.location.href = '/login';
+				$state.go('simple.login');
 			}
 		}
 
