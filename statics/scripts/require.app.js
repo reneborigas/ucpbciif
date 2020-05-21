@@ -1,6 +1,7 @@
 require.config({
 	baseUrl: '/statics/',
 	urlArgs: 'bust=' + (new Date()).getTime(),
+	waitSeconds: 200,
 	paths: {
 		'jquery' : 'libs/jquery/jquery.min',
 		'popper' : 'libs/popper/popper.min', 
@@ -26,8 +27,8 @@ require.config({
 		'ngToastr': 'libs/toastr/dist/js/angular-toastr.tpls.min',
 		'ngTable': 'libs/ngTable/ng-table',
 		// 'index': 'scripts/angular-scripts/index',
-		// 'sweetalert': 'libs/sweetalert/sweetalert.min',
-		// 'ngSweetalert': 'libs/sweetalert/SweetAlert',
+		'sweetalert': 'libs/sweetalert/sweetalert.min',
+		'ngSweetalert': 'libs/sweetalert/SweetAlert',
 		// 'ngBlock': 'libs/ngBlock/angular-block-ui.min',
 	},
 	shim: {
@@ -80,9 +81,9 @@ require.config({
 		// 'toastr': {
 		// 	deps: [ 'angular' ]
 		// },
-		// 'ngSweetalert': {
-		// 	deps: [ 'angular', 'sweetalert' ]
-		// },
+		'ngSweetalert': {
+			deps: [ 'angular', 'sweetalert' ]
+		},
 		// 'index': {
 		// 	deps: [
 		// 		'jquery','angular','ngAnimate','ngSanitize','ngRoute','auth','toastr','ocLazyLoad','ngSweetalert','ngTable','ngBreadcrumb','ngBlock','ngBootstrap','ngAnimate'
@@ -90,7 +91,7 @@ require.config({
         // }
         'app' : {
             deps: [
-                'jquery','angular','ngAnimate','ngSanitize','ngRoute','ngBreadcrumb','ngLoadingbar','ocLazyLoad','ngToastr','ngTable'
+                'jquery','angular','ngAnimate','ngSanitize','ngRoute','ngBreadcrumb','ngLoadingbar','ocLazyLoad','ngToastr','ngTable','ngSweetalert'
             ]
         },
         'routes' : {

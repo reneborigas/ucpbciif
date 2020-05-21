@@ -119,7 +119,7 @@ class CooperativeSerializer(ModelSerializer):
                         e.position = director.get('position',e.position)
                         e.educationalAttainment = director.get('educationalAttainment',e.educationalAttainment)
                         e.age = director.get('age',e.age)
-                        e.yearsInCooop = director.get('yearsInCooop',e.yearsInCooop)
+                        e.yearsInCoop = director.get('yearsInCoop',e.yearsInCoop)
                         e.oSLoanWithCoop = director.get('oSLoanWithCoop',e.oSLoanWithCoop)
                         e.status = director.get('status',e.status)
                         e.dateUpdated = director.get('dateUpdated',e.dateUpdated)
@@ -147,7 +147,7 @@ class CooperativeSerializer(ModelSerializer):
                         e.position = standingCommittee.get('position',e.position)
                         e.educationalAttainment = standingCommittee.get('educationalAttainment',e.educationalAttainment)
                         e.age = standingCommittee.get('age',e.age)
-                        e.yearsInCooop = standingCommittee.get('yearsInCooop',e.yearsInCooop)
+                        e.yearsInCoop = standingCommittee.get('yearsInCoop',e.yearsInCoop)
                         e.oSLoanWithCoop = standingCommittee.get('oSLoanWithCoop',e.oSLoanWithCoop)
                         e.status = standingCommittee.get('status',e.status)
                         e.dateUpdated = standingCommittee.get('dateUpdated',e.dateUpdated)
@@ -196,8 +196,8 @@ class CooperativeSerializer(ModelSerializer):
 
 
 class BorrowerSerializer(ModelSerializer):
-    borrowerContactPerson = ContactPersonSerializer(many=True,required=False)
-    borrowerCooperative = CooperativeSerializer(many=True,required=False)
+    contactPerson = ContactPersonSerializer()
+    cooperative = CooperativeSerializer()
 
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)

@@ -53,7 +53,7 @@ function bootstrapCollapseDirective() {
 
 	function link(scope, element, attrs) {
 		if (attrs.toggle == 'collapse') {
-			element.attr('href', 'javascript;;').attr('data-target', attrs.href.replace('index.html', ''));
+			element.attr('href', 'javascript;;').attr('data-target', attrs.href.replace('base.html', ''));
 		}
 	}
 }
@@ -174,7 +174,7 @@ function bootstrapCarouselDirective() {
 	function link(scope, element, attrs) {
 		if (attrs.ride == 'carousel') {
 			element.find('a').each(function () {
-				$(this).attr('data-target', $(this).attr('href').replace('index.html', '')).attr('href', 'javascript;;')
+				$(this).attr('data-target', $(this).attr('href').replace('base.html', '')).attr('href', 'javascript;;')
 			});
 		}
 	}

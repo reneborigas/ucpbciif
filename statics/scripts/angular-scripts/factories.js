@@ -54,6 +54,15 @@ define(function() {
                 function(error){
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Gender list. Please contact System Administrator.'); 
                 });     
+			},
+			getCooperativeType: function(){
+                return $http.get('/api/settings/cooperativetype/').then(
+                    function(response){   
+                    return response.data;     
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Cooperative Type list. Please contact System Administrator.'); 
+                });     
             },
 			getTimeRemaining: function(endtime, starttime) {
 				var t = Date.parse(endtime) - Date.parse(starttime);

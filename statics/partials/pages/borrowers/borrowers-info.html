@@ -1,127 +1,171 @@
 <div class="row" ng-controller="BorrowerInfoController">
     <div class="col-xl-4">
-        <!--Begin:: Portlet-->
-        <div class="kt-portlet">
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title">
-						Company
-					</h3>
+        <div class="card card-custom">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-icon">
+                        <i class="fad fa-users-class"></i>
+                    </span>
+                    <h3 class="card-label">{{ borrower.cooperative.name }}</h3>
                 </div>
-                <div class="kt-portlet__head-toolbar">
-                    <a href="#" class="btn btn-clean btn-sm btn-bold" data-toggle="dropdown">
-                        <i class="flaticon2-gear"></i> Actions
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md">
-                        <!--begin::Nav-->
-                        <ul class="kt-nav">
-                            <li class="kt-nav__item">
-                                <a href="#" ng-click="edit(borrower.borrowerId)" class="kt-nav__link">
-                                    <i class="kt-nav__link-icon flaticon2-edit"></i>
-                                    <span class="kt-nav__link-text">Update Details</span>
-                                </a>
-                            </li>
-                            <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                    <i class="kt-nav__link-icon flaticon2-trash"></i>
-                                    <span class="kt-nav__link-text">Delete Borrower</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <!--end::Nav-->
+                <div class="card-toolbar">
+                    <button type="button" class="btn btn-primary float-right" ui-sref="app.borrowers.add">
+                        <i class="fad fa-user-plus mr-2"></i>New Borrower</i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h5 class="card-title mb-0"></h5>
+                    </div>
+                    <div class="col-sm-7 d-none d-md-block">
+                        <div class="dropdown dropdown-inline">
+                            <button type="button" class="btn btn-primary float-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fal fa-cogs"></i> Actions
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="fal fa-edit mr-2"></i>Update</a>
+                                <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="kt-form kt-form--label-right">
-                <div class="kt-portlet__body">
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Name:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext kt-font-bolder">{{ borrower.firstname }} {{ borrower.lastname }}</span>
-                        </div>
+
+
+            <div class="card-body">
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">TIN #:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.tin }}</span>
                     </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Location:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext kt-font-bolder">London, UK.</span>
-                        </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Address:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.address }}</span>
                     </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Revenue:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext"><span class="kt-font-bolder">345,000M</span></span>
-                        </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Cooperative Type:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.cooperativeType }}</span>
                     </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Phone:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext kt-font-bolder">+456 7890456</span>
-                        </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Phone:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.phoneNo }}</span>
                     </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Email:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext kt-font-bolder">
-                                <a href="#">info@loop.com</a>
-                            </span>
-                        </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Telephone:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.telNo }}</span>
                     </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Website:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext kt-font-bolder">
-                                <a href="#">www.loop.com</a>
-                            </span>
-                        </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Email:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">
+                            <a href="#">{{ borrower.cooperative.emailAddress }}</a>
+                        </span>
                     </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Contact Person:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext kt-font-bolder">
-                                <a href="#">Nick Bold</a>
-                            </span>
-                        </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Description:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Remarks:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.remarks }}</span>
                     </div>
                 </div>
             </div>
         </div>
-        <!--End:: Portlet-->
+        <div class="card card-custom">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h5 class="card-title mb-0">Contact Person</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Name:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext">{{ borrower.contactPerson.firstname }} {{ borrower.contactPerson.middlename }} {{ borrower.contactPerson.lastname }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Address:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.contactPerson.address }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Phone:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.contactPerson.phoneNo }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Telephone:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.contactPerson.telNo }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Email Address:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">
+                            <a href="#">{{ borrower.contactPerson.emailAddress }}</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-xl-8">
-        <!--Begin:: Portlet-->
-        <div class="kt-portlet kt-portlet--tabs">
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-toolbar">
+        <div class="card card-custom">
+            <div class="card-header">
+                <div class="card-toolbar">
                     <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_1" role="tab">
+                            <a class="nav-link active" data-toggle="tab" role="tab">
                                 <i class="flaticon2-note"></i> Notes
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_2" role="tab">
+                            <a class="nav-link" data-toggle="tab" role="tab">
                                 <i class="flaticon2-time"></i> Activities
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3" role="tab">
+                            <a class="nav-link" data-toggle="tab" role="tab">
                                 <i class="flaticon2-calendar-3"></i> Personal
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4" role="tab">
+                            <a class="nav-link" data-toggle="tab" role="tab">
                                 <i class="flaticon2-user-outline-symbol"></i> Account
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_5" role="tab">
+                            <a class="nav-link" data-toggle="tab" role="tab">
                                 <i class="flaticon2-gear"></i> Settings
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="kt-portlet__body">
+            <div class="card-body">
                 <div class="tab-content kt-margin-t-20">
                     <!--Begin:: Tab Content-->
                     <div class="tab-pane active" id="kt_apps_contacts_view_tab_1" role="tabpanel">
@@ -292,37 +336,38 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul class="kt-nav">
-    <li class="kt-nav__item">
-        <a href="#" class="kt-nav__link">
-            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
-            <span class="kt-nav__link-text">Reports</span>
-        </a>
-    </li>
-    <li class="kt-nav__item">
-        <a href="#" class="kt-nav__link">
-            <i class="kt-nav__link-icon flaticon2-send"></i>
-            <span class="kt-nav__link-text">Messages</span>
-        </a>
-    </li>
-    <li class="kt-nav__item">
-        <a href="#" class="kt-nav__link">
-            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
-            <span class="kt-nav__link-text">Charts</span>
-        </a>
-    </li>
-    <li class="kt-nav__item">
-        <a href="#" class="kt-nav__link">
-            <i class="kt-nav__link-icon flaticon2-avatar"></i>
-            <span class="kt-nav__link-text">Members</span>
-        </a>
-    </li>
-    <li class="kt-nav__item">
-        <a href="#" class="kt-nav__link">
-            <i class="kt-nav__link-icon flaticon2-settings"></i>
-            <span class="kt-nav__link-text">Settings</span>
-        </a>
-    </li>
-</ul>                                                </div>
+                                                        <li class="kt-nav__item">
+                                                            <a href="#" class="kt-nav__link">
+                                                                <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                                                                <span class="kt-nav__link-text">Reports</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="kt-nav__item">
+                                                            <a href="#" class="kt-nav__link">
+                                                                <i class="kt-nav__link-icon flaticon2-send"></i>
+                                                                <span class="kt-nav__link-text">Messages</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="kt-nav__item">
+                                                            <a href="#" class="kt-nav__link">
+                                                                <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                                                                <span class="kt-nav__link-text">Charts</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="kt-nav__item">
+                                                            <a href="#" class="kt-nav__link">
+                                                                <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                                                                <span class="kt-nav__link-text">Members</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="kt-nav__item">
+                                                            <a href="#" class="kt-nav__link">
+                                                                <i class="kt-nav__link-icon flaticon2-settings"></i>
+                                                                <span class="kt-nav__link-text">Settings</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>                                                
+                                                </div>
                                             </div>
                                         </div>
                                         <span class="kt-notes__body">                                        
@@ -1264,6 +1309,5 @@
                 </div>
             </div>
         </div>
-        <!--End:: Portlet-->
     </div>
 </div>

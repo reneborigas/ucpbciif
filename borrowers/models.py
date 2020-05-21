@@ -18,6 +18,10 @@ class ContactPerson(models.Model):
         null=True,
         blank=True 
     )
+    address = models.TextField(
+        blank = True,
+        null = True,
+    )
     telNo = models.CharField(
         max_length=255,
         null=True,
@@ -187,6 +191,9 @@ class Cooperative(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
+
+    def __str__(self):
+        return "%s" % (self.name)
 
 class Director(models.Model):
     cooperative = models.ForeignKey(

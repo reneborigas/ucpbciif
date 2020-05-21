@@ -47,8 +47,20 @@ define(function() {
 								files: ['/statics/assets/css/style.css']
 							}, {
 								serie: true,
+								name: 'Bundle Styles',
+								files: ['/statics/assets/css/style-bundle.css']
+							}, {
+								serie: true,
 								name: 'Custom Styles',
 								files: ['/statics/assets/css/custom.css']
+							}, {
+								serie: true,
+								name: 'Toastr Styles',
+								files: ['/statics/libs/toastr/dist/css/angular-toastr.min.css']
+							}, {
+								serie: true,
+								name: 'ngTable Styles',
+								files: ['/statics/libs/ngTable/ng-table.min.css']
 							}]);
 						}],
 						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -70,10 +82,17 @@ define(function() {
 						// 	}]);
 						// }],
 					},
+					// controller: function(appLoginService) {
+					// 	appLoginService.redirectIfNotLoggedIn();
+					// },
 				})
 				.state('app.main', {
 					url: '/dashboard',
 					templateUrl: '/statics/partials/pages/dashboard/dashboard.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | Dashboard',
+						stateTitle: 'Dashboard'
+					},
 					ncyBreadcrumb: {
 						label: 'Home',
 					},
@@ -110,7 +129,6 @@ define(function() {
 						label: 'Borrowers',
 						skip:true
 					},
-					params: { subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
 					resolve: {
 						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
 							return $ocLazyLoad.load({
@@ -124,6 +142,10 @@ define(function() {
 				.state('app.borrowers.list', {
 					url: '',
 					templateUrl: '/statics/partials/pages/borrowers/borrowers-list.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | Borrowers List',
+						stateTitle: 'Borrowers'
+					},
 					ncyBreadcrumb: {
 						label: 'Borrowers',
 					},
@@ -152,6 +174,9 @@ define(function() {
 				.state('app.borrowers.add', {
 					url: '/add',
 					templateUrl: '/statics/partials/pages/borrowers/borrowers-add.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | Add Borrower' 
+					},
 					ncyBreadcrumb: {
 						label: 'Add',
 						parent: 'app.borrowers.list'
@@ -178,6 +203,51 @@ define(function() {
 					// 	}]
 					// },
 				})
+				.state('app.borrowers.info', {
+					url: '/info',
+					templateUrl: '/statics/partials/pages/borrowers/borrowers-info.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | Borrower Info' 
+					},
+					ncyBreadcrumb: {
+						label: 'Info',
+						parent: 'app.borrowers.list'
+					},
+					// resolve: {
+					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load files for an existing module
+					// 		return $ocLazyLoad.load([
+					// 			{
+					// 				serie: true,
+					// 				name: 'chart.js',
+					// 				files: [
+					// 					'node_modules/chart.js/dist/Chart.min.js',
+					// 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
+					// 				]
+					// 			},
+					// 		]);
+					// 	}],
+					// 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load controllers
+					// 		return $ocLazyLoad.load({
+					// 			files: ['js/controllers/main.js']
+					// 		});
+					// 	}]
+					// },
+				})
+				.state('app.borrowers.sample', {
+					url: '/sample',
+					templateUrl: '/statics/partials/pages/borrowers/borrowers-sample.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | Borrower Sample' 
+					},
+					ncyBreadcrumb: {
+						label: 'Sample',
+						parent: 'app.borrowers.list'
+					},
+				})
+
+
 				.state('app.loans', {
 					url: '/loans',
 					template: '<ui-view></ui-view>',
@@ -277,6 +347,9 @@ define(function() {
 				.state('simple.login', {
 					url: '/login',
 					templateUrl: '/statics/partials/components/simple/login.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | Loan Management System' 
+					},
 					resolve: {
 						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
 							return $ocLazyLoad.load({

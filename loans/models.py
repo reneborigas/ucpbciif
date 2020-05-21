@@ -9,13 +9,11 @@ class Loan(models.Model):
         related_name="loanBorrower",
         null = True,
     )
-
     loanName = models.CharField(
         max_length=255,
         null=True,
         blank=True
-    ) 
-    
+    )    
     loanAmount = models.DecimalField(
         default = 0,
         max_length = 256,

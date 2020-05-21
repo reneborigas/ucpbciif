@@ -23,7 +23,7 @@ class BorrowerViewSet(ModelViewSet):
 
 class ContactPersonViewSet(ModelViewSet):
     queryset = ContactPerson.objects.all()
-    serializer_class = ContactPersonSerializer
+    serializer_class = ContactPersonSerializer #test comment
     permission_classes = (permissions.IsAuthenticated, )
 
 class GrantViewSet(ModelViewSet):

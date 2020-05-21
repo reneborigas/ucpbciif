@@ -1,28 +1,36 @@
-<div class="pb-2">
-    <div class="mb-3 font-weight-bold text-dark">Enter Borrower Basic Informations</div>
+<div class="pb-2 mb-3">
+    <div class="mb-3 font-weight-bold text-dark">Enter Borrower Basic Information</div>
     <div class="form-group">
         <label for="name">Name</label>
         <span>*</span>
-        <input type="text" class="form-control" id="name" name="name" ng-model="borrower.name" 
+        <input type="text" class="form-control" id="name" name="name" ng-model="cooperative.name" 
         ng-class="{'is-invalid' : wizardForm.name.$invalid && wizardForm.name.$touched, 'is-valid' : wizardForm.name.$valid && wizardForm.name.$touched }" required/>
         <span class="form-text text-muted" ng-show="wizardForm.name.$touched && wizardForm.name.$invalid">Please enter name.</span>
-    </div>
-    <div class="form-group">
-        <label for="tin">TIN</label>
-        <input type="text" class="form-control" id="tin" name="tin" ng-model="borrower.tin"
-        ng-class="{'is-invalid' : wizardForm.tin.$invalid && wizardForm.tin.$touched , 'is-valid' : wizardForm.tin.$valid && wizardForm.tin.$touched }" required/>
-        <span class="form-text text-muted" ng-show="wizardForm.tin.$touched && wizardForm.tin.$invalid">Please enter TIN.</span>
-    </div>
-    
-    <div class="form-group">
-        <label for="cooperativeType">Cooperative Type</label>
-        <input type="text" class="form-control" id="cooperativeType" name="cooperativeType" ng-model="borrower.cooperativeType"
-        ng-class="{'is-invalid' : wizardForm.cooperativeType.$invalid && wizardForm.cooperativeType.$touched, 'is-valid' : wizardForm.cooperativeType.$valid && wizardForm.cooperativeType.$touched }" required/>
-        <span class="form-text text-muted" ng-show="wizardForm.cooperativeType.$touched && wizardForm.cooperativeType.$invalid">Please enter Cooperative Type.</span>
-    </div>
+    </div>    
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="tin">TIN</label>
+                <span>*</span>
+                <input type="text" class="form-control" id="tin" name="tin" ng-model="cooperative.tin"
+                ng-class="{'is-invalid' : wizardForm.tin.$invalid && wizardForm.tin.$touched , 'is-valid' : wizardForm.tin.$valid && wizardForm.tin.$touched }" required/>
+                <span class="form-text text-muted" ng-show="wizardForm.tin.$touched && wizardForm.tin.$invalid">Please enter TIN.</span>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="cooperativeType">Cooperative Type</label>
+                <span>*</span>
+                <select class="form-control" id="cooperativeType" name="cooperativeType" ng-model="cooperative.cooperativeType" ng-options="coopType.id as coopType.name for coopType in cooperativetypes"
+                ng-class="{'is-invalid' : wizardForm.cooperativeType.$invalid && wizardForm.cooperativeType.$touched, 'is-valid' : wizardForm.cooperativeType.$valid && wizardForm.cooperativeType.$touched }" required></select>
+                <span class="form-text text-muted" ng-show="wizardForm.cooperativeType.$touched && wizardForm.cooperativeType.$invalid">Please enter Cooperative Type.</span>
+            </div>
+        </div>
+    </div>   
     <div class="form-group">
         <label for="address">Address</label>
-        <input type="text" class="form-control" id="address" name="address" ng-model="borrower.address"
+        <span>*</span>
+        <input type="text" class="form-control" id="address" name="address" ng-model="cooperative.address"
         ng-class="{'is-invalid' : wizardForm.address.$invalid && wizardForm.address.$touched, 'is-valid' : wizardForm.address.$valid && wizardForm.address.$touched }" required/>
         <span class="form-text text-muted" ng-show="wizardForm.address.$touched && wizardForm.address.$invalid">Please enter address.</span>
     </div>
@@ -30,15 +38,17 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="phoneNo">Telephone Number</label>
-                <input type="text" class="form-control" id="phoneNo" name="phoneNo" ng-model="borrower.phoneNo"
+                <span>*</span>
+                <input type="text" class="form-control" id="phoneNo" name="phoneNo" ng-model="cooperative.phoneNo"
                 ng-class="{'is-invalid' : wizardForm.phoneNo.$invalid && wizardForm.phoneNo.$touched, 'is-valid' : wizardForm.phoneNo.$valid && wizardForm.phoneNo.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.phoneNo.$touched && wizardForm.phoneNo.$invalid">Please enter Coconut Farmer.</span>
+                <span class="form-text text-muted" ng-show="wizardForm.phoneNo.$touched && wizardForm.phoneNo.$invalid">Please enter Telephone Number.</span>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="emailAddress">Email Address</label>
-                <input type="text" class="form-control" id="emailAddress" name="emailAddress" ng-model="borrower.emailAddress"
+                <span>*</span>
+                <input type="text" class="form-control" id="emailAddress" name="emailAddress" ng-model="cooperative.emailAddress"
                 ng-class="{'is-invalid' : wizardForm.emailAddress.$invalid && wizardForm.emailAddress.$touched, 'is-valid' : wizardForm.emailAddress.$valid && wizardForm.emailAddress.$touched }" required/>
                 <span class="form-text text-muted" ng-show="wizardForm.emailAddress.$touched && wizardForm.emailAddress.$invalid">Please enter Email Address.</span>
             </div>
@@ -48,30 +58,78 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="telNo">Phone Number</label>
-                <input type="text" class="form-control" id="telNo" name="telNo" ng-model="borrower.telNo"
-                ng-class="{'is-invalid' : wizardForm.telNo.$invalid && wizardForm.telNo.$touched, 'is-valid' : wizardForm.telNo.$valid && wizardForm.telNo.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.telNo.$touched && wizardForm.telNo.$invalid">Please enter Phone Number.</span>
+                <input type="text" class="form-control" id="telNo" name="telNo" ng-model="cooperative.telNo"/>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="fax">Fax Number</label>
-                <input type="text" class="form-control" id="fax" name="fax" ng-model="borrower.fax"
-                ng-class="{'is-invalid' : wizardForm.fax.$invalid && wizardForm.fax.$touched, 'is-valid' : wizardForm.fax.$valid && wizardForm.fax.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.fax.$touched && wizardForm.fax.$invalid">Please enter Fax Number.</span>
+                <input type="text" class="form-control" id="fax" name="fax" ng-model="cooperative.fax"/>
             </div>
         </div>
     </div>
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea type="text"  rows="4" cols="50" class="form-control textarea" id="description" name="description" ng-model="borrower.description"
-        ng-class="{'is-invalid' : wizardForm.description.$invalid && wizardForm.description.$touched, 'is-valid' : wizardForm.description.$valid && wizardForm.description.$touched }" required></textarea>
-        <span class="form-text text-muted" ng-show="wizardForm.description.$touched && wizardForm.description.$invalid">Please enter Description.</span>
+        <textarea type="text"  rows="4" cols="50" class="form-control textarea" id="description" name="description" ng-model="cooperative.description"></textarea>
     </div>
     <div class="form-group">
         <label for="remarks">Remarks</label>
-        <input type="text" class="form-control" id="remarks" name="remarks" ng-model="borrower.remarks"
-        ng-class="{'is-invalid' : wizardForm.remarks.$invalid && wizardForm.remarks.$touched, 'is-valid' : wizardForm.remarks.$valid && wizardForm.remarks.$touched }" required/>
-        <span class="form-text text-muted" ng-show="wizardForm.remarks.$touched && wizardForm.remarks.$invalid">Please enter Remarks.</span>
+        <input type="text" class="form-control" id="remarks" name="remarks" ng-model="cooperative.remarks"/>
+    </div>
+</div>
+<div class="pb-2 mb-3">    
+    <div class="mb-3 font-weight-bold text-dark">Enter Contact Person Information</div>
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <span>*</span>
+                <input type="text" class="form-control" id="firstname" name="firstname" ng-model="contactPerson.firstname"
+                ng-class="{'is-invalid' : wizardForm.firstname.$invalid && wizardForm.firstname.$touched , 'is-valid' : wizardForm.firstname.$valid && wizardForm.firstname.$touched }" required/>
+                <span class="form-text text-muted" ng-show="wizardForm.firstname.$touched && wizardForm.firstname.$invalid">Please enter First Name.</span>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="tin">Middle Name</label>
+                <input type="text" class="form-control" id="tin" name="tin" ng-model="contactPerson.lastname"/>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <span>*</span>
+                <input type="text" class="form-control" id="lastname" name="lastname" ng-model="contactPerson.lastname"
+                ng-class="{'is-invalid' : wizardForm.lastname.$invalid && wizardForm.lastname.$touched , 'is-valid' : wizardForm.lastname.$valid && wizardForm.lastname.$touched }" required/>
+                <span class="form-text text-muted" ng-show="wizardForm.lastname.$touched && wizardForm.lastname.$invalid">Please enter Last Name.</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="contactPersonAddress">Address</label>
+        <span>*</span>
+        <input type="text" class="form-control" id="contactPersonAddress" name="contactPersonAddress" ng-model="contactPerson.address"
+        ng-class="{'is-invalid' : wizardForm.contactPersonAddress.$invalid && wizardForm.contactPersonAddress.$touched, 'is-valid' : wizardForm.contactPersonAddress.$valid && wizardForm.contactPersonAddress.$touched }" required/>
+        <span class="form-text text-muted" ng-show="wizardForm.contactPersonAddress.$touched && wizardForm.contactPersonAddress.$invalid">Please enter address.</span>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="contactPersonPhoneNo">Telephone Number</label>
+                <span>*</span>
+                <input type="text" class="form-control" id="contactPersonPhoneNo" name="contactPersonPhoneNo" ng-model="contactPerson.phoneNo"
+                ng-class="{'is-invalid' : wizardForm.contactPersonPhoneNo.$invalid && wizardForm.contactPersonPhoneNo.$touched, 'is-valid' : wizardForm.contactPersonPhoneNo.$valid && wizardForm.contactPersonPhoneNo.$touched }" required/>
+                <span class="form-text text-muted" ng-show="wizardForm.contactPersonPhoneNo.$touched && wizardForm.contactPersonPhoneNo.$invalid">Please enter Telephone Number.</span>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="contactPersonEmailAddress">Email Address</label>
+                <span>*</span>
+                <input type="text" class="form-control" id="contactPersonEmailAddress" name="contactPersonEmailAddress" ng-model="contactPerson.emailAddress"
+                ng-class="{'is-invalid' : wizardForm.contactPersonEmailAddress.$invalid && wizardForm.contactPersonEmailAddress.$touched, 'is-valid' : wizardForm.contactPersonEmailAddress.$valid && wizardForm.contactPersonEmailAddress.$touched }" required/>
+                <span class="form-text text-muted" ng-show="wizardForm.contactPersonEmailAddress.$touched && wizardForm.contactPersonEmailAddress.$invalid">Please enter Email Address.</span>
+            </div>
+        </div>
     </div>
 </div>

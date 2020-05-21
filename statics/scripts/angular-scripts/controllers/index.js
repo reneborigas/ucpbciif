@@ -170,7 +170,7 @@ define(function() {
 
 	lmsApp.config(function($stateProvider, $locationProvider, $ocLazyLoadProvider, $urlRouterProvider) {
 
-		$urlRouterProvider.otherwise('/borrowers');
+		$urlRouterProvider.otherwise('/login');
 
 		$ocLazyLoadProvider.config({
 			loadedModules: [ 'lmsApp' ],

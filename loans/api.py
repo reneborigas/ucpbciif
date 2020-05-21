@@ -12,10 +12,10 @@ class LoanViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.all()
-        # loanId = self.request.query_params.get('id', None)
+        queryset = Loan.objects.order_by('id')
+        loanId = self.request.query_params.get('loanId', None)
 
-        # if loanId is not None:
-        #     queryset = queryset.filter(id=id)
+        if loanId is not None:
+            queryset = queryset.filter(id=loanId)
 
         return queryset
