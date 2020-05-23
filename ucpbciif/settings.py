@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'users',
     'settings',
     'borrowers',
-    'loans'
+    'loans',
+    'processes',
+    'committees',
+    'documents'
 ]
 
 MIDDLEWARE = [
