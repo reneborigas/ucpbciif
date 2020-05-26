@@ -11,13 +11,10 @@
 				Loan Management
 			</li>			
 			<li class="nav-item">
-				<a class="nav-link" ui-sref-active="active" ui-sref="app.borrowers.list">
+				<a class="nav-link" ng-class="{active: $state.includes('app.borrowers')}" ui-sref="app.borrowers.list">
 					<i class="icon-people"></i>Borrowers
 				</a>
 			</li>
-
-
-
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.components')}">
 				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.components')}" href="#">
 					<i class="fas fa-hand-holding-usd"></i> Loans
@@ -38,7 +35,7 @@
 			</li>
 
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i ass="icon-star"></i> Payments</a>
+				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i class="fal fa-money-bill"></i>> Payments</a>
 				<ul class="nav-dropdown-items">
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags"><i class="fas fa-spinner"></i>
@@ -52,7 +49,7 @@
 			</li>
 
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i ass="icon-star"></i> Amortizations</a>
+				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i class="fad fa-chart-bar"></i> Amortizations</a>
 				<ul class="nav-dropdown-items">
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags"><i class="far fa-calendar-check"></i>
@@ -66,7 +63,7 @@
 			</li>
 
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i ass="icon-star"></i> Monitoring</a>
+				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i class="far fa-desktop"></i> Monitoring</a>
 				<ul class="nav-dropdown-items">
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags"><i class="far fa-credit-card"></i>

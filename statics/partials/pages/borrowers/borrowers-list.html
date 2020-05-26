@@ -42,27 +42,27 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-borderless" ng-table="tableBorrowers">
-                        <tr ng-repeat="borrower in $data" align="center">
-                            <td data-title="'NAME'" sortable="'name'">
-                                {{ borrower.name }}
+                    <table class="table table-borderless datatable-table" ng-table="tableBorrowers">
+                        <tr class="datatable-row" ng-repeat="borrower in $data" align="center">
+                            <td class="datatable-cell" data-title="'NAME'" sortable="'cooperativeName'">
+                                {{ borrower.cooperativeName }}
                             </td>
-                            <td data-title="'TIN #'" sortable="'tin'">
+                            <td class="datatable-cell" data-title="'TIN #'" sortable="'tin'">
                                 {{ borrower.tin }}
                             </td>
-                            <td data-title="'ADDRESS'" sortable="'address'">
+                            <td class="datatable-cell" data-title="'ADDRESS'" sortable="'address'">
                                 {{ borrower.address }}
                             </td>
-                            <td data-title="'PHONE #'" sortable="'phoneNo'">
+                            <td class="datatable-cell" data-title="'PHONE #'" sortable="'phoneNo'">
                                 {{ borrower.phoneNo }}
                             </td>
-                            <td data-title="'ACTIONS'">
+                            <td class="datatable-cell" data-title="'ACTIONS'">
                                 <div class="dropdown dropdown-inline">
                                     <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <i class="fal fa-ellipsis-h"></i>
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
+                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                         <a class="dropdown-item" href="" ng-click="view(borrower.borrowerId)"><i class="fal fa-eye mr-2"></i>View</a>
                                         <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="fal fa-edit mr-2"></i>Edit</a>
                                         <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>

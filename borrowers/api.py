@@ -12,7 +12,13 @@ class BorrowerViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Borrower.objects.exclude(isDeleted=True).order_by('borrowerId')
+        queryset = Borrower.objects.annotate(
+            contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
+            cooperativeName=F('cooperative__name'),
+            tin=F('cooperative__tin'),
+            address=F('cooperative__address'),
+            phoneNo=F('cooperative__phoneNo'),
+        ).exclude(isDeleted=True).order_by('borrowerId')
         borrowerId = self.request.query_params.get('borrowerId', None)
 
         if borrowerId is not None:

@@ -43,12 +43,12 @@ define(function() {
 								files: ['/statics/assets/fonts/simple-line-icons/css/simple-line-icons.css']
 							}, {
 								serie: true,
-								name: 'Styles',
-								files: ['/statics/assets/css/style.css']
-							}, {
-								serie: true,
 								name: 'Bundle Styles',
 								files: ['/statics/assets/css/style-bundle.css']
+							}, {
+								serie: true,
+								name: 'Styles',
+								files: ['/statics/assets/css/style.css']
 							}, {
 								serie: true,
 								name: 'Custom Styles',
@@ -57,6 +57,10 @@ define(function() {
 								serie: true,
 								name: 'Toastr Styles',
 								files: ['/statics/libs/toastr/dist/css/angular-toastr.min.css']
+							}, {
+								serie: true,
+								name: 'Sweet Alert Styles',
+								files: ['/statics/libs/sweetalert/sweetalert.css']
 							}, {
 								serie: true,
 								name: 'ngTable Styles',
@@ -204,15 +208,21 @@ define(function() {
 					// },
 				})
 				.state('app.borrowers.info', {
-					url: '/info',
+					url: '/:borrowerId',
 					templateUrl: '/statics/partials/pages/borrowers/borrowers-info.html',
 					data: { 
 						pageTitle: 'UCPB CIIF | Borrower Info' 
 					},
 					ncyBreadcrumb: {
-						label: 'Info',
+						label: '{{ borrowerName }}',
 						parent: 'app.borrowers.list'
 					},
+					controller: function($scope,$stateParams,appFactory){
+						$scope.borrowerId = $stateParams.borrowerId;
+						appFactory.getBorrowerName($scope.borrowerId).then(function(data){
+							$scope.borrowerName = data;
+						})
+					}
 					// resolve: {
 					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
 					// 		// you can lazy load files for an existing module
@@ -235,7 +245,7 @@ define(function() {
 					// 	}]
 					// },
 				})
-				.state('app.borrowers.sample', {
+				.state('app.borrowers.edit', {
 					url: '/:borrowerId/edit',
 					templateUrl: '/statics/partials/pages/borrowers/borrowers-edit-test.html',
 					data: { 

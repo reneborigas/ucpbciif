@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from datetime import date
 
 
 class ContactPerson(models.Model):
@@ -73,8 +74,8 @@ class Cooperative(models.Model):
         null = True, 
     )
     #ncorporations  
-    cdaRegistrationDate  = models.DateTimeField(
-        default=timezone.now
+    cdaRegistrationDate  = models.DateField(
+        default=date.today
     )
     initialMembershipSize = models.IntegerField(
         blank = False
@@ -85,7 +86,6 @@ class Cooperative(models.Model):
 
     paidUpCapitalInitial = models.DecimalField(
         default = 0,
-        max_length = 256,
         decimal_places = 2,
         max_digits = 20,
         blank = True,
@@ -100,7 +100,6 @@ class Cooperative(models.Model):
     #capital structure
     authorized =  models.DecimalField(
         default = 0,
-        max_length = 256,
         decimal_places = 2,
         max_digits = 20,
         blank = True,
@@ -114,7 +113,6 @@ class Cooperative(models.Model):
     )
     parValue =  models.DecimalField(
         default = 0,
-        max_length = 256,
         decimal_places = 2,
         max_digits = 20,
         blank = True,
@@ -122,7 +120,6 @@ class Cooperative(models.Model):
     )
     paidUp =  models.DecimalField(
         default = 0,
-        max_length = 256,
         decimal_places = 2,
         max_digits = 20,
         blank = True,
@@ -225,7 +222,6 @@ class Director(models.Model):
     )
     oSLoanWithCoop = models.DecimalField(
         default = 0,
-        max_length = 256,
         decimal_places = 2,
         max_digits = 20,
         blank = True,
@@ -290,7 +286,6 @@ class StandingCommittee(models.Model):
     )
     oSLoanWithCoop = models.DecimalField(
         default = 0,
-        max_length = 256,
         decimal_places = 2,
         max_digits = 20,
         blank = True,
@@ -336,7 +331,6 @@ class Grant(models.Model):
     )
     amount = models.DecimalField(
         default = 0,
-        max_length = 256,
         decimal_places = 2,
         max_digits = 20,
         blank = True,
@@ -382,7 +376,7 @@ class Borrower(models.Model):
         blank = True,
         null = True, 
     )
-    clientSince = models.DateTimeField(
+    clientSince = models.DateField(
         null=True
     ) 
     remarks = models.TextField(

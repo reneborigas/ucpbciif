@@ -1,0 +1,132 @@
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <h3 class="font-size-h6 mb-3 mt-2">Contact Info:</h3>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Name<span>*</span></label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="name" name="name"  ng-model="borrower.cooperative.name"
+        ng-class="{'is-invalid' : editForm.name.$invalid && editForm.name.$touched, 'is-valid' : editForm.name.$valid && editForm.name.$touched }" required>
+        <span class="form-text text-muted" ng-show="editForm.name.$touched && editForm.name.$invalid">Please enter Name.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">TIN</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="tin" name="tin" ng-model="borrower.cooperative.tin"
+        ng-class="{'is-invalid' : editForm.tin.$invalid && editForm.tin.$touched , 'is-valid' : editForm.tin.$valid && editForm.tin.$touched }" required>
+        <span class="form-text text-muted" ng-show="editForm.tin.$touched && editForm.tin.$invalid">Please enter TIN.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">Cooperative
+        Type</label>
+    <div class="col-lg-9 col-xl-6">
+        <select class="form-control" id="cooperativeType" name="cooperativeType" ng-model="borrower.cooperative.cooperativeType"
+            ng-options="coopType.id as coopType.name for coopType in cooperativetypes"
+            ng-class="{'is-invalid' : editForm.cooperativeType.$invalid && editForm.cooperativeType.$touched, 'is-valid' : editForm.cooperativeType.$valid && editForm.cooperativeType.$touched }"
+            required></select>
+        <span class="form-text text-muted" ng-show="editForm.cooperativeType.$touched && editForm.cooperativeType.$invalid">Please enter Cooperative Type.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Address</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="address" name="address" ng-model="borrower.cooperative.address"
+        ng-class="{'is-invalid' : editForm.address.$invalid && editForm.address.$touched, 'is-valid' : editForm.address.$valid && editForm.address.$touched }" required>
+        <span class="form-text text-muted" ng-show="editForm.address.$touched && editForm.address.$invalid">Please enter address.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Email Address</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="emailAddress" name="emailAddress" ng-model="borrower.cooperative.emailAddress"
+        ng-class="{'is-invalid' : editForm.emailAddress.$invalid && editForm.emailAddress.$touched, 'is-valid' : editForm.emailAddress.$valid && editForm.emailAddress.$touched }" required>
+        <span class="form-text text-muted" ng-show="editForm.emailAddress.$touched && editForm.emailAddress.$invalid">Please enter Email Address.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Phone Number</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="phoneNo" name="phoneNo" ng-model="borrower.cooperative.phoneNo"
+        ng-class="{'is-invalid' : editForm.phoneNo.$invalid && editForm.phoneNo.$touched, 'is-valid' : editForm.phoneNo.$valid && editForm.phoneNo.$touched }" required>
+        <span class="form-text text-muted" ng-show="editForm.phoneNo.$touched && editForm.phoneNo.$invalid">Please enter Phone Number.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Telephone Number</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" ng-model="borrower.cooperative.telNo">
+    </div>
+</div>    
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Fax Number</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" ng-model="borrower.cooperative.fax">
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Description</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="textarea" class="form-control" ng-model="borrower.cooperative.description">
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Remarks</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="textarea" class="form-control" ng-model="borrower.cooperative.remarks">
+    </div>
+</div>
+<div class="separator separator-dashed my-5"></div>
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <h3 class="font-size-h6 mb-3">Contact Info:</h3>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">First Name</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="firstname" name="firstname" ng-model="borrower.contactPerson.firstname"
+        ng-class="{'is-invalid' : editForm.firstname.$invalid && editForm.firstname.$touched , 'is-valid' : editForm.firstname.$valid && editForm.firstname.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.firstname.$touched && editForm.firstname.$invalid">Please enter First Name.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Middle Name</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" ng-model="borrower.contactPerson.middlename">
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Last Name</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="lastname" name="lastname" ng-model="borrower.contactPerson.lastname"
+        ng-class="{'is-invalid' : editForm.lastname.$invalid && editForm.lastname.$touched , 'is-valid' : editForm.lastname.$valid && editForm.lastname.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.lastname.$touched && editForm.lastname.$invalid">Please enter Last Name.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Address</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="contactPersonAddress" name="contactPersonAddress" ng-model="borrower.contactPerson.address"
+        ng-class="{'is-invalid' : editForm.contactPersonAddress.$invalid && editForm.contactPersonAddress.$touched, 'is-valid' : editForm.contactPersonAddress.$valid && editForm.contactPersonAddress.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.contactPersonAddress.$touched && editForm.contactPersonAddress.$invalid">Please enter Address.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Phone Number</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="contactPersonPhoneNo" name="contactPersonPhoneNo" ng-model="borrower.contactPerson.phoneNo"
+        ng-class="{'is-invalid' : editForm.contactPersonPhoneNo.$invalid && editForm.contactPersonPhoneNo.$touched, 'is-valid' : editForm.contactPersonPhoneNo.$valid && editForm.contactPersonPhoneNo.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.contactPersonPhoneNo.$touched && editForm.contactPersonPhoneNo.$invalid">Please enter Phone Number.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Email Address</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="contactPersonEmailAddress" name="contactPersonEmailAddress" ng-model="borrower.contactPerson.emailAddress"
+        ng-class="{'is-invalid' : editForm.contactPersonEmailAddress.$invalid && editForm.contactPersonEmailAddress.$touched, 'is-valid' : editForm.contactPersonEmailAddress.$valid && editForm.contactPersonEmailAddress.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.contactPersonEmailAddress.$touched && editForm.contactPersonEmailAddress.$invalid">Please enter Email Address.</span>
+    </div>
+</div>
