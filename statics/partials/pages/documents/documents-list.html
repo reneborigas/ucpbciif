@@ -1,0 +1,82 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <div class="card card-custom" ng-controller="DocumentListController">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="fad fa-users-class"></i>
+                        </span>
+                        <h3 class="card-label">Documents List</h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <button type="button" class="btn btn-primary float-right" ui-sref="app.documents.add">
+                            <i class="fad fa-user-plus mr-2"></i>New Document</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-xl-8">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto"/>
+                                            <span><i class="far fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4 mt-5 mt-lg-0">
+                                <div class="text-right">
+                                    <label>Show 
+                                        <select class="custom-select custom-select-sm form-control form-control-sm table-length" ng-model="globalPageCount">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> 
+                                    entries</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-borderless datatable-table" ng-table="tableDocuments">
+                        <tr class="datatable-row" ng-repeat="document in $data" align="center">
+                            <td class="datatable-cell" data-title="'NAME'" sortable="'name'">
+                                {{ document.name }}
+                            </td>
+                            <td class="datatable-cell" data-title="'BORROWER'" sortable="'borrowerName'">
+                                {{ document.borrowerName }}
+                            </td>
+                            
+                            <td class="datatable-cell" data-title="'Description'" sortable="'description'">
+                                {{ document.description }}
+                            </td>
+                            <td class="datatable-cell" data-title="'Document Type'" sortable="'documentTypeName'">
+                                {{ document.documentTypeName  }}
+                            </td>
+                            <td class="datatable-cell" data-title="'Process'" sortable="'subProcessName'">
+                                {{ document.subProcessName  }}
+                            </td>
+                            <td class="datatable-cell" data-title="'ACTIONS'">
+                                <div class="dropdown dropdown-inline">
+                                    <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <i class="fal fa-ellipsis-h"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                        <a class="dropdown-item" href="" ng-click="view(document.documentId)"><i class="fal fa-eye mr-2"></i>View</a>
+                                        <a class="dropdown-item" href="" ng-click="edit(document.documentId)"><i class="fal fa-edit mr-2"></i>Edit</a>
+                                        <a class="dropdown-item" href="" ng-click="delete(document.documentId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

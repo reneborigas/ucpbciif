@@ -295,6 +295,44 @@ define(function() {
 						}]
 					},
 				})
+				
+				.state('app.documents', {
+					url: '/documents',
+					template: '<ui-view></ui-view>',
+					abstract: true,
+					ncyBreadcrumb: {
+						label: 'Documents',
+						skip:true
+					},
+					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+					resolve: {
+						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
+							return $ocLazyLoad.load({
+								files: [
+									'/statics/scripts/angular-scripts/controllers/documents.js'
+								]
+							});
+						}]
+					},
+				})
+				.state('app.documents.list', {
+					url: '',
+					templateUrl: '/statics/partials/pages/documents/documents-list.html',
+					ncyBreadcrumb: {
+						label: 'Documents',
+						skip:true
+					},
+					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+					resolve: {
+						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
+							return $ocLazyLoad.load({
+								files: [
+									'/statics/scripts/angular-scripts/controllers/documents.js'
+								]
+							});
+						}]
+					},
+				})
 				.state('app.loans.add', {
 					url: '/add',
 					templateUrl: '/statics/partials/pages/loans/loans-add.html',

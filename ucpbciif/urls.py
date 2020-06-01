@@ -41,11 +41,20 @@ urlpatterns = [
     path('borrowers/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/edit', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
+    #processes
+    path('processes', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+
+    
+    #processes
+    path('documents', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+
     path('400', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     # App Urls
     path('api/auth/',include('auth.urls')),
     path('api/borrowers/',include('borrowers.urls'),name='borrowers'),
+    path('api/documents/',include('documents.urls'),name='documents'),
     path('api/loans/',include('loans.urls'),name='loans'),
+    path('api/processes/',include('processes.urls'),name='processes'),
     path('api/users/',include('users.urls'),name='users'),
     path('api/settings/',include('settings.urls'),name='settings'), 
 ]
