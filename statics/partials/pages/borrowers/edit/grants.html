@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div ng-repeat="grant in borrower.cooperative.grants">
     <div class="form-group row">
         <label class="col-xl-3 col-lg-3 col-form-label text-right">Donor</label>
@@ -30,5 +31,37 @@
             ng-class="{'is-invalid' : editForm.grantProjectStatus.$invalid && editForm.grantProjectStatus.$touched, 'is-valid' : editForm.grantProjectStatus.$valid && editForm.grantProjectStatus.$touched }" required/>
             <span class="form-text text-muted" ng-show="editForm.grantProjectStatus.$touched && editForm.grantProjectStatus.$invalid">Please enter Grant Project Status.</span>
         </div>
+=======
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Donor</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="grantDonor" name="grantDonor" ng-model="grant.donor" 
+        ng-class="{'is-invalid' : editForm.grantDonor.$invalid && editForm.grantDonor.$touched, 'is-valid' : editForm.grantDonor.$valid && editForm.grantDonor.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.grantDonor.$touched && editForm.grantDonor.$invalid">Please enter Donor Name.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Project Type</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="grantProjectType" name="grantProjectType" ng-model="grant.projectType"
+        ng-class="{'is-invalid' : editForm.grantProjectType.$invalid && editForm.grantProjectType.$touched, 'is-valid' : editForm.grantProjectType.$valid && editForm.grantProjectType.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.grantProjectType.$touched && editForm.grantProjectType.$invalid">Please enter Grant Project Type.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Amount</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="number" min="0" step="0.1" class="form-control" id="grantAmount" name="grantAmount" ng-model="grant.amount"
+        ng-class="{'is-invalid' : editForm.grantAmount.$invalid && editForm.grantAmount.$touched, 'is-valid' : editForm.grantAmount.$valid && editForm.grantAmount.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.grantAmount.$touched && editForm.grantAmount.$invalid">Please enter Grant Project Amount.</span>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label text-right">Project Status</label>
+    <div class="col-lg-9 col-xl-6">
+        <input type="text" class="form-control" id="grantProjectStatus" name="grantProjectStatus" ng-model="grant.projectStatus"
+        ng-class="{'is-invalid' : editForm.grantProjectStatus.$invalid && editForm.grantProjectStatus.$touched, 'is-valid' : editForm.grantProjectStatus.$valid && editForm.grantProjectStatus.$touched }" required/>
+        <span class="form-text text-muted" ng-show="editForm.grantProjectStatus.$touched && editForm.grantProjectStatus.$invalid">Please enter Grant Project Status.</span>
+>>>>>>> ab04f55dc6f9df88c8d1827a03425634c6052ce1
     </div>
 </div>
