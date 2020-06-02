@@ -16,6 +16,7 @@ class ContactPersonSerializer(ModelSerializer):
         instance.firstname = validated_data.get("firstname", instance.firstname)
         instance.middlename = validated_data.get("middlename", instance.middlename)
         instance.lastname = validated_data.get("lastname", instance.lastname)
+        instance.address = validated_data.get("address", instance.address)
         instance.telNo = validated_data.get("telNo", instance.telNo)
         instance.emailAddress = validated_data.get("emailAddress", instance.emailAddress)
         instance.phoneNo = validated_data.get("phoneNo", instance.phoneNo)
@@ -58,6 +59,7 @@ class CooperativeSerializer(ModelSerializer):
     directors = DirectorSerializer(many=True,required=False)
     standingCommittees = StandingCommitteeSerializer(many=True,required=False)
     grants = GrantSerializer(many=True,required=False)
+    cooperativeTypeText = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         directors = validated_data.pop('directors')
@@ -80,12 +82,13 @@ class CooperativeSerializer(ModelSerializer):
     def update(self, instance, validated_data):
         directors = validated_data.get('directors')
         standingCommittees = validated_data.get('standingCommittees')
+        grants = validated_data.get('grants')
 
         instance.name = validated_data.get("name",instance.name)
         instance.icRiskRating = validated_data.get("icRiskRating",instance.icRiskRating)
         instance.tin = validated_data.get("tin",instance.tin)
-        instance.cdaRegistrateionDate = validated_data.get("cdaRegistrateionDate",instance.cdaRegistrateionDate)
-        instance.initialMembershipSize = validated_data.get("initialMembership_size",instance.initialMembership_size)
+        instance.cdaRegistrationDate = validated_data.get("cdaRegistrationDate",instance.cdaRegistrationDate)
+        instance.initialMembershipSize = validated_data.get("initialMembershipSize",instance.initialMembershipSize)
         instance.membershipSize = validated_data.get("membershipSize",instance.membershipSize)
         instance.paidUpCapitalInitial = validated_data.get("paidUpCapitalInitial",instance.paidUpCapitalInitial)
         instance.noOfCooperators = validated_data.get("noOfCooperators",instance.noOfCooperators)
@@ -170,12 +173,12 @@ class CooperativeSerializer(ModelSerializer):
                 if 'id' in grant.keys():
                     if Grant.objects.filter(id=grant['id']).exists():   
                         e = Grant.objects.get(id=grant['id'])
-                        e.donor = grants.get('donor',e.donor)
-                        e.projectType = grants.get('projectType',e.projectType)
-                        e.amount = grants.get('amount',e.amount)
-                        e.projectStatus = grants.get('projectStatus',e.projectStatus)
-                        e.dateUpdated = grants.get('dateUpdated',e.dateUpdated)
-                        e.isDeleted = grants.get('isDeleted',e.isDeleted)
+                        e.donor = grant.get('donor',e.donor)
+                        e.projectType = grant.get('projectType',e.projectType)
+                        e.amount = grant.get('amount',e.amount)
+                        e.projectStatus = grant.get('projectStatus',e.projectStatus)
+                        e.dateUpdated = grant.get('dateUpdated',e.dateUpdated)
+                        e.isDeleted = grant.get('isDeleted',e.isDeleted)
                         e.save()
                         keep_grants.append(e.id)
                     else:
@@ -196,8 +199,14 @@ class CooperativeSerializer(ModelSerializer):
 
 
 class BorrowerSerializer(ModelSerializer):
+    contactPersonName = serializers.CharField(read_only=True)
+    cooperativeName = serializers.CharField(read_only=True)
+    tin = serializers.CharField(read_only=True)
+    address = serializers.CharField(read_only=True)
+    phoneNo = serializers.CharField(read_only=True)
     contactPerson = ContactPersonSerializer()
     cooperative = CooperativeSerializer()
+
 
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)

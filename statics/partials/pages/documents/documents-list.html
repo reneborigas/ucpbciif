@@ -1,17 +1,17 @@
 <div class="animated fadeIn">
     <div class="row">
         <div class="col">
-            <div class="card card-custom" ng-controller="BorrowerListController">
+            <div class="card card-custom" ng-controller="DocumentListController">
                 <div class="card-header">
                     <div class="card-title">
                         <span class="card-icon">
                             <i class="fad fa-users-class"></i>
                         </span>
-                        <h3 class="card-label">Borrowers List</h3>
+                        <h3 class="card-label">Documents List</h3>
                     </div>
                     <div class="card-toolbar">
-                        <button type="button" class="btn btn-primary float-right" ui-sref="app.borrowers.add">
-                            <i class="fad fa-user-plus mr-2"></i>New Borrower</i>
+                        <button type="button" class="btn btn-primary float-right" ui-sref="app.documents.add">
+                            <i class="fad fa-user-plus mr-2"></i>New Document</i>
                         </button>
                     </div>
                 </div>
@@ -42,19 +42,23 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-borderless datatable-table" ng-table="tableBorrowers">
-                        <tr class="datatable-row" ng-repeat="borrower in $data" align="center">
-                            <td class="datatable-cell" data-title="'NAME'" sortable="'cooperativeName'">
-                                {{ borrower.cooperativeName }}
+                    <table class="table table-borderless datatable-table" ng-table="tableDocuments">
+                        <tr class="datatable-row" ng-repeat="document in $data" align="center">
+                            <td class="datatable-cell" data-title="'NAME'" sortable="'name'">
+                                {{ document.name }}
                             </td>
-                            <td class="datatable-cell" data-title="'TIN #'" sortable="'tin'">
-                                {{ borrower.tin }}
+                            <td class="datatable-cell" data-title="'BORROWER'" sortable="'borrowerName'">
+                                {{ document.borrowerName }}
                             </td>
-                            <td class="datatable-cell" data-title="'ADDRESS'" sortable="'address'">
-                                {{ borrower.address }}
+                            
+                            <td class="datatable-cell" data-title="'Description'" sortable="'description'">
+                                {{ document.description }}
                             </td>
-                            <td class="datatable-cell" data-title="'PHONE #'" sortable="'phoneNo'">
-                                {{ borrower.phoneNo }}
+                            <td class="datatable-cell" data-title="'Document Type'" sortable="'documentTypeName'">
+                                {{ document.documentTypeName  }}
+                            </td>
+                            <td class="datatable-cell" data-title="'Process'" sortable="'subProcessName'">
+                                {{ document.subProcessName  }}
                             </td>
                             <td class="datatable-cell" data-title="'ACTIONS'">
                                 <div class="dropdown dropdown-inline">
@@ -63,9 +67,9 @@
                                         <i class="fal fa-ellipsis-h"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <a class="dropdown-item" href="" ng-click="view(borrower.borrowerId)"><i class="fal fa-eye mr-2"></i>View</a>
-                                        <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="fal fa-edit mr-2"></i>Edit</a>
-                                        <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                                        <a class="dropdown-item" href="" ng-click="view(document.documentId)"><i class="fal fa-eye mr-2"></i>View</a>
+                                        <a class="dropdown-item" href="" ng-click="edit(document.documentId)"><i class="fal fa-edit mr-2"></i>Edit</a>
+                                        <a class="dropdown-item" href="" ng-click="delete(document.documentId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
                                     </div>
                                 </div>
                             </td>
