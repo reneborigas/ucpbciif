@@ -11,18 +11,20 @@
 				Loan Management
 			</li>			
 			<li class="nav-item">
-				<a class="nav-link" ui-sref-active="active" ui-sref="app.borrowers.list">
+				<a class="nav-link" ng-class="{active: $state.includes('app.borrowers')}" ui-sref="app.borrowers.list">
 					<i class="icon-people"></i>Borrowers
 				</a>
 			</li>
-
-
-
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.components')}">
-				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.components')}" href="#">
+				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.components')}" >
 					<i class="fas fa-hand-holding-usd"></i> Loans
 				</a>
 				<ul class="nav-dropdown-items">
+					<li class="nav-item">
+						<a class="nav-link" ui-sref-active="active" ui-sref="app.documents.list">
+							<i class="fas fa-spinner"></i> Loan Applications
+						</a>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.components.buttons">
 							<i class="fas fa-spinner"></i> Processing
@@ -36,9 +38,8 @@
 					
 				</ul>
 			</li>
-
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i ass="icon-star"></i> Payments</a>
+				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i class="fal fa-money-bill"></i> Payments</a>
 				<ul class="nav-dropdown-items">
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags"><i class="fas fa-spinner"></i>
@@ -50,9 +51,8 @@
 					
 				</ul>
 			</li>
-
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i ass="icon-star"></i> Amortizations</a>
+				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i class="fad fa-chart-bar"></i> Amortizations</a>
 				<ul class="nav-dropdown-items">
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags"><i class="far fa-calendar-check"></i>
@@ -64,9 +64,8 @@
 					
 				</ul>
 			</li>
-
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i ass="icon-star"></i> Monitoring</a>
+				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i class="far fa-desktop"></i> Monitoring</a>
 				<ul class="nav-dropdown-items">
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags"><i class="far fa-credit-card"></i>
@@ -80,8 +79,7 @@
 					</li>
 					
 				</ul>
-			</li>
-			 
+			</li>			 
 			<li class="divider"></li>
 			<li class="nav-title">
 				Settings

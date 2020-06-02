@@ -1,0 +1,26 @@
+<div ng-repeat="grant in borrower.cooperative.grants">
+    <div class="form-group form-group-xs row">
+        <label class="col-4 col-form-label">Donor:</label>
+        <div class="col-8">
+            <span class="form-control-plaintext">{{ grant.donor }}</span>
+        </div>
+    </div>
+    <div class="form-group form-group-xs row">
+        <label class="col-4 col-form-label">Project Type:</label>
+        <div class="col-8">
+            <span class="form-control-plaintext">{{ grant.projectType }}</span>
+        </div>
+    </div>
+    <div class="form-group form-group-xs row">
+        <label class="col-4 col-form-label">Amount:</label>
+        <div class="col-8">
+            <span class="form-control-plaintext">{{ grant.amount }}</span>
+        </div>
+    </div>
+    <div class="form-group form-group-xs row">
+        <label class="col-4 col-form-label">Project Status:</label>
+        <div class="col-8">
+            <span class="form-control-plaintext">{{ grant.projectStatus }}</span>
+        </div>
+    </div>
+</div>

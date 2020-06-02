@@ -1,0 +1,159 @@
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <h3 class="font-size-h6 mb-3 mt-2">Directors:</h3>
+    </div>
+    <div class="col-lg-3 col-xl-3">
+        <button class="btn btn-outline-primary" type="button" ng-click="addDirector()">
+            <i class="fal fa-plus mr-2"></i>Add Director
+        </button>
+    </div>
+</div>
+<div ng-repeat="director in borrower.cooperative.directors">
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Name</label>
+        <div class="col-lg-3 col-xl-6">
+            <input type="text" class="form-control" id="directorName" name="directorName" ng-model="director.name" 
+            ng-class="{'is-invalid' : editForm.directorName.$invalid && editForm.directorName.$touched, 'is-valid' : editForm.directorName.$valid && editForm.directorName.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.directorName.$touched && editForm.directorName.$invalid">Please enter Director's Name.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Cooperative Position</label>
+        <div class="col-lg-3 col-xl-6">
+            <input type="text" class="form-control" id="directorPosition" name="directorPosition" ng-model="director.position"
+            ng-class="{'is-invalid' : editForm.directorPosition.$invalid && editForm.directorPosition.$touched, 'is-valid' : editForm.directorPosition.$valid && editForm.directorPosition.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.directorPosition.$touched && editForm.directorPosition.$invalid">Please enter Director's Position in Cooperative.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Educational Attainment</label>
+       <div class="col-lg-3 col-xl-6">
+            <input type="text" class="form-control" id="directorEducationalAttainment" name="directorEducationalAttainment" ng-model="director.educationalAttainment"
+            ng-class="{'is-invalid' : editForm.directorEducationalAttainment.$invalid && editForm.directorEducationalAttainment.$touched, 'is-valid' : editForm.directorEducationalAttainment.$valid && editForm.directorEducationalAttainment.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.directorEducationalAttainment.$touched && editForm.directorEducationalAttainment.$invalid">Please enter Director's Educational Attainment.</span>
+       </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Age</label>
+        <div class="col-lg-3 col-xl-6">
+            <input type="text" class="form-control" id="directorAge" name="directorAge" ng-model="director.age"
+            ng-class="{'is-invalid' : editForm.directorAge.$invalid && editForm.directorAge.$touched, 'is-valid' : editForm.directorAge.$valid && editForm.directorAge.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.directorAge.$touched && editForm.directorAge.$invalid">Please enter Director's Age.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Years in Cooperative</label>
+        <div class="col-lg-3 col-xl-6">
+            <input type="text" class="form-control" id="directorYearsInCoop" name="directorYearsInCoop" ng-model="director.yearsInCoop"
+            ng-class="{'is-invalid' : editForm.directorYearsInCoop.$invalid && editForm.directorYearsInCoop.$touched, 'is-valid' : editForm.directorYearsInCoop.$valid && editForm.directorYearsInCoop.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.directorYearsInCoop.$touched && editForm.directorYearsInCoop.$invalid">Please enter Director's Years in Cooperative.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">OS Loan with Cooperative</label>
+        <div class="col-lg-3 col-xl-6">
+            <input type="number" min="0" step="0.01" class="form-control" id="directorOsLoanWithCoop" name="directorOsLoanWithCoop" ng-model="director.oSLoanWithCoop"
+            ng-class="{'is-invalid' : editForm.directorOsLoanWithCoop.$invalid && editForm.directorOsLoanWithCoop.$touched, 'is-valid' : editForm.directorOsLoanWithCoop.$valid && editForm.directorOsLoanWithCoop.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.directorOsLoanWithCoop.$touched && editForm.directorOsLoanWithCoop.$invalid">Please enter Director's OS Loan with Cooperative.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Status</label>
+        <div class="col-lg-3 col-xl-6">
+            <input type="text" class="form-control" id="directorStatus" name="directorStatus" ng-model="director.status"
+            ng-class="{'is-invalid' : editForm.directorStatus.$invalid && editForm.directorStatus.$touched, 'is-valid' : editForm.directorStatus.$valid && editForm.directorStatus.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.directorStatus.$touched && editForm.directorStatus.$invalid">Please enter Director's Status.</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9 col-xl-6 offset-xl-3">
+            <button class="btn btn-outline-warning" type="button" ng-click="removeDirector($index)">
+                <i class="fal fa-minus mr-2"></i>Remove Director
+            </button>
+        </div>
+    </div>
+</div>
+<div class="separator separator-dashed my-5"></div>
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <h3 class="font-size-h6 mb-3 mt-2">Standing Committee:</h3>
+    </div>
+    <div class="col-lg-3 col-xl-3">
+        <button class="btn btn-outline-primary" type="button" ng-click="addCommittee()">
+            <i class="fal fa-plus mr-2"></i>Add Committee
+        </button>
+    </div>
+</div>
+<div ng-repeat="standingCommittee in borrower.cooperative.standingCommittees">
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Name</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="committeeName" name="committeeName" ng-model="standingCommittee.name" 
+            ng-class="{'is-invalid' : editForm.committeeName.$invalid && editForm.committeeName.$touched, 'is-valid' : editForm.committeeName.$valid && editForm.committeeName.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeeName.$touched && editForm.committeeName.$invalid">Please enter Committee's Name.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Cooperative Department</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="committeeDepartment" name="committeeDepartment" ng-model="standingCommittee.department"
+            ng-class="{'is-invalid' : editForm.committeeDepartment.$invalid && editForm.committeeDepartment.$touched, 'is-valid' : editForm.committeeDepartment.$valid && editForm.committeeDepartment.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeeDepartment.$touched && editForm.committeeDepartment.$invalid">Please enter Committee's Department in Cooperative.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Cooperative Position</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="committeePosition" name="committeePosition" ng-model="standingCommittee.position"
+            ng-class="{'is-invalid' : editForm.committeePosition.$invalid && editForm.committeePosition.$touched, 'is-valid' : editForm.committeePosition.$valid && editForm.committeePosition.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeePosition.$touched && editForm.committeePosition.$invalid">Please enter Committee's Position in Cooperative.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Educational Attainment</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="committeeEducationalAttainment" name="committeeEducationalAttainment" ng-model="standingCommittee.educationalAttainment"
+            ng-class="{'is-invalid' : editForm.committeeEducationalAttainment.$invalid && editForm.committeeEducationalAttainment.$touched, 'is-valid' : editForm.committeeEducationalAttainment.$valid && editForm.committeeEducationalAttainment.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeeEducationalAttainment.$touched && editForm.committeeEducationalAttainment.$invalid">Please enter Committee's Educational Attainment.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Age</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="committeeAge" name="committeeAge" ng-model="standingCommittee.age"
+            ng-class="{'is-invalid' : editForm.committeeAge.$invalid && editForm.committeeAge.$touched, 'is-valid' : editForm.committeeAge.$valid && editForm.committeeAge.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeeAge.$touched && editForm.committeeAge.$invalid">Please enter Committee's Age.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Years in Cooperative</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="committeeYearsInCoop" name="committeeYearsInCoop" ng-model="standingCommittee.yearsInCoop"
+            ng-class="{'is-invalid' : editForm.committeeYearsInCoop.$invalid && editForm.committeeYearsInCoop.$touched, 'is-valid' : editForm.committeeYearsInCoop.$valid && editForm.committeeYearsInCoop.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeeYearsInCoop.$touched && editForm.committeeYearsInCoop.$invalid">Please enter Committee's Years in Cooperative.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">OS Loan with Cooperative</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="number" min="0" step="0.01" class="form-control" id="committeeOsLoanWithCoop" name="committeeOsLoanWithCoop" ng-model="standingCommittee.oSLoanWithCoop"
+            ng-class="{'is-invalid' : editForm.committeeOsLoanWithCoop.$invalid && editForm.committeeOsLoanWithCoop.$touched, 'is-valid' : editForm.committeeOsLoanWithCoop.$valid && editForm.committeeOsLoanWithCoop.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeeOsLoanWithCoop.$touched && editForm.committeeOsLoanWithCoop.$invalid">Please enter Committee's OS Loan with Cooperative.</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Status</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="committeeStatus" name="committeeStatus" ng-model="standingCommitee.status"
+            ng-class="{'is-invalid' : editForm.committeeStatus.$invalid && editForm.committeeStatus.$touched, 'is-valid' : editForm.committeeStatus.$valid && editForm.committeeStatus.$touched }" required/>
+            <span class="form-text text-muted" ng-show="editForm.committeeStatus.$touched && editForm.committeeStatus.$invalid">Please enter Committee's Status</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9 col-xl-6 offset-xl-3">
+            <button class="btn btn-outline-warning" type="button" ng-click="removeCommittee($index)">
+                <i class="fal fa-minus mr-2"></i>Remove Committee
+            </button>
+        </div>
+    </div>
+</div>

@@ -17,8 +17,9 @@ define(function(){
                 {
                 counts: [],        
                 getData: function(params){
-                    return $http.get('/api/borrowers/cooperatives/').then(
+                    return $http.get('/api/borrowers/borrowers/').then(
                         function(response){
+                            console.log(response.data)
                             var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
                             var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
@@ -54,9 +55,9 @@ define(function(){
                 $state.go('app.borrowers.info', {borrowerId:id});
             }
 
-            // $scope.edit = function(id){
-            //     $state.go('app.borrowers.edit', {id:id});
-            // }
+            $scope.edit = function(id){
+                $state.go('app.borrowers.edit', {borrowerId:id});
+            }
 
             // $scope.delete = function(id){
             //     console.log(id)
@@ -207,25 +208,6 @@ define(function(){
                 createdBy: appFactory.getCurrentUser(),
             }
 
-
-
-            $scope.addCommittee = function(){
-                $scope.borrower.standingCommittees.push({
-                    name : '',
-                    position : '',
-                    educationalAttainment : '',
-                    age : '',
-                    yearsInCoop : '',
-                    oSLoanWithCoop : '',
-                    status : '',
-                    createdBy : '',
-                })
-            }
-
-            $scope.removeCommittee = function(index){
-                $scope.borrower.standingCommittees.splice(index,1)
-            }
-
             $scope.addDirector = function(){
                 $scope.borrower.directors.push({
                     name : '',
@@ -243,9 +225,25 @@ define(function(){
             $scope.removeDirector = function(index){
                 $scope.borrower.directors.splice(index,1)
             }
+            
+            $scope.addCommittee = function(){
+                $scope.borrower.standingCommittees.push({
+                    name : '',
+                    position : '',
+                    educationalAttainment : '',
+                    age : '',
+                    yearsInCoop : '',
+                    oSLoanWithCoop : '',
+                    status : '',
+                    createdBy : '',
+                })
+            }
+
+            $scope.removeCommittee = function(index){
+                $scope.borrower.standingCommittees.splice(index,1)
+            }
 
             $scope.save = function(){
-                console.log($scope.borrower)
                 if ($scope.wizardForm.$valid){
                     swal({
                         title: "Create Borrower",
@@ -256,33 +254,29 @@ define(function(){
                             confirm: "Create",
                         }
                     }).then((isConfirm)=>{                              
-                            if (isConfirm){
-                                $http.post('/api/borrowers/cooperatives/', $scope.cooperative)
-                                    .then(function(responseCooperative){
-                                        return $http.post('/api/borrowers/contactperson/',$scope.contactPerson)
-                                            .then(function(responseContactPerson){
-
-                                                $scope.borrower.cooperative = responseCooperative.data.id;
-                                                $scope.borrower.cooperative = responseContactPerson.data.id;
-
-                                                return $http.post('/api/borrowers/borrowers',$scope.borrower)
-                                                    .then(function(){
-
-                                                },function(error){
-                                                    toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new borrower. Please contact System Administrator.'); 
-                                                })
+                        if (isConfirm){
+                            $http.post('/api/borrowers/cooperatives/', $scope.cooperative)
+                                .then(function(responseCooperative){
+                                    return $http.post('/api/borrowers/contactpersons/',$scope.contactPerson)
+                                        .then(function(responseContactPerson){
+                                            $scope.borrower.cooperative = responseCooperative.data.id;
+                                            $scope.borrower.cooperative = responseContactPerson.data.id;
+                                            return $http.post('/api/borrowers/borrowers/',$scope.borrower)
+                                                .then(function(){
+                                                    swal("Success!", "New Borrower Created.", "success");  
+                                                    toastr.success('Success','New Borrower Updated.');
+                                                    $state.go('app.borrower.list');
                                             },function(error){
-                                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new contact person. Please contact System Administrator.'); 
+                                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new borrower. Please contact System Administrator.'); 
                                             })
-                                        // toastr.success('Success','New borrower created.');     
-                                        // swal("Success!", "New Borrower Created.", "success");      
-                                        // $state.go('app.borrowers.list');
-
-                                },
-                                function(error){
-                                    toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new cooperative. Please contact System Administrator.'); 
-                                }); 
-                            }
+                                        },function(error){
+                                            toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new contact person. Please contact System Administrator.'); 
+                                        })
+                            },
+                            function(error){
+                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new cooperative. Please contact System Administrator.'); 
+                            }); 
+                        }
                     });
                 }
             }
@@ -306,9 +300,56 @@ define(function(){
                 $state.go('borrowers.edit', {borrowerId:id});
             }
 
-            // $scope.delete = function(id){
-            //     console.log(id)
-            // }
+            $scope.templates = [
+                {
+                    templateNumber: 1,
+                    name: "Basic Information",
+                    icon: "fad fa-info-square",
+                    templateUrl: '/statics/partials/pages/borrowers/info/basic.html',
+                },
+                {
+                    templateNumber: 2,
+                    name: "Contact Details",
+                    icon: "fad fa-address-book",
+                    templateUrl: '/statics/partials/pages/borrowers/info/contact.html',
+                },
+                {
+                    templateNumber: 3,
+                    name: "Background",
+                    icon: "fad fa-user-friends",
+                    templateUrl: '/statics/partials/pages/borrowers/info/directorCommittee.html',
+                },
+                {
+                    templateNumber: 4,
+                    name: "Grants",
+                    icon: "fad fa-coin",
+                    templateUrl: '/statics/partials/pages/borrowers/info/grants.html',
+                },
+                {
+                    templateNumber: 5,
+                    name: "History",
+                    icon: "fad fa-history",
+                    templateUrl: '/statics/partials/pages/borrowers/info/history.html',
+                }
+            ]
+
+            $scope.currentTemplate = $scope.templates[0];
+
+            $scope.getTemplate = function(){
+                for (var i = 0; i < $scope.templates.length; i++) {
+                    if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
+                        return $scope.templates[i].templateUrl;
+                    }
+                }
+            }
+
+            $scope.goToTemplate = function(templateNumber){
+                for (var i = 0; i < $scope.templates.length; i++) {
+                    if ($scope.templates[i].templateNumber == templateNumber) {
+                        $scope.currentTemplate = $scope.templates[i]
+                    }
+                }
+            }
 
         }        
     );
@@ -319,39 +360,152 @@ define(function(){
             $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
                 function(response){
                     $scope.borrower = response.data[0];
+                    $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat($scope.borrower.cooperative.paidUpCapitalInitial)
+                    $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized)
+                    $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue)
+                    $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp)
+                    $scope.borrower.cooperative.cdaRegistrationDate = new Date($scope.borrower.cooperative.cdaRegistrationDate)
+                    angular.forEach($scope.borrower.cooperative.directors,function(director){
+                        director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.standingCommittees,function(standingCommittee){
+                        standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.grants,function(grant){
+                        grant.amount = parseFloat(grant.amount)
+                    })
+                    console.log($scope.borrower.cooperative)
             },
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
             });
 
-            $scope.goBack = function(id){
-                $state.go('borrowers.info', {borrowerId:id});
+            $scope.templates = [
+                {
+                    templateNumber: 1,
+                    name: "Borrower Information",
+                    desc: "Basic Information",
+                    templateUrl: '/statics/partials/pages/borrowers/edit/basic.html',
+                },
+                {
+                    templateNumber: 2,
+                    name: "Background",
+                    desc: "Incorporation Details",
+                    templateUrl: '/statics/partials/pages/borrowers/edit/background.html',
+                },
+                {
+                    templateNumber: 3,
+                    name: "Directors and Committee",
+                    desc: "Director and Committee Information",
+                    templateUrl: '/statics/partials/pages/borrowers/edit/directorCommittee.html',
+                },
+                {
+                    templateNumber: 4,
+                    name: "Grants",
+                    desc: "Grant Info",
+                    templateUrl: '/statics/partials/pages/borrowers/edit/grants.html',
+                }
+            ]
+
+            $scope.currentTemplate = $scope.templates[0];
+
+            $scope.getTemplate = function(){
+                for (var i = 0; i < $scope.templates.length; i++) {
+                    if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
+                        return $scope.templates[i].templateUrl;
+                    }
+                }
             }
 
-            $scope.update = function(id){
-                swal({
-                    title: "Update Borrower",
-                    text: "Do you want to update this borrower?",
-                    icon: "info",
-                    buttons:{
-                        cancel: true,
-                        confirm: "Update",
+            $scope.goToTemplate = function(templateNumber){
+                for (var i = 0; i < $scope.templates.length; i++) {
+                    if ($scope.templates[i].templateNumber == templateNumber) {
+                        $scope.currentTemplate = $scope.templates[i]
                     }
-                }).then((isConfirm)=>{                              
-                        if (isConfirm){
-                            $http.patch('/api/borrowers/borrowers/'+ id +'/', $scope.borrower)
-                                .then(function(){                      
-                                    toastr.success('Success','Borrower updated.');     
-                                    swal("Success!", "Borrower Updated.", "success");      
-                                    $state.go('borrowers.info',({ borrowerId: id }));
-                            },
-                            function(error){
-                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not update record. Please contact System Administrator.'); 
-                            }); 
-                        }
-                });
+                }
+            }
+
+            appFactory.getCooperativeType().then(function(data) {
+                $scope.cooperativetypes = data
+            });
+
+            $scope.addDirector = function(){
+                $scope.borrower.cooperative.directors.push({
+                    name : '',
+                    department : '',
+                    position : '',
+                    educationalAttainment : '',
+                    age : '',
+                    yearsInCoop : '',
+                    oSLoanWithCoop : '',
+                    status : '',
+                    createdBy : appFactory.getCurrentUser(),
+                })
+            }
+
+            $scope.removeDirector = function(index){
+                $scope.borrower.cooperative.directors.splice(index,1)
             }
             
+            $scope.addCommittee = function(){
+                $scope.borrower.cooperative.standingCommittees.push({
+                    name : '',
+                    position : '',
+                    educationalAttainment : '',
+                    age : '',
+                    yearsInCoop : '',
+                    oSLoanWithCoop : '',
+                    status : '',
+                    createdBy : '',
+                })
+            }
+
+            $scope.removeCommittee = function(index){
+                $scope.borrower.cooperative.standingCommittees.splice(index,1)
+            }
+
+            $scope.update = function(){
+                $scope.borrower.cooperative.cdaRegistrationDate = appFactory.dateWithoutTime($scope.borrower.cooperative.cdaRegistrationDate,'yyyy-MM-dd')
+                if($scope.editForm.$valid){
+                    swal({
+                        title: "Update Borrower",
+                        text: "Do you want to update this borrower?",
+                        icon: "info",
+                        buttons:{
+                            cancel: true,
+                            confirm: "Update",
+                        }
+                    }).then((isConfirm)=>{                              
+                        if (isConfirm){
+                            $http.patch('/api/borrowers/cooperatives/'+ $scope.borrower.cooperative.id +'/', $scope.borrower.cooperative)
+                                .then(function(){
+                                    return $http.patch('/api/borrowers/contactpersons/'+ $scope.borrower.contactPerson.id +'/',$scope.borrower.contactPerson)
+                                        .then(function(){
+                                            return $http.patch('/api/borrowers/borrowers/'+ $scope.borrower.borrowerId +'/',$scope.borrower)
+                                                .then(function(response){
+                                                    swal("Success!", "Borrower Updated.", "success");  
+                                                    toastr.success('Success','Borrower Updated.');
+                                                    $state.go('app.borrowers.info', {borrowerId:response.data.borrowerId});
+                                            },function(error){
+                                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not update borrower. Please contact System Administrator.'); 
+                                            })
+                                        },function(error){
+                                            toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not update contact person. Please contact System Administrator.'); 
+                                        })
+                            },
+                            function(error){
+                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not update cooperative. Please contact System Administrator.'); 
+                            }); 
+
+                        }
+                    });
+                }
+            }
+
+            $scope.cancel = function(id){
+                $state.go('app.borrowers.info', {borrowerId:id});
+            }
+
         }        
     );
 

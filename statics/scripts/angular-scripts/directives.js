@@ -11,7 +11,6 @@ angular
 	.directive('toggle', bootstrapTooltipsPopoversDirective)
 	.directive('tab', bootstrapTabsDirective)
 	.directive('button', cardCollapseDirective)
-	.directive('dataWizardType',dataWizardType)
 
 function includeReplace() {
 	var directive = {
@@ -237,21 +236,5 @@ function cardCollapseDirective() {
 				element.find('i').toggleClass('r180');
 			})
 		}
-	}
-}
-
-function dataWizardType(){
-	var directive = {
-		restrict: 'E',
-		link: link
-	}
-	return directive;
-
-	function link(scope,element,attrs) {
-		element.on('click', function () {
-			if (element.hasClass('wizard-step')) {
-				console.log("test")
-			}
-		})
 	}
 }

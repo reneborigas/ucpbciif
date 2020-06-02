@@ -8,8 +8,7 @@ define(function() {
 			getBorrowerName: function(borrowerId){
                 return $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : borrowerId }}).then(
                     function(response){   
-					console.log(response)
-                    return response.data[0].borrowerName  
+                    return response.data[0].cooperativeName  
                 },
                 function(error){
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Borrower Name. Please contact System Administrator.'); 
