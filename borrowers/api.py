@@ -4,7 +4,7 @@ from .serializers import *
 from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
-
+from documents.models import Document
 
 class BorrowerViewSet(ModelViewSet):
     queryset = Borrower.objects.all()
@@ -55,3 +55,7 @@ class CooperativeViewSet(ModelViewSet):
     queryset = Cooperative.objects.all()
     serializer_class = CooperativeSerializer
     permission_classes = (permissions.IsAuthenticated, )
+
+
+
+   

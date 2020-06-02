@@ -71,6 +71,15 @@ define(function() {
                 function(error){
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Cooperative Type list. Please contact System Administrator.'); 
                 });     
+			},
+			getCommitte: function(){
+                return $http.get('/api/committees/committees/').then(
+                    function(response){   
+                    return response.data;     
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Committee list. Please contact System Administrator.'); 
+                });     
             },
 			getTimeRemaining: function(endtime, starttime) {
 				var t = Date.parse(endtime) - Date.parse(starttime);

@@ -1,85 +1,109 @@
 <div class="row" ng-controller="BorrowerInfoController">
     <div class="col-xl-3">
-        <div class="card card-custom">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Overview</h3>
+        <div class="col-xl-12">
+            <div class="card card-custom">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="fad fa-users-class"></i>
+                        </span>
+                        <h3 class="card-label">Overview</h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <div class="dropdown dropdown-inline">
+                            <button type="button" class="btn btn-primary float-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fal fa-cogs"></i> Actions
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="fal fa-edit mr-2"></i>Update</a>
+                                <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="card-toolbar">
-                    <div class="dropdown dropdown-inline">
-                        <button type="button" class="btn btn-primary float-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fal fa-cogs"></i> Actions
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="fal fa-edit mr-2"></i>Update</a>
-                            <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                <div class="card-body"> 
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Name:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.name }}</span>
                         </div>
                     </div>
-
-                </div>
-            </div>
-            <div class="card-body"> 
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Name:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.name }}</span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">TIN #:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.tin }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">TIN #:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.tin }}</span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Address:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.address }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Address:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.address }}</span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Cooperative Type:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.cooperativeTypeText }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Cooperative Type:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.cooperativeTypeText }}</span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Phone:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.phoneNo }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Phone:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.phoneNo }}</span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Telephone:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.telNo }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Telephone:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.telNo }}</span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Email:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">
+                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.emailAddress }}</span>
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Email:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">
-                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.emailAddress }}</span>
-                        </span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Description:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.description }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Description:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.description }}</span>
-                    </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Remarks:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.remarks }}</span>
+                    <div class="form-group form-group-xs row">
+                        <label class="col-4 col-form-label">Remarks:</label>
+                        <div class="col-8">
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.remarks }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-xl-12">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="fad fa-users-class"></i>
+                            </span>
+                            <h3 class="card-label">Files</h3>
+                        </div>
+                        
+                    </div>
+                    <div class="card-body"> 
+                        <div class="form-group form-group-xs row">
+                            <label class="col-8 col-form-label">Loan Application:</label>
+                            <div class="col-4">
+                                    <button type="reset" class="btn btn-success mr-2" ng-click="newLoanApplication(borrower.borrowerId)">New File</button>
+                            </div>
+                        </div>
+                 
+                    </div>
+                </div>
+            </div>
     </div>
     <div class="col-xl-9">
         <div class="card card-custom">

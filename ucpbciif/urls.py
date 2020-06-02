@@ -39,16 +39,20 @@ urlpatterns = [
     path('borrowers', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('borrowers/<int:id>/new-loan-application', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/edit', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     #processes
     path('processes', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
+    #committes
+    path('committees', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+
     
     #processes
     path('files', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('files/<str:documentType>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    
+
     path('400', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     # App Urls
     path('api/auth/',include('auth.urls')),
@@ -56,6 +60,7 @@ urlpatterns = [
     path('api/documents/',include('documents.urls'),name='documents'),
     path('api/loans/',include('loans.urls'),name='loans'),
     path('api/processes/',include('processes.urls'),name='processes'),
+    path('api/committees/',include('committees.urls'),name='committees'),
     path('api/users/',include('users.urls'),name='users'),
     path('api/settings/',include('settings.urls'),name='settings'), 
 ]

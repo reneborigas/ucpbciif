@@ -210,10 +210,18 @@ class BorrowerSerializer(ModelSerializer):
 
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)
-
+    
         return borrower
 
+
+    def createLoanApplication(self, validated_data):
+        borrower = Borrower.objects.create(**validated_data)
+    
+        return borrower
     def update(self, instance, validated_data):
+
+        print("here")
+        print(validated_data)
         instance.status = validated_data.get("status",instance.status)
         instance.clientSince = validated_data.get("clientSince",instance.clientSince)
         instance.remarks = validated_data.get("remarks",instance.remarks)
