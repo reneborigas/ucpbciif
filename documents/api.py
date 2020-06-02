@@ -21,23 +21,16 @@ class DocumentViewSet(ModelViewSet):
        
 
         documentId = self.request.query_params.get('documentId', None)
-<<<<<<< HEAD
         documentType = self.request.query_params.get('documentType', None)
         subProcessName = self.request.query_params.get('subProcessName', None)
-=======
->>>>>>> 687ac4dab1d8ab55907f318413d1bba143e84367
 
         if documentId is not None:
             queryset = queryset.filter(id=documentId)
 
-<<<<<<< HEAD
         if documentType is not None:
             queryset = queryset.filter(documentType=documentType)
 
         if subProcessName is not None:
             queryset = queryset.filter(subProcessName=subProcessName)
 
-        print(documentType)
-=======
->>>>>>> 687ac4dab1d8ab55907f318413d1bba143e84367
         return queryset
