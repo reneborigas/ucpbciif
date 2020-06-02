@@ -323,11 +323,9 @@ define(function() {
 						skip:true
 					},
 					controller: function($scope,$stateParams,appFactory){
-						$scope.subProcessName = appFactory.unSlugify($stateParams.subProcessName)
-						console.log($scope.subProcessName)
-						// var subProcessName = app.appFactory.unSlugify($stateParams.subProcessName)
+						$scope.subProcessName = $stateParams.subProcessName;
 						appFactory.getDocumentIdBySubProcess($scope.subProcessName).then(function(data){
-							$scope.documentId = data;
+							$scope.documentId = app.appFactory.slugify(data);
 						})
 					},
 					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
