@@ -297,12 +297,59 @@ define(function(){
             });
 
             $scope.edit = function(id){
-                $state.go('borrowers.edit', {borrowerId:id});
+                $state.go('app.borrowers.edit', {borrowerId:id});
             }
 
-            // $scope.delete = function(id){
-            //     console.log(id)
-            // }
+            $scope.templates = [
+                {
+                    templateNumber: 1,
+                    name: "Basic Information",
+                    icon: "fad fa-info-square",
+                    templateUrl: '/statics/partials/pages/borrowers/info/basic.html',
+                },
+                {
+                    templateNumber: 2,
+                    name: "Contact Details",
+                    icon: "fad fa-address-book",
+                    templateUrl: '/statics/partials/pages/borrowers/info/contact.html',
+                },
+                {
+                    templateNumber: 3,
+                    name: "Background",
+                    icon: "fad fa-user-friends",
+                    templateUrl: '/statics/partials/pages/borrowers/info/directorCommittee.html',
+                },
+                {
+                    templateNumber: 4,
+                    name: "Grants",
+                    icon: "fad fa-coin",
+                    templateUrl: '/statics/partials/pages/borrowers/info/grants.html',
+                },
+                {
+                    templateNumber: 5,
+                    name: "History",
+                    icon: "fad fa-history",
+                    templateUrl: '/statics/partials/pages/borrowers/info/history.html',
+                }
+            ]
+
+            $scope.currentTemplate = $scope.templates[0];
+
+            $scope.getTemplate = function(){
+                for (var i = 0; i < $scope.templates.length; i++) {
+                    if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
+                        return $scope.templates[i].templateUrl;
+                    }
+                }
+            }
+
+            $scope.goToTemplate = function(templateNumber){
+                for (var i = 0; i < $scope.templates.length; i++) {
+                    if ($scope.templates[i].templateNumber == templateNumber) {
+                        $scope.currentTemplate = $scope.templates[i]
+                    }
+                }
+            }
 
         }        
     );
@@ -318,6 +365,15 @@ define(function(){
                     $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue)
                     $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp)
                     $scope.borrower.cooperative.cdaRegistrationDate = new Date($scope.borrower.cooperative.cdaRegistrationDate)
+                    angular.forEach($scope.borrower.cooperative.directors,function(director){
+                        director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.standingCommittees,function(standingCommittee){
+                        standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.grants,function(grant){
+                        grant.amount = parseFloat(grant.amount)
+                    })
                     console.log($scope.borrower.cooperative)
             },
             function(error){
@@ -410,7 +466,6 @@ define(function(){
 
             $scope.update = function(){
                 $scope.borrower.cooperative.cdaRegistrationDate = appFactory.dateWithoutTime($scope.borrower.cooperative.cdaRegistrationDate,'yyyy-MM-dd')
-                console.log($scope.borrower.cooperative)
                 if($scope.editForm.$valid){
                     swal({
                         title: "Update Borrower",

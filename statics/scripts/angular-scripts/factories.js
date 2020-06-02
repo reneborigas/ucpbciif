@@ -13,6 +13,15 @@ define(function() {
                 function(error){
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Borrower Name. Please contact System Administrator.'); 
                 });
+			},
+			getDocumentIdBySubProcess: function(subProcessName){
+                return $http.get('/api/documents/documents/', {params:{ subProcessName : subProcessName }}).then(
+                    function(response){   
+                    return response.data[0].documentType
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Document Type. Please contact System Administrator.'); 
+                });
             },
 			getCurrentUser: function() {
 				var values = JSON.parse(localStorage.getItem('currentUser'));

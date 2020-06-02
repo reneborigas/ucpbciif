@@ -12,7 +12,11 @@ class BorrowerViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Borrower.objects.annotate(
+        queryset = Borrower.objects.prefetch_related(
+            Prefetch('cooperative',Cooperative.objects.annotate(
+                cooperativeTypeText=F('cooperativeType__name')
+            ).all())
+        ).annotate(
             contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
             cooperativeName=F('cooperative__name'),
             tin=F('cooperative__tin'),

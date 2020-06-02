@@ -59,6 +59,7 @@ class CooperativeSerializer(ModelSerializer):
     directors = DirectorSerializer(many=True,required=False)
     standingCommittees = StandingCommitteeSerializer(many=True,required=False)
     grants = GrantSerializer(many=True,required=False)
+    cooperativeTypeText = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         directors = validated_data.pop('directors')

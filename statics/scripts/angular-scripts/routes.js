@@ -316,15 +316,19 @@ define(function() {
 					},
 				})
 				.state('app.documents.list', {
-					url: '/:documentType',
+					url: '/:subProcessName',
 					templateUrl: '/statics/partials/pages/documents/documents-list.html',
 					ncyBreadcrumb: {
 						label: 'Documents',
 						skip:true
 					},
 					controller: function($scope,$stateParams,appFactory){
-						$scope.documentType = $stateParams.documentType;
-						 
+						$scope.subProcessName = appFactory.unSlugify($stateParams.subProcessName)
+						console.log($scope.subProcessName)
+						// var subProcessName = app.appFactory.unSlugify($stateParams.subProcessName)
+						appFactory.getDocumentIdBySubProcess($scope.subProcessName).then(function(data){
+							$scope.documentId = data;
+						})
 					},
 					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
 					resolve: {
