@@ -12,7 +12,11 @@ define(function(){
                 },
                 {
                 getData: function(params){
+<<<<<<< HEAD
                     return $http.get('/api/documents/documents/', {params:{ documentId : $scope.documentId }}).then(
+=======
+                    return $http.get('/api/documents/documents/').then(
+>>>>>>> 687ac4dab1d8ab55907f318413d1bba143e84367
                         function(response){
                             var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
                             var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
