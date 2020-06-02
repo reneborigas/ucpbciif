@@ -46,8 +46,9 @@ urlpatterns = [
 
     
     #processes
-    path('documents', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-
+    path('files', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('files/<str:documentType>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    
     path('400', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     # App Urls
     path('api/auth/',include('auth.urls')),

@@ -401,3 +401,4 @@ class Borrower(models.Model):
 
     def __str__(self):
         return "%s" % (self.cooperative)
+ 

@@ -297,7 +297,7 @@ define(function() {
 				})
 				
 				.state('app.documents', {
-					url: '/documents',
+					url: '/files',
 					template: '<ui-view></ui-view>',
 					abstract: true,
 					ncyBreadcrumb: {
@@ -316,11 +316,15 @@ define(function() {
 					},
 				})
 				.state('app.documents.list', {
-					url: '',
+					url: '/:documentType',
 					templateUrl: '/statics/partials/pages/documents/documents-list.html',
 					ncyBreadcrumb: {
 						label: 'Documents',
 						skip:true
+					},
+					controller: function($scope,$stateParams,appFactory){
+						$scope.documentType = $stateParams.documentType;
+						 
 					},
 					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
 					resolve: {
