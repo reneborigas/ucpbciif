@@ -28,8 +28,6 @@ class DocumentViewSet(ModelViewSet):
         if documentId is not None:
             queryset = queryset.filter(id=documentId)
 
-       
-
         if subProcessName is not None:
             queryset = queryset.filter(subProcessName=subProcessName)
 

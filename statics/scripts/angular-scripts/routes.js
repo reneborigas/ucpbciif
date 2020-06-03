@@ -223,7 +223,7 @@ define(function() {
 					},
 					ncyBreadcrumb: {
 						label: 'New Loan Application',
-						parent: 'app.borrowers.list'
+						parent: 'app.borrowers.info'
 					},
 					controller: function($scope,$stateParams,appFactory){
 						$scope.borrowerId = $stateParams.borrowerId;
@@ -378,9 +378,9 @@ define(function() {
 						skip:true
 					},
 					controller: function($scope,$stateParams,appFactory){
-						$scope.subProcessName = $stateParams.subProcessName;
+						$scope.subProcessName = appFactory.unSlugify($stateParams.subProcessName)
 						appFactory.getDocumentIdBySubProcess($scope.subProcessName).then(function(data){
-							$scope.documentId = app.appFactory.slugify(data);
+							$scope.documentId = data;
 						})
 					},
 					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
