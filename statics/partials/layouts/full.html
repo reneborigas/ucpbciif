@@ -7,19 +7,7 @@
 	<main class="main">
 		<!-- Breadcrumb -->
 		<ol class="breadcrumb" breadcrumb>
-			
-			<!-- <h5 ng-bind="$state.current.data.stateTitle"></h5> -->
 			<ncy-breadcrumb></ncy-breadcrumb>
-
-			<!-- Breadcrumb Menu-->
-			<!-- <li class="breadcrumb-menu">
-				<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-					<a class="btn" href="#"><i class="icon-speech"></i></a>
-					<a class="btn" ui-sref="app.main"><i class="icon-graph"></i> &nbsp;Dashboard</a>
-					<a class="btn" ui-sref="app.main"><i class="icon-settings"></i> &nbsp;Settings</a>
-				</div>
-			</li> -->
-
 		</ol>
 		<div class="content container-fluid overflow-y-hidden">
 			<ui-view></ui-view>
@@ -28,8 +16,6 @@
 	</main>
 	<!-- Aside Menu -->
 	<div ng-include="'/statics/partials/components/full/aside.html'" include-replace></div>
-
 </div>
-
 <!-- Footer -->
 <div ng-include="'/statics/partials/components/full/footer.html'" include-replace></div>

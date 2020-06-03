@@ -140,7 +140,7 @@ class Document(models.Model):
 
 class DocumentMovement(models.Model):     
      
-    Document = models.ForeignKey(
+    document = models.ForeignKey(
         Document,
         on_delete=models.CASCADE,
         related_name="documentMovements",

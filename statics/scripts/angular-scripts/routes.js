@@ -41,19 +41,30 @@ define(function() {
 								serie: true,
 								name: 'Simple Line Icons',
 								files: ['/statics/assets/fonts/simple-line-icons/css/simple-line-icons.css']
-							}, {
-								serie: true,
-								name: 'Bundle Styles',
-								files: ['/statics/assets/css/style-bundle.css']
-							}, {
+							}, 
+							
+							{
 								serie: true,
 								name: 'Styles',
 								files: ['/statics/assets/css/style.css']
-							}, {
+							}, 
+							{
 								serie: true,
 								name: 'Custom Styles',
-								files: ['/statics/assets/css/custom.css']
-							}, {
+								files: ['/statics/assets/css/temp-styles.css']
+							}, 
+							// {
+							// 	serie: true,
+							// 	name: 'Bundle Styles',
+							// 	files: ['/statics/assets/css/style-bundle.css']
+							// }, 
+							// {
+							// 	serie: true,
+							// 	name: 'Custom Styles',
+							// 	files: ['/statics/assets/css/custom.css']
+							// }, 
+							
+							{
 								serie: true,
 								name: 'Toastr Styles',
 								files: ['/statics/libs/toastr/dist/css/angular-toastr.min.css']
@@ -86,9 +97,6 @@ define(function() {
 						// 	}]);
 						// }],
 					},
-					// controller: function(appLoginService) {
-					// 	appLoginService.redirectIfNotLoggedIn();
-					// },
 				})
 				.state('app.main', {
 					url: '/dashboard',
@@ -207,6 +215,44 @@ define(function() {
 					// 	}]
 					// },
 				})
+				.state('app.borrowers.create_loan_application', {
+					url: '/:borrowerId/new-loan-application',
+					templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | New Loan Application' 
+					},
+					ncyBreadcrumb: {
+						label: 'New Loan Application',
+						parent: 'app.borrowers.info'
+					},
+					controller: function($scope,$stateParams,appFactory){
+						$scope.borrowerId = $stateParams.borrowerId;
+						appFactory.getBorrowerName($scope.borrowerId).then(function(data){
+							$scope.borrowerName = data;
+						})
+					}
+					// resolve: {
+					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load files for an existing module
+					// 		return $ocLazyLoad.load([
+					// 			{
+					// 				serie: true,
+					// 				name: 'chart.js',
+					// 				files: [
+					// 					'node_modules/chart.js/dist/Chart.min.js',
+					// 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
+					// 				]
+					// 			},
+					// 		]);
+					// 	}],
+					// 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load controllers
+					// 		return $ocLazyLoad.load({
+					// 			files: ['js/controllers/main.js']
+					// 		});
+					// 	}]
+					// },
+				})
 				.state('app.borrowers.info', {
 					url: '/:borrowerId',
 					templateUrl: '/statics/partials/pages/borrowers/borrowers-info.html',
@@ -252,9 +298,15 @@ define(function() {
 						pageTitle: 'UCPB CIIF | Borrower Sample' 
 					},
 					ncyBreadcrumb: {
-						label: 'Sample',
-						parent: 'app.borrowers.list'
+						label: 'Edit',
+						parent: 'app.borrowers.info'
 					},
+					controller: function($scope,$stateParams,appFactory){
+						$scope.borrowerId = $stateParams.borrowerId;
+						appFactory.getBorrowerName($scope.borrowerId).then(function(data){
+							$scope.borrowerName = data;
+						})
+					}
 				})
 
 
@@ -318,8 +370,11 @@ define(function() {
 				.state('app.documents.list', {
 					url: '/:subProcessName',
 					templateUrl: '/statics/partials/pages/documents/documents-list.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | Loan Applications' 
+					},
 					ncyBreadcrumb: {
-						label: 'Documents',
+						label: 'Files',
 						skip:true
 					},
 					controller: function($scope,$stateParams,appFactory){

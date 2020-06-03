@@ -19,7 +19,36 @@ define(function(){
                 getData: function(params){
                     return $http.get('/api/borrowers/borrowers/').then(
                         function(response){
-                            console.log(response.data)
+                            var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                            params.total(response.data.length);
+                            
+                            $scope.countFrom = ((params.page() - 1) * params.count()) + 1;
+                            $scope.countTo = params.count() * params.page() > params.total() ? params.total() : params.count() * params.page();
+                            $scope.totalRecords = params.total();
+                            var count = $scope.tableBorrowers._params.count
+                            $scope.globalPageCount = count.toString()
+
+                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                            return page
+                    
+                    },
+                        function(error){
+                            toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not load Borrowers. Please contact System Administrator.'); 
+                    })
+                }
+            });
+
+            $scope.tableBorrowersContactPerson = new NgTableParams({
+                page:1,
+                count: 10,
+                },
+                {
+                counts: [],        
+                getData: function(params){
+                    return $http.get('/api/borrowers/borrowers/').then(
+                        function(response){
                             var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
                             var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
@@ -58,7 +87,7 @@ define(function(){
             $scope.edit = function(id){
                 $state.go('app.borrowers.edit', {borrowerId:id});
             }
-
+           
             // $scope.delete = function(id){
             //     console.log(id)
             // }
@@ -299,6 +328,10 @@ define(function(){
             $scope.edit = function(id){
                 $state.go('app.borrowers.edit', {borrowerId:id});
             }
+            
+            $scope.newLoanApplication = function(id){ 
+                $state.go('app.borrowers.create_loan_application', {borrowerId:id});
+            }
 
             $scope.templates = [
                 {
@@ -479,7 +512,7 @@ define(function(){
                         if (isConfirm){
                             $http.patch('/api/borrowers/cooperatives/'+ $scope.borrower.cooperative.id +'/', $scope.borrower.cooperative)
                                 .then(function(){
-                                    return $http.patch('/api/borrowers/contactpersons/'+ $scope.borrower.contactPerson.id +'/',$scope.borrower.contactPerson)
+                                    return $http.patch('/api/borrowers/documents/'+ $scope.borrower.contactPerson.id +'/',$scope.borrower.contactPerson)
                                         .then(function(){
                                             return $http.patch('/api/borrowers/borrowers/'+ $scope.borrower.borrowerId +'/',$scope.borrower)
                                                 .then(function(response){
@@ -509,4 +542,71 @@ define(function(){
         }        
     );
 
+    app.controller('BorrowerNewLoanApplicationController',
+    function BorrowerNewLoanApplicationController($http, $filter, $scope, toastr, NgTableParams,appFactory, $state, $timeout){
+            appFactory.getCommitte().then(function(data) {
+                $scope.committees = data
+            });
+
+
+            $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
+                function(response){
+                    $scope.borrower = response.data[0];
+                    $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat($scope.borrower.cooperative.paidUpCapitalInitial)
+                    $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized)
+                    $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue)
+                    $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp)
+                    $scope.borrower.cooperative.cdaRegistrationDate = new Date($scope.borrower.cooperative.cdaRegistrationDate)
+                    angular.forEach($scope.borrower.cooperative.directors,function(director){
+                        director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.standingCommittees,function(standingCommittee){
+                        standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.grants,function(grant){
+                        grant.amount = parseFloat(grant.amount)
+                    })
+                    console.log($scope.borrower.cooperative)
+            },
+            function(error){
+                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
+            });
+
+            $scope.document={name:'',description:'',remarks:'',borrower: $scope.borrowerId,subProcess:1,documentType:1, createdBy : appFactory.getCurrentUser(),committee:''}
+
+            $scope.save = function(){
+                console.log($scope.document);
+                if($scope.newLoanApplicationForm.$valid){
+                    swal({
+                        title: "Create New Loan Application",
+                        text: "Do you want to save and create this loan application file?",
+                        icon: "info",
+                        buttons:{
+                            cancel: true,
+                            confirm: "Create",
+                        }
+                    }).then((isConfirm)=>{                              
+                            if (isConfirm){
+                                $http.post('/api/documents/documents/', $scope.document)
+                                    
+                                    .then(function(){                      
+                                        toastr.success('Success','New loan application file created.');     
+                                        swal("Success!", "New Loan Application File Created.", "success");      
+                                        $state.go('app.borrowers.info', {borrowerId:$scope.borrowerId});
+                                },
+                                function(error){
+                                    toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new loan application file. Please contact System Administrator.'); 
+                                }); 
+                            }
+                    });
+                }
+            }
+ 
+            
+            $scope.cancel = function(id){
+                $state.go('app.borrowers.info', {borrowerId:id});
+            }
+
+    }        
+);  
 });

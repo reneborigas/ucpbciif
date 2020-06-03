@@ -20,7 +20,6 @@ define(function(){
                             params.total(response.data.length);
 
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                            console.table(page)
                             return page
                     
                     },
@@ -29,6 +28,10 @@ define(function(){
                     })
                 }
             });
+
+            $scope.$watch('searchTermAuto', function(newTerm, oldTerm) {
+                $scope.tableDocuments.filter({ $: newTerm });
+            }, true);
 
 
         }        
