@@ -12,7 +12,7 @@ define(function(){
                 },
                 {
                 getData: function(params){
-                    return $http.get('/api/documents/documents/', {params:{ documentId : $scope.documentId }}).then(
+                    return $http.get('/api/documents/documents/', {params:{ documentType : $scope.documentType }}).then(
                         function(response){
                             var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
                             var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
