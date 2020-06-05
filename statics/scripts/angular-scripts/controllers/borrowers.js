@@ -544,7 +544,7 @@ define(function(){
 
     app.controller('BorrowerNewLoanApplicationController',
     function BorrowerNewLoanApplicationController($http, $filter, $scope, toastr, NgTableParams,appFactory, $state, $timeout){
-            appFactory.getCommitte().then(function(data) {
+            appFactory.getCommittee().then(function(data) {
                 $scope.committees = data
             });
 

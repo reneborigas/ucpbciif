@@ -4,4 +4,6 @@ from .api import *
 router = DefaultRouter()
 
 router.register(r'subprocesses',SubProcessViewSet) 
+router.register(r'steps',StepViewSet) 
+router.register(r'outputs',OutputViewSet) 
 urlpatterns = router.urls

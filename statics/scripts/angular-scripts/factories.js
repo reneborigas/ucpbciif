@@ -14,6 +14,15 @@ define(function() {
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Borrower Name. Please contact System Administrator.'); 
                 });
 			},
+			getDocumentName: function(documentId){
+                return $http.get('/api/documents/documents/', {params:{ documentId : documentId }}).then(
+                    function(response){   
+                    return response.data[0].name  
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Borrower Name. Please contact System Administrator.'); 
+                });
+			},
 			getDocumentIdBySubProcess: function(subProcessName){
                 return $http.get('/api/documents/documents/', {params:{ subProcessName : subProcessName }}).then(
                     function(response){   
@@ -72,13 +81,23 @@ define(function() {
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Cooperative Type list. Please contact System Administrator.'); 
                 });     
 			},
-			getCommitte: function(){
+			getCommittee: function(){
                 return $http.get('/api/committees/committees/').then(
                     function(response){   
                     return response.data;     
                 },
                 function(error){
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Committee list. Please contact System Administrator.'); 
+                });     
+			},
+			getLastActivity: function(documentId){
+                return $http.get('/api/documents/documentmovements/',{params:{ process : 'last', documentId: documentId }}).then(
+                    function(response){
+					console.log(response.data) ;
+                    return response.data;     
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Last Activity list. Please contact System Administrator.'); 
                 });     
             },
 			getTimeRemaining: function(endtime, starttime) {

@@ -85,11 +85,20 @@ class Signatory(models.Model):
  
 
 class Document(models.Model):     
+    
+    code = models.CharField(
+        max_length=255,
+        blank = True,
+        null = False, 
+    ) 
+
     name = models.CharField(
         max_length=255,
         blank = False,
         null = False, 
     ) 
+
+    
     documentType = models.ForeignKey(
         DocumentType,
         on_delete=models.CASCADE,
@@ -151,7 +160,20 @@ class DocumentMovement(models.Model):
         blank = False,
         null = False, 
     ) 
-    
+    step = models.ForeignKey(
+        'processes.Step',
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="stepDocumentMovements",
+    )
+    output = models.ForeignKey(
+        'processes.Output',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="outputDocumentMovements",
+    )
     committee = models.ForeignKey(
         'committees.Committee',
         on_delete=models.CASCADE,

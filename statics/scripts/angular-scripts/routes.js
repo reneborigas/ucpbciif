@@ -353,7 +353,7 @@ define(function() {
 					template: '<ui-view></ui-view>',
 					abstract: true,
 					ncyBreadcrumb: {
-						label: 'Documents',
+						label: 'Files',
 						skip:true
 					},
 					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
@@ -367,6 +367,44 @@ define(function() {
 						}]
 					},
 				})
+				.state('app.documents.info', {
+					url: '/:subProcessName/:documentId',
+					templateUrl: '/statics/partials/pages/documents/documents-info.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | File Info' 
+					},
+					ncyBreadcrumb: {
+						label: '{{ fileName }}',
+						parent: 'app.documents.list'
+					},
+					controller: function($scope,$stateParams,appFactory){
+						$scope.documentId = $stateParams.documentId;
+						appFactory.getDocumentName($scope.documentId).then(function(data){
+							$scope.fileName = data;
+						})
+					}
+					// resolve: {
+					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load files for an existing module
+					// 		return $ocLazyLoad.load([
+					// 			{
+					// 				serie: true,
+					// 				name: 'chart.js',
+					// 				files: [
+					// 					'node_modules/chart.js/dist/Chart.min.js',
+					// 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
+					// 				]
+					// 			},
+					// 		]);
+					// 	}],
+					// 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+					// 		// you can lazy load controllers
+					// 		return $ocLazyLoad.load({
+					// 			files: ['js/controllers/main.js']
+					// 		});
+					// 	}]
+					// },
+				})
 				.state('app.documents.list', {
 					url: '/:subProcessName',
 					templateUrl: '/statics/partials/pages/documents/documents-list.html',
@@ -374,8 +412,7 @@ define(function() {
 						pageTitle: 'UCPB CIIF | Loan Applications' 
 					},
 					ncyBreadcrumb: {
-						label: 'Files',
-						skip:true
+						label: 'Files'
 					},
 					controller: function($scope,$stateParams,appFactory){
 						$scope.subProcessName = appFactory.unSlugify($stateParams.subProcessName)

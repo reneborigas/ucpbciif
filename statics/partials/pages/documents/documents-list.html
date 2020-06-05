@@ -43,12 +43,21 @@
                         </div>
                     </div>
                     <table class="table table-borderless datatable-table" ng-table="tableDocuments">
-                        <tr class="datatable-row" ng-repeat="document in $data" align="center">
-                            <td class="datatable-cell" data-title="'NAME'" sortable="'name'">
-                                {{ document.name }}
+                        <tr class="datatable-row" ng-repeat-start="document in $data" align="center">
+                            <td class="datatable-cell" data-title="'CODE'" sortable="'documentCode'">
+                                    <a href="" ng-click="documentMovement.$hideRows = !documentMovement.$hideRows" ng-init="group.$hideRows = false">
+                                            <i class="fas fa-chevron-right m-r-10" ng-class="{ ' fa-chevron-right': !documentMovement.$hideRows, ' fa-chevron-down': documentMovement.$hideRows }"></i>                                        
+                                        </a>
+                                {{ document.documentCode }}
                             </td>
+                            <td class="datatable-cell" data-title="'NAME'" sortable="'name'">
+                                    {{ document.name }}
+                                </td>
                             <td class="datatable-cell" data-title="'BORROWER'" sortable="'borrowerName'">
                                 {{ document.borrowerName }}
+                            </td>
+                            <td class="datatable-cell" data-title="'Process'" sortable="'subProcessName'">
+                                    {{ document.subProcessName  }}
                             </td>
                             
                             <td class="datatable-cell" data-title="'Description'" sortable="'description'">
@@ -57,9 +66,7 @@
                             <td class="datatable-cell" data-title="'File Type'" sortable="'documentTypeName'">
                                 {{ document.documentTypeName  }}
                             </td>
-                            <td class="datatable-cell" data-title="'Process'" sortable="'subProcessName'">
-                                {{ document.subProcessName  }}
-                            </td>
+                         
                             <td class="datatable-cell" data-title="'ACTIONS'">
                                 <div class="dropdown dropdown-inline">
                                     <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
@@ -67,11 +74,35 @@
                                         <i class="fal fa-ellipsis-h"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <a class="dropdown-item" href="" ng-click="view(document.documentId)"><i class="fal fa-eye mr-2"></i>View</a>
-                                        <a class="dropdown-item" href="" ng-click="edit(document.documentId)"><i class="fal fa-edit mr-2"></i>Edit</a>
-                                        <a class="dropdown-item" href="" ng-click="delete(document.documentId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                                            <a class="dropdown-item" href="" ng-click="view(document.subProcessName,document.id)"><i class="fal fa-eye mr-2"></i>View</a>
+                                            <a class="dropdown-item" href="" ng-click="edit(document.id)"><i class="fal fa-edit mr-2"></i>Edit</a>
+                                            <a class="dropdown-item" href="" ng-click="delete(document.id)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                                     
                                     </div>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center">
+                            <td colspan="5">
+                                <table class="table table-light table-borderless" ng-table="tableDocumentMovements">
+                                    <tr ng-repeat="documentmovement in $data | filter : {  documentId : document.id }" align="center">
+                                        <td data-title="'Activity'" style="width: 28%">
+                                                {{ documentmovement.name }} - {{ documentmovement.outputName }}  
+                                        </td>
+                                        <td data-title="'Committee'" style="width: 18%">
+                                                {{ documentmovement.committeeName }}
+                                        </td>
+                                        <td data-title="'Status'" style="width: 18%">
+                                                {{ documentmovement.statusName }}                               
+                                        </td>
+                                        <td data-title="'Description'" style="width: 18%">
+                                                {{ documentmovement.description }}
+                                        </td>
+                                        <td data-title="'Date'" style="width: 18%">
+                                                {{ documentmovement.dateCreated }}                          
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
                     </table>
