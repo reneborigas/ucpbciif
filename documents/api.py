@@ -40,9 +40,11 @@ class DocumentMovementViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self): 
+        
         queryset = DocumentMovement.objects.annotate(
             documentId=F('document_id'), 
-            outputName=F('output__name'), 
+            outputName=F('output__name'),
+            outputId=F('output_id'), 
             stepId=F('step_id'),
             committeeName=Concat(F('committee__firstname'),V(' '),F('committee__middlename'),V(' '),F('committee__lastname')),
             statusName=F('status__name'), 
@@ -67,6 +69,6 @@ class DocumentMovementViewSet(ModelViewSet):
 
         
 
-        return queryset
+        return queryset.prefetch_related(Prefetch('output',Output.objects.all()))
 
  

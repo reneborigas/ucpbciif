@@ -6,7 +6,7 @@ from .models import *
 from documents.models import * 
 from committees.models import Committee
 from processes.models import Statuses,Step,Output
- 
+from processes.serializers import OutputSerializer
 class DocumentSerializer(ModelSerializer):
     subProcessName = serializers.CharField(read_only=True)
     documentTypeName = serializers.CharField(read_only=True)
@@ -54,13 +54,19 @@ class DocumentMovementSerializer(ModelSerializer):
     documentId = serializers.CharField(read_only=True)
     stepId = serializers.CharField(read_only=True)
     outputName= serializers.CharField(read_only=True)
+    output= OutputSerializer(read_only=True)
+    outputId= serializers.CharField()
+
+
     def create(self, validated_data): 
          
         document = Document.objects.get(pk=validated_data.get("document").id)
-        output = Output.objects.get(pk=validated_data.get("output").id)
+        outputId =  validated_data.get("outputId")
+        print(outputId)
+        output = Output.objects.get(id=outputId) 
         
         committee = Committee.objects.get(pk=validated_data.get("committee", "1").id)
-     
+         
         documentMovement = DocumentMovement(
         document = document ,name = output.step.name,output=output, committee= committee , status=output.step.status,step=output.step)
 

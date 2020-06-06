@@ -154,6 +154,8 @@ class DocumentMovement(models.Model):
         on_delete=models.CASCADE,
         related_name="documentMovements",
     )
+    
+    outputId=None
 
     name = models.CharField(
         max_length=255,

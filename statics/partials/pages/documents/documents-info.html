@@ -127,9 +127,11 @@
                                 <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
                                 <p>Current Step</p> 
                                  
-                                <span ng-repeat="position in currentStep.position">
-                                        <h4 class="mb-0">{{ position.name}}</h4>
-                                 </span>
+                        
+                                <h4 class="mb-0">
+                                        <span ng-repeat="position in currentStep.position">{{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}</span>
+                                </h4>
+                                
                                 <p>Assigned Committee</p> 
                                  
                                 <h6 class="mb-0">{{ currentStep.description}}</h6> 
@@ -141,15 +143,7 @@
                                         </button>
                                 </span>
                             </div>
-                            <div class="col-xl-6">  
-                                    <h4 class="mb-0">{{ nextStep.order }}. {{ nextStep.name }}</h4>
-                                    <p>Next Step</p> 
-                                    <span ng-repeat="position in nextStep.position">
-                                            <h4 class="mb-0">{{ position.name }}</h4>
-                                    </span>
-                                    
-                                    <p>Assigned Committee</p> 
-                            </div>
+                            
                         </div>
                          
                      

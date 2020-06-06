@@ -54,6 +54,8 @@ class StepViewSet(ModelViewSet):
                 elif process == 'next':
                     
                     step = Step.objects.get(id=stepId)
+
+                    
                      
                     current = Step.objects.filter(order__gt=step.order).order_by('order').first()
                      

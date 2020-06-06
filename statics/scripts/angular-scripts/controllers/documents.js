@@ -79,25 +79,40 @@ define(function(){
         function DocumentInfoController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout){
             appFactory.getLastActivity($scope.documentId).then(function(data) {
                 $scope.lastActivity = data[0];
-         
-                $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.stepId , process : 'current' }}).then(
+               
+                if ($scope.lastActivity.output == null){ 
+                    $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.stepId , process : 'current' }}).then(
                     function(response){
                         $scope.currentStep = response.data[0]; 
-                        
-                },
-    
-                function(error){
-                    toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Document Information. Please contact System Administrator.'); 
-                });
+                    },
                 
-                $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.stepId , process : 'next' }}).then(
-                    function(response){
-                        $scope.nextStep = response.data[0]; 
-                },
-    
-                function(error){
-                    toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Next Step Information. Please contact System Administrator.'); 
-                });
+                    function(error){
+                        toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve current procedure Information. Please contact System Administrator.'); 
+                    });
+                }else{
+                   console.log($scope.lastActivity.output.nextStep);
+                    $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.output.nextStep  }}).then(
+                        function(response){
+                            $scope.currentStep = response.data[0]; 
+                            
+                    },
+        
+                    function(error){
+                        toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve current procedure. Please contact System Administrator.'); 
+                    });
+                    console.log( $scope.currentStep);
+                }
+
+              
+           
+                // $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.stepId , process : 'next' }}).then(
+                //     function(response){
+                //         $scope.nextStep = response.data[0]; 
+                // },
+               
+                // function(error){
+                //     toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Next Step Information. Please contact System Administrator.'); 
+                // });
                 
                
             });
@@ -187,8 +202,8 @@ define(function(){
             }
 
             $scope.takeActions = function(documentId,output,step){
-
-                $scope.documentMovement={output:output.id ,document:documentId,name:step.name
+                console.log(output.id);
+                $scope.documentMovement={outputId:output.id,output:output,document:documentId,name:step.name
                 ,step:step.id, committee:'1',status:step.status}
 
                 console.log( $scope.documentMovement);
