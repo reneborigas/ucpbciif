@@ -41,29 +41,18 @@ define(function() {
 								serie: true,
 								name: 'Simple Line Icons',
 								files: ['/statics/assets/fonts/simple-line-icons/css/simple-line-icons.css']
-							}, 
-							
+							},
 							{
 								serie: true,
-								name: 'Styles',
+								name: 'App Styles',
 								files: ['/statics/assets/css/style.css']
 							}, 
 							{
 								serie: true,
 								name: 'Custom Styles',
-								files: ['/statics/assets/css/temp-styles.css']
-							}, 
-							// {
-							// 	serie: true,
-							// 	name: 'Bundle Styles',
-							// 	files: ['/statics/assets/css/style-bundle.css']
-							// }, 
-							// {
-							// 	serie: true,
-							// 	name: 'Custom Styles',
-							// 	files: ['/statics/assets/css/custom.css']
-							// }, 
-							
+								files: ['/statics/assets/css/custom.css']
+							},
+
 							{
 								serie: true,
 								name: 'Toastr Styles',
@@ -293,9 +282,9 @@ define(function() {
 				})
 				.state('app.borrowers.edit', {
 					url: '/:borrowerId/edit',
-					templateUrl: '/statics/partials/pages/borrowers/borrowers-edit-test.html',
+					templateUrl: '/statics/partials/pages/borrowers/borrowers-edit.html',
 					data: { 
-						pageTitle: 'UCPB CIIF | Borrower Sample' 
+						pageTitle: 'UCPB CIIF | Borrower Edit' 
 					},
 					ncyBreadcrumb: {
 						label: 'Edit',
