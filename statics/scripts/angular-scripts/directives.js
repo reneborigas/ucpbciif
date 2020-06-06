@@ -11,6 +11,7 @@ angular
 	.directive('toggle', bootstrapTooltipsPopoversDirective)
 	.directive('tab', bootstrapTabsDirective)
 	.directive('button', cardCollapseDirective)
+	.directive('button',minimizeMenuTogglerDirective)
 
 function includeReplace() {
 	var directive = {
@@ -157,6 +158,23 @@ function collapseMenuTogglerDirective() {
 		element.on('click', function () {
 			if (element.hasClass('navbar-toggler') && !element.hasClass('layout-toggler')) {
 				angular.element('body').toggleClass('sidebar-mobile-show')
+			}
+		})
+	}
+}
+
+//Collapse menu toggler
+function minimizeMenuTogglerDirective() {
+	var directive = {
+		restrict: 'E',
+		link: link
+	}
+	return directive;
+
+	function link(scope, element, attrs) {
+		element.on('click', function () {
+			if (element.hasClass('navbar-toggler') && element.hasClass('sidebar-minimizer')) {
+				angular.element('body').toggleClass('sidebar-minimized brand-minimized')
 			}
 		})
 	}
