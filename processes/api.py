@@ -28,39 +28,25 @@ class StepViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Step.objects.exclude(isDeleted=True).order_by('id')
+        queryset = Step.objects.exclude(isDeleted=True).order_by('order')
         stepId = self.request.query_params.get('stepId', None)
 
         if stepId is not None:
             process = self.request.query_params.get('process', None)
 
-
             if process is not None:
-                 
                 if process == 'last':
-
                     step = Step.objects.get(id=stepId)
-
-
                     queryset = queryset.filter(order__gte=step.order).order_by('-order')[:1]
 
                 elif process == 'current':
-
                     step = Step.objects.get(id=stepId)
-
-
                     queryset = queryset.filter(order__gt=step.order).order_by('order')[:1]
 
-                elif process == 'next':
-                    
-                    step = Step.objects.get(id=stepId)
-
-                    
-                     
+                elif process == 'next':                    
+                    step = Step.objects.get(id=stepId)                
                     current = Step.objects.filter(order__gt=step.order).order_by('order').first()
-                     
                     queryset = queryset.filter(order__gt=step.order).exclude(pk=current.pk).order_by('order')[:1]
-                     
             else: 
                 queryset = queryset.filter(id=stepId)
 

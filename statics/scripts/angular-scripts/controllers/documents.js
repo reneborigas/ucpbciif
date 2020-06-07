@@ -4,7 +4,7 @@ define(function(){
     var app =  angular.module('app');
 
     app.controller('DocumentListController',
-        function DocumentListController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout){
+        function DocumentListController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout, appFactory){
 
             $scope.tableDocuments = new NgTableParams({
                 page:1,
@@ -70,33 +70,31 @@ define(function(){
             // }, true);
 
             $scope.view = function(subProcessName,id){
-                $state.go('app.documents.info', {subProcessName:subProcessName,documentId:id});
+                var subProcessNameSlug = appFactory.slugify(subProcessName)
+                $state.go('app.documents.info', { subProcessName : subProcessNameSlug, documentId : id});
             }
 
         }        
     );
     app.controller('DocumentInfoController',
         function DocumentInfoController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout){
+
             appFactory.getLastActivity($scope.documentId).then(function(data) {
-                $scope.lastActivity = data[0];
-               
+                $scope.lastActivity = data[0];   
                 if ($scope.lastActivity.output == null){ 
                     $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.stepId , process : 'current' }}).then(
                     function(response){
                         $scope.currentStep = response.data[0]; 
                     },
-                
                     function(error){
                         toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve current procedure Information. Please contact System Administrator.'); 
                     });
                 }else{
-                   console.log($scope.lastActivity.output.nextStep);
+                    console.log($scope.lastActivity.output.nextStep);
                     $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.output.nextStep  }}).then(
                         function(response){
-                            $scope.currentStep = response.data[0]; 
-                            
+                            $scope.currentStep = response.data[0];    
                     },
-        
                     function(error){
                         toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve current procedure. Please contact System Administrator.'); 
                     });
@@ -116,16 +114,32 @@ define(function(){
                 
                
             });
-            
+
             $http.get('/api/documents/documents/', {params:{ subProcessName : $scope.subProcessName , documentId : $scope.documentId }}).then(
                 function(response){
                     $scope.document = response.data[0];
-                    console.log($scope.document)
             },
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Document Information. Please contact System Administrator.'); 
             });
-           
+
+            $http.get('/api/documents/documentmovements/', {params:{ documentId : $scope.documentId }}).then(
+                function(response){
+                    $scope.documentMovements = response.data;
+            },
+            function(error){
+                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Document Movement Information. Please contact System Administrator.'); 
+            });
+
+            $http.get('/api/processes/steps/').then(
+                function(response){
+                    $scope.processSteps = response.data;
+            },
+            function(error){
+                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Document Movement Information. Please contact System Administrator.'); 
+            });
+
+                 
             
             
             $scope.activityTemplates = [
@@ -203,8 +217,16 @@ define(function(){
 
             $scope.takeActions = function(documentId,output,step){
                 console.log(output.id);
-                $scope.documentMovement={outputId:output.id,output:output,document:documentId,name:step.name
-                ,step:step.id, committee:'1',status:step.status}
+                
+                $scope.documentMovement = {
+                    outputId:output.id,
+                    output:output,
+                    document:documentId,
+                    name:step.name,
+                    step:step.id,
+                    committee:'1',
+                    status:step.status
+                }
 
                 console.log( $scope.documentMovement);
                 swal({

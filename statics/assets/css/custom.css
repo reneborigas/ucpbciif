@@ -2187,7 +2187,7 @@ hr.transparent {
 }
 
 .wizard .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .wizard-label .wizard-title {
-	font-size: .75rem;
+	font-size: 1rem;
 	font-weight: 600
 }
 
@@ -2212,6 +2212,328 @@ hr.transparent {
 .wizard .wizard-step {
 	cursor: pointer
 }
+
+/* Wizard 1 - With Arrows */
+.wizard.wizard-1 .wizard-nav .wizard-steps {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+	text-align: center;
+	background-color: transparent;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label {
+    margin-left: 3.5rem;
+    margin-right: 3.5rem;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-icon {
+    color: #b5b5c3;
+    font-size: 3.75rem;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label i.wizard-icon {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    color: #b5b5c3;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label i.wizard-icon {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-title {
+    color: #80808f;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 0.75rem;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-arrow {
+    color: #80808f;
+    font-size: 1.25rem;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step:last-child .wizard-arrow {
+    display: none;
+}
+
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step:hover > .wizard-label i.wizard-icon,
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step:hover > .wizard-label .wizard-title,
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step:hover > .wizard-arrow i {
+    color: #3699ff;
+}
+
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.active .wizard-label .wizard-icon,
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.done .wizard-label .wizard-icon {
+    color: #3699ff;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.active .wizard-label i.wizard-icon ,
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.done .wizard-label i.wizard-icon  {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    color: #3699ff;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.active .wizard-label .wizard-title,
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.done .wizard-label .wizard-title {
+    color: #3699ff;
+}
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.active .wizard-arrow ,
+.wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step.done .wizard-arrow  {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    color: #3699ff;
+}
+
+@media (min-width: 1200px) {
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label {
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-icon {
+        font-size: 3.75rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-title {
+        margin-top: 0.75rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-arrow {
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label {
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-icon {
+        font-size: 3.75rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-title {
+        margin-top: 0.75rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-arrow {
+        font-size: 1.1rem;
+    }
+}
+@media (max-width: 767.98px) {
+    .wizard.wizard-1 .wizard-nav .wizard-steps {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step {
+        width: 100%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-icon {
+        font-size: 1.5rem;
+        margin-right: 1.25rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-arrow {
+        font-size: 1rem;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-arrow.last {
+        display: block;
+    }
+}
+
+/* Wizard 2 - Vertical Wizard */
+.vertical-wizard {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.vertical-wizard .wizard-nav {
+    padding: 0;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 400px;
+    flex: 0 0 400px;
+    width: 450px;
+    max-width: 100%;
+}
+.vertical-wizard .wizard-nav .wizard-steps {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step {
+    padding: 0.75rem 1.5rem;
+    position: relative;
+    border-radius: 0.5rem;
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .wizard-icon i {
+    font-size: 2.5rem;
+    margin-right: 1.1rem;
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .wizard-icon i {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill: #b5b5c3;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .wizard-label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .wizard-label .wizard-title {
+    color: #212121;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .wizard-label .wizard-desc {
+    color: #80808f;
+}
+/* .vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-arrow {
+    color: #80808f;
+    font-size: 1.25rem;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step .wizard-arrow.last {
+    display: none;
+} */
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step:hover > .wizard-wrapper .wizard-label .wizard-title,
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step:hover > .wizard-wrapper .wizard-icon i {
+	color: #3699ff !important;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step:hover {
+	cursor: pointer;
+    background-color: #f3f6f9;
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
+}
+
+
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step.active {
+    background-color: #f3f6f9;
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step.active .wizard-wrapper .wizard-icon i {
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step.active .wizard-wrapper .wizard-icon i {
+    color: #3699ff !important;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step.active .wizard-wrapper .wizard-icon i {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+    fill: #3699ff !important;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step.active .wizard-wrapper .wizard-icon i:hover {
+    -webkit-transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
+}
+.vertical-wizard .wizard-nav .wizard-steps .wizard-step.active:after {
+    left: 100%;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    content: " ";
+    height: 0;
+    width: 0;
+    border: solid transparent;
+    position: absolute;
+    border-left-color: #f3f6f9;
+    border-width: 1rem;
+}
+
+
+
+
+
+.vertical-wizard .wizard-body {
+    width: 100%;
+}
+@media (min-width: 992px) and (max-width: 1399.98px) {
+    .vertical-wizard .wizard-nav {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 325px;
+        flex: 0 0 325px;
+        width: 325px;
+    }
+}
+@media (max-width: 991.98px) {
+    .vertical-wizard {
+        display: block;
+    }
+    .vertical-wizard .wizard-nav {
+        width: 100%;
+        border-bottom: 1px solid #ecf0f3;
+    }
+    .vertical-wizard .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"]:after {
+        content: none;
+    }
+    .vertical-wizard .wizard-body {
+        width: 100%;
+    }
+}
+
+
 
 .pagination {
 	justify-content: center !important;

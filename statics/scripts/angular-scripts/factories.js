@@ -93,7 +93,7 @@ define(function() {
 			getLastActivity: function(documentId){
                 return $http.get('/api/documents/documentmovements/',{params:{ process : 'last', documentId: documentId }}).then(
                     function(response){
-					console.log(response.data) ;
+					console.log(response.data);
                     return response.data;     
                 },
                 function(error){

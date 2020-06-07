@@ -1,75 +1,81 @@
 <div class="row" ng-controller="DocumentInfoController">
     <div class="col-xl-3">
-        <div class="col-xl-12">
-            <div class="card card-custom">
-                <div class="card-header">
-                    <div class="card-title">
-                        <span class="card-icon">
-                            <i class="fad fa-users-class"></i>
-                        </span>
-                        <h3 class="card-label">Overview</h3>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-custom gutter-b">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="fad fa-users-class"></i>
+                            </span>
+                            <h3 class="card-label">Overview</h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <div class="dropdown dropdown-inline">
+                                <button type="button" class="btn btn-primary float-right" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="fal fa-cogs"></i> Actions
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i
+                                            class="fal fa-edit mr-2"></i>Update</a>
+                                    <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i
+                                            class="fal fa-trash-alt mr-2"></i>Delete</a>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="card-toolbar">
-                        <div class="dropdown dropdown-inline">
-                            <button type="button" class="btn btn-primary float-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fal fa-cogs"></i> Actions
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="fal fa-edit mr-2"></i>Update</a>
-                                <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                    <div class="card-body">
+                        <div class="form-group form-group-xs row">
+                            <label class="col-4 col-form-label">Code:</label>
+                            <div class="col-8">
+                                <span class="form-control-plaintext font-weight-bold">{{ document.documentCode }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-xs row">
+                            <label class="col-4 col-form-label">Name:</label>
+                            <div class="col-8">
+                                <span class="form-control-plaintext font-weight-bold">{{ document.name }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-xs row">
+                            <label class="col-4 col-form-label">Process:</label>
+                            <div class="col-8">
+                                <span
+                                    class="form-control-plaintext font-weight-bold">{{document.subProcessName }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-xs row">
+                            <label class="col-4 col-form-label">Borrower:</label>
+                            <div class="col-8">
+                                <span class="form-control-plaintext font-weight-bold">{{ document.borrowerName }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-xs row">
+                            <label class="col-4 col-form-label">Date Created:</label>
+                            <div class="col-8">
+                                <span
+                                    class="form-control-plaintext font-weight-bold">{{ document.dateCreated | date : 'medium' }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-xs row">
+                            <label class="col-4 col-form-label">Description:</label>
+                            <div class="col-8">
+                                <span class="form-control-plaintext font-weight-bold">{{ document.description }}</span>
                             </div>
                         </div>
 
-                    </div>
-                </div>
-                <div class="card-body"> 
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Code:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext font-weight-bold">{{ document.documentCode }}</span>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Name:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext font-weight-bold">{{ document.name }}</span>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Process:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext font-weight-bold">{{document.subProcessName }}</span>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Borrower:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext font-weight-bold">{{ document.borrowerName }}</span>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Date Created:</label>
+                        <div class="form-group form-group-xs row">
+                            <label class="col-4 col-form-label">Remarks:</label>
                             <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ document.dateCreated }}</span>
+                                <span class="form-control-plaintext font-weight-bold">{{ document.remarks }}</span>
                             </div>
-                        </div>
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Description:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext font-weight-bold">{{ document.description }}</span>
-                        </div>
-                    </div>
-                   
-                    <div class="form-group form-group-xs row">
-                        <label class="col-4 col-form-label">Remarks:</label>
-                        <div class="col-8">
-                            <span class="form-control-plaintext font-weight-bold">{{ document.remarks }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-12">
+            <div class="col-xl-12">
                 <div class="card card-custom">
                     <div class="card-header">
                         <div class="card-title">
@@ -78,20 +84,54 @@
                             </span>
                             <h3 class="card-label">Status</h3>
                         </div>
-                        
+
                     </div>
-                    <div class="card-body"> 
+                    <div class="card-body">
                         <div class="form-group form-group-xs row">
                             <label class="col-8 col-form-label">Processing</label>
-                            
                         </div>
-                 
                     </div>
                 </div>
             </div>
+        </div>
     </div>
     <div class="col-xl-9">
-        <div class="card card-custom">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0 mt-4">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="font-weight-bolder text-dark">Activities</span>
+                </h3>
+            </div>
+            <div class="card-body pt-4">
+                <div class="timeline timeline-6 mt-3">
+                    <div class="timeline-item align-items-start"
+                        ng-repeat="documentMovement in documentMovements | orderBy:'-'">
+                        <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">
+                            {{ documentMovement.dateCreated | date : 'medium' }}</div>
+                        <div class="timeline-badge">
+                            <i class="fal fa-genderless text-success icon-xxl"></i>
+                        </div>
+                        <div class="timeline-content text-dark-50">
+                            <div class="d-flex mb-3">
+                                <h6 class="text-dark-75 text-hover-primary font-weight-bold">
+                                    {{ documentMovement.name }} <span ng-if="documentMovement.outputName">-</span>
+                                    {{ documentMovement.outputName }}
+                                </h6>
+                                <span
+                                    class="label label-light-info font-weight-bolder label-inline ml-2">{{ documentMovement.statusName }}</span>
+                            </div>
+                            <p class="p-0 font-size-h6">
+                                {{ documentMovement.description }}
+                            </p>
+                            <p class="p-0">
+                                <i class="font-size-sm">Commitee: {{ documentMovement.committeeName }}</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="card card-custom gutter-b">
             <div class="card-header">
                 <div class="card-toolbar">
                     <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
@@ -106,69 +146,159 @@
             </div>
             <div class="card-body">
                 <div class="tab-content pt-3">
-                    <ng-include src="getActiviyTemplate()"></ng-include>                    
+                    <div class="card card-custom" ng-controller="DocumentListController">
+                        <table class="table table-light table-borderless" ng-table="tableDocumentMovements">
+                            <tr ng-repeat="documentmovement in $data | filter : {  documentId : document.id }" align="center">
+                                <td data-title="'Activity'" style="width: 28%">
+                                    {{ documentmovement.name }} - {{ documentmovement.outputName }}
+                                </td>
+                                <td data-title="'Committee'" style="width: 18%">
+                                    {{ documentmovement.committeeName }}
+                                </td>
+                                <td data-title="'Status'" style="width: 18%">
+                                    {{ documentmovement.statusName }}
+                                </td>
+                                <td data-title="'Description'" style="width: 18%">
+                                    {{ documentmovement.description }}
+                                </td>
+                                <td data-title="'Date'" style="width: 18%">
+                                    {{ documentmovement.dateCreated }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+            <!-- <div class="card card-custom gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="fad fa-users-class"></i>
+                        </span>
+                        <h3 class="card-label">Steps</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
+                            <p>Current Step</p>
+                            <h4 class="mb-0">
+                                <span
+                                    ng-repeat="position in currentStep.position">{{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}</span>
+                            </h4>
+                            <p>Assigned Committee</p>
+                            <h6 class="mb-0">{{ currentStep.description}}</h6>
+                            <div>Take actions:</div><br>
+                            <span ng-repeat="output in currentStep.outputs">
+                                <button class="btn btn-success text-uppercase p-2 pl-3 pr-3"
+                                    ng-click="takeActions(document.id,output,currentStep)">
+                                    {{output.name}}
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        <div class="card card-custom gutter-b">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-icon">
+                        <i class="fad fa-users-class"></i>
+                    </span>
+                    <h3 class="card-label">Steps</h3>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="vertical-wizard">
+                    <div class="wizard-nav border-right py-8 px-8 py-lg-12 px-lg-8">
+                        <div class="wizard-steps">
+                            <div class="wizard-step" ng-repeat="step in processSteps">
+                                <div class="wizard-wrapper">
+                                    <div class="wizard-icon">
+                                        <i class="fad fa-file-plus"></i>
+                                    </div>
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title">
+                                            {{ step.order }}. {{ step.name }}
+                                        </h3>
+                                        <div class="wizard-desc">
+                                            {{ step.description }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8">
+                        <div class="row">
+                            <div class="offset-xxl-2 col-xxl-8">
+                                <form class="form" id="kt_form">
+                                    <div class="pb-5">
+                                        <ul class=" text-dark list-unstyled">
+                                            <li class="font-size-h5">Assigned Commitee</li>
+                                            <ul class="font-size-h6">
+                                                <li ng-repeat="position in currentStep.position">{{ position.name}}</li>
+                                            </ul>
+                                        </ul>
+                                        <div class="form-group">
+                                            <label>First Name</label>
+                                            <input type="text" class="form-control form-control-solid form-control-lg"
+                                                name="fname" placeholder="First Name" value="" />
+                                            <span class="form-text text-muted">Please enter your first name.</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Requirements</label>
+                                            <div class="checkbox-list">
+                                                <label class="checkbox">
+                                                    <input type="checkbox"/>Email
+                                                    <span></span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input type="checkbox"/>SMS
+                                                    <span></span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input type="checkbox"/>Phone
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end border-top mt-5 pt-10">
+                                        <div>
+                                            <button type="button" class="btn btn-success font-weight-bold text-uppercase px-9 py-4">
+                                                Process
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card card-custom">
-                <div class="card-header">
-                        <div class="card-title">
-                                <span class="card-icon">
-                                    <i class="fad fa-users-class"></i>
-                                </span>
-                                <h3 class="card-label">Steps</h3>
-                            </div>
-                </div>
-                <div class="card-body">
-                       
-
-                             <div class="row"> 
-                            <div class="col-xl-6">  
-                                <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
-                                <p>Current Step</p> 
-                                 
-                        
-                                <h4 class="mb-0">
-                                        <span ng-repeat="position in currentStep.position">{{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}</span>
-                                </h4>
-                                
-                                <p>Assigned Committee</p> 
-                                 
-                                <h6 class="mb-0">{{ currentStep.description}}</h6> 
-                                
-                                <div>Take actions:</div><br>
-                                <span ng-repeat="output in currentStep.outputs">
-                                        <button class="btn btn-success text-uppercase p-2 pl-3 pr-3" ng-click="takeActions(document.id,output,currentStep)">
-                                            {{output.name}}
-                                        </button>
-                                </span>
-                            </div>
-                            
-                        </div>
-                         
-                     
-                </div>
-                
-            </div>
-        <div class="card card-custom">
-                <div class="card-header">
-                    <div class="card-toolbar">
-                        <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
-                            <li class="nav-item" ng-repeat="template in templates">
-                                <a class="nav-link" data-toggle="tab" role="tab" ng-class="{ 'active' : template.templateNumber == currentTemplate }" ng-click="goToTemplate(template.templateNumber)">
-                                    <span class="nav-icon"><i class="{{ template.icon }}"></i></span>
-                                    <span class="nav-text">{{ template.name }}</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content pt-3">
-                        <ng-include src="getTemplate()"></ng-include>                    
-                    </div>
-                </div>
-            </div>
     </div>
-    
+    <!-- <div class="card card-custom gutter-b">
+            <div class="card-header">
+                <div class="card-toolbar">
+                    <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
+                        <li class="nav-item" ng-repeat="template in templates">
+                            <a class="nav-link" data-toggle="tab" role="tab" ng-class="{ 'active' : template.templateNumber == currentTemplate }" ng-click="goToTemplate(template.templateNumber)">
+                                <span class="nav-icon"><i class="{{ template.icon }}"></i></span>
+                                <span class="nav-text">{{ template.name }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content pt-3">
+                    <ng-include src="getTemplate()"></ng-include>                    
+                </div>
+            </div>
+        </div> -->
+</div>
 </div>

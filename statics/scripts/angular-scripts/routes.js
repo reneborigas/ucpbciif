@@ -32,7 +32,6 @@ define(function() {
 					},
 					resolve: {
 						loadCSS: ['$ocLazyLoad', function ($ocLazyLoad) {
-							// you can lazy load CSS files
 							return $ocLazyLoad.load([{
 								serie: true,
 								name: 'Font Awesome',
@@ -41,19 +40,15 @@ define(function() {
 								serie: true,
 								name: 'Simple Line Icons',
 								files: ['/statics/assets/fonts/simple-line-icons/css/simple-line-icons.css']
-							},
-							{
+							},{
 								serie: true,
 								name: 'App Styles',
 								files: ['/statics/assets/css/style.css']
-							}, 
-							{
+							},{
 								serie: true,
 								name: 'Custom Styles',
 								files: ['/statics/assets/css/custom.css']
-							},
-
-							{
+							},{
 								serie: true,
 								name: 'Toastr Styles',
 								files: ['/statics/libs/toastr/dist/css/angular-toastr.min.css']
@@ -345,7 +340,6 @@ define(function() {
 						label: 'Files',
 						skip:true
 					},
-					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
 					resolve: {
 						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
 							return $ocLazyLoad.load({
@@ -355,44 +349,6 @@ define(function() {
 							});
 						}]
 					},
-				})
-				.state('app.documents.info', {
-					url: '/:subProcessName/:documentId',
-					templateUrl: '/statics/partials/pages/documents/documents-info.html',
-					data: { 
-						pageTitle: 'UCPB CIIF | File Info' 
-					},
-					ncyBreadcrumb: {
-						label: '{{ fileName }}',
-						parent: 'app.documents.list'
-					},
-					controller: function($scope,$stateParams,appFactory){
-						$scope.documentId = $stateParams.documentId;
-						appFactory.getDocumentName($scope.documentId).then(function(data){
-							$scope.fileName = data;
-						})
-					}
-					// resolve: {
-					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-					// 		// you can lazy load files for an existing module
-					// 		return $ocLazyLoad.load([
-					// 			{
-					// 				serie: true,
-					// 				name: 'chart.js',
-					// 				files: [
-					// 					'node_modules/chart.js/dist/Chart.min.js',
-					// 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
-					// 				]
-					// 			},
-					// 		]);
-					// 	}],
-					// 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-					// 		// you can lazy load controllers
-					// 		return $ocLazyLoad.load({
-					// 			files: ['js/controllers/main.js']
-					// 		});
-					// 	}]
-					// },
 				})
 				.state('app.documents.list', {
 					url: '/:subProcessName',
@@ -409,17 +365,26 @@ define(function() {
 							$scope.documentId = data;
 						})
 					},
-					params: { title:'Documents', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
-					resolve: {
-						loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
-							return $ocLazyLoad.load({
-								files: [
-									'/statics/scripts/angular-scripts/controllers/documents.js'
-								]
-							});
-						}]
-					},
 				})
+				.state('app.documents.info', {
+					url: '/:subProcessName/:documentId',
+					templateUrl: '/statics/partials/pages/documents/documents-info.html',
+					data: { 
+						pageTitle: 'UCPB CIIF | File Info' 
+					},
+					ncyBreadcrumb: {
+						label: '{{ fileName }}',
+						parent: 'app.documents.list'
+					},
+					controller: function($scope,$stateParams,appFactory){
+						console.log($stateParams.subProcessName)
+						$scope.documentId = $stateParams.documentId;
+						appFactory.getDocumentName($scope.documentId).then(function(data){
+							$scope.fileName = data;
+						})
+					}
+				})
+
 				.state('app.loans.add', {
 					url: '/add',
 					templateUrl: '/statics/partials/pages/loans/loans-add.html',
@@ -427,27 +392,6 @@ define(function() {
 						label: 'Add',
 						parent: 'app.loans.list'
 					},
-					// resolve: {
-					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-					// 		// you can lazy load files for an existing module
-					// 		return $ocLazyLoad.load([
-					// 			{
-					// 				serie: true,
-					// 				name: 'chart.js',
-					// 				files: [
-					// 					'node_modules/chart.js/dist/Chart.min.js',
-					// 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
-					// 				]
-					// 			},
-					// 		]);
-					// 	}],
-					// 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-					// 		// you can lazy load controllers
-					// 		return $ocLazyLoad.load({
-					// 			files: ['js/controllers/main.js']
-					// 		});
-					// 	}]
-					// },
 				})
 
 				.state('simple', {
