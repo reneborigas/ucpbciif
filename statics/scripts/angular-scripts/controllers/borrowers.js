@@ -54,11 +54,11 @@ define(function(){
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             params.total(response.data.length);
                             
-                            $scope.countFrom = ((params.page() - 1) * params.count()) + 1;
-                            $scope.countTo = params.count() * params.page() > params.total() ? params.total() : params.count() * params.page();
-                            $scope.totalRecords = params.total();
-                            var count = $scope.tableBorrowers._params.count
-                            $scope.globalPageCount = count.toString()
+                            // $scope.countFrom = ((params.page() - 1) * params.count()) + 1;
+                            // $scope.countTo = params.count() * params.page() > params.total() ? params.total() : params.count() * params.page();
+                            // $scope.totalRecords = params.total();
+                            // var count = $scope.tableBorrowers._params.count
+                            // $scope.globalPageCount = count.toString()
 
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             return page

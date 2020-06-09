@@ -23,13 +23,13 @@ define(function() {
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Borrower Name. Please contact System Administrator.'); 
                 });
 			},
-			getDocumentIdBySubProcess: function(subProcessName){
+			getSubProcessId: function(subProcessName){
                 return $http.get('/api/documents/documents/', {params:{ subProcessName : subProcessName }}).then(
                     function(response){   
-                    return response.data[0].documentType
+                    return response.data[0].subProcess
                 },
                 function(error){
-                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Document Type. Please contact System Administrator.'); 
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Document Sub Process ID. Please contact System Administrator.'); 
                 });
             },
 			getCurrentUser: function() {

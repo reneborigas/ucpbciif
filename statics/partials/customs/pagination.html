@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap ng-cloak ng-table-pager datatable-pager">
+    <div class="d-flex flex-wrap py-2 mr-3  datatable-pager">
+        <ul class="list-inline datatable-pager-nav" ng-if="pages.length">
+            <li class="list-inline-item mr-0" ng-repeat="page in pages" ng-switch="page.type">
+                <a href="" class="btn btn-icon btn-sm btn-light btn-hover-primary mr-2 my-1" ng-switch-when="first" ng-click="params.page(page.number)">
+                    <i class="fas fa-chevron-double-left icon-sm"></i>
+                </a>
+                <a href="" class="btn btn-icon btn-sm btn-light btn-hover-primary mr-2 my-1" ng-switch-when="prev" ng-click="params.page(page.number)">
+                    <i class="fas fa-chevron-left icon-sm"></i>
+                </a>
+                <a href="" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" ng-switch-when="first" ng-click="params.page(page.number)"ng-class="{'disabled': !page.active && !page.current, 'active': page.current}">
+                    <span ng-bind="page.number"></span></a>
+                <a href="" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" ng-switch-when="page" ng-click="params.page(page.number)"ng-class="{'disabled': !page.active && !page.current, 'active': page.current}">
+                    <span ng-bind="page.number"></span>
+                </a>
+                <a href="" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" ng-switch-when="more" ng-click="params.page(page.number)">
+                    <i class="fas fa-ellipsis-h"></i>
+                </a>
+                <a href="" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1" ng-switch-when="last" ng-click="params.page(page.number)"ng-class="{'disabled': !page.active && !page.current, 'active': page.current}">
+                    <span ng-bind="page.number"></span>
+                </a>
+                <a href="" class="btn btn-icon btn-sm btn-light btn-hover-primary mr-2 my-1" ng-switch-when="next" ng-click="params.page(page.number)">
+                    <i class="fas fa-chevron-right icon-sm"></i>
+                </a>
+                <a href="" class="btn btn-icon btn-sm btn-light btn-hover-primary mr-2 my-1" ng-switch-when="last" ng-click="params.page(page.number)">
+                    <i class="fas fa-chevron-double-right icon-sm"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="d-flex align-items-center py-3">
+        <select class="form-control form-control-sm font-weight-bold mr-4 border-0 bg-light" style="width: 60px;" ng-options="count for count in params.settings().counts" 
+            ng-change="params.count(pageCount)" ng-model="pageCount" ng-init=" pageCount = params.count() ">
+        </select>
+        <span class="text-muted">Displaying 
+            {{ ((params.page() - 1) * params.count()) + 1 }} 
+            to 
+            {{ params.count() * params.page() > params.total() ? params.total() : params.count() * params.page() }}  
+            of 
+            {{ params.total() }} 
+            records</span>
+    </div>
+</div>

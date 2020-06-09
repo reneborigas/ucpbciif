@@ -19,10 +19,9 @@ class DocumentViewSet(ModelViewSet):
             borrowerName=F('borrower__cooperative__name'),
         ).exclude(isDeleted=True).order_by('-id')
        
-
         documentId = self.request.query_params.get('documentId', None)
-      
         subProcessName = self.request.query_params.get('subProcessName', None)
+        subProcessId = self.request.query_params.get('subProcessId', None)
 
 
         if documentId is not None:
@@ -30,6 +29,10 @@ class DocumentViewSet(ModelViewSet):
 
         if subProcessName is not None:
             queryset = queryset.filter(subProcessName=subProcessName)
+
+        if subProcessId is not None:
+            queryset = queryset.filter(subProcess=subProcessId)
+
 
         return queryset
 

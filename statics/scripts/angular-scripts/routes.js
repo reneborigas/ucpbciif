@@ -361,8 +361,8 @@ define(function() {
 					},
 					controller: function($scope,$stateParams,appFactory){
 						$scope.subProcessName = appFactory.unSlugify($stateParams.subProcessName)
-						appFactory.getDocumentIdBySubProcess($scope.subProcessName).then(function(data){
-							$scope.documentId = data;
+						appFactory.getSubProcessId($scope.subProcessName).then(function(data){
+							$scope.subProcessId = data;
 						})
 					},
 				})

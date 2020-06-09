@@ -17,93 +17,90 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 col-xl-8">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto"/>
-                                            <span><i class="far fa-search"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xl-4 mt-5 mt-lg-0">
-                                <div class="text-right">
-                                    <label>Show 
-                                        <select class="custom-select custom-select-sm form-control form-control-sm table-length" ng-model="globalPageCount">
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select> 
-                                    entries</label>
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div class="d-flex flex-wrap py-2 mr-3">
+                                <div class="input-icon">
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto"/>
+                                    <span><i class="far fa-search"></i></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <table class="table table-borderless datatable-table" ng-table="tableDocuments">
-                        <tr class="datatable-row" ng-repeat-start="document in $data" align="center">
-                            <td class="datatable-cell" data-title="'CODE'" sortable="'documentCode'">
-                                <a href="" ng-click="documentMovement.$hideRows = !documentMovement.$hideRows" ng-init="group.$hideRows = false">
-                                    <i class="fas fa-chevron-right m-r-10" ng-class="{ ' fa-chevron-right': !documentMovement.$hideRows, ' fa-chevron-down': documentMovement.$hideRows }"></i>                                        
-                                </a>
-                                {{ document.documentCode }}
-                            </td>
-                            <td class="datatable-cell" data-title="'NAME'" sortable="'name'">
-                                {{ document.name }}
-                            </td>
-                            <td class="datatable-cell" data-title="'BORROWER'" sortable="'borrowerName'">
-                                {{ document.borrowerName }}
-                            </td>
-                            <td class="datatable-cell" data-title="'Process'" sortable="'subProcessName'">
-                                {{ document.subProcessName  }}
-                            </td>
-                            
-                            <td class="datatable-cell" data-title="'Description'" sortable="'description'">
-                                {{ document.description }}
-                            </td>
-                            <td class="datatable-cell" data-title="'File Type'" sortable="'documentTypeName'">
-                                {{ document.documentTypeName  }}
-                            </td>                         
-                            <td class="datatable-cell" data-title="'ACTIONS'">
-                                <div class="dropdown dropdown-inline">
-                                    <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="fal fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                            <a class="dropdown-item" href="" ng-click="view(document.subProcessName,document.id)"><i class="fal fa-eye mr-2"></i>View</a>
-                                            <a class="dropdown-item" href="" ng-click="edit(document.id)"><i class="fal fa-edit mr-2"></i>Edit</a>
-                                            <a class="dropdown-item" href="" ng-click="delete(document.id)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center">
-                            <td colspan="5">
-                                <table class="table table-light table-borderless" ng-table="tableDocumentMovements">
-                                    <tr ng-repeat="documentmovement in $data | filter : {  documentId : document.id }" align="center">
-                                        <td data-title="'Activity'" style="width: 28%">
-                                                {{ documentmovement.name }} - {{ documentmovement.outputName }}  
-                                        </td>
-                                        <td data-title="'Committee'" style="width: 18%">
-                                                {{ documentmovement.committeeName }}
-                                        </td>
-                                        <td data-title="'Status'" style="width: 18%">
-                                                {{ documentmovement.statusName }}                               
-                                        </td>
-                                        <td data-title="'Description'" style="width: 18%">
-                                                {{ documentmovement.description }}
-                                        </td>
-                                        <td data-title="'Date'" style="width: 18%">
-                                                {{ documentmovement.dateCreated }}                          
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="datatable datatable-default datatable-subtable">
+                        <table class="table datatable-table" ng-table="tableDocuments" template-pagination="statics/partials/customs/pagination.html">
+                            <tr class="datatable-row" ng-repeat-start="document in $data">
+                                <td class="datatable-cell-sorted datatable-cell-center datatable-cell">
+                                    <a class="datatable-cell-subtable" href="" ng-click="documentMovement.$hideRows = !documentMovement.$hideRows" ng-init="group.$hideRows = false">
+                                        <i class="fas fa-caret-right" ng-class="{ ' fa-caret-right': !documentMovement.$hideRows, ' fa-caret-down': documentMovement.$hideRows }"></i>                                        
+                                    </a>
+                                </td>
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CODE'" sortable="'documentCode'">
+                                    {{ document.documentCode }}
+                                </td>
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'NAME'" sortable="'name'">
+                                    {{ document.name }}
+                                </td>
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'" sortable="'borrowerName'">
+                                    {{ document.borrowerName }}
+                                </td>
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PROCESS'" sortable="'subProcessName'">
+                                    {{ document.subProcessName  }}
+                                </td>
+                                
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'DESCRIPTION'" sortable="'description'">
+                                    {{ document.description }}
+                                </td>
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'FILE TYPE'" sortable="'documentTypeName'">
+                                    {{ document.documentTypeName  }}
+                                </td>                         
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
+                                    <!-- <div class="dropdown dropdown-inline">
+                                        <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class="fal fa-ellipsis-h"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                <a class="dropdown-item" href="" ng-click="view(document.subProcessName,document.id)"><i class="fal fa-eye mr-2"></i>View</a>
+                                                <a class="dropdown-item" href="" ng-click="edit(document.id)"><i class="fal fa-edit mr-2"></i>Edit</a>
+                                                <a class="dropdown-item" href="" ng-click="delete(document.id)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
+                                        </div>
+                                    </div> -->
+                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(document.subProcessName,document.id)">
+                                        <i class="fad fa-eye"></i>
+                                    </a>
+                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="edit(document.id)">
+                                        <i class="fad fa-edit"></i>
+                                    </a>
+                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="delete(document.id)">
+                                        <i class="fad fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center">
+                                <td colspan="8">
+                                    <table class="table table-light table-borderless" ng-table="tableDocumentMovements">
+                                        <tr ng-repeat="documentmovement in $data | filter : {  documentId : document.id }" align="center">
+                                            <td data-title="'Activity'" style="width: 28%">
+                                                    {{ documentmovement.name }} - {{ documentmovement.outputName }}  
+                                            </td>
+                                            <td data-title="'Committee'" style="width: 18%">
+                                                    {{ documentmovement.committeeName }}
+                                            </td>
+                                            <td data-title="'Status'" style="width: 18%">
+                                                    {{ documentmovement.statusName }}                               
+                                            </td>
+                                            <td data-title="'Description'" style="width: 18%">
+                                                    {{ documentmovement.description }}
+                                            </td>
+                                            <td data-title="'Date'" style="width: 18%">
+                                                    {{ documentmovement.dateCreated }}                          
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -8,14 +8,16 @@ define(function(){
 
             $scope.tableDocuments = new NgTableParams({
                 page:1,
-                count: 15,
+                count: 1,
                 },
                 {
+                counts: [1,10,20,30,50,100], 
                 getData: function(params){
-                    return $http.get('/api/documents/documents/', {params:{ documentId :  $scope.documentId }}).then(
+                    return $http.get('/api/documents/documents/', {params:{ subProcessId :  $scope.subProcessId }}).then(
                         function(response){
+                            console.log($scope.tableDocuments._params)
                             var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
-                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;                            
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             params.total(response.data.length);
 
@@ -24,7 +26,7 @@ define(function(){
                     
                     },
                         function(error){
-                            toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not load Documetns. Please contact System Administrator.'); 
+                            toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not Load Documents. Please contact System Administrator.'); 
                     })
                 }
             });
@@ -42,12 +44,6 @@ define(function(){
                             var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             params.total(response.data.length);
-                            
-                            $scope.countFrom = ((params.page() - 1) * params.count()) + 1;
-                            $scope.countTo = params.count() * params.page() > params.total() ? params.total() : params.count() * params.page();
-                            $scope.totalRecords = params.total();
-                            var count = $scope.tableDocumentMovements._params.count
-                            $scope.globalPageCount = count.toString()
 
                             var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             return page
@@ -59,15 +55,9 @@ define(function(){
                 }
             });
 
-            // $scope.$watch('globalPageCount', function(newValue, oldValue) {
-            //     if (newValue){
-            //         $scope.tableDocuments._params.count = newValue;
-            //     }
-            // }, true);
-
-            // $scope.$watch('searchTermAuto', function(newTerm, oldTerm) {
-            //     $scope.tableDocuments.filter({ $: newTerm });
-            // }, true);
+            $scope.$watch('searchTermAuto', function(newTerm, oldTerm) {
+                $scope.tableDocuments.filter({ $: newTerm });
+            }, true);
 
             $scope.view = function(subProcessName,id){
                 var subProcessNameSlug = appFactory.slugify(subProcessName)
@@ -215,9 +205,13 @@ define(function(){
                 }
             }
 
+            $scope.getCurrentProcessStepTemplate = function(){
+                
+            }
+
             $scope.takeActions = function(documentId,output,step){
                 console.log(output.id);
-                
+
                 $scope.documentMovement = {
                     outputId:output.id,
                     output:output,
