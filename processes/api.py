@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
-from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
+from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func,CharField
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 
 from committees.models import Position
@@ -67,5 +67,59 @@ class OutputViewSet(ModelViewSet):
 
         if outputID is not None:
             queryset = queryset.filter(id=outputID)
+
+        return queryset
+
+
+class StepRequirementViewSet(ModelViewSet):
+    queryset = StepRequirement.objects.all()
+    serializer_class = StepRequirementSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = StepRequirement.objects.annotate(
+            isRequiredText=Case(
+                    When(isRequired=True, then=V('Required')), 
+                    default=V('Not Required'),
+                    output_field=CharField(),
+        ),
+            stepName=F('step__name'),  
+        ).order_by('id')
+
+
+        stepId   = self.request.query_params.get('stepId', None)
+
+        
+        if stepId is not None:
+            queryset = queryset.filter(step__id=stepId)
+        else:        
+            stepRequirementId = self.request.query_params.get('stepRequirementId', None)
+
+            if stepRequirementId is not None:
+                queryset = queryset.filter(id=stepRequirementId)
+
+        return queryset.prefetch_related("stepRequirementAttachments")
+
+
+class StepRequirementAttachmentViewSet(ModelViewSet):
+    queryset = StepRequirementAttachment.objects.all()
+    serializer_class = StepRequirementAttachmentSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = StepRequirementAttachment.objects.annotate(
+            stepRequirementName=F('stepRequirement__name'), 
+        ).order_by('id')
+
+        stepRequirementId = self.request.query_params.get('stepRequirementId', None)
+
+        if stepRequirementId is not None:
+            queryset = queryset.filter(stepRequirement__id=stepRequirementId)
+
+        else:
+            stepRequirementAttachmentId = self.request.query_params.get('stepRequirementAttachmentId', None)
+
+            if stepRequirementAttachmentId is not None:
+                queryset = queryset.filter(id=stepRequirementAttachmentId)
 
         return queryset

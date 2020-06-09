@@ -66,9 +66,9 @@ class DocumentMovementSerializer(ModelSerializer):
         output = Output.objects.get(id=outputId) 
         
         committee = Committee.objects.get(pk=validated_data.get("committee", "1").id)
-         
+        remarks = validated_data.get("remarks", "")
         documentMovement = DocumentMovement(
-        document = document ,name = output.step.name,output=output, committee= committee , status=output.step.status,step=output.step)
+        document = document ,name = output.step.name,output=output, committee= committee , status=output.step.status,step=output.step,remarks=remarks)
 
         documentMovement.save()
 

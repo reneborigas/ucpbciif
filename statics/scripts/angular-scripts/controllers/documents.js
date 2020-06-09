@@ -75,20 +75,48 @@ define(function(){
                     $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.stepId , process : 'current' }}).then(
                     function(response){
                         $scope.currentStep = response.data[0]; 
+
+                        $http.get('/api/processes/steprequirements/', {params:{ stepId : $scope.currentStep.id }}).then(
+                            function(response){
+                                $scope.stepRequirements = response.data;
+
+                                $scope.currentRequirement = $scope.stepRequirements[0];
+                                $scope.currentRequirement.attachments = $scope.currentRequirement.stepRequirementAttachments;
+                                 
+                        },
+                        function(error){
+                            toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Step Requirements Information. Please contact System Administrator.'); 
+                        });
+            
+                             
+
+
                     },
                     function(error){
                         toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve current procedure Information. Please contact System Administrator.'); 
                     });
                 }else{
-                    console.log($scope.lastActivity.output.nextStep);
+                    // console.log($scope.lastActivity.output.nextStep);
                     $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.output.nextStep  }}).then(
                         function(response){
-                            $scope.currentStep = response.data[0];    
+                            $scope.currentStep = response.data[0];  
+                            $http.get('/api/processes/steprequirements/', {params:{ stepId : $scope.currentStep.id }}).then(
+                                function(response){
+                                    $scope.stepRequirements = response.data;
+
+                                    $scope.currentRequirement = $scope.stepRequirements[0];
+
+                                  
+                                    
+                            },
+                            function(error){
+                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Step Requirements Information. Please contact System Administrator.'); 
+                            });  
                     },
                     function(error){
                         toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve current procedure. Please contact System Administrator.'); 
                     });
-                    console.log( $scope.currentStep);
+                    
                 }
 
               
@@ -129,8 +157,30 @@ define(function(){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Document Movement Information. Please contact System Administrator.'); 
             });
 
-                 
-            
+            $scope.getRequirement = function(){
+                for (var i = 0; i < $scope.stepRequirements.length; i++) {
+                    if ($scope.currentRequirement.id == $scope.stepRequirements[i].id) {
+                        return $scope.stepRequirements[i].id;
+                    }
+                }
+            }
+
+            $scope.goToRequirement = function(id){
+                for (var i = 0; i < $scope.stepRequirements.length; i++) {
+                    if ($scope.stepRequirements[i].id == id) {
+                        $scope.currentRequirement = $scope.stepRequirements[i];
+                        $http.get('/api/processes/steprequirementsattachments/', {params:{ stepRequirementId : $scope.currentRequirement.id  }}).then(
+                            function(response){
+                                $scope.currentRequirement.attachments   = response.data;
+                                 
+                        },
+                        function(error){
+                            toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve attachments Information. Please contact System Administrator.'); 
+                        });
+                        
+                    }
+                }
+            }
             
             $scope.activityTemplates = [
                 {
@@ -213,6 +263,7 @@ define(function(){
                 console.log(output.id);
 
                 $scope.documentMovement = {
+                    remarks:  $scope.remarks,
                     outputId:output.id,
                     output:output,
                     document:documentId,
@@ -245,7 +296,54 @@ define(function(){
                             }); 
                         }
                 });
-            }
+
+                
+
+
+               }
+
+            $scope.attachFile = function(stepRequirement){
+                // console.log(  angular.element("#newAttachment"));
+                $scope.newAttachment = {
+                    fileName:  $scope.newAttachmentName,
+                    description: $scope.newAttachmenDescription,
+                   stepRequirement:stepRequirement.id,
+                }
+                console.log( $scope.newAttachment );
+                if ($scope.newAttachmentName){
+                    swal({
+                    title: "Attach File",
+                    text: "Continue attaching file to " + stepRequirement.name + "?",
+                    icon: "info", 
+                    buttons:{
+                        cancel: true,
+                        confirm: "Submit",
+                    }
+
+                    }).then((isConfirm)=>{
+                        if (isConfirm){
+                            $http.post('/api/processes/steprequirementsattachments/', $scope.newAttachment)
+                                .then(function(){                      
+                                    toastr.success('Success','New attachment successfully saved.');     
+                                    swal("Success!", "New attachment successfully saved", "success");      
+                                    // $state.reload();
+                                    $scope.goToRequirement($scope.currentRequirement.id);
+                                    $scope.newAttachmentName ="";
+                                    $scope.newAttachmenDescription="";
+
+                            },
+                            function(error){
+                                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not create new record. Please contact System Administrator.'); 
+                            }); 
+                        }                              
+                                
+                    });
+                }else{
+                    toastr.error('Error: Attachment Error', 'Could not create new attachment. Please select file.to attach'); 
+                }
+
+               
+                }
         }        
     );
 

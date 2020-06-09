@@ -64,3 +64,45 @@ class StepSerializer(ModelSerializer):
     class Meta:
         model = Step          
         fields = '__all__'   
+
+
+
+        
+class StepRequirementAttachmentSerializer(ModelSerializer):
+    def create(self, validated_data):
+        stepRequirementAttachment = StepRequirementAttachment.objects.create(**validated_data) 
+        return stepRequirementAttachment
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = StepRequirementAttachment          
+        fields = '__all__'   
+
+        
+        
+class StepRequirementSerializer(ModelSerializer):
+    isRequiredText = serializers.CharField(read_only=True)
+    stepRequirementAttachments =StepRequirementAttachmentSerializer(many=True,required=False)
+    def create(self, validated_data):
+        stepRequirement = StepRequirement.objects.create(**validated_data) 
+
+        return stepRequirement
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = StepRequirement          
+        fields = '__all__'   

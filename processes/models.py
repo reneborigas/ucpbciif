@@ -147,7 +147,7 @@ class Statuses(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
-class Requirements(models.Model):  
+class ProcessRequirement(models.Model):  
 
     name = models.CharField(
         max_length=255,
@@ -163,14 +163,16 @@ class Requirements(models.Model):
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,
-        related_name="requirements",
+        related_name="processRequirements",
    
     )
 
-    optional = models.BooleanField(
-        default=False
+    isRequired = models.BooleanField(
+        default=True
     )
-
+    isAttachementRequired = models.BooleanField(
+        default=True
+    )
     
     description = models.TextField(
         blank = True,
@@ -320,6 +322,119 @@ class Output(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.step,self.name)
+
+
+
+        
+class StepRequirement(models.Model):  
+
+    name = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+
+    step = models.ForeignKey(
+        Step,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="requirements",
+    )
+
+    isRequired =models.BooleanField(
+        default=True
+    )  
+    isAttachementRequired = models.BooleanField(
+        default=True
+    )
+    
+    
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+
+
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="stepRequirementCreatedBy",
+        null = True,
+    )
+
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+
+    def __str__(self):
+        return "%s - %s" % (self.step,self.name)
+
+
+
+
+class StepRequirementAttachment(models.Model):  
+
+    fileName = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+    
+    stepRequirement = models.ForeignKey(
+        StepRequirement,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="stepRequirementAttachments",
+    )
+ 
+     
+    
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+
+
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="stepAttachmentCreatedBy",
+        null = True,
+    )
+
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+
+    def __str__(self):
+        return "%s - %s" % (self.stepRequirement,self.fileName)
+
+
+
+
+
 
 
 # class PositionStep(models.Model):  

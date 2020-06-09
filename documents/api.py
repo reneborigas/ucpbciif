@@ -56,7 +56,7 @@ class DocumentMovementViewSet(ModelViewSet):
 
         documentId = self.request.query_params.get('documentId', None)
       
-        
+       
         process = self.request.query_params.get('process', None)
       
         
