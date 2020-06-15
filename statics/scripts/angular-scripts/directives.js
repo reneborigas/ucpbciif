@@ -12,6 +12,7 @@ angular
 	.directive('tab', bootstrapTabsDirective)
 	.directive('button', cardCollapseDirective)
 	.directive('button',minimizeMenuTogglerDirective)
+	.directive('selectNgFiles',selectNgFiles)
 
 function includeReplace() {
 	var directive = {
@@ -256,3 +257,25 @@ function cardCollapseDirective() {
 		}
 	}
 }
+
+//Card Collapse
+function selectNgFiles($parse) {
+	var directive = {
+		require: 'ngModel',
+		link: link
+	}
+	return directive;
+
+	function link(scope,elem,attrs,ngModel) {
+		elem.on("change", function(e) {
+			var files = elem[0].files;
+			ngModel.$setViewValue(files);
+		  })
+		// elem.bind('change',function(){
+		// 	$parse(attrs.fileInput)
+		// 	.assign(scope,elem[0].files)
+		// 	scope.$apply();
+		// })
+	}
+}
+

@@ -143,7 +143,6 @@ define(function(){
             $scope.nextStep = function(){
                 $scope.changeStep = true;
                 if ($scope.wizardForm.$valid){
-                    console.log($scope.borrower)
                     $scope.currentStep = $scope.currentStep + 1;
                 }
             }
@@ -319,7 +318,6 @@ define(function(){
             $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
                 function(response){
                     $scope.borrower = response.data[0];
-                    console.log($scope.borrower)
             },
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
@@ -407,7 +405,6 @@ define(function(){
                     angular.forEach($scope.borrower.cooperative.grants,function(grant){
                         grant.amount = parseFloat(grant.amount)
                     })
-                    console.log($scope.borrower.cooperative)
             },
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
@@ -566,7 +563,6 @@ define(function(){
                     angular.forEach($scope.borrower.cooperative.grants,function(grant){
                         grant.amount = parseFloat(grant.amount)
                     })
-                    console.log($scope.borrower.cooperative)
             },
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
@@ -575,7 +571,6 @@ define(function(){
             $scope.document={name:'',description:'',remarks:'',borrower: $scope.borrowerId,subProcess:1,documentType:1, createdBy : appFactory.getCurrentUser(),committee:''}
 
             $scope.save = function(){
-                console.log($scope.document);
                 if($scope.newLoanApplicationForm.$valid){
                     swal({
                         title: "Create New Loan Application",

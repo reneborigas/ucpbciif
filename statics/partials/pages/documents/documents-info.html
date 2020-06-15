@@ -185,8 +185,7 @@
                         <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
                         <p>Current Step</p>
                         <h4 class="mb-0">
-                            <span
-                                ng-repeat="position in currentStep.position">{{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}</span>
+                            <span ng-repeat="position in currentStep.position">{{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}</span>
                         </h4>
                         <p>Assigned Committee</p>
                         <h6 class="mb-0">{{ currentStep.description}}</h6>
@@ -216,64 +215,74 @@
                                     <div class="wizard-label">
                                         <h3 class="wizard-title">
                                              {{ stepRequirement.name }}
-                                        </h3>
-                                       
+                                        </h3>                                       
                                         <div class="wizard-desc">
                                             {{ stepRequirement.isRequiredText }}
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
-                             
                         </div>
                     </div>
                     <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8">
                         <div class="row">
-                            <div class="offset-xxl-2 col-xxl-8">
-                                
-                                    <div class="pb-5"> 
-                                            <div>
-                                                    <div class="font-size-h6">{{ currentRequirement.name }}                            
-                                                    <span class="text-muted pt-2 font-size-sm d-block">{{ currentRequirement.description }}</span>
-                                                    </div>
-                                            </div>
-                                            <br/>
-
-                                            <ul class=" text-dark list-unstyled">
-                                                     <li class="font-size-h6">Attachments</li>
-                                                    <ul class="font-size-h7">
-                                                        <li ng-repeat="stepRequirementAttachment in currentRequirement.attachments">{{ stepRequirementAttachment.fileName}} -
-                                                                {{ stepRequirementAttachment.description}} </li>
-                                                         
-                                                    </ul>
-                                            </ul>
-                                    </div>
+                            <div class="offset-xxl-2 col-xxl-8">                                
+                                <div class="pb-5"> 
                                     <div class="pb-5">
-                                            <div class="form-group">
-                                                    <label>New Attachment</label>
-                                                    <input id="newAttachment" ng-model="newAttachmentName" name="newAttachmentName" type="text"  class="form-control form-control-solid form-control-lg" />
-                                                    <span class="form-text text-muted">Please select files to upload.</span>
-                                                </div>
-                                                <div class="form-group">
-                                                        <label>Description</label>
-                                                        <textarea ng-model="newAttachmenDescription" name="newAttachmenDescription" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
-                                                     
-                                                        <span class="form-text text-muted">Please enter attachment description.</span>
-                                                    </div>
-                                            <div>
-                                    </div>
-                                   
-                                    <div class="d-flex justify-content-end border-top mt-5 pt-10">
-                                    
-                                        
-                                             
-                                            <button   class="btn btn-outline-primary ont-weight-bold text-uppercase " type="button" ng-click="attachFile(currentRequirement)">
-                                                    <i class="fal fa-plus mr-2"></i>Attach File
-                                            </button>
+                                        <div class="font-size-h6">{{ currentRequirement.name }}                            
+                                            <span class="text-muted pt-2 font-size-sm d-block">{{ currentRequirement.description }}</span>
                                         </div>
                                     </div>
-                                 
+                                    <ul class=" text-dark list-unstyled">
+                                        <li class="font-size-h6">Attachments</li>
+                                        <ul class="font-size-h7">
+                                            <li ng-repeat="stepRequirementAttachment in currentRequirement.attachments">
+                                                {{ stepRequirementAttachment.fileName}} - <span ng-if="stepRequirementAttachment.description" ng-bind="stepRequirementAttachment.description"></span>
+                                            </li>
+                                        </ul>
+                                    </ul>
+                                </div>
+                                <div class="pb-5">
+                                    <div class="form-group">
+                                        <label>File Name</label>
+                                        <input id="newAttachment" ng-model="newAttachmentName" name="newAttachmentName" type="text"  class="form-control form-control-solid form-control-lg" />
+                                        <span class="form-text text-muted">Please enter file name.</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>File Attachment</label>
+                                        <input type="file" id="fileAttachment" name="fileAttachment" multiple select-ng-files="fileAttachment" ng-model="fileAttachment" ng-change="fileOnChange()" hidden>
+                                        <div class="dropzone dropzone-multi">
+                                            <div class="dropzone-panel mb-lg-0 mb-2">
+                                                <a class="dropzone-select btn btn-light-primary font-weight-bold btn-sm" ng-click="selectFile()">Attach files</a>
+                                                <a class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm">Remove All</a>
+                                            </div>
+                                            <div class="dropzone-items">
+                                                <div class="dropzone-item" ng-repeat="file in fileList">
+                                                    <div class="dropzone-file">
+                                                        <div class="dropzone-filename">
+                                                            <span>{{ file.name }}</span>
+                                                            <strong><span>({{ file.size/1000 | number : 2 }} KB)</span></strong>
+                                                        </div>
+                                                        <div class="dropzone-error" data-dz-errormessage></div>
+                                                    </div>
+                                                    <div class="dropzone-toolbar">
+                                                        <span class="dropzone-delete" data-dz-remove ng-click="removeFile($index)"><i class="fal fa-times icon-md"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea ng-model="newAttachmenDescription" name="newAttachmenDescription" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
+                                        <span class="form-text text-muted">Please enter attachment description.</span>
+                                    </div>
+                                </div>                                   
+                                <div class="d-flex justify-content-end border-top mt-5 pt-10">
+                                    <button class="btn btn-outline-primary ont-weight-bold text-uppercase " type="button" ng-click="attachFile(currentRequirement)">
+                                        <i class="fal fa-plus mr-2"></i>Attach File
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

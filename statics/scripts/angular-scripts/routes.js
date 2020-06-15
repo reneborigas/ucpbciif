@@ -377,7 +377,6 @@ define(function() {
 						parent: 'app.documents.list'
 					},
 					controller: function($scope,$stateParams,appFactory){
-						console.log($stateParams.subProcessName)
 						$scope.documentId = $stateParams.documentId;
 						appFactory.getDocumentName($scope.documentId).then(function(data){
 							$scope.fileName = data;

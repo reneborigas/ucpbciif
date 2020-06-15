@@ -9,12 +9,10 @@ class DocumentType(models.Model):
         blank = False,
         null = False, 
     )
-
     description = models.TextField(
         blank = True,
         null = True,
     )
-    
     remarks = models.TextField(
         blank = True,
         null = True,
@@ -35,7 +33,6 @@ class DocumentType(models.Model):
         default=False,
     )
 
-
     def __str__(self):
         return "%s" % (self.name)
 
@@ -45,24 +42,20 @@ class Signatory(models.Model):
         blank = False,
         null = False, 
     )
-
     documentType = models.ForeignKey(
         DocumentType,
         on_delete=models.CASCADE,
         related_name="signatories",
     )
-
     position = models.ForeignKey(
         'committees.Position',
         on_delete=models.CASCADE,
         related_name="signatoryPositions",
     )
-
     remarks = models.TextField(
         blank = True,
         null = True,
     )
-    
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
@@ -81,24 +74,19 @@ class Signatory(models.Model):
     
     def __str__(self):
         return "%s" % (self.name)
-
  
 
 class Document(models.Model):     
-    
     code = models.CharField(
         max_length=255,
         blank = True,
         null = False, 
-    ) 
-
+    )
     name = models.CharField(
         max_length=255,
         blank = False,
         null = False, 
-    ) 
-
-    
+    )    
     documentType = models.ForeignKey(
         DocumentType,
         on_delete=models.CASCADE,
@@ -108,19 +96,16 @@ class Document(models.Model):
         'borrowers.Borrower',
         on_delete=models.CASCADE,
         related_name="borrowers",
-    )
-     
+    )     
     subProcess = models.ForeignKey(
         'processes.SubProcess',
         on_delete=models.CASCADE,
         related_name="documentSubProcesses",
     )
-
     description = models.TextField(
         blank = True,
         null = True,
     )
-
     remarks = models.TextField(
         blank = True,
         null = True,
@@ -141,22 +126,17 @@ class Document(models.Model):
         default=False,
     )
 
-
     def __str__(self):
         return "%s" % (self.name)
- 
 
 
 class DocumentMovement(models.Model):     
-     
     document = models.ForeignKey(
         Document,
         on_delete=models.CASCADE,
         related_name="documentMovements",
     )
-    
     outputId=None
-
     name = models.CharField(
         max_length=255,
         blank = False,
@@ -181,19 +161,16 @@ class DocumentMovement(models.Model):
         on_delete=models.CASCADE,
         related_name="documentMovementCommittes",
     )
-     
     status = models.ForeignKey(
         'processes.Statuses',
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="documentMovementStatuses",
     )
-
     description = models.TextField(
         blank = True,
         null = True,
     )
-
     remarks = models.TextField(
         blank = True,
         null = True,
@@ -213,7 +190,6 @@ class DocumentMovement(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
-
 
     def __str__(self):
         return "%s" % (self.name)

@@ -1,152 +1,159 @@
 <div class="row" ng-controller="BorrowerNewLoanApplicationController">
-        <div class="col-xl-3">
-            <div class="col-xl-12">
-                <div class="card card-custom">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <span class="card-icon">
-                                <i class="fad fa-users-class"></i>
-                            </span>
-                            <h3 class="card-label">Overview</h3>
-                        </div>
-                        
+    <div class="col-xl-3">
+        <div class="card card-custom gutter-b">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-icon">
+                        <i class="fad fa-users-class"></i>
+                    </span>
+                    <h3 class="card-label">Overview</h3>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Name:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.name }}</span>
                     </div>
-                    <div class="card-body"> 
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Name:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.name }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">TIN #:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.tin }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Address:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.address }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Cooperative Type:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.cooperativeTypeText }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Phone:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.phoneNo }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Telephone:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.telNo }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Email:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">
-                                    <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.emailAddress }}</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Description:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.description }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Remarks:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.remarks }}</span>
-                            </div>
-                        </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">TIN #:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.tin }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Address:</label>
+                    <div class="col-8">
+                        <span
+                            class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.address }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Cooperative Type:</label>
+                    <div class="col-8">
+                        <span
+                            class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.cooperativeTypeText }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Phone:</label>
+                    <div class="col-8">
+                        <span
+                            class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.phoneNo }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Telephone:</label>
+                    <div class="col-8">
+                        <span
+                            class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.telNo }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Email:</label>
+                    <div class="col-8">
+                        <span class="form-control-plaintext font-weight-bold">
+                            <span
+                                class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.emailAddress }}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Description:</label>
+                    <div class="col-8">
+                        <span
+                            class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.description }}</span>
+                    </div>
+                </div>
+                <div class="form-group form-group-xs row">
+                    <label class="col-4 col-form-label">Remarks:</label>
+                    <div class="col-8">
+                        <span
+                            class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.remarks }}</span>
                     </div>
                 </div>
             </div>
-           
         </div>
-        <div class="col-xl-9">
-            <div class="card card-custom">
-                <div class="card-header">
-                        <div class="card-title">
-                                <h3 class="card-label">Create New Loan Application                          
-                                <span class="text-muted pt-2 font-size-sm d-block">Create New Loan Application </span>
-                                </h3>
-                            </div>
+    </div>
+    <div class="col-xl-9">
+        <div class="card card-custom gutter-b">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Create New Loan Application
+                        <span class="text-muted pt-2 font-size-sm d-block">Create New Loan Application </span>
+                    </h3>
                 </div>
-                <div class="card-body p-0">
-                        <div class="row justify-content-center p-5">
-                            <div class="col" ng-switch="step">
-                                <form class="form mt-0" name="newLoanApplicationForm">
-                                    <div class="pb-2">
-                                       
-                                        <div class="form-group row">
-                                                <label class="col-xl-3 col-lg-3 col-form-label text-right">Process</label>
-                                                <div class="col-lg-3 col-xl-6">
-                                                        <span class="form-control-plaintext font-weight-bold">Loan Application</span>
-                                                </div>
-                                        </div>
-                                        
-                                         
-
-                                        <div class="form-group row">
-                                                <label class="col-xl-3 col-lg-3 col-form-label text-right">File Name</label>
-                                                <div class="col-lg-3 col-xl-6">
-                                                    <input type="text" min="0" class="form-control" id="name" name="name" ng-model="document.name"
-                                                    ng-class="{'is-invalid' : newLoanApplicationForm.name.$invalid && newLoanApplicationForm.name.$touched, 'is-valid' : newLoanApplicationForm.name.$valid && newLoanApplicationForm.name.$touched }" required/>
-                                                    <span class="form-text text-muted" ng-show="newLoanApplicationForm.name.$touched && newLoanApplicationForm.name.$invalid">Please enter File Name.</span>
-                                                </div>
-                                            </div>
-                                        
-                                         
-                                        <div class="form-group row">
-                                                <label class="col-xl-3 col-lg-3 col-form-label text-right">Description</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <textarea type="text" rows="4" cols="50" class="form-control textarea" ng-model="document.description"></textarea>
-                                                </div>
-                                        </div>
-                                            <div class="form-group row">
-                                                <label class="col-xl-3 col-lg-3 col-form-label text-right">Remarks</label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <input type="textarea" class="form-control" ng-model="document.remarks">
-                                                </div>
-                                            </div>
-
-                                        <div class="form-group row">
-                                                <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">Committee </label>
-                                                <div class="col-lg-9 col-xl-6">
-                                                    <select class="form-control" id="committee" name="committee" ng-model="document.committee"
-                                                        ng-options="committee.id as committee.committeeName for committee in committees"
-                                                        ng-class="{'is-invalid' : newLoanApplicationForm.committee.$invalid &&
+            </div>
+            <div class="card-body p-0">
+                <div class="row justify-content-center p-5">
+                    <div class="col" ng-switch="step">
+                        <form class="form mt-0" name="newLoanApplicationForm">
+                            <div class="pb-2">
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Process</label>
+                                    <div class="col-lg-3 col-xl-6">
+                                        <span class="form-control-plaintext font-weight-bold">Loan Application</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">File Name</label>
+                                    <div class="col-lg-3 col-xl-6">
+                                        <input type="text" min="0" class="form-control" id="name" name="name"
+                                            ng-model="document.name"
+                                            ng-class="{'is-invalid' : newLoanApplicationForm.name.$invalid && newLoanApplicationForm.name.$touched, 'is-valid' : newLoanApplicationForm.name.$valid && newLoanApplicationForm.name.$touched }"
+                                            required />
+                                        <span class="form-text text-muted"
+                                            ng-show="newLoanApplicationForm.name.$touched && newLoanApplicationForm.name.$invalid">Please
+                                            enter File Name.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Description</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <textarea type="text" rows="4" cols="50" class="form-control textarea"
+                                            ng-model="document.description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Remarks</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <input type="textarea" class="form-control" ng-model="document.remarks">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="cooperativeType"
+                                        class="col-xl-3 col-lg-3 col-form-label text-right">Committee </label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <select class="form-control" id="committee" name="committee"
+                                            ng-model="document.committee"
+                                            ng-options="committee.id as committee.committeeName for committee in committees"
+                                            ng-class="{'is-invalid' : newLoanApplicationForm.committee.$invalid &&
                                                          ednewLoanApplicationFormitForm.committee.$touched, 'is-valid' : newLoanApplicationForm.committee.$valid && newLoanApplicationForm.committee.$touched }"
-                                                        required></select>
-                                                    <span class="form-text text-muted" ng-show="newLoanApplicationForm.committee.$touched && newLoanApplicationForm.committee.$invalid">Please select Committee.</span>
-                                                </div>
-                                        </div>
+                                            required></select>
+                                        <span class="form-text text-muted"
+                                            ng-show="newLoanApplicationForm.committee.$touched && newLoanApplicationForm.committee.$invalid">Please
+                                            select Committee.</span>
                                     </div>
-                                    <div class="d-flex justify-content-between border-top mt-5 pt-5">
-                                        <div class="mr-2">
-                                            <button class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3" ng-click="cancel(borrower.borrowerId)">
-                                                Cancel
-                                            </button>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-success text-uppercase p-2 pl-3 pr-3" ng-click="save()">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
+                            <div class="d-flex justify-content-between border-top mt-5 pt-5">
+                                <div class="mr-2">
+                                    <button class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
+                                        ng-click="cancel(borrower.borrowerId)">
+                                        Cancel
+                                    </button>
+                                </div>
+                                <div>
+                                    <button class="btn btn-success text-uppercase p-2 pl-3 pr-3" ng-click="save()">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

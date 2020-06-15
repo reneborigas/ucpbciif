@@ -83,7 +83,6 @@ class Cooperative(models.Model):
     membershipSize = models.IntegerField(
         blank = False
     )
-
     paidUpCapitalInitial = models.DecimalField(
         default = 0,
         decimal_places = 2,
@@ -131,7 +130,6 @@ class Cooperative(models.Model):
     initialPaidUpShare = models.IntegerField(
         blank = False
     )    
-    
     #financials, financial statemnts - will be a file attachment
     address = models.TextField(
         blank = True,
@@ -232,7 +230,6 @@ class Director(models.Model):
         blank = True,
         null = True, 
     )
-    
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
@@ -280,7 +277,6 @@ class StandingCommittee(models.Model):
     age = models.IntegerField(
         blank = False
     )
-
     yearsInCoop = models.IntegerField(
         blank = False
     )
