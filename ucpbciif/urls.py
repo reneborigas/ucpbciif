@@ -66,4 +66,8 @@ urlpatterns = [
     path('api/committees/',include('committees.urls'),name='committees'),
     path('api/users/',include('users.urls'),name='users'),
     path('api/settings/',include('settings.urls'),name='settings'), 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

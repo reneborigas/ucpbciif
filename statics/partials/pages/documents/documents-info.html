@@ -236,18 +236,18 @@
                                     <ul class=" text-dark list-unstyled">
                                         <li class="font-size-h6">Attachments</li>
                                         <ul class="font-size-h7">
-                                            <li ng-repeat="stepRequirementAttachment in currentRequirement.attachments">
-                                                {{ stepRequirementAttachment.fileName}} - <span ng-if="stepRequirementAttachment.description" ng-bind="stepRequirementAttachment.description"></span>
+                                            <li ng-repeat="stepRequirementAttachment in currentRequirement.attachments">                                                
+                                                <a href="" ng-click="downloadFile(stepRequirementAttachment.fileAttachment,stepRequirementAttachment.fileName)">{{ stepRequirementAttachment.fileName}} - <span ng-if="stepRequirementAttachment.description" ng-bind="stepRequirementAttachment.description"></span></a>
                                             </li>
                                         </ul>
                                     </ul>
                                 </div>
                                 <div class="pb-5">
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label>File Name</label>
-                                        <input id="newAttachment" ng-model="newAttachmentName" name="newAttachmentName" type="text"  class="form-control form-control-solid form-control-lg" />
+                                        <input id="newAttachment" ng-model="newAttachmentName" name="newAttachmentName" type="text"  class="form-control form-control-solid form-control-lg" disabled/>
                                         <span class="form-text text-muted">Please enter file name.</span>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label>File Attachment</label>
                                         <input type="file" id="fileAttachment" name="fileAttachment" multiple select-ng-files="fileAttachment" ng-model="fileAttachment" ng-change="fileOnChange()" hidden>
