@@ -112,10 +112,15 @@ class StepRequirementAttachmentViewSet(ModelViewSet):
         ).order_by('id')
 
         stepRequirementId = self.request.query_params.get('stepRequirementId', None)
+        
 
         if stepRequirementId is not None:
-            queryset = queryset.filter(stepRequirement__id=stepRequirementId)
 
+            documentId = self.request.query_params.get('documentId', None)
+            
+            if documentId is not None:
+                queryset = queryset.filter(stepRequirement__id=stepRequirementId,document__id=documentId) 
+            
         else:
             stepRequirementAttachmentId = self.request.query_params.get('stepRequirementAttachmentId', None)
 

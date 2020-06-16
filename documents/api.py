@@ -4,7 +4,7 @@ from .serializers import *
 from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func,CharField
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
-
+from committees.models import Note
 
 class DocumentViewSet(ModelViewSet):
     queryset = Document.objects.all()
@@ -34,7 +34,8 @@ class DocumentViewSet(ModelViewSet):
             queryset = queryset.filter(subProcess=subProcessId)
 
 
-        return queryset
+        return queryset.prefetch_related('notes')
+
 
  
 class DocumentMovementViewSet(ModelViewSet):

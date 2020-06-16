@@ -7,11 +7,15 @@ from documents.models import *
 from committees.models import Committee
 from processes.models import Statuses,Step,Output
 from processes.serializers import OutputSerializer
+from committees.serializers import NoteSerializer
+
 class DocumentSerializer(ModelSerializer):
     subProcessName = serializers.CharField(read_only=True)
     documentTypeName = serializers.CharField(read_only=True)
     borrowerName = serializers.CharField(read_only=True)
     documentCode = serializers.CharField(read_only=True)
+    notes = NoteSerializer(many=True)
+    
     def create(self, validated_data): 
         
         committee = Committee.objects.get(pk=validated_data.get("committee", "1"))

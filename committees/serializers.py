@@ -23,7 +23,22 @@ class CommitteeSerializer(ModelSerializer):
         fields = '__all__'
 
 
- 
+class NoteSerializer(ModelSerializer):
+     
+    def create(self, validated_data):
+        note = Note.objects.create(**validated_data) 
+        return note
+
+    def update(self, instance, validated_data):
+      
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = Note          
+        fields = '__all__'
+
 class PositionSerializer(ModelSerializer):
      
     def create(self, validated_data):

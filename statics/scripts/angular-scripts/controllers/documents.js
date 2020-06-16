@@ -136,8 +136,10 @@ define(function() {
 										$scope.stepRequirements = response.data;
 
 										$scope.currentRequirement = $scope.stepRequirements[0];
-										$scope.currentRequirement.attachments =
-											$scope.currentRequirement.stepRequirementAttachments;
+										$scope.goToRequirement($scope.stepRequirements[0].id);
+										
+										// $scope.currentRequirement.attachments =
+										// 	$scope.currentRequirement.stepRequirementAttachments;
 									},
 									function(error) {
 										toastr.error(
@@ -201,6 +203,7 @@ define(function() {
 			.then(
 				function(response) {
 					$scope.document = response.data[0];
+					$scope.loadNotes();
 				},
 				function(error) {
 					toastr.error(
@@ -209,6 +212,19 @@ define(function() {
 					);
 				}
 			);
+	 
+		
+		$scope.loadNotes = function(){
+			return appFactory.getContentTypeId('note').then(function(data) {
+			 
+				return appFactory.getNotes($scope.documentId,data).then(function(response) {
+					$scope.notes = response;
+				});
+				
+				
+			});
+
+		};
 
 		$http.get('/api/documents/documentmovements/', { params: { documentId: $scope.documentId } }).then(
 			function(response) {
@@ -248,7 +264,7 @@ define(function() {
 					$scope.currentRequirement = $scope.stepRequirements[i];
 					$http
 						.get('/api/processes/steprequirementsattachments/', {
-							params: { stepRequirementId: $scope.currentRequirement.id }
+							params: { stepRequirementId: $scope.currentRequirement.id,documentId:$scope.documentId }
 						})
 						.then(
 							function(response) {
@@ -383,11 +399,12 @@ define(function() {
 		};
 
 		$scope.fileAttachment = [];
-
+		$scope.newAttachmentDescription = '';
 		$scope.selectFile = function() {
 			$timeout(function() {
 				angular.element('#fileAttachment').trigger('click');
 			}, 0);
+			console.log($scope.newAttachmentDescription);
 		};
 
 		$scope.$watch('fileAttachment', function(newValue, oldValue) {
@@ -407,31 +424,69 @@ define(function() {
 		var promises = [];
 
 		$scope.attachFile = function(stepRequirement) {
-
+			
 			angular.forEach($scope.fileList, function(fileList, index) {
 				var newAttachment = {
 					fileName: $scope.fileAttachment[index].name,
 					fileAttachment: $scope.fileAttachment[index],
-					description: $scope.newAttachmenDescription,
-					stepRequirement: stepRequirement.id
+					description: $scope.newAttachmentDescription,
+					stepRequirement: stepRequirement.id,
+					document:$scope.documentId
 				};
 				var formData = new FormData();
 				angular.forEach(newAttachment, function(value, key) {
 					formData.append(key, value);
 				});
 				promises.push($scope.uploadFile(formData));
+				
 			});
 
 			$q.all(promises).then(
 				function(response) {
-					toastr.success('Success', 'New attachment successfully saved.');
+					toastr.success('Success', 'All attachment successfully saved.');
                     swal('Success!', 'New attachment successfully saved', 'success');
-                    $state.reload();
+					// $state.reload();
+					$scope.goToRequirement($scope.currentRequirement.id);
+					$scope.fileList.length = 0;
+					$scope.newAttachmentDescription ='';
 				},
 				function(error) {
                     toastr.error('Error ' + error.status + ' ' + error.statusText, 'Could not create upload attachments. Please contact System Administrator.');
 				}
 			);
+		};
+
+		$scope.addNote = function(document) {
+				
+			$scope.note = {
+				committee:1,  //default commiitee to be replaced with
+				object_type: "Document",
+				object_id: document.id,
+				content_type:'',
+				note: $scope.noteDescription
+			};
+
+		
+
+			return appFactory.getContentTypeId('note').then(function(data) {
+				$scope.note.content_type = data;
+				console.log($scope.note);
+				return $http.post('/api/committees/notes/', $scope.note).then(
+					function() {
+						toastr.success('Success', 'Note added succesfully.');
+						swal('Success!', 'Note added succesfully.', 'success');
+						$scope.loadNotes();
+						$scope.noteDescription='';
+					},
+					function(error) {
+						toastr.error(
+							'Error ' + error.status + ' ' + error.statusText,
+							'Could not create new record. Please contact System Administrator.'
+						);
+					}
+				);
+			});
+			
 		};
 
 		$scope.uploadFile = function(formData) {
@@ -441,8 +496,9 @@ define(function() {
 					headers: { 'Content-Type': undefined }
 				})
 				.then(
-					function() {
-						toastr.success('Success', 'New attachment successfully saved.');
+					function(response) {
+						 
+						toastr.success('Success', appFactory.trimString(response.data.fileName,9)  + ' uploaded successfully.');
 						swal('Success!', 'New attachment successfully saved', 'success');
 					},
 					function(error) {

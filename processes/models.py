@@ -351,6 +351,11 @@ class StepRequirementAttachment(models.Model):
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="stepRequirementAttachments",
     )    
+    document = models.ForeignKey(
+        'documents.Document',
+        on_delete=models.CASCADE,
+        related_name="documentStepRequirementAttachments",
+    )
     description = models.TextField(
         blank = True,
         null = True,

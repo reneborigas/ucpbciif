@@ -5,6 +5,15 @@ define(function() {
     
     app.factory('appFactory', function($http, toastr, $filter) {
 		return {
+			getNotes: function(object_id,content_type){
+                return $http.get('/api/committees/notes/', {params:{ object_id : object_id,content_type:content_type }}).then(
+                    function(response){   
+                    return response.data  
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Borrower Name. Please contact System Administrator.'); 
+                });
+			},
 			getBorrowerName: function(borrowerId){
                 return $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : borrowerId }}).then(
                     function(response){   
@@ -115,6 +124,11 @@ define(function() {
 					seconds: seconds,
 					wholedays: wholedays
 				};
+			},
+			trimString: function(string,length){
+				return string.length > length ? 
+				string.substring(0, length) + '...' :
+				string;
 			},
 			dateWithoutTime: function(date, format) {
 				return $filter('date')(date, format);
