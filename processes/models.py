@@ -52,6 +52,7 @@ class SubProcess(models.Model):
         blank = False,
         null = False, 
     )
+    relatedProcesses = models.ManyToManyField('processes.SubProcess',blank=True)
     process = models.ForeignKey(
         Process,
         on_delete=models.CASCADE,
@@ -81,6 +82,7 @@ class SubProcess(models.Model):
         default=False,
     )
 
+
     def __str__(self):
         return "%s" % (self.name)
 
@@ -91,11 +93,7 @@ class Statuses(models.Model):
         blank = False,
         null = False, 
     )
-    code = models.CharField(
-        max_length=255,
-        blank = False,
-        null = False, 
-    ) 
+   
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,
@@ -128,6 +126,14 @@ class Statuses(models.Model):
         default=False,
     )
 
+    isFinalStatus = models.BooleanField(
+        default=False,
+    )
+
+    isNegativeResult = models.BooleanField(
+        default=False,
+    )
+    
     def __str__(self):
         return "%s" % (self.name)
 
@@ -196,7 +202,7 @@ class Step(models.Model):
         on_delete=models.CASCADE,
         related_name="committeeSteps",
     )
-    position = models.ManyToManyField('committees.Position')
+    position = models.ManyToManyField('committees.Position',blank=True)
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,
@@ -253,6 +259,7 @@ class Output(models.Model):
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="nextStepOutputs",
+        blank=True,null=True
     )
     isDefault = models.BooleanField(
         default=False

@@ -74,9 +74,8 @@ class Signatory(models.Model):
     )
     
     def __str__(self):
-        return "%s" % (self.name)
- 
-
+        return "%s" % (self.name) 
+        
 class Document(models.Model):     
     code = models.CharField(
         max_length=255,
@@ -91,12 +90,12 @@ class Document(models.Model):
     documentType = models.ForeignKey(
         DocumentType,
         on_delete=models.CASCADE,
-        related_name="documents",
+        related_name="documentTypeDocuments",
     )
     borrower = models.ForeignKey(
         'borrowers.Borrower',
         on_delete=models.CASCADE,
-        related_name="borrowers",
+        related_name="documents",
     )     
     subProcess = models.ForeignKey(
         'processes.SubProcess',
@@ -133,6 +132,13 @@ class Document(models.Model):
 
     def __str__(self):
         return "%s" % (self.name)
+
+
+    def getCurrentStatus(self):
+        return self.documentMovements.all.order_by('-id').first().status
+
+
+
 
 
 class DocumentMovement(models.Model):     
@@ -197,7 +203,7 @@ class DocumentMovement(models.Model):
     )
     
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s - %s - %s" % (self.name,self.status,self.document)
 
 
 

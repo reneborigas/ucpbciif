@@ -39,7 +39,7 @@ urlpatterns = [
     path('borrowers', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    path('borrowers/<int:id>/new-loan-application', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('borrowers/<int:id>/new-file/<int:subProcessId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/edit', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     #processes

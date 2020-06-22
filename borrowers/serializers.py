@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
+from documents.serializers import DocumentSerializer
 
 
 class ContactPersonSerializer(ModelSerializer):
@@ -206,6 +207,7 @@ class BorrowerSerializer(ModelSerializer):
     phoneNo = serializers.CharField(read_only=True)
     contactPerson = ContactPersonSerializer()
     cooperative = CooperativeSerializer()
+    documents = DocumentSerializer(many=True)
 
 
     def create(self, validated_data):

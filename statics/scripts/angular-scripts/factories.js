@@ -7,12 +7,7 @@ define(function () {
         return {
             getNotes: function (object_id, content_type) {
                 return $http
-                    .get('/api/committees/notes/', {
-                        params: {
-                            object_id: object_id,
-                            content_type: content_type,
-                        },
-                    })
+                    .get('/api/committees/notes/', { params: { object_id: object_id, content_type: content_type } })
                     .then(
                         function (response) {
                             return response.data;
@@ -26,56 +21,59 @@ define(function () {
                     );
             },
             getBorrowerName: function (borrowerId) {
-                return $http
-                    .get('/api/borrowers/borrowers/', {
-                        params: { borrowerId: borrowerId },
-                    })
-                    .then(
-                        function (response) {
-                            return response.data[0].cooperativeName;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + error.statusText,
-                                'Could not retrieve Borrower Name. Please contact System Administrator.'
-                            );
-                        }
-                    );
+                return $http.get('/api/borrowers/borrowers/', { params: { borrowerId: borrowerId } }).then(
+                    function (response) {
+                        return response.data[0].cooperativeName;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Borrower Name. Please contact System Administrator.'
+                        );
+                    }
+                );
             },
             getDocumentName: function (documentId) {
-                return $http
-                    .get('/api/documents/documents/', {
-                        params: { documentId: documentId },
-                    })
-                    .then(
-                        function (response) {
-                            return response.data[0].name;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + error.statusText,
-                                'Could not retrieve Borrower Name. Please contact System Administrator.'
-                            );
-                        }
-                    );
+                return $http.get('/api/documents/documents/', { params: { documentId: documentId } }).then(
+                    function (response) {
+                        return response.data[0].name;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Borrower Name. Please contact System Administrator.'
+                        );
+                    }
+                );
             },
             getSubProcessId: function (subProcessName) {
-                return $http
-                    .get('/api/documents/documents/', {
-                        params: { subProcessName: subProcessName },
-                    })
-                    .then(
-                        function (response) {
-                            return response.data[0].subProcess;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + error.statusText,
-                                'Could not retrieve Document Sub Process ID. Please contact System Administrator.'
-                            );
-                        }
-                    );
+                return $http.get('/api/documents/documents/', { params: { subProcessName: subProcessName } }).then(
+                    function (response) {
+                        return response.data[0].subProcess;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Document Sub Process ID. Please contact System Administrator.'
+                        );
+                    }
+                );
             },
+
+            getSubProcess: function (subProcessId) {
+                return $http.get('/api/processes/subprocesses/', { params: { subProcessId: subProcessId } }).then(
+                    function (response) {
+                        return response.data[0];
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Sub Process Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+
             getCurrentUser: function () {
                 var values = JSON.parse(localStorage.getItem('currentUser'));
                 return values['id'];
@@ -95,21 +93,17 @@ define(function () {
                 );
             },
             getContentTypeId: function (model) {
-                return $http
-                    .get('/api/users/contenttype/', {
-                        params: { model: model },
-                    })
-                    .then(
-                        function (response) {
-                            return response.data[0].id;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + error.statusText,
-                                'Could not retrieve Content Type Id. Please contact System Administrator.'
-                            );
-                        }
-                    );
+                return $http.get('/api/users/contenttype/', { params: { model: model } }).then(
+                    function (response) {
+                        return response.data[0].id;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Content Type Id. Please contact System Administrator.'
+                        );
+                    }
+                );
             },
             getGenders: function () {
                 return $http.get('/api/settings/gendertype/').then(
@@ -152,11 +146,10 @@ define(function () {
             },
             getLastActivity: function (documentId) {
                 return $http
-                    .get('/api/documents/documentmovements/', {
-                        params: { process: 'last', documentId: documentId },
-                    })
+                    .get('/api/documents/documentmovements/', { params: { process: 'last', documentId: documentId } })
                     .then(
                         function (response) {
+                            console.log(response.data);
                             return response.data;
                         },
                         function (error) {
@@ -166,6 +159,21 @@ define(function () {
                             );
                         }
                     );
+            },
+
+            getActivities: function (documentId) {
+                return $http.get('/api/documents/documentmovements/', { params: { documentId: documentId } }).then(
+                    function (response) {
+                        console.log(response.data);
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Last Activity list. Please contact System Administrator.'
+                        );
+                    }
+                );
             },
             getTimeRemaining: function (endtime, starttime) {
                 var t = Date.parse(endtime) - Date.parse(starttime);
@@ -186,10 +194,6 @@ define(function () {
             trimString: function (string, length) {
                 return string.length > length ? string.substring(0, length) + '...' : string;
             },
-            trimStringWithExtension: function (string, length) {
-                var extension = string.substr(string.lastIndexOf('.') + 1);
-                return string.length > length ? string.substring(0, length) + '....' + extension : string;
-            },
             dateWithoutTime: function (date, format) {
                 return $filter('date')(date, format);
             },
@@ -208,6 +212,14 @@ define(function () {
                         }
                     }
                     return newObj;
+                };
+
+                var flattenArray = function (array) {
+                    var newArray = [];
+                    array.forEach(function (object) {
+                        newArray.push(flatten(object));
+                    });
+                    return newArray;
                 };
 
                 var flattenArray = function (array) {

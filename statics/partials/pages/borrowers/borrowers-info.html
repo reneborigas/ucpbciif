@@ -108,11 +108,29 @@
                             </span>
                             <h3 class="card-label">Files</h3>
                         </div>
-                        <div class="card-toolbar">
-                            <button type="button" class="btn btn-success" ng-click="newLoanApplication(borrower.borrowerId)">New File</button>
-                        </div>                        
+                                             
                     </div>
                     <div class="card-body"> 
+                            <ul class=" text-dark list-unstyled">
+                                    <li class="font-size-h6"></li>
+
+
+                                    <ul class="font-size-h7">
+                                        <li ng-repeat="subProcess in subprocesses">                                                
+                                                {{subProcess.name}}  <div class="card-toolbar">
+                                                        <button type="button" class="btn btn-success" ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)">New {{subProcess.name}}</button>
+                                                         </div> 
+                                                         {{document.documentId}}  
+                                                <ul class="font-size-h7">
+                                                        <li ng-repeat="document in borrower.documents | filter: {subProcess:subProcess.id}">   
+                                                                {{document.id}}   {{document.name}} {{document.documentMovements[0].status.name}}  
+                                                        </li>
+                                                    </ul>
+                
+                                        </li>
+                                    </ul>
+
+                            </ul>
                     
                     </div>
                 </div>

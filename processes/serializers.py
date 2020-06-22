@@ -95,3 +95,24 @@ class StepRequirementSerializer(ModelSerializer):
     class Meta:
         model = StepRequirement          
         fields = '__all__'   
+
+
+
+class StatusSerializer(ModelSerializer):
+     
+    def create(self, validated_data):
+        status = Statuses.objects.create(**validated_data) 
+
+        return status
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = Statuses          
+        fields = '__all__'   

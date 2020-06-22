@@ -4,7 +4,7 @@ from .serializers import *
 from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
-from documents.models import Document
+from documents.models import Document,DocumentMovement
 
 class BorrowerViewSet(ModelViewSet):
     queryset = Borrower.objects.all()
@@ -15,7 +15,8 @@ class BorrowerViewSet(ModelViewSet):
         queryset = Borrower.objects.prefetch_related(
             Prefetch('cooperative',Cooperative.objects.annotate(
                 cooperativeTypeText=F('cooperativeType__name')
-            ).all())
+            ).all()),
+            Prefetch( 'documents__documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated'))
         ).annotate(
             contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
             cooperativeName=F('cooperative__name'),
@@ -28,7 +29,7 @@ class BorrowerViewSet(ModelViewSet):
         if borrowerId is not None:
             queryset = queryset.filter(borrowerId=borrowerId)
 
-        return queryset
+        return queryset.prefetch_related('documents')
 
 
 class ContactPersonViewSet(ModelViewSet):

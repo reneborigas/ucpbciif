@@ -30,11 +30,16 @@ class StepViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Step.objects.exclude(isDeleted=True).order_by('order')
         stepId = self.request.query_params.get('stepId', None)
-
+      
+        print(stepId)
         if stepId is not None:
+            currentStep = Step.objects.get(pk=stepId)
             process = self.request.query_params.get('process', None)
+            queryset=queryset.filter(subProcess = currentStep.subProcess)
 
             if process is not None:
+                 
+
                 if process == 'last':
                     step = Step.objects.get(id=stepId)
                     queryset = queryset.filter(order__gte=step.order).order_by('-order')[:1]
@@ -49,8 +54,7 @@ class StepViewSet(ModelViewSet):
                     queryset = queryset.filter(order__gt=step.order).exclude(pk=current.pk).order_by('order')[:1]
             else: 
                 queryset = queryset.filter(id=stepId)
-
-
+        
         return queryset.prefetch_related('outputs','position')
 
 class OutputViewSet(ModelViewSet):
@@ -70,6 +74,20 @@ class OutputViewSet(ModelViewSet):
 
         return queryset
 
+
+class StatusViewSet(ModelViewSet):
+    queryset = Statuses.objects.all()
+    serializer_class = StatusSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Statuses.objects.order_by('id')
+        statusId = self.request.query_params.get('statusId', None)
+
+        if statusId is not None:
+            queryset = queryset.filter(id=statusId)
+
+        return queryset
 
 class StepRequirementViewSet(ModelViewSet):
     queryset = StepRequirement.objects.all()
