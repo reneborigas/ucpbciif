@@ -200,20 +200,27 @@ define(function() {
 					// },
 				})
 				.state('app.borrowers.create_loan_application', {
-					url: '/:borrowerId/new-loan-application',
+					url: '/:borrowerId/new-file/:subProcessId',
 					templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
 					data: { 
 						pageTitle: 'UCPB CIIF | New Loan Application' 
 					},
 					ncyBreadcrumb: {
-						label: 'New Loan Application',
+						label: 'New {{subProcess.name}} File'  ,
 						parent: 'app.borrowers.info'
 					},
 					controller: function($scope,$stateParams,appFactory){
 						$scope.borrowerId = $stateParams.borrowerId;
+						$scope.subProcessId = $stateParams.subProcessId;
+						console.log($scope.subProcessId);
 						appFactory.getBorrowerName($scope.borrowerId).then(function(data){
 							$scope.borrowerName = data;
 						})
+
+						appFactory.getSubProcess($scope.subProcessId).then(function(data){
+							$scope.subProcess = data;
+						})
+						
 					}
 					// resolve: {
 					// 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {

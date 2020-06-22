@@ -88,7 +88,7 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group form-group-xs row">
-                            <label class="col-8 col-form-label">Processing</label>
+                            <label class="col-8 col-form-label">   {{document.documentMovements[0].status.name}}  </label>
                         </div>
                     </div>
                 </div>
@@ -209,7 +209,9 @@
                 </div>
             </div>
         </div> -->
-        <div class="card card-custom gutter-b">
+
+
+        <div class="card card-custom gutter-b" ng-if="currentStep">
             <div class="card-header">
                 <div class="card-title">
                     <span class="card-icon">
@@ -233,6 +235,8 @@
                 </div>
             </div>
         </div>
+
+
         <div class="card card-custom gutter-b">
             <div class="card-header">
                 <div class="card-title">

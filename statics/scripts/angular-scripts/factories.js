@@ -40,7 +40,18 @@ define(function() {
                 function(error){
                     toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Document Sub Process ID. Please contact System Administrator.'); 
                 });
-            },
+			},
+			
+			getSubProcess: function(subProcessId){
+                return $http.get('/api/processes/subprocesses/', {params:{ subProcessId : subProcessId }}).then(
+                    function(response){   
+                    return response.data[0];
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Sub Process Please contact System Administrator.'); 
+                });
+			},
+			
 			getCurrentUser: function() {
 				var values = JSON.parse(localStorage.getItem('currentUser'));
 				return values['id'];
@@ -101,6 +112,17 @@ define(function() {
 			},
 			getLastActivity: function(documentId){
                 return $http.get('/api/documents/documentmovements/',{params:{ process : 'last', documentId: documentId }}).then(
+                    function(response){
+					console.log(response.data);
+                    return response.data;     
+                },
+                function(error){
+                    toastr.error('Error '+ error.status + error.statusText, 'Could not retrieve Last Activity list. Please contact System Administrator.'); 
+                });     
+			},
+			
+			getActivities: function(documentId){
+                return $http.get('/api/documents/documentmovements/',{params:{   documentId: documentId }}).then(
                     function(response){
 					console.log(response.data);
                     return response.data;     

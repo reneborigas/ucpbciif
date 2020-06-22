@@ -6,49 +6,10 @@ from .models import *
 from documents.models import * 
 from committees.models import Committee
 from processes.models import Statuses,Step,Output
-from processes.serializers import OutputSerializer
+from processes.serializers import OutputSerializer,StatusSerializer,SubProcessSerializer
 from committees.serializers import NoteSerializer
 
-class DocumentSerializer(ModelSerializer):
-    subProcessName = serializers.CharField(read_only=True)
-    documentTypeName = serializers.CharField(read_only=True)
-    borrowerName = serializers.CharField(read_only=True)
-    documentCode = serializers.CharField(read_only=True)
-    notes = NoteSerializer(many=True)
-    
-    def create(self, validated_data): 
-        
-        committee = Committee.objects.get(pk=validated_data.get("committee", "1"))
 
-        status = Statuses.objects.get(pk=1)
-
-        document = Document.objects.create(**validated_data) 
-        # document.code = document.subProcess.code + ("%03d" % document.id)
-        # document.save()
-        
-        steps = Step.objects.filter(subProcess=document.subProcess) 
-        step = steps.order_by('order').first()
-
-
-        documentMovement = DocumentMovement(
-        document = document ,name = step.name, committee= committee , status=status,step=step)
-        documentMovement.save()
-
-        return document
- 
-    
-
-    def update(self, instance, validated_data):
-        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
-        # instance.loanName = validated_data.get("loanName", instance.loanName)
-        # instance.borrower =  validated_data.get("borrower", instance.borrower)
-        instance.save()
-
-        return instance
-    
-    class Meta:
-        model = Document          
-        fields = '__all__'
 
 
 
@@ -60,6 +21,9 @@ class DocumentMovementSerializer(ModelSerializer):
     outputName= serializers.CharField(read_only=True)
     output= OutputSerializer(read_only=True)
     outputId= serializers.CharField()
+    
+    # status = serializers.StatusSerializer(read_only=True)
+    status = StatusSerializer(read_only=True)
 
 
     def create(self, validated_data): 
@@ -92,3 +56,59 @@ class DocumentMovementSerializer(ModelSerializer):
     class Meta:
         model = DocumentMovement          
         fields = '__all__'
+
+class DocumentSerializer(ModelSerializer):
+    subProcessName = serializers.CharField(read_only=True)
+    documentTypeName = serializers.CharField(read_only=True)
+    borrowerName = serializers.CharField(read_only=True)
+    documentCode = serializers.CharField(read_only=True)
+    notes = NoteSerializer(many=True,read_only=True)
+     
+    currentStatus = serializers.CharField(read_only=True)
+    
+    documentMovements = DocumentMovementSerializer(many=True,read_only=True)
+    lastDocumentMovementId = serializers.CharField(read_only=True)
+    
+    def create(self, validated_data): 
+        
+        committee = Committee.objects.get(pk=validated_data.get("committee", "1"))
+
+        status = Statuses.objects.get(pk=1)
+
+        document = Document.objects.create(**validated_data) 
+        # document.code = document.subProcess.code + ("%03d" % document.id)
+        # document.save()
+        
+        steps = Step.objects.filter(subProcess=document.subProcess) 
+        step = steps.order_by('order').first()
+        
+        
+        if not step:
+            name = '%s Created'  % document.subProcess 
+            user = validated_data.get("createdBy", "1")
+            step = Step(subProcess=document.subProcess,committee=committee,name=name,order=0,createdBy=user,status=status)
+            step.save()
+
+           
+
+
+        documentMovement = DocumentMovement(
+        document = document ,name = step.name, committee= committee , status=status,step=step)
+        documentMovement.save()
+
+        return document
+ 
+    
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = Document          
+        fields = '__all__'
+

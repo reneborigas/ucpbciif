@@ -120,7 +120,21 @@ define(function() {
 	) {
 		appFactory.getLastActivity($scope.documentId).then(function(data) {
 			$scope.lastActivity = data[0];
+			
+
+			// appFactory.getActivities($scope.documentId).then(function(data) {
+
+			// 	$scope.currentStep = response.data[0];
+			// 	$scope.lastActivity = data[0];
+			// });
+				
+			
+			
+
+
 			if ($scope.lastActivity.output == null) {
+
+
 				$http
 					.get('/api/processes/steps/', {
 						params: { stepId: $scope.lastActivity.stepId, process: 'current' }
@@ -157,33 +171,35 @@ define(function() {
 						}
 					);
 			} else {
-				// console.log($scope.lastActivity.output.nextStep);
-				$http.get('/api/processes/steps/', { params: { stepId: $scope.lastActivity.output.nextStep } }).then(
-					function(response) {
-						$scope.currentStep = response.data[0];
-						$http
-							.get('/api/processes/steprequirements/', { params: { stepId: $scope.currentStep.id } })
-							.then(
-								function(response) {
-									$scope.stepRequirements = response.data;
+				console.log($scope.lastActivity.output.nextStep);
+				if($scope.lastActivity.output.nextStep){
+					$http.get('/api/processes/steps/', { params: { stepId: $scope.lastActivity.output.nextStep } }).then(
+						function(response) {
+							$scope.currentStep = response.data[0];
+							$http
+								.get('/api/processes/steprequirements/', { params: { stepId: $scope.currentStep.id } })
+								.then(
+									function(response) {
+										$scope.stepRequirements = response.data;
 
-									$scope.currentRequirement = $scope.stepRequirements[0];
-								},
-								function(error) {
-									toastr.error(
-										'Error ' + error.status + ' ' + error.statusText,
-										'Could not retrieve Step Requirements Information. Please contact System Administrator.'
-									);
-								}
+										$scope.currentRequirement = $scope.stepRequirements[0];
+									},
+									function(error) {
+										toastr.error(
+											'Error ' + error.status + ' ' + error.statusText,
+											'Could not retrieve Step Requirements Information. Please contact System Administrator.'
+										);
+									}
+								);
+						},
+						function(error) {
+							toastr.error(
+								'Error ' + error.status + ' ' + error.statusText,
+								'Could not retrieve current procedure. Please contact System Administrator.'
 							);
-					},
-					function(error) {
-						toastr.error(
-							'Error ' + error.status + ' ' + error.statusText,
-							'Could not retrieve current procedure. Please contact System Administrator.'
-						);
-					}
-				);
+						}
+					);
+				}
 			}
 
 			// $http.get('/api/processes/steps/', {params:{ stepId : $scope.lastActivity.stepId , process : 'next' }}).then(

@@ -322,13 +322,21 @@ define(function(){
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
             });
+            
+            $http.get('/api/processes/subprocesses/').then(
+                function(response){
+                    $scope.subprocesses = response.data;
+            },
+            function(error){
+                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Sub Processes. Please contact System Administrator.'); 
+            });
 
             $scope.edit = function(id){
                 $state.go('app.borrowers.edit', {borrowerId:id});
             }
             
-            $scope.newLoanApplication = function(id){ 
-                $state.go('app.borrowers.create_loan_application', {borrowerId:id});
+            $scope.newLoanApplication = function(borrowerId,subProcessId){ 
+                $state.go('app.borrowers.create_loan_application', {borrowerId:borrowerId,subProcessId:subProcessId});
             }
 
             $scope.templates = [
@@ -545,6 +553,8 @@ define(function(){
                 $scope.committees = data
             });
 
+           
+
 
             $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
                 function(response){
@@ -567,9 +577,9 @@ define(function(){
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
             });
-
-            $scope.document={name:'',description:'',remarks:'',borrower: $scope.borrowerId,subProcess:1,documentType:1, createdBy : appFactory.getCurrentUser(),committee:''}
-
+            
+            $scope.document={name:'',description:'',remarks:'',borrower: $scope.borrowerId,subProcess:$scope.subProcessId,documentType:1, createdBy : appFactory.getCurrentUser(),committee:''}
+            console.log($scope.document);
             $scope.save = function(){
                 if($scope.newLoanApplicationForm.$valid){
                     swal({
