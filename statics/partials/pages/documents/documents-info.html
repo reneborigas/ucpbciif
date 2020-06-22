@@ -23,7 +23,6 @@
                                             class="fal fa-trash-alt mr-2"></i>Delete</a>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="card-body">
@@ -65,7 +64,6 @@
                                 <span class="form-control-plaintext font-weight-bold">{{ document.description }}</span>
                             </div>
                         </div>
-
                         <div class="form-group form-group-xs row">
                             <label class="col-4 col-form-label">Remarks:</label>
                             <div class="col-8">
@@ -84,7 +82,6 @@
                             </span>
                             <h3 class="card-label">Status</h3>
                         </div>
-
                     </div>
                     <div class="card-body">
                         <div class="form-group form-group-xs row">
@@ -93,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-12">
+            <div class="col-xl-12">                
                 <div class="card card-custom gutter-b">
                     <div class="card-header">
                         <div class="card-title">
@@ -102,32 +99,34 @@
                             </span>
                             <h3 class="card-label">Notes</h3>
                         </div>
-
                     </div>
-                    <div class="card-body">
-                        <div class="pb-5"> 
-                                
-                                <ul class=" text-dark list-unstyled">
-                                    <li class="font-size-h6">File Notes</li>
-                                    <ul class="font-size-h7">
-                                        <li ng-repeat="note in notes">                                                
-                                             {{ note.note}} - {{ note.action_time |  date : 'medium' }}
-                                        </li>
-                                    </ul>
-                                </ul>
-                        </div>
-                        <div class="pb-5">
-                             
-                            <div class="form-group">
-                                <label>Note *</label>
-                                <textarea ng-model="noteDescription" name="noteDescription" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
-                                <span class="form-text text-muted">Please enter your note.</span>
+                    <div class="card-body" block-ui="noteBlockUI">
+                        <div class="container">
+                            <form class="form">
+                                <div class="form-group">
+                                    <textarea class="form-control form-control-lg form-control-solid" ng-model="newNote.noteDescription" name="noteDescription" rows="3" placeholder="Type notes"></textarea>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <a href="#" class="btn btn-light-primary font-weight-bold" ng-disabled="!newNote.noteDescription" ng-click="addNote(document)"><i class="fal fa-plus mr-2"></i>Add Notes</a>
+                                </div>
+                            </form>
+                            <div class="separator separator-dashed my-10"></div>
+                            <div class="timeline timeline-3">
+                                <div class="timeline-items">
+                                    <div class="timeline-item" ng-repeat="note in notes | orderBy:'-' | limitTo: 5 ">
+                                        <div class="timeline-media">
+                                            <i class="fad fa-sticky-note text-primary"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <p class="p-0">
+                                                {{ note.note}}
+                                            </p>
+                                            <small class="text-dark-75 font-weight-bold">{{ note.committeeName }}</small><br>
+                                            <small class="text-muted">{{ note.action_time |  date : 'medium' }}</small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>                                   
-                        <div class="d-flex justify-content-end border-top mt-5 pt-10">
-                            <button class="btn btn-outline-primary ont-weight-bold text-uppercase "   type="button" ng-disabled="!noteDescription" ng-click="addNote(document)">
-                                <i class="fal fa-plus mr-2"></i>Add Note
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -263,7 +262,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8">
+                    <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8" block-ui="attachmentBlockUI">
                         <div class="row">
                             <div class="offset-xxl-2 col-xxl-8">                                
                                 <div class="pb-5"> 
@@ -282,17 +281,12 @@
                                     </ul>
                                 </div>
                                 <div class="pb-5">
-                                    <!-- <div class="form-group">
-                                        <label>File Name</label>
-                                        <input id="newAttachment" ng-model="newAttachmentName" name="newAttachmentName" type="text"  class="form-control form-control-solid form-control-lg" disabled/>
-                                        <span class="form-text text-muted">Please enter file name.</span>
-                                    </div> -->
                                     <div class="form-group">
                                         <label>File Attachment</label>
-                                        <input type="file" id="fileAttachment" name="fileAttachment" multiple select-ng-files="fileAttachment" ng-model="fileAttachment" ng-change="fileOnChange()" hidden>
+                                        <input type="file" id="fileAttachment" name="fileAttachment" multiple select-ng-files="fileAttachment" ng-model="fileAttachment.attachment" ng-change="fileOnChange()" hidden>
                                         <div class="dropzone dropzone-multi">
                                             <div class="dropzone-panel mb-lg-0 mb-2">
-                                                <a class="dropzone-select btn btn-light-primary font-weight-bold btn-sm" ng-click="selectFile()">Attach files</a>
+                                                <a class="dropzone-select btn btn-light-primary font-weight-bold btn-sm" ng-click="selectFile()">Select files</a>
                                                 <a class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm">Remove All</a>
                                             </div>
                                             <div class="dropzone-items">
@@ -313,13 +307,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Description *</label>
-                                        <textarea ng-model="newAttachmentDescription" name="newAttachmentDescription" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
+                                        <textarea ng-model="newAttachment.attachmentDescription" name="attachmentDescription" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
                                         <span class="form-text text-muted">Please enter attachment description.</span>
                                     </div>
                                 </div>                                   
                                 <div class="d-flex justify-content-end border-top mt-5 pt-10">
-                                    <button class="btn btn-outline-primary ont-weight-bold text-uppercase "   type="button" ng-disabled="fileList.length == 0 || !newAttachmentDescription" ng-click="attachFile(currentRequirement)">
-                                        <i class="fal fa-plus mr-2"></i>Attach File
+                                    <button class="btn btn-outline-primary ont-weight-bold text-uppercase "   type="button" ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription" ng-click="attachFile(currentRequirement)">
+                                        <i class="fal fa-plus mr-2"></i>Attach
                                     </button>
                                 </div>
                             </div>
@@ -328,8 +322,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="card card-custom gutter-b">
             <div class="card-header">
                 <div class="card-title">
@@ -343,16 +335,13 @@
                 <div class="vertical-wizard">
                     <div class="wizard-nav border-right py-8 px-8 py-lg-12 px-lg-8">
                         <ul class=" text-dark list-unstyled">
-                                <li class="font-size-h6">Summary</li>
-                                <ul class="font-size-h7">
-                                    <!-- <li ng-repeat="position in currentStep.position">{{ position.name}}</li> -->
-                                    <li>Added attachment file to requirement 1.</li>
-                                </ul>
+                            <li class="font-size-h6">Summary</li>
+                            <ul class="font-size-h7">
+                                <!-- <li ng-repeat="position in currentStep.position">{{ position.name}}</li> -->
+                                <li>Added attachment file to requirement 1.</li>
+                            </ul>
                         </ul>
-
                         <!-- <div class="form-group">
-
-
                                 <label>Requirements</label>
                                 <div class="checkbox-list">
                                     <label class="checkbox">
@@ -374,26 +363,21 @@
                         <div class="row">
                             <div class="offset-xxl-2 col-xxl-8">
                                 <form class="form" id="kt_form">
-                                    <div class="pb-5">
-                                         
+                                    <div class="pb-5">                                         
                                         <div class="form-group">
                                             <label>Final Remarks</label>
                                             <textarea ng-model="remarks" name="remarks" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
-                                         
                                             <span class="form-text text-muted">Please enter your final Remarks.</span>
-                                        </div>
-                                        
+                                        </div>                                        
                                     </div>
                                     <div class="d-flex justify-content-end border-top mt-5 pt-10">
                                         <div>
-
-                                        <span ng-repeat="output in currentStep.outputs">
+                                            <span ng-repeat="output in currentStep.outputs">
                                                 <button type="button" class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
                                                     ng-click="takeActions(document.id,output,currentStep)">
                                                     {{output.name}}
                                                 </button>
-                                            </span>
-                                             
+                                            </span>                                             
                                         </div>
                                     </div>
                                 </form>

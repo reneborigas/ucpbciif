@@ -1,37 +1,51 @@
 define(function () {
-	'use strict';
+    'use strict';
 
-	var app = angular.module('app', [
-		'ui.router',
-		'oc.lazyLoad',
-		'ncy-angular-breadcrumb',
-		'angular-loading-bar',
-		'toastr',
-		'ngTable',
-		'oitozero.ngSweetAlert',
-	])
+    var app = angular.module('app', [
+        'ui.router',
+        'oc.lazyLoad',
+        'ncy-angular-breadcrumb',
+        'angular-loading-bar',
+        'toastr',
+        'ngTable',
+        'oitozero.ngSweetAlert',
+        'blockUI',
+    ]);
 
-	app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
-		cfpLoadingBarProvider.includeSpinner = false;
-		cfpLoadingBarProvider.latencyThreshold = 1;
-	}])
+    app.config([
+        'cfpLoadingBarProvider',
+        'blockUIConfig',
+        function (cfpLoadingBarProvider, blockUIConfig) {
+            cfpLoadingBarProvider.includeSpinner = false;
+            cfpLoadingBarProvider.latencyThreshold = 1;
 
-	app.run(['$rootScope', '$state', '$stateParams', '$http', 'appLoginService', '$transitions', function ($rootScope, $state, $stateParams, $http, appLoginService,$transitions) {
-		$http.defaults.xsrfHeaderName = 'X-CSRFToken';
-		$http.defaults.xsrfCookieName = 'csrftoken';
+            blockUIConfig.autoBlock = false;
+            blockUIConfig.templateUrl = 'statics/partials/customs/blockui.html';
+        },
+    ]);
 
-		$transitions.onBefore({}, function(transition) {
-			if (transition.to().name !== 'simple.login' && !appLoginService.isLoggedIn()) {
-				return transition.router.stateService.target('simple.login');
-			}
-			if (transition.to().name == 'simple.login' && appLoginService.isLoggedIn()) {
-				return transition.router.stateService.target('app.main');
-			}
-		})
+    app.run([
+        '$rootScope',
+        '$state',
+        '$stateParams',
+        '$http',
+        'appLoginService',
+        '$transitions',
+        function ($rootScope, $state, $stateParams, $http, appLoginService, $transitions) {
+            $http.defaults.xsrfHeaderName = 'X-CSRFToken';
+            $http.defaults.xsrfCookieName = 'csrftoken';
 
-		$rootScope.$state = $state;
-		return $rootScope.$stateParams = $stateParams;
+            $transitions.onBefore({}, function (transition) {
+                if (transition.to().name !== 'simple.login' && !appLoginService.isLoggedIn()) {
+                    return transition.router.stateService.target('simple.login');
+                }
+                if (transition.to().name == 'simple.login' && appLoginService.isLoggedIn()) {
+                    return transition.router.stateService.target('app.main');
+                }
+            });
 
-	}]);
-
+            $rootScope.$state = $state;
+            return ($rootScope.$stateParams = $stateParams);
+        },
+    ]);
 });

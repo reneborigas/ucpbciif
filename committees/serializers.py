@@ -24,15 +24,14 @@ class CommitteeSerializer(ModelSerializer):
 
 
 class NoteSerializer(ModelSerializer):
-     
+    committeeName = serializers.CharField(read_only=True)
+
     def create(self, validated_data):
         note = Note.objects.create(**validated_data) 
         return note
 
     def update(self, instance, validated_data):
-      
         instance.save()
-
         return instance
     
     class Meta:
@@ -40,7 +39,7 @@ class NoteSerializer(ModelSerializer):
         fields = '__all__'
 
 class PositionSerializer(ModelSerializer):
-     
+
     def create(self, validated_data):
         position = Position.objects.create(**validated_data) 
         return position

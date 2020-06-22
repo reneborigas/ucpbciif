@@ -29,7 +29,7 @@ require.config({
 		// 'index': 'scripts/angular-scripts/index',
 		'sweetalert': 'libs/sweetalert/sweetalert.min',
 		'ngSweetalert': 'libs/sweetalert/SweetAlert',
-		// 'ngBlock': 'libs/ngBlock/angular-block-ui.min',
+		'ngBlock': 'libs/ngBlock/angular-block-ui.min',
 	},
 	shim: {
 		'angular': {
@@ -75,12 +75,9 @@ require.config({
 		// 'ngDatepicker': {
 		// 	deps: [ 'ngBootstrap' ]
 		// },
-		// 'ngBlock': {
-		// 	deps: [ 'angular' ]
-		// },
-		// 'toastr': {
-		// 	deps: [ 'angular' ]
-		// },
+		'ngBlock': {
+			deps: [ 'angular' ]
+		},
 		'ngSweetalert': {
 			deps: [ 'angular', 'sweetalert' ]
 		},
@@ -91,7 +88,7 @@ require.config({
         // }
         'app' : {
             deps: [
-                'jquery','angular','ngAnimate','ngSanitize','ngRoute','ngBreadcrumb','ngLoadingbar','ocLazyLoad','ngToastr','ngTable','ngSweetalert'
+                'jquery','angular','ngAnimate','ngSanitize','ngRoute','ngBreadcrumb','ngLoadingbar','ocLazyLoad','ngToastr','ngTable','ngSweetalert','ngBlock'
             ]
         },
         'routes' : {
