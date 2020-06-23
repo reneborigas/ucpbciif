@@ -68,6 +68,7 @@ class DocumentSerializer(ModelSerializer):
     
     documentMovements = DocumentMovementSerializer(many=True,read_only=True)
     lastDocumentMovementId = serializers.CharField(read_only=True)
+    subProcess = SubProcessSerializer(read_only=True)
     
     def create(self, validated_data): 
         

@@ -318,18 +318,83 @@ define(function(){
             $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
                 function(response){
                     $scope.borrower = response.data[0];
+
+                    $http.get('/api/processes/subprocesses/').then(
+                        function(response){
+                            $scope.subprocesses = response.data;
+
+                            angular.forEach( $scope.subprocesses,function(subProcess){ 
+                                
+                           
+                                angular.forEach( $scope.borrower.documents,function(document){ 
+                                    
+                                    if(document.subProcess.id===subProcess.id){ 
+
+                                       
+                                        if(!document.documentMovements[0].status.isFinalStatus ){
+                                         
+                                            subProcess.isAllowed =  false;  
+                                            subProcess.isAllowedByParent =  false;
+                                            
+                                            
+                                        }else{
+                                          
+                                            if(subProcess.relatedProcesses.length){ 
+                                                
+                                                angular.forEach( $scope.borrower.documents,function(document){ 
+                                                    if(document.subProcess.id===subProcess.relatedProcesses[0].id){ 
+                                                        $scope.document_item=document;
+
+                                                    }
+                                                });
+                                                if(!$scope.document_item.documentMovements[0].status.isFinalStatus ){
+                                                    subProcess.isAllowedByParent = false;
+                                                }else{
+
+                                                    if(!$scope.document_item.documentMovements[0].status.isNegativeResult ){
+ 
+                                                        subProcess.isAllowedByParent = true;
+                                                    }else{
+                                                        subProcess.isAllowedByParent = false;
+                                                    }
+                                                  
+                                                }
+                                               
+                                            }
+                                            else{
+                                                subProcess.isAllowedByParent =  true;
+                                            }
+                                            
+                                            
+                                            subProcess.isAllowed =  true;
+                                          
+                                        }
+                                     }
+                                  
+                                    
+                               });
+
+                            });
+                         
+                    },
+                    function(error){
+                        toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Sub Processes. Please contact System Administrator.'); 
+                    });
+        
+
             },
             function(error){
                 toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
             });
             
-            $http.get('/api/processes/subprocesses/').then(
-                function(response){
-                    $scope.subprocesses = response.data;
-            },
-            function(error){
-                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Sub Processes. Please contact System Administrator.'); 
-            });
+            
+
+
+            $scope.isCanCreate = function(subProcessId){ 
+                
+                 
+               
+            }
 
             $scope.edit = function(id){
                 $state.go('app.borrowers.edit', {borrowerId:id});

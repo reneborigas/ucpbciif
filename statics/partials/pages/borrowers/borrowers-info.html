@@ -116,14 +116,17 @@
 
 
                                     <ul class="font-size-h7">
-                                        <li ng-repeat="subProcess in subprocesses">                                                
+                                        <li ng-repeat="subProcess in subprocesses" >                                                
                                                 {{subProcess.name}}  <div class="card-toolbar">
-                                                        <button type="button" class="btn btn-success" ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)">New {{subProcess.name}}</button>
+                                                        <button type="button" class="btn btn-success"  ng-if="subProcess.isAllowed && subProcess.isAllowedByParent" ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)">New {{subProcess.name}}</button>
                                                          </div> 
-                                                         {{document.documentId}}  
+                                                        
                                                 <ul class="font-size-h7">
-                                                        <li ng-repeat="document in borrower.documents | filter: {subProcess:subProcess.id}">   
-                                                                {{document.id}}   {{document.name}} {{document.documentMovements[0].status.name}}  
+                                                        
+                                                        
+                                                        <li ng-repeat="document in borrower.documents | filter: {subProcess:{id:subProcess.id}}">   
+                                                               {{document.id}}   {{document.name}} {{document.documentMovements[0].status.name}}  
+                                                            
                                                         </li>
                                                     </ul>
                 

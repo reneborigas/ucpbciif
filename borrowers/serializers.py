@@ -3,7 +3,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
 from documents.serializers import DocumentSerializer
-
+from processes.serializers import SubProcessSerializer
 
 class ContactPersonSerializer(ModelSerializer):
     contactPersonName = serializers.CharField(read_only=True)
@@ -208,7 +208,8 @@ class BorrowerSerializer(ModelSerializer):
     contactPerson = ContactPersonSerializer()
     cooperative = CooperativeSerializer()
     documents = DocumentSerializer(many=True)
-
+     
+   
 
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)

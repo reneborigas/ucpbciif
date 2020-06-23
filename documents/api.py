@@ -5,7 +5,7 @@ from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func,CharField,Min,Max
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from committees.models import Note
-from processes.models import Statuses
+from processes.models import Statuses,SubProcess
 
 class DocumentViewSet(ModelViewSet):
     queryset = Document.objects.all()

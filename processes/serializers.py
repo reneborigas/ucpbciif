@@ -4,8 +4,17 @@ from rest_framework import serializers
 from .models import *
 from committees.serializers import PositionSerializer
 
-class SubProcessSerializer(ModelSerializer):
-     
+
+class RelatedProcessSerializer(serializers.ModelSerializer):
+    relatedProcesses = serializers.PrimaryKeyRelatedField(queryset=SubProcess.objects.all(), many=True)
+
+    class Meta:
+        model = SubProcess
+        fields = '__all__'
+
+class SubProcessSerializer(ModelSerializer): 
+    
+    relatedProcesses = RelatedProcessSerializer(many=True,read_only=True)
     def create(self, validated_data):
         loan = SubProcess.objects.create(**validated_data) 
         return loan

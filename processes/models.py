@@ -53,6 +53,7 @@ class SubProcess(models.Model):
         null = False, 
     )
     relatedProcesses = models.ManyToManyField('processes.SubProcess',blank=True)
+
     process = models.ForeignKey(
         Process,
         on_delete=models.CASCADE,
@@ -135,7 +136,7 @@ class Statuses(models.Model):
     )
     
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s %s" % (self.name, self.subProcess)
 
 class ProcessRequirement(models.Model):  
     name = models.CharField(
@@ -187,6 +188,8 @@ class ProcessRequirement(models.Model):
         return "%s" % (self.name)
 
 class Step(models.Model):  
+    # def _get_self_subProcess(self):
+    #     return self.subProcess
     order= models.PositiveIntegerField(
         default=0,
         validators=[MinValueValidator(0), 
@@ -219,7 +222,7 @@ class Step(models.Model):
     status = models.ForeignKey(
         Statuses,
         on_delete=models.CASCADE,
-        # limit_choices_to={'subProcess': document_.subProcess},
+        # limit_choices_to={'subProcess': _get_self_subProcess},
         related_name="stepStatuses",
     )
     createdBy = models.ForeignKey(
