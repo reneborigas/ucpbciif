@@ -619,33 +619,12 @@ define(function(){
             });
 
            
-
-
-            $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
+            $http.get('/api/processes/subprocesses/', {params:{ subProcessId : $scope.subProcessId }}).then(
                 function(response){
-                    $scope.borrower = response.data[0];
-                    $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat($scope.borrower.cooperative.paidUpCapitalInitial)
-                    $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized)
-                    $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue)
-                    $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp)
-                    $scope.borrower.cooperative.cdaRegistrationDate = new Date($scope.borrower.cooperative.cdaRegistrationDate)
-                    angular.forEach($scope.borrower.cooperative.directors,function(director){
-                        director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop)
-                    })
-                    angular.forEach($scope.borrower.cooperative.standingCommittees,function(standingCommittee){
-                        standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop)
-                    })
-                    angular.forEach($scope.borrower.cooperative.grants,function(grant){
-                        grant.amount = parseFloat(grant.amount)
-                    })
-            },
-            function(error){
-                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
-            });
-            
-            $scope.document={name:'',description:'',remarks:'',borrower: $scope.borrowerId,subProcess:$scope.subProcessId,documentType:1, createdBy : appFactory.getCurrentUser(),committee:''}
+                    $scope.subProcess = response.data[0];
+                $scope.document={name:'',description:'',remarks:'',borrower: $scope.borrowerId,subProcess:$scope.subProcess,subProcessId:$scope.subProcessId,documentType:1, createdBy : appFactory.getCurrentUser(),committee:''}
             console.log($scope.document);
-            $scope.save = function(){
+            $scope.save = function(){ 
                 if($scope.newLoanApplicationForm.$valid){
                     swal({
                         title: "Create New Loan Application",
@@ -671,6 +650,35 @@ define(function(){
                     });
                 }
             }
+            },
+            function(error){
+                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Sub Process Information. Please contact System Administrator.'); 
+            });
+
+
+            $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
+                function(response){
+                    $scope.borrower = response.data[0];
+                    $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat($scope.borrower.cooperative.paidUpCapitalInitial)
+                    $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized)
+                    $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue)
+                    $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp)
+                    $scope.borrower.cooperative.cdaRegistrationDate = new Date($scope.borrower.cooperative.cdaRegistrationDate)
+                    angular.forEach($scope.borrower.cooperative.directors,function(director){
+                        director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.standingCommittees,function(standingCommittee){
+                        standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop)
+                    })
+                    angular.forEach($scope.borrower.cooperative.grants,function(grant){
+                        grant.amount = parseFloat(grant.amount)
+                    })
+            },
+            function(error){
+                toastr.error('Error '+ error.status +' '+ error.statusText, 'Could not retrieve Borrower Information. Please contact System Administrator.'); 
+            });
+            
+           
  
             
             $scope.cancel = function(id){

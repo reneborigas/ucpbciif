@@ -22,6 +22,7 @@ class DocumentViewSet(ModelViewSet):
             documentTypeName=F('documentType__name'), 
             borrowerName=F('borrower__cooperative__name'), 
             lastDocumentMovementId=Max( 'documentMovements__id'),   
+            subProcessId=F('subProcess__id')
         ) .exclude(isDeleted=True).order_by('-id')
 
        

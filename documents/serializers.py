@@ -5,11 +5,11 @@ from .models import *
 
 from documents.models import * 
 from committees.models import Committee
-from processes.models import Statuses,Step,Output
+from processes.models import Statuses,Step,Output,SubProcess
 from processes.serializers import OutputSerializer,StatusSerializer,SubProcessSerializer
 from committees.serializers import NoteSerializer
 
-
+ 
 
 
 
@@ -69,14 +69,29 @@ class DocumentSerializer(ModelSerializer):
     documentMovements = DocumentMovementSerializer(many=True,read_only=True)
     lastDocumentMovementId = serializers.CharField(read_only=True)
     subProcess = SubProcessSerializer(read_only=True)
-    
+    subProcessId = serializers.CharField()
     def create(self, validated_data): 
         
         committee = Committee.objects.get(pk=validated_data.get("committee", "1"))
 
         status = Statuses.objects.get(pk=1)
+        # subProcess = SubProcess.objects.get(pk=validated_data.get("subProcess")[''] )
+        # validated_data.set("subProcess",)
+        print(validated_data)
 
-        document = Document.objects.create(**validated_data) 
+        subProcess = SubProcess.objects.get(pk=validated_data.get("subProcessId","1" ))
+
+        document=Document(
+        subProcess=subProcess,
+        name=validated_data.get("name" ),
+        code=subProcess.code, 
+        documentType=validated_data.get("documentType" ), 
+        borrower=validated_data.get("borrower" ), 
+       
+        )
+        document.save()
+
+        # document = Document.objects.create(**validated_data) 
         # document.code = document.subProcess.code + ("%03d" % document.id)
         # document.save()
         

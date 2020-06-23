@@ -136,7 +136,7 @@ class Statuses(models.Model):
     )
     
     def __str__(self):
-        return "%s %s" % (self.name, self.subProcess)
+        return "%s %s" % (self.name, self.subProcess    )
 
 class ProcessRequirement(models.Model):  
     name = models.CharField(
