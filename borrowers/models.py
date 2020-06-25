@@ -398,3 +398,55 @@ class Borrower(models.Model):
     def __str__(self):
         return "%s" % (self.cooperative)
  
+
+def attachment_directory_path(instance, filename):
+    # ext = filename.split('.')[-1]
+    # filename = "%s_%s.%s" % (instance.user.id, instance.questid.id, ext)
+    return 'attachments/borrowers/{0}/{1}'.format(instance.borrower.borrowerId, filename)
+
+class BorrowerAttachment(models.Model):  
+    fileName = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+
+    fileAttachment = models.FileField(
+        null = True,
+        blank=True,
+        upload_to=attachment_directory_path
+    )
+
+    borrower = models.ForeignKey(
+        Borrower,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="borrowerAttachments",
+    )    
+  
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="borrowerAttachmentCreatedBy",
+        null = True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s - %s" % (self.borrower,self.fileName)

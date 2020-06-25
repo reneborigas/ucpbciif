@@ -313,12 +313,13 @@ define(function(){
     );
 
     app.controller('BorrowerInfoController',
-        function BorrowerInfoController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout){
+        function BorrowerInfoController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, $q){
 
             $http.get('/api/borrowers/borrowers/', {params:{ borrowerId : $scope.borrowerId }}).then(
                 function(response){
                     $scope.borrower = response.data[0];
-
+                    $scope.getBorrowerAttachments($scope.borrowerId);
+                    
                     $http.get('/api/processes/subprocesses/').then(
                         function(response){
                             $scope.subprocesses = response.data;
@@ -390,9 +391,7 @@ define(function(){
             
 
 
-            $scope.isCanCreate = function(subProcessId){ 
-                
-                 
+            $scope.isCanCreate = function(subProcessId){  
                
             }
 
@@ -437,6 +436,8 @@ define(function(){
                 }
             ]
 
+            
+
             $scope.currentTemplate = $scope.templates[0];
 
             $scope.getTemplate = function(){
@@ -454,6 +455,126 @@ define(function(){
                     }
                 }
             }
+
+            $scope.getBorrowerAttachments = function(borrowerId){
+
+                $http
+                .get('/api/borrowers/borrowerattachments/', {
+                    params: {  borrowerId: $scope.borrowerId },
+                })
+                .then(
+                    function (response) {
+                        $scope.borrowerAttachments = response.data;  
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Borrower Attachments Information. Please contact System Administrator.'
+                        );
+                    }
+                )
+    
+            }
+            $scope.fileAttachment = {
+                attachment: [],
+            };
+    
+            $scope.newAttachment = {
+                attachmentDescription: '',
+            };
+
+            $scope.selectFile = function () {
+                $timeout(function () {
+                    angular.element('#fileAttachment').trigger('click');
+                }, 0);
+            };
+    
+            $scope.$watch('fileAttachment.attachment', function (newValue, oldValue) {
+                 
+                $scope.fileList = [];
+                Array.prototype.forEach.call(newValue, function (file) {
+                    $scope.fileList.push({
+                        name: file.name,
+                        size: file.size,
+                    });
+                    
+                });
+                
+            });
+    
+            $scope.removeFile = function (index) {
+                $scope.fileList.splice(index, 1);
+            };
+    
+            var promises = [];
+    
+            $scope.attachFile = function (borrower) {
+                console.log(borrower)
+                angular.forEach($scope.fileList, function (fileList, index) {
+                    var newAttachment = {
+                        fileName: $scope.fileAttachment.attachment[index].name,
+                        fileAttachment: $scope.fileAttachment.attachment[index],
+                        description: $scope.newAttachment.attachmentDescription,
+                        borrower: borrower.borrowerId, 
+                    };
+                    var formData = new FormData();
+                    angular.forEach(newAttachment, function (value, key) {
+                        formData.append(key, value);
+                    });
+                    promises.push($scope.uploadFile(formData));
+                });
+    
+                $q.all(promises).then(
+                    function (response) {
+                        toastr.success('Success', 'All attachment successfully saved.'); 
+                        $scope.fileList.length = 0;
+                        $scope.newAttachment.attachmentDescription = '';
+                        $scope.getBorrowerAttachments($scope.borrowerId);
+
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not create upload attachments. Please contact System Administrator.'
+                        );
+                    }
+                );
+            };
+
+            $scope.uploadFile = function (formData) {
+                var defer = $q.defer();
+                return $http
+                    .post('/api/borrowers/borrowerattachments/', formData, {
+                        transformRequest: angular.identity,
+                        headers: { 'Content-Type': undefined },
+                    })
+                    .then(
+                        function (response) {
+                            defer.resolve(
+                                'Success',
+                                appFactory.trimString(response.data.fileName, 9) + ' uploaded successfully.'
+                            );
+                             
+                            return defer.promise;
+                        },
+                        function (error) {
+                            defer.reject(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not create new file attachment. Please contact System Administrator.'
+                            );	
+                            
+                            return defer.promise;
+                        }
+                    );
+            };
+    
+            $scope.downloadFile = function (link, fileName) {
+                var downloadLink = angular.element('<a></a>');
+                downloadLink.attr('target', '_self');
+                downloadLink.attr('href', link);
+                downloadLink.attr('download', fileName);
+                downloadLink[0].click();
+            };
 
         }        
     );

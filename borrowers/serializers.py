@@ -199,6 +199,22 @@ class CooperativeSerializer(ModelSerializer):
         fields = '__all__'
 
 
+
+class BorrowerAttachmentSerializer(ModelSerializer):
+
+    def create(self, validated_data):
+        borrowerAttachment = BorrowerAttachment.objects.create(**validated_data) 
+        
+        return borrowerAttachment
+
+    def update(self, instance, validated_data):
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = BorrowerAttachment          
+        fields = '__all__'  
 class BorrowerSerializer(ModelSerializer):
     contactPersonName = serializers.CharField(read_only=True)
     cooperativeName = serializers.CharField(read_only=True)
@@ -209,7 +225,8 @@ class BorrowerSerializer(ModelSerializer):
     cooperative = CooperativeSerializer()
     documents = DocumentSerializer(many=True)
      
-   
+    borrowerAttachments = BorrowerAttachmentSerializer(many=True)
+     
 
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)

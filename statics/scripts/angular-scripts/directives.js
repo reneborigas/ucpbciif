@@ -267,6 +267,7 @@ function selectNgFiles($parse) {
         elem.on('change', function (e) {
             var files = elem[0].files;
             ngModel.$setViewValue(files);
+             
         });
     }
 }
