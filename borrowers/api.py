@@ -12,7 +12,7 @@ class BorrowerViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Borrower.objects.prefetch_related(
+        queryset = Borrower.objects.prefetch_related('borrowerAttachments',
             Prefetch('cooperative',Cooperative.objects.annotate(
                 cooperativeTypeText=F('cooperativeType__name')
             ).all()),
@@ -60,3 +60,26 @@ class CooperativeViewSet(ModelViewSet):
 
 
    
+class BorrowerAttachmentViewSet(ModelViewSet):
+    queryset = BorrowerAttachment.objects.all()
+    serializer_class = BorrowerAttachmentSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = BorrowerAttachment.objects.order_by('id')
+
+        borrowerAttachmentId = self.request.query_params.get('borrowerAttachmentId', None)
+        borrowerId = self.request.query_params.get('borrowerId', None)
+        
+
+        if borrowerAttachmentId is not None:
+
+           
+            queryset = queryset.filter(borrowerAttachment__id=borrowerAttachmentId) 
+        
+        if borrowerId is not None:
+
+           
+            queryset = queryset.filter(borrower=borrowerId) 
+
+        return queryset

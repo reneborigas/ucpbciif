@@ -391,16 +391,19 @@ define(function () {
         NgTableParams,
         appFactory,
         $state,
-        $timeout
+        $timeout,
+        $q,
+        blockUI
     ) {
         $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
             function (response) {
                 $scope.borrower = response.data[0];
+                $scope.getBorrowerAttachments($scope.borrowerId);
 
                 $http.get('/api/processes/subprocesses/').then(
                     function (response) {
                         $scope.subprocesses = response.data;
-                        console.log($scope.subprocesses);
+
                         angular.forEach($scope.subprocesses, function (subProcess) {
                             angular.forEach($scope.borrower.documents, function (document) {
                                 if (document.subProcess.id === subProcess.id) {
@@ -428,6 +431,7 @@ define(function () {
                                         } else {
                                             subProcess.isAllowedByParent = true;
                                         }
+
                                         subProcess.isAllowed = true;
                                     }
                                 }
@@ -515,6 +519,149 @@ define(function () {
                     $scope.currentTemplate = $scope.templates[i];
                 }
             }
+        };
+
+        $scope.getBorrowerAttachments = function (borrowerId) {
+            $http
+                .get('/api/borrowers/borrowerattachments/', {
+                    params: { borrowerId: $scope.borrowerId },
+                })
+                .then(
+                    function (response) {
+                        $scope.borrowerAttachments = response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Borrower Attachments Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
+
+        var attachmentBlockUI = blockUI.instances.get('attachmentBlockUI');
+
+        $scope.currentPageAttachment = 0;
+        $scope.pageSizeAttachment = 5;
+
+        $scope.pageRangeAttachment = function (size) {
+            var pages = [];
+            var range = Math.ceil(size / $scope.pageSizeAttachment);
+            for (var i = 1; i <= range; i++) {
+                pages.push(i);
+            }
+            return pages;
+        };
+
+        $scope.gotoPrevAttachment = function () {
+            $scope.currentPageAttachment--;
+        };
+
+        $scope.gotoNextAttachment = function () {
+            $scope.currentPageAttachment++;
+        };
+
+        $scope.jumpToPageAttachment = function (n) {
+            $scope.currentPageAttachment = n - 1;
+        };
+
+        $scope.fileAttachment = {
+            attachment: [],
+        };
+
+        $scope.newAttachment = {
+            attachmentDescription: '',
+        };
+
+        $scope.selectFile = function () {
+            $timeout(function () {
+                angular.element('#fileAttachment').trigger('click');
+            }, 0);
+        };
+
+        $scope.$watch('fileAttachment.attachment', function (newValue, oldValue) {
+            $scope.fileList = [];
+            Array.prototype.forEach.call(newValue, function (file) {
+                $scope.fileList.push({
+                    name: file.name,
+                    size: file.size,
+                });
+            });
+        });
+
+        $scope.removeFile = function (index) {
+            $scope.fileList.splice(index, 1);
+        };
+
+        var promises = [];
+
+        $scope.attachFile = function (borrower) {
+            attachmentBlockUI.start('Attaching File...');
+            angular.forEach($scope.fileList, function (fileList, index) {
+                var newAttachment = {
+                    fileName: $scope.fileAttachment.attachment[index].name,
+                    fileAttachment: $scope.fileAttachment.attachment[index],
+                    description: $scope.newAttachment.attachmentDescription,
+                    borrower: borrower.borrowerId,
+                };
+                var formData = new FormData();
+                angular.forEach(newAttachment, function (value, key) {
+                    formData.append(key, value);
+                });
+                promises.push($scope.uploadFile(formData));
+            });
+
+            $q.all(promises).then(
+                function (response) {
+                    toastr.success('Success', 'All attachment successfully saved.');
+                    $scope.fileList.length = 0;
+                    $scope.newAttachment.attachmentDescription = '';
+                    $scope.getBorrowerAttachments($scope.borrowerId);
+                    attachmentBlockUI.stop();
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not create upload attachments. Please contact System Administrator.'
+                    );
+                    attachmentBlockUI.stop();
+                }
+            );
+        };
+
+        $scope.uploadFile = function (formData) {
+            var defer = $q.defer();
+            return $http
+                .post('/api/borrowers/borrowerattachments/', formData, {
+                    transformRequest: angular.identity,
+                    headers: { 'Content-Type': undefined },
+                })
+                .then(
+                    function (response) {
+                        defer.resolve(
+                            'Success',
+                            appFactory.trimString(response.data.fileName, 9) + ' uploaded successfully.'
+                        );
+
+                        return defer.promise;
+                    },
+                    function (error) {
+                        defer.reject(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not create new file attachment. Please contact System Administrator.'
+                        );
+
+                        return defer.promise;
+                    }
+                );
+        };
+
+        $scope.downloadFile = function (link, fileName) {
+            var downloadLink = angular.element('<a></a>');
+            downloadLink.attr('target', '_self');
+            downloadLink.attr('href', link);
+            downloadLink.attr('download', fileName);
+            downloadLink[0].click();
         };
     });
 

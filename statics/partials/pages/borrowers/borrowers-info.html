@@ -219,7 +219,74 @@
                         </ul> -->
                     </div>
                 </div>
+ 
+                        <div class="card card-custom gutter-b">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <span class="card-icon">
+                                        <i class="fad fa-users-class"></i>
+                                    </span>
+                                    <h3 class="card-label">Attachments</h3>
+                                </div>
+                                                     
+                            </div>
+                            <div class="card-body"> 
+                                    <div class=" col-xxl-12">                                
+                                            <div class="pb-5"> 
+                                                 
+                                                <ul class=" text-dark list-unstyled">
+                                                    <li class="font-size-h6">Attachments</li>
+                                                    <ul class="font-size-h7">
+                                                        <li ng-repeat="borrowerAttachment in borrowerAttachments">                                                
+                                                            <a href="" ng-click="downloadFile(borrowerAttachment.fileAttachment,borrowerAttachment.fileName)">{{ borrowerAttachment.fileName}} - <span ng-if="borrowerAttachment.description" ng-bind="borrowerAttachment.description"></span></a>
+                                                        </li>
+                                                    </ul>
+                                                </ul>
+                                            </div>
+                                            <div class="pb-5">
+                                                <div class="form-group">
+                                                    <label>File Attachment</label>
+                                                    <input type="file" id="fileAttachment" name="fileAttachment" multiple select-ng-files="fileAttachment" ng-model="fileAttachment.attachment" ng-change="fileOnChange()" hidden>
+                                                    <div class="dropzone dropzone-multi">
+                                                        <div class="dropzone-panel mb-lg-0 mb-2">
+                                                            <a class="dropzone-select btn btn-light-primary font-weight-bold btn-sm" ng-click="selectFile()">Select files</a>
+                                                            <a class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm">Remove All</a>
+                                                        </div>
+                                                   
+                                                        <div class="dropzone-items">
+                                                            <div class="dropzone-item" ng-repeat="file in fileList">
+                                                                <div class="dropzone-file">
+                                                                    <div class="dropzone-filename">
+                                                                        <span>{{ file.name }}</span>
+                                                                        <strong><span>({{ file.size/1000 | number : 2 }} KB)</span></strong>
+                                                                    </div>
+                                                                    <div class="dropzone-error" data-dz-errormessage></div>
+                                                                </div>
+                                                                <div class="dropzone-toolbar">
+                                                                    <span class="dropzone-delete" data-dz-remove ng-click="removeFile($index)"><i class="fal fa-times icon-md"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Description *</label>
+                                                    <textarea ng-model="newAttachment.attachmentDescription" name="attachmentDescription" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
+                                                    <span class="form-text text-muted">Please enter attachment description.</span>
+                                                </div>
+                                            </div>                                   
+                                            <div class="d-flex justify-content-end border-top mt-5 pt-10">
+                                                <button class="btn btn-outline-primary ont-weight-bold text-uppercase "   type="button" ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription" ng-click="attachFile(borrower)">
+                                                    <i class="fal fa-plus mr-2"></i>Attach
+                                                </button>
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
+                     
             </div>
+
+          
         </div>
     </div>
 </div>
