@@ -111,9 +111,9 @@
                                 </div>
                             </form>
                             <div class="separator separator-dashed my-10"></div>
-                            <div class="timeline timeline-3">
+                            <div class="timeline timeline-3 pb-5">
                                 <div class="timeline-items">
-                                    <div class="timeline-item" ng-repeat="note in notes | orderBy:'-' | limitTo: 5 ">
+                                    <div class="timeline-item" ng-repeat="note in notes | orderBy:'-' | startFrom:currentPageNote*pageSizeNote | limitTo: pageSizeNote ">
                                         <div class="timeline-media">
                                             <i class="fad fa-sticky-note text-primary"></i>
                                         </div>
@@ -125,6 +125,35 @@
                                             <small class="text-muted">{{ note.action_time |  date : 'medium' }}</small>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center flex-wrap" ng-if="pageRangeNote(notes.length).length > 1">
+                                <div class="d-flex flex-wrap py-2 mr-3">
+                                    <button
+                                        href="#" 
+                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1" 
+                                        ng-disabled="currentPageNote == 0"
+                                        ng-click="gotoPrevNote()"
+                                    >
+                                        <i class="fas fa-chevron-left icon-sm"></i>
+                                    </button>
+                                    <button 
+                                        href="#" 
+                                        class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1" 
+                                        ng-class="{ 'active' : n == currentPageNote + 1 }" 
+                                        ng-repeat="n in pageRangeNote(notes.length)"
+                                        ng-click="jumpToPageNote(n)"
+                                    >
+                                        <small>{{n}}</small>
+                                    </button>
+                                    <button 
+                                        href="#" 
+                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                        ng-disabled="currentPageNote >=notes.length/pageSizeNote - 1"
+                                        ng-click="gotoNextNote()"
+                                    >
+                                        <i class="fas fa-chevron-right icon-sm"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -278,11 +307,49 @@
                                     <ul class=" text-dark list-unstyled">
                                         <li class="font-size-h6">Attachments</li>
                                         <ul class="font-size-h7">
-                                            <li ng-repeat="stepRequirementAttachment in currentRequirement.attachments">                                                
-                                                <a href="" ng-click="downloadFile(stepRequirementAttachment.fileAttachment,stepRequirementAttachment.fileName)">{{ stepRequirementAttachment.fileName}} - <span ng-if="stepRequirementAttachment.description" ng-bind="stepRequirementAttachment.description"></span></a>
+                                            <li ng-repeat="stepRequirementAttachment in currentRequirement.attachments | startFrom:currentPageAttachment*pageSizeAttachment | limitTo: pageSizeAttachment ">                                                
+                                                <a 
+                                                    href="" 
+                                                    ng-click="downloadFile(stepRequirementAttachment.fileAttachment,stepRequirementAttachment.fileName)"
+                                                >
+                                                    {{ stepRequirementAttachment.fileName  | trimStringWithExtension: 20 }} - 
+                                                    <span 
+                                                        ng-if="stepRequirementAttachment.description" 
+                                                        ng-bind="stepRequirementAttachment.description">
+                                                    </span>
+                                                </a>
                                             </li>
                                         </ul>
                                     </ul>
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap" ng-if="pageRangeAttachment(currentRequirement.attachments.length).length > 1">
+                                        <div class="d-flex flex-wrap py-2 mr-3">
+                                            <button
+                                                href="#" 
+                                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1" 
+                                                ng-disabled="currentPageAttachment == 0"
+                                                ng-click="gotoPrevAttachment()"
+                                            >
+                                                <i class="fas fa-chevron-left icon-sm"></i>
+                                            </button>
+                                            <button 
+                                                href="#" 
+                                                class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1" 
+                                                ng-class="{ 'active' : n == currentPageAttachment + 1 }" 
+                                                ng-repeat="n in pageRangeAttachment(currentRequirement.attachments.length)"
+                                                ng-click="jumpToPageAttachment(n)"
+                                            >
+                                                <small>{{n}}</small>
+                                            </button>
+                                            <button 
+                                                href="#" 
+                                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                                ng-disabled="currentPageAttachment >=currentRequirement.attachments.length/pageSizeAttachment - 1"
+                                                ng-click="gotoNextAttachment()"
+                                            >
+                                                <i class="fas fa-chevron-right icon-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="pb-5">
                                     <div class="form-group">

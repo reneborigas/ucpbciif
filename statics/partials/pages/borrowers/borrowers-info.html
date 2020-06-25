@@ -156,7 +156,8 @@
                                 ng-if="subProcess.isAllowed && subProcess.isAllowedByParent"
                                 ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)"
                             >
-                                <i class="fad fa-layer-plus"></i>New
+                                <i class="fad fa-layer-plus"></i>
+                                New
                             </a>
                         </div>
                         <div
@@ -189,104 +190,152 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- <ul class="text-dark list-unstyled">
-                            <li class="font-size-h6"></li>
-                            <ul class="font-size-h7">
-                                <li ng-repeat="subProcess in subprocesses">
-                                    {{subProcess.name}}
-                                    <div class="card-toolbar">
-                                        <button
-                                            type="button"
-                                            class="btn btn-success"
-                                            ng-if="subProcess.isAllowed && subProcess.isAllowedByParent"
-                                            ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)"
-                                        >
-                                            New {{subProcess.name}}
-                                        </button>
-                                    </div>
-
-                                    <ul class="font-size-h7">
-                                        <li
-                                            ng-repeat="document in borrower.documents | filter: {subProcess:{id:subProcess.id}}"
-                                        >
-                                            {{document.id}} {{document.name}}
-                                            {{document.documentMovements[0].status.name}}
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </ul> -->
                     </div>
                 </div>
- 
-                        <div class="card card-custom gutter-b">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <span class="card-icon">
-                                        <i class="fad fa-users-class"></i>
-                                    </span>
-                                    <h3 class="card-label">Attachments</h3>
+                <div class="card card-custom gutter-b">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="fad fa-users-class"></i>
+                            </span>
+                            <h3 class="card-label">Attachments</h3>
+                        </div>
+                    </div>
+                    <div class="card-body" block-ui="attachmentBlockUI">
+                        <div class="col-xxl-12">
+                            <div class="pb-5">
+                                <ul class="text-dark list-unstyled">
+                                    <li class="font-size-h6">Attachments</li>
+                                    <ul class="font-size-h7">
+                                        <li
+                                            ng-repeat="borrowerAttachment in borrowerAttachments  | startFrom:currentPageAttachment*pageSizeAttachment | limitTo: pageSizeAttachment"
+                                        >
+                                            <a
+                                                href=""
+                                                ng-click="downloadFile(borrowerAttachment.fileAttachment,borrowerAttachment.fileName)"
+                                            >
+                                                {{ borrowerAttachment.fileName | trimStringWithExtension: 20 }} -
+                                                <span
+                                                    ng-if="borrowerAttachment.description"
+                                                    ng-bind="borrowerAttachment.description"
+                                                ></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </ul>
+                                <div
+                                    class="d-flex justify-content-center align-items-center flex-wrap"
+                                    ng-if="pageRangeAttachment(borrowerAttachments.length).length > 1"
+                                >
+                                    <div class="d-flex flex-wrap py-2 mr-3">
+                                        <button
+                                            href="#"
+                                            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                            ng-disabled="currentPageAttachment == 0"
+                                            ng-click="gotoPrevAttachment()"
+                                        >
+                                            <i class="fas fa-chevron-left icon-sm"></i>
+                                        </button>
+                                        <button
+                                            href="#"
+                                            class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
+                                            ng-class="{ 'active' : n == currentPageAttachment + 1 }"
+                                            ng-repeat="n in pageRangeAttachment(borrowerAttachments.length)"
+                                            ng-click="jumpToPageAttachment(n)"
+                                        >
+                                            <small>{{n}}</small>
+                                        </button>
+                                        <button
+                                            href="#"
+                                            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                            ng-disabled="currentPageAttachment >=borrowerAttachments.length/pageSizeAttachment - 1"
+                                            ng-click="gotoNextAttachment()"
+                                        >
+                                            <i class="fas fa-chevron-right icon-sm"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                                     
                             </div>
-                            <div class="card-body"> 
-                                    <div class=" col-xxl-12">                                
-                                            <div class="pb-5"> 
-                                                 
-                                                <ul class=" text-dark list-unstyled">
-                                                    <li class="font-size-h6">Attachments</li>
-                                                    <ul class="font-size-h7">
-                                                        <li ng-repeat="borrowerAttachment in borrowerAttachments">                                                
-                                                            <a href="" ng-click="downloadFile(borrowerAttachment.fileAttachment,borrowerAttachment.fileName)">{{ borrowerAttachment.fileName}} - <span ng-if="borrowerAttachment.description" ng-bind="borrowerAttachment.description"></span></a>
-                                                        </li>
-                                                    </ul>
-                                                </ul>
-                                            </div>
-                                            <div class="pb-5">
-                                                <div class="form-group">
-                                                    <label>File Attachment</label>
-                                                    <input type="file" id="fileAttachment" name="fileAttachment" multiple select-ng-files="fileAttachment" ng-model="fileAttachment.attachment" ng-change="fileOnChange()" hidden>
-                                                    <div class="dropzone dropzone-multi">
-                                                        <div class="dropzone-panel mb-lg-0 mb-2">
-                                                            <a class="dropzone-select btn btn-light-primary font-weight-bold btn-sm" ng-click="selectFile()">Select files</a>
-                                                            <a class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm">Remove All</a>
-                                                        </div>
-                                                   
-                                                        <div class="dropzone-items">
-                                                            <div class="dropzone-item" ng-repeat="file in fileList">
-                                                                <div class="dropzone-file">
-                                                                    <div class="dropzone-filename">
-                                                                        <span>{{ file.name }}</span>
-                                                                        <strong><span>({{ file.size/1000 | number : 2 }} KB)</span></strong>
-                                                                    </div>
-                                                                    <div class="dropzone-error" data-dz-errormessage></div>
-                                                                </div>
-                                                                <div class="dropzone-toolbar">
-                                                                    <span class="dropzone-delete" data-dz-remove ng-click="removeFile($index)"><i class="fal fa-times icon-md"></i></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                            <div class="pb-5">
+                                <div class="form-group">
+                                    <label>File Attachment</label>
+                                    <input
+                                        type="file"
+                                        id="fileAttachment"
+                                        name="fileAttachment"
+                                        multiple
+                                        select-ng-files="fileAttachment"
+                                        ng-model="fileAttachment.attachment"
+                                        ng-change="fileOnChange()"
+                                        hidden
+                                    />
+                                    <div class="dropzone dropzone-multi">
+                                        <div class="dropzone-panel mb-lg-0 mb-2">
+                                            <a
+                                                class="dropzone-select btn btn-light-primary font-weight-bold btn-sm"
+                                                ng-click="selectFile()"
+                                            >
+                                                Select files
+                                            </a>
+                                            <a
+                                                class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm"
+                                            >
+                                                Remove All
+                                            </a>
+                                        </div>
+
+                                        <div class="dropzone-items">
+                                            <div class="dropzone-item" ng-repeat="file in fileList">
+                                                <div class="dropzone-file">
+                                                    <div class="dropzone-filename">
+                                                        <span>{{ file.name }}</span>
+                                                        <strong>
+                                                            <span>({{ file.size/1000 | number : 2 }} KB)</span>
+                                                        </strong>
                                                     </div>
+                                                    <div class="dropzone-error" data-dz-errormessage></div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label>Description *</label>
-                                                    <textarea ng-model="newAttachment.attachmentDescription" name="attachmentDescription" type="text" rows="4" cols="50" class="form-control form-control-solid form-control-lg textarea" ></textarea>
-                                                    <span class="form-text text-muted">Please enter attachment description.</span>
+                                                <div class="dropzone-toolbar">
+                                                    <span
+                                                        class="dropzone-delete"
+                                                        data-dz-remove
+                                                        ng-click="removeFile($index)"
+                                                    >
+                                                        <i class="fal fa-times icon-md"></i>
+                                                    </span>
                                                 </div>
-                                            </div>                                   
-                                            <div class="d-flex justify-content-end border-top mt-5 pt-10">
-                                                <button class="btn btn-outline-primary ont-weight-bold text-uppercase "   type="button" ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription" ng-click="attachFile(borrower)">
-                                                    <i class="fal fa-plus mr-2"></i>Attach
-                                                </button>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description *</label>
+                                    <textarea
+                                        ng-model="newAttachment.attachmentDescription"
+                                        name="attachmentDescription"
+                                        type="text"
+                                        rows="4"
+                                        cols="50"
+                                        class="form-control form-control-solid form-control-lg textarea"
+                                    ></textarea>
+                                    <span class="form-text text-muted">Please enter attachment description.</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end border-top mt-5 pt-10">
+                                <button
+                                    class="btn btn-outline-primary ont-weight-bold text-uppercase"
+                                    type="button"
+                                    ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription"
+                                    ng-click="attachFile(borrower)"
+                                >
+                                    <i class="fal fa-plus mr-2"></i>
+                                    Attach
+                                </button>
                             </div>
                         </div>
-                     
+                    </div>
+                </div>
             </div>
-
-          
         </div>
     </div>
 </div>

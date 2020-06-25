@@ -100,6 +100,10 @@ body {
 	background: #eef0f8
 }
 
+.block-ui-container {
+	z-index: 1000 !important;
+}
+
 .overflow-y-hidden {
 	overflow-y: hidden;
 }
