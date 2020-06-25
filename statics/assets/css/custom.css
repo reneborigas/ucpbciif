@@ -100,6 +100,14 @@ body {
 	background: #eef0f8
 }
 
+.overflow-y-hidden {
+	overflow-y: hidden;
+}
+
+.overflow-x-hidden {
+	overflow-x: hidden;
+}
+
 .app-simple {
 	background: rgb(88,82,173);
 	background: linear-gradient(63deg, rgba(88,82,173,1) 23%, rgba(114,184,226,1) 100%);
