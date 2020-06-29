@@ -17,6 +17,7 @@ class DocumentViewSet(ModelViewSet):
         queryset = Document.objects.prefetch_related( 
                Prefetch( 'documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated'))
               ).annotate(
+            termName=F('loan__term__name'),
             documentCode=Concat(F('subProcess__code'),F('id'), output_field=CharField()),
             subProcessName=F('subProcess__name'),
             documentTypeName=F('documentType__name'), 
@@ -52,6 +53,7 @@ class DocumentMovementViewSet(ModelViewSet):
     def get_queryset(self): 
         
         queryset = DocumentMovement.objects.annotate(
+          
             documentId=F('document_id'), 
             outputName=F('output__name'),
             outputId=F('output_id'), 

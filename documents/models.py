@@ -96,7 +96,14 @@ class Document(models.Model):
         'borrowers.Borrower',
         on_delete=models.CASCADE,
         related_name="documents",
-    )     
+    )  
+
+    loan = models.ForeignKey(
+        'loans.Loan',
+        on_delete=models.CASCADE,
+        related_name="loans",
+    )
+
     subProcess = models.ForeignKey(
         'processes.SubProcess',
         on_delete=models.CASCADE,
@@ -125,7 +132,7 @@ class Document(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
-
+    loanid=None
     
     notes = GenericRelation(Note)
     subProcessId = None

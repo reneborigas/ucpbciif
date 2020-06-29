@@ -8,8 +8,8 @@ from committees.models import Committee
 from processes.models import Statuses,Step,Output,SubProcess
 from processes.serializers import OutputSerializer,StatusSerializer,SubProcessSerializer
 from committees.serializers import NoteSerializer
-
- 
+from loans.serializers import LoanSerializer
+from loans.models import Loan
 
 
 
@@ -63,7 +63,9 @@ class DocumentSerializer(ModelSerializer):
     borrowerName = serializers.CharField(read_only=True)
     documentCode = serializers.CharField(read_only=True)
     notes = NoteSerializer(many=True,read_only=True)
-     
+    loan = LoanSerializer(read_only=True)
+
+    loanid= serializers.CharField()
     currentStatus = serializers.CharField(read_only=True)
     
     documentMovements = DocumentMovementSerializer(many=True,read_only=True)
@@ -80,6 +82,7 @@ class DocumentSerializer(ModelSerializer):
         print(validated_data)
 
         subProcess = SubProcess.objects.get(pk=validated_data.get("subProcessId","1" ))
+        loan = Loan.objects.get(pk=validated_data.get("loanid" ))
 
         document=Document(
         subProcess=subProcess,
@@ -87,7 +90,7 @@ class DocumentSerializer(ModelSerializer):
         code=subProcess.code, 
         documentType=validated_data.get("documentType" ), 
         borrower=validated_data.get("borrower" ), 
-       
+        loan=loan
         )
         document.save()
 

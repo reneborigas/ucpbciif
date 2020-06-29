@@ -4,8 +4,50 @@ from rest_framework import serializers
 from .models import *
 
 
-class LoanSerializer(ModelSerializer):
+
+
+
+class PaymentPeriodSerializer(ModelSerializer):
      
+    def create(self, validated_data):
+        paymentPeriod = PaymentPeriod.objects.create(**validated_data) 
+        return paymentPeriod
+
+    def update(self, instance, validated_data):
+         
+
+        return instance
+    
+    class Meta:
+        model = PaymentPeriod        
+        fields = '__all__'
+
+        
+
+class TermSerializer(ModelSerializer):
+    paymentPeriod = PaymentPeriodSerializer(read_only=True)
+    termName = serializers.CharField(read_only=True)
+
+    def create(self, validated_data):
+        term = Term.objects.create(**validated_data) 
+        return term
+
+    def update(self, instance, validated_data):
+         
+
+        return instance
+    
+    class Meta:
+        model = Term        
+        fields = '__all__'
+
+
+
+class LoanSerializer(ModelSerializer):
+    # termName = serializers.CharField(read_only=True) 
+
+    term_name = serializers.ReadOnlyField(source='term.name')
+    
     def create(self, validated_data):
         loan = Loan.objects.create(**validated_data) 
         return loan

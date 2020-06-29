@@ -12,10 +12,43 @@ class LoanViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.order_by('id')
+        queryset = Loan.objects.order_by('id').annotate(termName=F('term__name'))
         loanId = self.request.query_params.get('loanId', None)
 
         if loanId is not None:
             queryset = queryset.filter(id=loanId)
+
+        return queryset
+
+
+
+class TermViewSet(ModelViewSet):
+    queryset = Loan.objects.all()
+    serializer_class = TermSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Term.objects.order_by('id').annotate(
+              termName=Concat(F('name'),V(' '),F('paymentPeriod__name')),
+        )
+        termId = self.request.query_params.get('termId', None)
+
+        if termId is not None:
+            queryset = queryset.filter(id=termId)
+
+        return queryset
+
+
+class PaymentPeriodViewSet(ModelViewSet):
+    queryset = Loan.objects.all()
+    serializer_class = PaymentPeriodSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = PaymentPeriod.objects.order_by('id')
+        paymentPeriodId = self.request.query_params.get('paymentPeriodId', None)
+
+        if paymentPeriodId is not None:
+            queryset = queryset.filter(id=paymentPeriodId)
 
         return queryset

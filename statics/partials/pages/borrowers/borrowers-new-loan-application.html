@@ -81,6 +81,85 @@
         <div class="card card-custom gutter-b">
             <div class="card-header">
                 <div class="card-title">
+                    <h3 class="card-label">Loan Details
+                        <span class="text-muted pt-2 font-size-sm d-block"></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="row justify-content-center p-5">
+                    <div class="col" ng-switch="step">
+                        <form class="form mt-0" name="newLoanDetailsForm">
+                            <div class="pb-2">
+                                
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Amount</label>
+                                    <div class="col-lg-3 col-xl-6">
+                                        <input type="number" min="0" class="form-control" id="amount" name="amount"
+                                            ng-model="loan.amount"
+                                            ng-class="{'is-invalid' : newLoanDetailsForm.amount.$invalid && newLoanDetailsForm.amount.$touched, 'is-valid' : newLoanDetailsForm.amount.$valid && newLoanDetailsForm.amount.$touched }"
+                                            required />
+                                        <span class="form-text text-muted"
+                                            ng-show="newLoanDetailsForm.amount.$touched && newLoanDetailsForm.amount.$invalid">Please
+                                            enter amount.</span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Interest Rate</label>
+                                    <div class="col-lg-3 col-xl-6">
+                                        <input type="number" min="0" max="100" class="form-control" id="interestRate" name="interestRate"
+                                            ng-model="loan.interestRate"
+                                            ng-class="{'is-invalid' : newLoanDetailsForm.interestRate.$invalid && newLoanDetailsForm.interestRate.$touched, 'is-valid' : newLoanDetailsForm.interestRate.$valid && newLoanDetailsForm.interestRate.$touched }"
+                                            required />
+                                        <span class="form-text text-muted"
+                                            ng-show="newLoanDetailsForm.interestRate.$touched && newLoanDetailsForm.interestRate.$invalid">Please
+                                            enter interest rate.</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="cooperativeType"
+                                        class="col-xl-3 col-lg-3 col-form-label text-right">Term </label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <select class="form-control" id="term" name="term"
+                                            ng-model="loan.term"
+                                            ng-options="term.id as (term.name) for term in terms"
+                                            ng-class="{'is-invalid' : newLoanDetailsForm.term.$invalid &&
+                                            newLoanDetailsForm.term.$touched, 'is-valid' : newLoanDetailsForm.term.$valid && newLoanDetailsForm.term.$touched }"
+                                            required></select>
+                                        <span class="form-text text-muted"
+                                            ng-show="newLoanDetailsForm.term.$touched && newLoanDetailsForm.term.$invalid">Please
+                                            select term.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Purpose</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <textarea type="text" rows="4" cols="50" class="form-control textarea"
+                                            ng-model="loan.purpose"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Security</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <textarea type="text" rows="4" cols="50" class="form-control textarea"
+                                            ng-model="loan.security"></textarea>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom gutter-b">
+            <div class="card-header">
+                <div class="card-title">
                     <h3 class="card-label">Create New {{subProcess.name}} File
                         <span class="text-muted pt-2 font-size-sm d-block">Create New {{subProcess.name}} File</span>
                     </h3>
@@ -130,7 +209,7 @@
                                             ng-model="document.committee"
                                             ng-options="committee.id as committee.committeeName for committee in committees"
                                             ng-class="{'is-invalid' : newLoanApplicationForm.committee.$invalid &&
-                                                         ednewLoanApplicationFormitForm.committee.$touched, 'is-valid' : newLoanApplicationForm.committee.$valid && newLoanApplicationForm.committee.$touched }"
+                                            newLoanApplicationForm.committee.$touched, 'is-valid' : newLoanApplicationForm.committee.$valid && newLoanApplicationForm.committee.$touched }"
                                             required></select>
                                         <span class="form-text text-muted"
                                             ng-show="newLoanApplicationForm.committee.$touched && newLoanApplicationForm.committee.$invalid">Please
@@ -157,3 +236,5 @@
             </div>
         </div>
     </div>
+
+    

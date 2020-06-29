@@ -150,10 +150,11 @@
                                     {{subProcess.name}}
                                 </a>
                             </div>
+                           
                             <a
                                 href="#"
                                 class="btn btn-outline-success btn-sm"
-                                ng-if="subProcess.isAllowed && subProcess.isAllowedByParent"
+                                ng-if="(subProcess.isAllowed && subProcess.isAllowedByParent )  "
                                 ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)"
                             >
                                 <i class="fad fa-layer-plus"></i>

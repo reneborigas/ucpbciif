@@ -48,7 +48,7 @@
                         <div class="form-group form-group-xs row">
                             <label class="col-4 col-form-label">Borrower:</label>
                             <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ document.borrowerName }}</span>
+                                <span class="form-control-plaintext font-weight-bold"><a href="" ng-click="viewBorrower(document.borrower)"> {{ document.borrowerName }}</a></span>
                             </div>
                         </div>
                         <div class="form-group form-group-xs row">
@@ -162,7 +162,41 @@
             </div>
         </div>
     </div>
+
+
+
+   
+
     <div class="col-xl-9">
+
+            <div class="card card-custom gutter-b" >
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="fad fa-users-class"></i>
+                            </span>
+                            <h3 class="card-label">Loan</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <h4 class="mb-0">{{ document.loan.amount }}</h4>
+                                <p>Loan Amount</p>
+                                <h4 class="mb-0">{{  document.loan.interestRate }}</h4>
+                                <p>Interest Rate</p>
+                                <h4 class="mb-0">{{  document.loan.term_name }}</h4>
+                                <p>Term</p>
+                                <h4 class="mb-0">{{  document.loan.purpose }}</h4>
+                                <p>Purpose</p>
+                                <h4 class="mb-0">{{  document.loan.security }}</h4>
+                                <p>Security</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
         <div class="card card-custom gutter-b">
             <div class="card-header align-items-center border-0 mt-4">
                 <h3 class="card-title align-items-start flex-column">

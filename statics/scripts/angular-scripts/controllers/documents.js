@@ -592,6 +592,14 @@ define(function () {
                 );
             });
         };
+
+        $scope.viewBorrower = function (id) {
+            $state.go('app.borrowers.info', { borrowerId: id });
+        };
+
+
+
+
     });
 
     app.controller('DocumentAddController', function DocumentAddController(
