@@ -403,12 +403,14 @@ define(function () {
                 $http.get('/api/processes/subprocesses/').then(
                     function (response) {
                         $scope.subprocesses = response.data;
+                        $scope.subProcessCurrentPage.length = 0
+                        angular.forEach($scope.subprocesses,function(subprocess){
+                            $scope.subProcessCurrentPage[subprocess.name] = 0
+                        })
                         if($scope.borrower.documents.length){
                             
-                        angular.forEach($scope.subprocesses, function (subProcess) {
-                          
+                        angular.forEach($scope.subprocesses, function (subProcess) {                          
                             angular.forEach($scope.borrower.documents, function (document) {
-                                console.log(subProcess);
                                 if (document.subProcess.id === subProcess.id) {
 
                                     if (!document.documentMovements[0].status.isFinalStatus) {
@@ -437,12 +439,9 @@ define(function () {
                                             subProcess.isAllowedByParent = true;
                                              
                                         }
-
                                         subProcess.isAllowed = true;
                                     }
                                 }else{ 
-
-
                                     if (subProcess.relatedProcesses.length) {
                                         angular.forEach($scope.borrower.documents, function (document) {
                                             if (document.subProcess.id === subProcess.relatedProcesses[0].id) {
@@ -464,8 +463,7 @@ define(function () {
                                     } else {
                                         subProcess.isAllowedByParent = true;
                                          
-                                    }
-                                    
+                                    }                                    
                                     subProcess.isAllowed = true;
                                 }
                             });
@@ -603,6 +601,44 @@ define(function () {
             $scope.currentPageAttachment = n - 1;
         };
 
+        $scope.subProcessCurrentPage = {}
+
+        $scope.currentPageDocument = function(subProcess){
+            var currentPage;
+            angular.forEach($scope.subProcessCurrentPage,function(value,key){
+                if (subProcess.name == key){
+                    currentPage = value;
+                }
+            })
+            return currentPage;
+        }
+
+        $scope.pageSizeDocument = 5;
+
+        $scope.pageRangeDocument = function (size) {
+            var pages = [];
+            var range = Math.ceil(size / $scope.pageSizeDocument);
+            for (var i = 1; i <= range; i++) {
+                pages.push(i);
+            }
+            return pages;
+        };
+
+        $scope.gotoPrevDocument = function (subProcess) {
+            $scope.subProcessCurrentPage[subProcess.name]--
+        };
+
+        $scope.gotoNextDocument = function (subProcess) {
+            $scope.subProcessCurrentPage[subProcess.name]++
+        };
+
+        $scope.jumpToPageDocument = function (n,subProcess) {
+            $scope.subProcessCurrentPage[subProcess.name] = n - 1;
+        };
+
+
+
+
         $scope.fileAttachment = {
             attachment: [],
         };
@@ -655,6 +691,7 @@ define(function () {
                     $scope.fileList.length = 0;
                     $scope.newAttachment.attachmentDescription = '';
                     $scope.getBorrowerAttachments($scope.borrowerId);
+                    angular.element('#attach-file').modal('hide');
                     attachmentBlockUI.stop();
                 },
                 function (error) {
@@ -662,6 +699,7 @@ define(function () {
                         'Error ' + error.status + ' ' + error.statusText,
                         'Could not create upload attachments. Please contact System Administrator.'
                     );
+                    angular.element('#attach-file').modal('hide');
                     attachmentBlockUI.stop();
                 }
             );
