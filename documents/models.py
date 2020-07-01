@@ -97,11 +97,17 @@ class Document(models.Model):
         on_delete=models.CASCADE,
         related_name="documents",
     )  
-
+    parentDocument = models.ForeignKey(
+        "documents.Document",
+        on_delete=models.SET_NULL,
+        related_name="childDocuments",
+        null=True,
+        blank=True
+    )
     loan = models.ForeignKey(
         'loans.Loan',
         on_delete=models.CASCADE,
-        related_name="loans",
+        related_name="loanDocuments",
     )
 
     subProcess = models.ForeignKey(
@@ -142,7 +148,7 @@ class Document(models.Model):
 
 
     def getCurrentStatus(self):
-        return self.documentMovements.all.order_by('-id').first().status
+        return self.documentMovements.all().order_by('-id').first().status
 
 
 

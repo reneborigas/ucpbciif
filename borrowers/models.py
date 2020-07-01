@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import date
+from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum
 
 
 class ContactPerson(models.Model):
@@ -397,7 +398,13 @@ class Borrower(models.Model):
 
     def __str__(self):
         return "%s" % (self.cooperative)
- 
+    
+    def getTotalAvailments(self):
+         
+        if(not self.loans.filter(status__name='RELEASED')):
+            return 0
+        return self.loans.filter(status__name='RELEASED').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+
 
 def attachment_directory_path(instance, filename):
     # ext = filename.split('.')[-1]

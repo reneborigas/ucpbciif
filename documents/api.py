@@ -14,7 +14,7 @@ class DocumentViewSet(ModelViewSet):
 
     def get_queryset(self):  
         
-        queryset = Document.objects.prefetch_related( 
+        queryset = Document.objects.prefetch_related( 'notes',
                Prefetch( 'documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated'))
               ).annotate(
             termName=F('loan__term__name'),
@@ -26,6 +26,10 @@ class DocumentViewSet(ModelViewSet):
             subProcessId=F('subProcess__id')
         ) .exclude(isDeleted=True).order_by('-id')
 
+
+             
+       
+         
        
         documentId = self.request.query_params.get('documentId', None)
         subProcessName = self.request.query_params.get('subProcessName', None)
@@ -41,7 +45,11 @@ class DocumentViewSet(ModelViewSet):
         if subProcessId is not None:
             queryset = queryset.filter(subProcess=subProcessId)
 
-        return queryset.prefetch_related('notes')
+        for document in queryset:
+            document.currentStatus = document.getCurrentStatus() 
+            print(document.currentStatus )
+
+        return queryset
 
 
  

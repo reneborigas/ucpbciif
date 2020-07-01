@@ -2,8 +2,8 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
-from committees.serializers import PositionSerializer
-
+from committees.serializers import PositionSerializer 
+from loans.serializers import LoanSerializer
 
 class RelatedProcessSerializer(serializers.ModelSerializer):
     relatedProcesses = serializers.PrimaryKeyRelatedField(queryset=SubProcess.objects.all(), many=True)
@@ -13,7 +13,9 @@ class RelatedProcessSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SubProcessSerializer(ModelSerializer): 
-    
+    canCreateNewFile = serializers.CharField(read_only=True)
+    parentLastDocumentLoan = LoanSerializer(read_only=True)
+
     relatedProcesses = RelatedProcessSerializer(many=True,read_only=True)
     def create(self, validated_data):
         loan = SubProcess.objects.create(**validated_data) 
@@ -106,6 +108,44 @@ class StepRequirementSerializer(ModelSerializer):
         fields = '__all__'   
 
 
+ 
+class ProcessRequirementAttachmentSerializer(ModelSerializer):
+    def create(self, validated_data):
+        processRequirementAttachment = ProcessRequirementAttachment.objects.create(**validated_data) 
+        
+        return processRequirementAttachment
+
+    def update(self, instance, validated_data):
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = ProcessRequirementAttachment          
+        fields = '__all__'   
+        
+class ProcessRequirementSerializer(ModelSerializer):
+    isRequiredText = serializers.CharField(read_only=True)
+    processRequirementAttachments =ProcessRequirementAttachmentSerializer(many=True,required=False)
+    def create(self, validated_data):
+        processRequirement = ProcessRequirement.objects.create(**validated_data) 
+
+        return processRequirement
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = ProcessRequirement          
+        fields = '__all__'   
+
+        
+
 
 class StatusSerializer(ModelSerializer):
      
@@ -125,3 +165,12 @@ class StatusSerializer(ModelSerializer):
     class Meta:
         model = Statuses          
         fields = '__all__'   
+
+
+# class CanCreateFileSerializer(ModelSerializer):
+#     can_add_new = serializers.CharField(read_only=True)
+#     stepStatus = serializers.CharField(read_only=True)
+
+#     class Meta:
+#         model = Statuses          
+#         fields = '__all__'  

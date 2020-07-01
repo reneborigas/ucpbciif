@@ -12,7 +12,7 @@ class BorrowerViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Borrower.objects.prefetch_related('borrowerAttachments',
+        queryset = Borrower.objects.prefetch_related('borrowerAttachments','documents',
             Prefetch('cooperative',Cooperative.objects.annotate(
                 cooperativeTypeText=F('cooperativeType__name')
             ).all()),
@@ -29,7 +29,10 @@ class BorrowerViewSet(ModelViewSet):
         if borrowerId is not None:
             queryset = queryset.filter(borrowerId=borrowerId)
 
-        return queryset.prefetch_related('documents')
+        for borrower in queryset:
+            borrower.totalAvailments = borrower.getTotalAvailments
+
+        return queryset
 
 
 class ContactPersonViewSet(ModelViewSet):

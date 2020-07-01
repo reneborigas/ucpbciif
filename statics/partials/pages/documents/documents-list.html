@@ -52,7 +52,10 @@
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'FILE TYPE'" sortable="'documentTypeName'">
                                     {{ document.documentTypeName  }}
-                                </td>                         
+                                </td>  
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'documentTypeName'">
+                                        {{ document.currentStatus.name  }}
+                                    </td>                       
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
                                     <!-- <div class="dropdown dropdown-inline">
                                         <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"

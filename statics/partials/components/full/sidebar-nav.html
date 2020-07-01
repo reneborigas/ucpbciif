@@ -17,9 +17,11 @@
 			</li>
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.components')}">
 				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.components')}" >
-					<i class="fas fa-hand-holding-usd"></i> Loans
+					<i class="fas fa-hand-holding-usd"></i> Files
 				</a>
 				<ul class="nav-dropdown-items">
+
+
 					<li class="nav-item">
 						<a class="nav-link" ui-sref-active="active" ui-sref="app.documents.list({ subProcessName : 'credit-line-approval' })">
 							<i class="fas fa-spinner"></i> Loan Applications
@@ -38,6 +40,23 @@
 					
 				</ul>
 			</li>
+
+			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.components')}">
+					<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.components')}" >
+						<i class="fas fa-hand-holding-usd"></i> Loans
+					</a>
+					<ul class="nav-dropdown-items">
+	
+						
+						<li class="nav-item">
+							<a class="nav-link" ui-sref-active="active" ui-sref="app.documents.list({ subProcessName : 'credit-line-approval' })">
+								<i class="fas fa-spinner"></i> Loan List
+							</a>
+						</li>
+					 
+						
+					</ul>
+				</li>
 			<li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
 				<a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#"><i class="fal fa-money-bill"></i> Payments</a>
 				<ul class="nav-dropdown-items">

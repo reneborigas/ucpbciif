@@ -121,7 +121,9 @@ define(function () {
     ) {
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
+        
 
+            
             // appFactory.getActivities($scope.documentId).then(function(data) {
 
             // 	$scope.currentStep = response.data[0];
@@ -137,25 +139,27 @@ define(function () {
                         function (response) {
                             $scope.currentStep = response.data[0];
 
-                            $http
-                                .get('/api/processes/steprequirements/', { params: { stepId: $scope.currentStep.id } })
-                                .then(
-                                    function (response) {
-                                        $scope.stepRequirements = response.data;
+                            // $http
+                            //     .get('/api/processes/steprequirements/', { params: { stepId: $scope.currentStep.id } })
+                            //     .then(
+                            //         function (response) {
+                            //             $scope.stepRequirements = response.data;
 
-                                        $scope.currentRequirement = $scope.stepRequirements[0];
-                                        $scope.goToRequirement($scope.stepRequirements[0].id);
-
-                                        // $scope.currentRequirement.attachments =
-                                        // 	$scope.currentRequirement.stepRequirementAttachments;
-                                    },
-                                    function (error) {
-                                        toastr.error(
-                                            'Error ' + error.status + ' ' + error.statusText,
-                                            'Could not retrieve Step Requirements Information. Please contact System Administrator.'
-                                        );
-                                    }
-                                );
+                            //             $scope.currentRequirement = $scope.stepRequirements[0];
+                            //             if($scope.stepRequirements[0]){
+                            //                 $scope.goToRequirement($scope.stepRequirements[0].id);
+                            //             }
+                                        
+                            //             // $scope.currentRequirement.attachments =
+                            //             // 	$scope.currentRequirement.stepRequirementAttachments;
+                            //         },
+                            //         function (error) {
+                            //             toastr.error(
+                            //                 'Error ' + error.status + ' ' + error.statusText,
+                            //                 'Could not retrieve Step Requirements Information. Please contact System Administrator.'
+                            //             );
+                            //         }
+                            //     );
                         },
                         function (error) {
                             toastr.error(
@@ -172,23 +176,23 @@ define(function () {
                         .then(
                             function (response) {
                                 $scope.currentStep = response.data[0];
-                                $http
-                                    .get('/api/processes/steprequirements/', {
-                                        params: { stepId: $scope.currentStep.id },
-                                    })
-                                    .then(
-                                        function (response) {
-                                            $scope.stepRequirements = response.data;
+                                // $http
+                                //     .get('/api/processes/steprequirements/', {
+                                //         params: { stepId: $scope.currentStep.id },
+                                //     })
+                                //     .then(
+                                //         function (response) {
+                                //             $scope.stepRequirements = response.data;
 
-                                            $scope.currentRequirement = $scope.stepRequirements[0];
-                                        },
-                                        function (error) {
-                                            toastr.error(
-                                                'Error ' + error.status + ' ' + error.statusText,
-                                                'Could not retrieve Step Requirements Information. Please contact System Administrator.'
-                                            );
-                                        }
-                                    );
+                                //             $scope.currentRequirement = $scope.stepRequirements[0];
+                                //         },
+                                //         function (error) {
+                                //             toastr.error(
+                                //                 'Error ' + error.status + ' ' + error.statusText,
+                                //                 'Could not retrieve Step Requirements Information. Please contact System Administrator.'
+                                //             );
+                                //         }
+                                //     );
                             },
                             function (error) {
                                 toastr.error(
@@ -217,7 +221,36 @@ define(function () {
             .then(
                 function (response) {
                     $scope.document = response.data[0];
+                
+                    $scope.loadProcessRequirements();
                     $scope.loadNotes();
+                  
+
+                    $http
+                    .get('/api/borrowers/borrowers/', {
+                        params: { borrowerId: $scope.document.borrower},
+                    })
+                    .then(
+                        function (response) {
+                            $scope.borrower = response.data[0];
+                        
+                            
+                            appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                console.log(data);
+                                $scope.windows = data; 
+                            }); 
+                           
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve Borrower Information. Please contact System Administrator.'
+                            );
+                        }
+                    );
+                    
+                    
+                   
                 },
                 function (error) {
                     toastr.error(
@@ -226,6 +259,10 @@ define(function () {
                     );
                 }
             );
+        
+
+
+
 
         $scope.loadNotes = function () {
             return appFactory.getContentTypeId('note').then(function (data) {
@@ -235,6 +272,31 @@ define(function () {
             });
         };
 
+
+
+        $scope.loadProcessRequirements = function(){
+
+            $http
+            .get('/api/processes/processrequirements/', { params: { subProcessId: $scope.document.subProcess.id } })
+            .then(
+                function (response) {
+                    $scope.processRequirements = response.data;
+
+                    $scope.currentRequirement = $scope.processRequirements[0];
+                    if($scope.processRequirements[0]){
+                        $scope.goToRequirement($scope.processRequirements[0].id);
+                    } 
+                    // $scope.currentRequirement.attachments =
+                    // 	$scope.currentRequirement.stepRequirementAttachments;
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Process Requirements Information. Please contact System Administrator.'
+                    );
+                }
+            );
+        };
         $http.get('/api/documents/documentmovements/', { params: { documentId: $scope.documentId } }).then(
             function (response) {
                 $scope.documentMovements = response.data;
@@ -259,6 +321,7 @@ define(function () {
             }
         );
 
+      
         $scope.getRequirement = function () {
             for (var i = 0; i < $scope.stepRequirements.length; i++) {
                 if ($scope.currentRequirement.id == $scope.stepRequirements[i].id) {
@@ -268,12 +331,12 @@ define(function () {
         };
 
         $scope.goToRequirement = function (id) {
-            for (var i = 0; i < $scope.stepRequirements.length; i++) {
-                if ($scope.stepRequirements[i].id == id) {
-                    $scope.currentRequirement = $scope.stepRequirements[i];
+            for (var i = 0; i < $scope.processRequirements.length; i++) {
+                if ($scope.processRequirements[i].id == id) {
+                    $scope.currentRequirement = $scope.processRequirements[i];
                     $http
-                        .get('/api/processes/steprequirementsattachments/', {
-                            params: { stepRequirementId: $scope.currentRequirement.id, documentId: $scope.documentId },
+                        .get('/api/processes/processrequirementsattachments/', {
+                            params: { processRequirementId: $scope.currentRequirement.id, documentId: $scope.documentId },
                         })
                         .then(
                             function (response) {
@@ -463,14 +526,14 @@ define(function () {
 
         var promises = [];
 
-        $scope.attachFile = function (stepRequirement) {
+        $scope.attachFile = function (processRequirement) {
             attachmentBlockUI.start('Attaching File...');
             angular.forEach($scope.fileList, function (fileList, index) {
                 var newAttachment = {
                     fileName: $scope.fileAttachment.attachment[index].name,
                     fileAttachment: $scope.fileAttachment.attachment[index],
                     description: $scope.newAttachment.attachmentDescription,
-                    stepRequirement: stepRequirement.id,
+                    processRequirement: processRequirement.id,
                     document: $scope.documentId,
                 };
                 var formData = new FormData();
@@ -503,7 +566,7 @@ define(function () {
         $scope.uploadFile = function (formData) {
             var defer = $q.defer();
             return $http
-                .post('/api/processes/steprequirementsattachments/', formData, {
+                .post('/api/processes/processrequirementsattachments/', formData, {
                     transformRequest: angular.identity,
                     headers: { 'Content-Type': undefined },
                 })
@@ -579,6 +642,7 @@ define(function () {
                     function () {
                         toastr.success('Success', 'Note added succesfully.');
                         $scope.loadNotes();
+                        
                         $scope.newNote.noteDescription = '';
                         noteBlockUI.stop();
                     },

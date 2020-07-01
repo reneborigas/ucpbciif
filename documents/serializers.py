@@ -9,8 +9,7 @@ from processes.models import Statuses,Step,Output,SubProcess
 from processes.serializers import OutputSerializer,StatusSerializer,SubProcessSerializer
 from committees.serializers import NoteSerializer
 from loans.serializers import LoanSerializer
-from loans.models import Loan
-
+from loans.models import Loan 
 
 
 class DocumentMovementSerializer(ModelSerializer): 
@@ -27,6 +26,10 @@ class DocumentMovementSerializer(ModelSerializer):
 
 
     def create(self, validated_data): 
+
+
+
+
          
         document = Document.objects.get(pk=validated_data.get("document").id)
         outputId =  validated_data.get("outputId")
@@ -58,6 +61,9 @@ class DocumentMovementSerializer(ModelSerializer):
         fields = '__all__'
 
 class DocumentSerializer(ModelSerializer):
+
+
+
     subProcessName = serializers.CharField(read_only=True)
     documentTypeName = serializers.CharField(read_only=True)
     borrowerName = serializers.CharField(read_only=True)
@@ -66,12 +72,13 @@ class DocumentSerializer(ModelSerializer):
     loan = LoanSerializer(read_only=True)
 
     loanid= serializers.CharField()
-    currentStatus = serializers.CharField(read_only=True)
+    currentStatus = StatusSerializer(read_only=True)
     
     documentMovements = DocumentMovementSerializer(many=True,read_only=True)
     lastDocumentMovementId = serializers.CharField(read_only=True)
     subProcess = SubProcessSerializer(read_only=True)
     subProcessId = serializers.CharField()
+     
     def create(self, validated_data): 
         
         committee = Committee.objects.get(pk=validated_data.get("committee", "1"))
@@ -79,9 +86,22 @@ class DocumentSerializer(ModelSerializer):
         status = Statuses.objects.get(pk=1)
         # subProcess = SubProcess.objects.get(pk=validated_data.get("subProcess")[''] )
         # validated_data.set("subProcess",)
-        print(validated_data)
+        # print(validated_data)
 
         subProcess = SubProcess.objects.get(pk=validated_data.get("subProcessId","1" ))
+         
+        parentDocument = None
+        if(subProcess.relatedProcesses.last()):
+            lastDocument = Document.objects.filter(
+                borrower_id=validated_data.get("borrower" ),
+                subProcess = subProcess.relatedProcesses.last(),
+
+                ).order_by('id').last()
+            
+          
+            if(lastDocument.documentMovements.last().status.isFinalStatus and not lastDocument.documentMovements.last().status.isNegativeResult):
+                parentDocument = lastDocument
+
         loan = Loan.objects.get(pk=validated_data.get("loanid" ))
 
         document=Document(
@@ -90,8 +110,11 @@ class DocumentSerializer(ModelSerializer):
         code=subProcess.code, 
         documentType=validated_data.get("documentType" ), 
         borrower=validated_data.get("borrower" ), 
-        loan=loan
+        loan=loan,
+        parentDocument=parentDocument
         )
+
+         
         document.save()
 
         # document = Document.objects.create(**validated_data) 
@@ -130,4 +153,4 @@ class DocumentSerializer(ModelSerializer):
     class Meta:
         model = Document          
         fields = '__all__'
-
+ 

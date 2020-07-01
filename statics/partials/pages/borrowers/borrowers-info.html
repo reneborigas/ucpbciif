@@ -112,10 +112,11 @@
                             <span class="card-label text-dark">{{ subProcess.name }}</span>
                         </div>
                         <div class="card-toolbar">
+                  
                             <a
                                 href="#"
                                 class="btn btn-success font-weight-bolder font-size-sm"
-                                ng-if="(subProcess.isAllowed && subProcess.isAllowedByParent)"
+                                ng-if="subProcess.canCreateNewFile == 'True'"
                                 ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)"
                             >
                                 <i class="fad fa-layer-plus"></i>

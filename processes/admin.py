@@ -8,5 +8,8 @@ admin.site.register(StepRequirement)
 admin.site.register(Step)
 admin.site.register(Output)
 admin.site.register(ProcessRequirement)
+
 admin.site.register(StepRequirementAttachment)
+
+admin.site.register(ProcessRequirementAttachment)
     

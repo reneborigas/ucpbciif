@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator 
-    
+
 class Process(models.Model):     
     name = models.CharField(
         max_length=255,
@@ -82,7 +82,84 @@ class SubProcess(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
+    def isCanCreateNewFile(self,borrower):
+        isAllowed = False
+        isAllowedByParent = False
+        from documents.models import Document
 
+        parentDocument = None
+        if(self.relatedProcesses.last()):
+
+
+            lastDocument = Document.objects.filter(
+                borrower=borrower,
+                subProcess = self.relatedProcesses.last(),
+
+                ).order_by('id').last()
+
+
+            if(lastDocument):
+                if(lastDocument.documentMovements.last().status.isFinalStatus and not lastDocument.documentMovements.last().status.isNegativeResult):
+                    isAllowedByParent = True
+                else:
+                    print("here")
+                    isAllowedByParent = False
+            
+        lastDocument = Document.objects.filter(
+            borrower=borrower,
+            subProcess = self,
+
+            ).order_by('id').last()
+
+        if(lastDocument):
+            if(lastDocument.documentMovements.last().status.isFinalStatus ): 
+
+                isAllowed = True
+            else:
+                print("here") 
+                isAllowed = False
+        else:
+            isAllowed=True
+
+        if( (not lastDocument) and (not self.relatedProcesses.last() )):
+            isAllowed=True
+            isAllowedByParent=True
+
+        if( (lastDocument) and (not self.relatedProcesses.last() )):
+            
+            isAllowedByParent=True
+
+          
+
+        print(self)
+        print(isAllowed)
+        print(isAllowedByParent)
+        if isAllowed and isAllowedByParent:
+            return True
+
+        return False
+
+
+    def getParentLastDocument(self,borrower):
+        from documents.models import Document
+
+
+        if(self.relatedProcesses.last()):
+
+
+            lastDocument = Document.objects.filter(
+                borrower=borrower,
+                subProcess = self.relatedProcesses.last(),
+
+                ).order_by('id').last()
+
+
+            if(lastDocument):
+                if(lastDocument.documentMovements.last().status.isFinalStatus and not lastDocument.documentMovements.last().status.isNegativeResult):
+                    isAllowedByParent = True
+
+            return lastDocument.loan
+        return None
 
     def __str__(self):
         return "%s" % (self.name)
@@ -144,11 +221,7 @@ class ProcessRequirement(models.Model):
         blank = False,
         null = False, 
     )
-    code = models.CharField(
-        max_length=255,
-        blank = False,
-        null = False, 
-    ) 
+     
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,
@@ -184,8 +257,9 @@ class ProcessRequirement(models.Model):
         default=False,
     )
 
+    
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s - %s" % (self.subProcess,self.name)
 
 class Step(models.Model):  
     # def _get_self_subProcess(self):
@@ -393,6 +467,60 @@ class StepRequirementAttachment(models.Model):
     def __str__(self):
         return "%s - %s" % (self.stepRequirement,self.fileName)
 
+
+def process_attachment_directory_path(instance, filename):
+    # ext = filename.split('.')[-1]
+    # filename = "%s_%s.%s" % (instance.user.id, instance.questid.id, ext)
+    return 'attachments_{0}/{1}'.format(instance.processRequirement.id, filename)
+
+class ProcessRequirementAttachment(models.Model):  
+    fileName = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+    fileAttachment = models.FileField(
+        null = True,
+        blank=True,
+        upload_to=process_attachment_directory_path
+    )
+    processRequirement = models.ForeignKey(
+        ProcessRequirement,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="processRequirementAttachments",
+    )    
+    document = models.ForeignKey(
+        'documents.Document',
+        on_delete=models.CASCADE,
+        related_name="documentProcessRequirementAttachments",
+    )
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="processAttachmentCreatedBy",
+        null = True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s - %s" % (self.processRequirement,self.fileName)
 # class PositionStep(models.Model):  
 
 #     position = models.CharField(

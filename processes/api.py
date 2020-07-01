@@ -6,6 +6,7 @@ from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, Expres
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 
 from committees.models import Position
+from borrowers.models import Borrower
 
 class SubProcessViewSet(ModelViewSet):
     queryset = SubProcess.objects.all()
@@ -13,12 +14,27 @@ class SubProcessViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
+
+
+    
         queryset = SubProcess.objects.order_by('id')
+        borrowerId = self.request.query_params.get('borrowerId', None)
         subProcessId = self.request.query_params.get('subProcessId', None)
+        
 
         if subProcessId is not None:
             queryset = queryset.filter(id=subProcessId)
 
+        if borrowerId is not None:
+
+            borrower = Borrower.objects.get(pk=borrowerId)
+            
+            for subProcess in queryset:
+                subProcess.canCreateNewFile = subProcess.isCanCreateNewFile(borrower)
+                subProcess.parentLastDocumentLoan = subProcess.getParentLastDocument(borrower)       
+       
+         
+      
         return queryset
 
 
@@ -26,7 +42,7 @@ class StepViewSet(ModelViewSet):
     queryset = Step.objects.all()
     serializer_class = StepSerializer 
     permission_classes = (permissions.IsAuthenticated, )
-
+    
     def get_queryset(self):
         queryset = Step.objects.exclude(isDeleted=True).order_by('order')
         stepId = self.request.query_params.get('stepId', None)
@@ -144,5 +160,68 @@ class StepRequirementAttachmentViewSet(ModelViewSet):
 
             if stepRequirementAttachmentId is not None:
                 queryset = queryset.filter(id=stepRequirementAttachmentId)
+
+        return queryset
+
+
+
+#----Process
+
+
+class ProcessRequirementViewSet(ModelViewSet):
+    queryset = ProcessRequirement.objects.all()
+    serializer_class = ProcessRequirementSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = ProcessRequirement.objects.annotate(
+            isRequiredText=Case(
+                    When(isRequired=True, then=V('Required')), 
+                    default=V('Not Required'),
+                    output_field=CharField(),
+        ),
+            processName=F('subProcess__name'),  
+        ).order_by('id')
+
+
+        subProcessId   = self.request.query_params.get('subProcessId', None)
+
+        
+        if subProcessId is not None:
+            queryset = queryset.filter(subProcess__id=subProcessId)
+        else:        
+            processRequirementId = self.request.query_params.get('processRequirementId', None)
+
+            if processRequirementId is not None:
+                queryset = queryset.filter(id=processRequirementId)
+
+        return queryset.prefetch_related("processRequirementAttachments")
+
+
+class ProcessRequirementAttachmentViewSet(ModelViewSet):
+    queryset = ProcessRequirementAttachment.objects.all()
+    serializer_class = ProcessRequirementAttachmentSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = ProcessRequirementAttachment.objects.annotate(
+            processRequirementName=F('processRequirement__name'), 
+        ).order_by('id')
+
+        processRequirementId = self.request.query_params.get('processRequirementId', None)
+        
+
+        if processRequirementId is not None:
+
+            documentId = self.request.query_params.get('documentId', None)
+            
+            if documentId is not None:
+                queryset = queryset.filter(processRequirement__id=processRequirementId,document__id=documentId) 
+            
+        else:
+            processRequirementAttachmentId = self.request.query_params.get('processRequirementAttachmentId', None)
+
+            if processRequirementAttachmentId is not None:
+                queryset = queryset.filter(id=processRequirementAttachmentId)
 
         return queryset

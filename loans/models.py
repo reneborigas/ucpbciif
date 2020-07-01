@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from borrowers.models import Borrower
 from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum
 
 class Status(models.Model):  
     name = models.CharField(
@@ -125,6 +126,60 @@ class Term(models.Model):
 
 
 
+class LoanProgram(models.Model):
+
+    name = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )    
+    creditLineAmount = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+
+
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="loanProgramCreatedBy",
+        null = True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+    def getActiveLoan(self,borrower):
+       
+        if self.programLoans.all().last():
+            return self.programLoans.filter(status__name='RELEASED',borrower=borrower).last()
+
+        return None
+
+    def getTotalAvailments(self,borrower):
+         
+        if(not self.programLoans.filter(status__name='RELEASED',borrower=borrower)):
+            return 0
+        return self.programLoans.filter(status__name='RELEASED',borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+
+   
+
 class Loan(models.Model):
 
     borrower =  models.ForeignKey(
@@ -133,6 +188,13 @@ class Loan(models.Model):
         related_name="loans",
     )
   
+
+    loanProgram =  models.ForeignKey(
+       LoanProgram,
+        on_delete=models.CASCADE,
+        related_name="programLoans", 
+    )
+
     amount = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
 
     interestRate = models.DecimalField( max_digits=5, decimal_places=2,blank=False) 
@@ -143,6 +205,8 @@ class Loan(models.Model):
         related_name="loans",
           null = True,
     )
+
+
 
     purpose = models.TextField(
         blank = True,

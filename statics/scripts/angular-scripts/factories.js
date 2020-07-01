@@ -153,11 +153,28 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve Committee list. Please contact System Administrator.'
+                            'Could not retrieve term list. Please contact System Administrator.'
                         );
                     }
                 );
             },
+            
+            getLoanPrograms: function (borrowerId) {
+                console.log(borrowerId);
+                return $http.get('/api/loans/loanprograms/',{ params: { borrowerId: borrowerId } }).then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve loan program list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            
+
             getLastActivity: function (documentId) {
                 return $http
                     .get('/api/documents/documentmovements/', { params: { process: 'last', documentId: documentId } })
