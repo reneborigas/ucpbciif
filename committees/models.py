@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Prefetch,F,Case,When,Value as V
+from django.db.models.functions import Concat
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -74,12 +76,20 @@ class Position(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
+class AnnotatedCommitteeManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().annotate(
+            committeeName=Concat(F('firstname'),V(' '),F('middlename'),V(' '),F('lastname')),
+            positionName=F('position__name'),
+            officeName=F('position__office__name'),
+        )
+
 class Committee(models.Model):     
     position = models.ForeignKey(
         Position,
         on_delete=models.CASCADE, 
         related_name="committees",
-    )    
+    )
     firstname = models.CharField(
         max_length=255,
         null=True,
@@ -114,6 +124,13 @@ class Committee(models.Model):
         null=True,
         blank=True 
     )
+    user = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="committeeUserAccount",
+        null = True,
+        blank=True,
+    )
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
@@ -129,6 +146,8 @@ class Committee(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
+    objects = AnnotatedCommitteeManager()
+
     def __str__(self):
         return "%s %s %s" % (self.firstname,self.middlename,self.lastname)
         

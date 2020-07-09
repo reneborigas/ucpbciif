@@ -46,9 +46,23 @@ define(function () {
                     }
                 );
             },
+            getOfficeId: function (officeName) {
+                return $http.get('/api/committees/offices/', { params: { officeName: officeName } }).then(
+                    function (response) {
+                        return response.data[0].id;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Office ID. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getSubProcessId: function (subProcessName) {
                 return $http.get('/api/documents/documents/', { params: { subProcessName: subProcessName } }).then(
                     function (response) {
+                        console.log(response.data[0].subProcess);
                         return response.data[0].subProcess;
                     },
                     function (error) {
@@ -59,7 +73,6 @@ define(function () {
                     }
                 );
             },
-
             getSubProcess: function (subProcessId) {
                 return $http.get('/api/processes/subprocesses/', { params: { subProcessId: subProcessId } }).then(
                     function (response) {
@@ -73,7 +86,6 @@ define(function () {
                     }
                 );
             },
-
             getCurrentUser: function () {
                 var values = JSON.parse(localStorage.getItem('currentUser'));
                 return values['id'];
@@ -88,6 +100,19 @@ define(function () {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
                             'Could not retrieve current user information. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getUserAccountTypeID: function (accountType) {
+                return $http.get('/api/users/accounttype/', { params: { account_type: accountType } }).then(
+                    function (response) {
+                        return response.data[0].id;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve user account types. Please contact System Administrator.'
                         );
                     }
                 );
@@ -144,7 +169,19 @@ define(function () {
                     }
                 );
             },
-
+            getCommitteeName: function (committeeId) {
+                return $http.get('/api/committees/committees/', { params: { committeeId: committeeId } }).then(
+                    function (response) {
+                        return response.data[0].committeeName;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Committee list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getTerm: function () {
                 return $http.get('/api/loans/terms/').then(
                     function (response) {
@@ -158,10 +195,9 @@ define(function () {
                     }
                 );
             },
-            
             getLoanPrograms: function (borrowerId) {
                 console.log(borrowerId);
-                return $http.get('/api/loans/loanprograms/',{ params: { borrowerId: borrowerId } }).then(
+                return $http.get('/api/loans/loanprograms/', { params: { borrowerId: borrowerId } }).then(
                     function (response) {
                         return response.data;
                     },
@@ -173,7 +209,6 @@ define(function () {
                     }
                 );
             },
-            
 
             getLastActivity: function (documentId) {
                 return $http

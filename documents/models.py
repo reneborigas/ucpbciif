@@ -151,9 +151,6 @@ class Document(models.Model):
         return self.documentMovements.all().order_by('-id').first().status
 
 
-
-
-
 class DocumentMovement(models.Model):     
     document = models.ForeignKey(
         Document,

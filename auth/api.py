@@ -5,6 +5,7 @@ from rest_framework import status, views
 from rest_framework.response import Response
 from .serializers import UserSerializer
 
+
 class LoginView(views.APIView):
     
     @method_decorator(csrf_protect)

@@ -1,12 +1,16 @@
-define(function(){
+define(function () {
     'use strict';
 
-    var lmsApp =  angular.module('lmsApp');
+    var app = angular.module('app');
 
-    lmsApp.controller('LogsListController',
-        function LogsListController($http, $filter, $scope, toastr, NgTableParams,cmsService, $state, $timeout){
-
-        }        
-    );
-
+    app.controller('LogsListController', function LogsListController(
+        $http,
+        $filter,
+        $scope,
+        toastr,
+        NgTableParams,
+        cmsService,
+        $state,
+        $timeout
+    ) {});
 });

@@ -1,0 +1,427 @@
+<div class="row" ng-controller="CommitteeInfoController">
+    <div class="col-xl-12">
+        <div class="card card-custom card-stretch gutter-b">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">{{ officeName }} Commitees</h3>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="vertical-wizard vertical-wizard-table">
+                    <div class="wizard-table border-right py-1 px-8 py-lg-12 px-lg-8">
+                        <div class="datatable datatable-default">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap pl-3 py-2">
+                                <div class="mr-3">
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        Positions
+                                    </span>
+                                </div>
+                                <div class="my-lg-0 my-1">
+                                    <a
+                                        href="#"
+                                        class="btn btn-sm btn-success font-weight-bolder font-size-sm"
+                                        data-toggle="modal"
+                                        data-target="#new-position"
+                                    >
+                                        <i class="fad fa-users-medical"></i>
+                                        Create
+                                    </a>
+                                </div>
+                            </div>
+                            <table
+                                class="table table-hover table-clickable table-vertical-center datatable-table"
+                                ng-table="tablePositions"
+                                template-pagination="statics/partials/customs/pagination.html"
+                            >
+                                <tr
+                                    class="datatable-row"
+                                    ng-class="{ 'active' : position.id == currentCommitteePosition }"
+                                    ng-repeat="position in $data"
+                                    ng-click="loadCommittee(position.id,position.name)"
+                                >
+                                    <td
+                                        class="datatable-cell datatable-cell-left"
+                                        header-class="'text-left'"
+                                        data-title="'NAME'"
+                                        sortable="'name'"
+                                    >
+                                        <a href="#" class="btn btn-link-primary font-weight-bold">
+                                            {{ position.name }}
+                                        </a>
+                                    </td>
+                                    <td
+                                        class="datatable-cell datatable-cell-left"
+                                        header-class="'text-left'"
+                                        data-title="'DESCRIPTION'"
+                                        sortable="'description'"
+                                    >
+                                        {{ position.description }}
+                                    </td>
+                                    <td class="datatable-cell" data-title="'ACTIONS'">
+                                        <div class="dropdown dropdown-inline">
+                                            <button
+                                                type="button"
+                                                class="btn btn-clean btn-hover-bg-primary btn-hover-text-white btn-sm btn-icon"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                                data-boundary="viewport"
+                                            >
+                                                <i class="fal fa-ellipsis-h"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                <a class="dropdown-item" href="" ng-click="view(borrower.borrowerId)">
+                                                    <i class="fal fa-eye mr-2"></i>
+                                                    View
+                                                </a>
+                                                <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)">
+                                                    <i class="fal fa-edit mr-2"></i>
+                                                    Edit
+                                                </a>
+                                                <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)">
+                                                    <i class="fal fa-trash-alt mr-2"></i>
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="wizard-body py-1 px-8 py-lg-12 px-lg-8" block-ui="committeeBlockUI">
+                        <div class="row">
+                            <div class="col-xxl-12 datatable datatable-default">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap pl-3 py-2">
+                                    <div class="mr-3">
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                            {{ currentCommitteePositionName }} Members
+                                        </span>
+                                    </div>
+                                    <div class="my-lg-0 my-1">
+                                        <a
+                                            href="#"
+                                            class="btn btn-sm btn-success font-weight-bolder font-size-sm"
+                                            data-toggle="modal"
+                                            data-target="#new-committee"
+                                        >
+                                            <i class="fad fa-users-medical"></i>
+                                            Create
+                                        </a>
+                                    </div>
+                                </div>
+                                <table
+                                    class="table table-vertical-center datatable-table"
+                                    ng-table="tableCommitteeMembers"
+                                    template-pagination="statics/partials/customs/pagination.html"
+                                >
+                                    <tr class="datatable-row" ng-repeat="committee in $data">
+                                        <td
+                                            class="datatable-cell datatable-cell-left"
+                                            header-class="'text-left'"
+                                            data-title="'NAME'"
+                                            sortable="'committeeName'"
+                                        >
+                                            {{ committee.committeeName }}
+                                        </td>
+                                        <td
+                                            class="datatable-cell datatable-cell-left"
+                                            header-class="'text-left'"
+                                            data-title="'PHONE NO'"
+                                            sortable="'phoneNo'"
+                                        >
+                                            {{ committee.phoneNo }}
+                                        </td>
+                                        <td
+                                            class="datatable-cell datatable-cell-left"
+                                            header-class="'text-left'"
+                                            data-title="'EMAIL'"
+                                            sortable="'emailAddress'"
+                                        >
+                                            {{ committee.emailAddress }}
+                                        </td>
+                                        <td
+                                            class="datatable-cell datatable-cell-left"
+                                            header-class="'text-left'"
+                                            data-title="'ACTIONS'"
+                                        >
+                                            <a
+                                                href=""
+                                                class="btn btn-sm btn-clean btn-icon mr-2"
+                                                ng-click="viewMember(officeName,committee.id)"
+                                            >
+                                                <i class="fad fa-eye"></i>
+                                            </a>
+                                            <a
+                                                href=""
+                                                class="btn btn-sm btn-clean btn-icon mr-2"
+                                                ng-click="edit(office.id)"
+                                            >
+                                                <i class="fad fa-edit"></i>
+                                            </a>
+                                            <a
+                                                href=""
+                                                class="btn btn-sm btn-clean btn-icon mr-2"
+                                                ng-click="delete(office.id)"
+                                            >
+                                                <i class="fad fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal New Office -->
+    <div
+        id="new-position"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create New Position</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form" name="newPositionForm">
+                        <div class="form-group">
+                            <label>Position Title:</label>
+                            <span>*</span>
+                            <input
+                                type="text"
+                                class="form-control form-control-solid"
+                                placeholder="Enter position title"
+                                id="name"
+                                name="name"
+                                ng-model="newPosition.name"
+                                ng-class="{'is-invalid' : newPositionForm.name.$invalid && newPositionForm.name.$touched, 'is-valid' : newPositionForm.name.$valid && newPositionForm.name.$touched }"
+                                required
+                            />
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newPositionForm.name.$touched && newPositionForm.name.$invalid"
+                            >
+                                Please enter Office Name.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea
+                                type="text"
+                                class="form-control form-control-solid textarea"
+                                placeholder="Enter description"
+                                rows="3"
+                                cols="50"
+                                id="description"
+                                name="description"
+                                ng-model="newPosition.description"
+                            ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks:</label>
+                            <textarea
+                                type="text"
+                                class="form-control form-control-solid textarea"
+                                placeholder="Enter remarks"
+                                rows="3"
+                                cols="50"
+                                id="remarks"
+                                name="remarks"
+                                ng-model="newPosition.remarks"
+                            ></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-light font-weight-bold"
+                        ng-click="resetModalForm('#new-position')"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        ng-click="createPosition(newPosition)"
+                    >
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+    <!-- Modal New Committee -->
+    <div
+        id="new-committee"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create New Committee Member</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form" name="newCommitteeForm">
+                        <div class="form-group">
+                            <label>First Name:</label>
+                            <span>*</span>
+                            <input
+                                type="text"
+                                class="form-control form-control-solid"
+                                placeholder="Enter first name"
+                                id="firstname"
+                                name="firstname"
+                                ng-model="newCommittee.firstname"
+                                ng-class="{'is-invalid' : newCommitteeForm.firstname.$invalid && newCommitteeForm.firstname.$touched, 'is-valid' : newCommitteeForm.firstname.$valid && newCommitteeForm.firstname.$touched }"
+                                required
+                            />
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newCommitteeForm.firstname.$touched && newCommitteeForm.firstname.$invalid"
+                            >
+                                Please enter First Name.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Middle Name:</label>
+                            <span>*</span>
+                            <input
+                                type="text"
+                                class="form-control form-control-solid"
+                                placeholder="Enter middle name"
+                                id="middlename"
+                                name="middlename"
+                                ng-model="newCommittee.middlename"
+                                ng-class="{'is-invalid' : newCommitteeForm.middlename.$invalid && newCommitteeForm.middlename.$touched, 'is-valid' : newCommitteeForm.middlename.$valid && newCommitteeForm.middlename.$touched }"
+                                required
+                            />
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newCommitteeForm.middlename.$touched && newCommitteeForm.middlename.$invalid"
+                            >
+                                Please enter Middle Name.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name:</label>
+                            <span>*</span>
+                            <input
+                                type="text"
+                                class="form-control form-control-solid"
+                                placeholder="Enter last name"
+                                id="lastname"
+                                name="lastname"
+                                ng-model="newCommittee.lastname"
+                                ng-class="{'is-invalid' : newCommitteeForm.lastname.$invalid && newCommitteeForm.lastname.$touched, 'is-valid' : newCommitteeForm.lastname.$valid && newCommitteeForm.lastname.$touched }"
+                                required
+                            />
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newCommitteeForm.lastname.$touched && newCommitteeForm.lastname.$invalid"
+                            >
+                                Please enter Last Name.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Address:</label>
+                            <span>*</span>
+                            <textarea
+                                type="text"
+                                class="form-control form-control-solid textarea"
+                                placeholder="Enter address"
+                                rows="3"
+                                cols="50"
+                                id="address"
+                                name="address"
+                                ng-model="newCommittee.address"
+                                ng-class="{'is-invalid' : newCommitteeForm.address.$invalid && newCommitteeForm.address.$touched, 'is-valid' : newCommitteeForm.address.$valid && newCommitteeForm.address.$touched }"
+                                required
+                            ></textarea>
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newCommitteeForm.address.$touched && newCommitteeForm.address.$invalid"
+                            >
+                                Please enter Address.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Email address:</label>
+                            <span>*</span>
+                            <input
+                                type="email"
+                                class="form-control form-control-solid"
+                                placeholder="Enter email address"
+                                id="emailAddress"
+                                name="emailAddress"
+                                ng-model="newCommittee.emailAddress"
+                                ng-class="{'is-invalid' : newCommitteeForm.emailAddress.$invalid && newCommitteeForm.emailAddress.$touched, 'is-valid' : newCommitteeForm.emailAddress.$valid && newCommitteeForm.emailAddress.$touched }"
+                                required
+                            />
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newCommitteeForm.emailAddress.$touched && newCommitteeForm.emailAddress.$invalid"
+                            >
+                                Please enter Phone Number.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNo">Phone Number</label>
+                            <span>*</span>
+                            <input
+                                type="text"
+                                class="form-control form-control-solid"
+                                placeholder="Enter Phone Number"
+                                id="phoneNo"
+                                name="phoneNo"
+                                ng-model="newCommittee.phoneNo"
+                                ng-class="{'is-invalid' : newCommitteeForm.phoneNo.$invalid && newCommitteeForm.phoneNo.$touched, 'is-valid' : newCommitteeForm.phoneNo.$valid && newCommitteeForm.phoneNo.$touched }"
+                                required
+                            />
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newCommitteeForm.phoneNo.$touched && newCommitteeForm.phoneNo.$invalid"
+                            >
+                                Please enter Phone Number.
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-light font-weight-bold"
+                        ng-click="resetModalForm('#new-committee')"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        ng-click="createCommittee(newCommittee)"
+                    >
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+</div>

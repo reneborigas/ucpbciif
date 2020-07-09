@@ -42,7 +42,7 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-borderless datatable-table" ng-table="tableBorrowers">
+                    <table class="table table-vertical-center table-borderless datatable-table" ng-table="tableBorrowers">
                         <tr class="datatable-row" ng-repeat-start="borrower in $data" align="center">
                             <td class="datatable-cell" data-title="'NAME'" sortable="'cooperativeName'">
 
@@ -77,7 +77,7 @@
                         </tr>
                         <tr ng-hide="!contactPerson.$hideRows" ng-repeat-end align="center">
                             <td colspan="5">
-                                <table class="table table-light table-borderless" ng-table="tableBorrowersContactPerson">
+                                <table class="table table-vertical-center table-light table-borderless" ng-table="tableBorrowersContactPerson">
                                     <tr ng-repeat="borrower in $data | filter : {  borrowerId : borrower.borrowerId }" align="center">
                                         <td data-title="'Full Name'" style="width: 28%">
                                             {{ borrower.contactPerson.firstname  }} {{ borrower.contactPerson.middlename  }} {{ borrower.contactPerson.lastname  }}

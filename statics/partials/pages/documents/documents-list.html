@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="datatable datatable-default datatable-subtable">
-                        <table class="table datatable-table" ng-table="tableDocuments" template-pagination="statics/partials/customs/pagination.html">
+                        <table class="table table-vertical-center datatable-table" ng-table="tableDocuments" template-pagination="statics/partials/customs/pagination.html">
                             <tr class="datatable-row" ng-repeat-start="document in $data">
                                 <td class="datatable-cell-sorted datatable-cell-center datatable-cell">
                                     <a class="datatable-cell-subtable" href="" ng-click="documentMovement.$hideRows = !documentMovement.$hideRows" ng-init="group.$hideRows = false">
@@ -81,7 +81,7 @@
                             </tr>
                             <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center">
                                 <td colspan="8">
-                                    <table class="table table-light table-borderless" ng-table="tableDocumentMovements">
+                                    <table class="table table-vertical-center table-light table-borderless" ng-table="tableDocumentMovements">
                                         <tr ng-repeat="documentmovement in $data | filter : {  documentId : document.id }" align="center">
                                             <td data-title="'Activity'" style="width: 28%">
                                                     {{ documentmovement.name }} - {{ documentmovement.outputName }}  

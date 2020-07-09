@@ -24,12 +24,7 @@ class DocumentViewSet(ModelViewSet):
             borrowerName=F('borrower__cooperative__name'), 
             lastDocumentMovementId=Max( 'documentMovements__id'),   
             subProcessId=F('subProcess__id')
-        ) .exclude(isDeleted=True).order_by('-id')
-
-
-             
-       
-         
+        ) .exclude(isDeleted=True).order_by('-id')         
        
         documentId = self.request.query_params.get('documentId', None)
         subProcessName = self.request.query_params.get('subProcessName', None)
@@ -51,7 +46,6 @@ class DocumentViewSet(ModelViewSet):
 
         return queryset
 
-
  
 class DocumentMovementViewSet(ModelViewSet):
     queryset = DocumentMovement.objects.all()
@@ -59,7 +53,6 @@ class DocumentMovementViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self): 
-        
         queryset = DocumentMovement.objects.annotate(
           
             documentId=F('document_id'), 
@@ -69,25 +62,16 @@ class DocumentMovementViewSet(ModelViewSet):
             committeeName=Concat(F('committee__firstname'),V(' '),F('committee__middlename'),V(' '),F('committee__lastname')),
             statusName=F('status__name'), 
         ).exclude(isDeleted=True).order_by('-id')
-       
 
         documentId = self.request.query_params.get('documentId', None)
-      
-       
         process = self.request.query_params.get('process', None)
-      
-        
 
         if documentId is not None:
-       
             if process is not None:
                 if process =='last':
                     queryset = queryset.filter(document_id=documentId).order_by('-dateCreated')[:1]
-       
             else:
                 queryset = queryset.filter(document_id=documentId)
-
-        
 
         return queryset.prefetch_related(Prefetch('output',Output.objects.all()))
 

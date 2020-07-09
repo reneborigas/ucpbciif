@@ -1,0 +1,82 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <div class="card card-custom card-sticky gutter-b" ng-controller="CommitteeOfficeAddController">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            Create New Office
+                        </h3>
+                    </div>
+                    <!-- <div class="card-toolbar">
+                        <a href="#" class="btn btn-secondary mr-2" ui-sref="app.committees.offices">
+                            <i class="ki ki-long-arrow-back icon-sm"></i>
+                            Back
+                        </a>
+                        <button class="btn btn-primary p-2 pl-3 pr-3" ng-click="save()">
+                            Submit
+                        </button>
+                    </div> -->
+                </div>
+                <div class="card-body">
+                    <form class="form" name="newOfficeForm">
+                        <div class="form-group">
+                            <label>Office Name:</label>
+                            <span>*</span>
+                            <input
+                                type="text"
+                                class="form-control form-control-solid"
+                                placeholder="Enter office name"
+                                id="name"
+                                name="name"
+                                ng-model="newOffice.name"
+                                ng-class="{'is-invalid' : newOfficeForm.name.$invalid && newOfficeForm.name.$touched, 'is-valid' : newOfficeForm.name.$valid && newOfficeForm.name.$touched }"
+                                required
+                            />
+                            <span
+                                class="form-text text-muted"
+                                ng-show="newOfficeForm.name.$touched && newOfficeForm.name.$invalid"
+                            >
+                                Please enter Office Name.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea
+                                type="text"
+                                class="form-control form-control-solid textarea"
+                                placeholder="Enter description"
+                                rows="3"
+                                cols="50"
+                                id="description"
+                                name="description"
+                                ng-model="newOffice.description"
+                            ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks:</label>
+                            <textarea
+                                type="text"
+                                class="form-control form-control-solid textarea"
+                                placeholder="Enter remarks"
+                                rows="3"
+                                cols="50"
+                                id="remarks"
+                                name="remarks"
+                                ng-model="newOffice.remarks"
+                            ></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="#" class="btn btn-secondary mr-2" ui-sref="app.committees.offices">
+                        Back
+                    </a>
+                    <button class="btn btn-primary p-2 pl-3 pr-3" ng-click="createOffice(newOffice)">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

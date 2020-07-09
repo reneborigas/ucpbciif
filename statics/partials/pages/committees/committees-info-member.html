@@ -1,0 +1,52 @@
+<div class="row" ng-controller="CommitteeOfficeInfoMemberController">
+    <div class="col-xl-12">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card card-custom gutter-b">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
+                                <span class="symbol-label font-size-h3">
+                                    {{ committee.committeeName | limitTo: 1 }}
+                                </span>
+                            </div>
+                            <div>
+                                <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">
+                                    {{ committee.committeeName }}
+                                </a>
+                                <div class="text-muted">{{ committee.positionName }}</div>
+                            </div>
+                        </div>
+                        <div class="py-9">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="font-weight-bold mr-2">Location:</span>
+                                <span class="text-muted">{{ committee.officeName }}</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="font-weight-bold mr-2">Email:</span>
+                                <a href="#" class="text-muted text-hover-primary">{{ committee.emailAddress }}</a>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="font-weight-bold mr-2">Phone:</span>
+                                <span class="text-muted">{{ committee.phoneNo }}</span>
+                            </div>
+                        </div>
+                        <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
+                            <div class="navi-item mb-2" ng-repeat="step in steps">
+                                <a href="#" class="navi-link py-4" ng-click="goToStep(step.step)">
+                                    <span class="navi-icon mr-2">
+                                        <i class="{{ step.class }}"></i>
+                                    </span>
+                                    <span class="navi-text font-size-lg">{{ step.name }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <ng-include src="getStepTemplate()"></ng-include>
+            </div>
+        </div>
+    </div>
+</div>

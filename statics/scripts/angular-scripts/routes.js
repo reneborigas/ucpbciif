@@ -413,7 +413,6 @@ define(function () {
                         });
                     },
                 })
-
                 .state('app.loans.add', {
                     url: '/add',
                     templateUrl: '/statics/partials/pages/loans/loans-add.html',
@@ -422,7 +421,82 @@ define(function () {
                         parent: 'app.loans.list',
                     },
                 })
+                .state('app.committees', {
+                    url: '/committees',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Committees',
+                        skip: true,
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/committees.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.committees.offices', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/committees/committees-offices.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Committee Offices List',
+                        stateTitle: 'Committee Offices',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Committee Offices',
+                    },
+                })
+                .state('app.committees.add_office', {
+                    url: '/add',
+                    templateUrl: '/statics/partials/pages/committees/committees-offices-add.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Committee Offices Add',
+                        stateTitle: 'Committee Offices Add',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Add',
+                        parent: 'app.committees.offices',
+                    },
+                })
+                .state('app.committees.info', {
+                    url: '/:officeName',
+                    templateUrl: '/statics/partials/pages/committees/committees-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Committee Offices Info',
+                    },
+                    ncyBreadcrumb: {
+                        label: '{{ officeName }}',
+                        parent: 'app.committees.offices',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.officeName = appFactory.unSlugify($stateParams.officeName);
+                    },
+                })
+                .state('app.committees.member', {
+                    url: '/:officeName/:committeeId',
+                    templateUrl: '/statics/partials/pages/committees/committees-info-member.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Committee Member',
+                    },
+                    ncyBreadcrumb: {
+                        label: '{{ committeeName }}',
+                        parent: 'app.committees.info',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.committeeId = $stateParams.committeeId;
+                        appFactory.getCommitteeName($scope.committeeId).then(function (data) {
+                            $scope.committeeName = data;
+                        });
+                        $scope.officeName = appFactory.unSlugify($stateParams.officeName);
+                    },
+                })
 
+                // Login
                 .state('simple', {
                     abstract: true,
                     templateUrl: '/statics/partials/layouts/simple.html',

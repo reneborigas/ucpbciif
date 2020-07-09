@@ -1,0 +1,82 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">Account Information</h3>
+            <span class="text-muted font-weight-bold font-size-sm mt-1">Change your account settings</span>
+        </div>
+        <div class="card-toolbar">
+            <button
+                type="reset"
+                class="btn btn-success mr-2"
+                ng-click="saveAccount()"
+                ng-disabled="userCreationForm.$invalid"
+            >
+                Create Account
+            </button>
+            <button type="reset" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form name="userCreationForm">
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Username</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        class="form-control form-control-lg form-control-solid"
+                        type="text"
+                        id="username"
+                        name="username"
+                        ng-model="newUser.username"
+                        ng-class="{'is-invalid' : userCreationForm.username.$invalid && userCreationForm.username.$touched || creationError.username[0], 'is-valid' : userCreationForm.username.$valid && userCreationForm.username.$touched }"
+                        required
+                    />
+                    <span class="form-text text-danger">{{creationError.username[0]}}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        type="text"
+                        class="form-control form-control-lg form-control-solid"
+                        placeholder="Email"
+                        id="email_address"
+                        name="email_address"
+                        ng-model="newUser.email_address"
+                        ng-class="{'is-invalid' : userCreationForm.email_address.$invalid && userCreationForm.email_address.$touched || creationError.email_address[0], 'is-valid' : userCreationForm.email_address.$valid && userCreationForm.email_address.$touched }"
+                        required
+                    />
+                    <span class="form-text text-danger">{{creationError.email_address[0]}}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Password</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        type="password"
+                        class="form-control form-control-lg form-control-solid"
+                        id="password"
+                        name="password"
+                        ng-model="newUser.password"
+                        ng-class="{'is-invalid' : userCreationForm.password.$invalid && userCreationForm.password.$touched, 'is-valid' : userCreationForm.password.$valid && userCreationForm.password.$touched }"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Verify Password</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        type="password"
+                        class="form-control form-control-lg form-control-solid"
+                        id="verifyPassword"
+                        name="verifyPassword"
+                        ng-model="newUser.verifyPassword"
+                        ng-class="{'is-invalid' : newUser.verifyPassword != newUser.password && userCreationForm.verifyPassword.$touched, 'is-valid' : newUser.verifyPassword == newUser.password}"
+                        required
+                    />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

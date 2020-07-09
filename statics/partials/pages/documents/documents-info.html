@@ -9,7 +9,6 @@
                                 <a
                                     href="#"
                                     class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3"
-                                    
                                 >
                                     {{ document.name }}
                                     <span class="label label-light-info label-inline font-weight-bolder ml-2">
@@ -33,9 +32,9 @@
                                         href="#"
                                         class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
                                         ng-click="viewBorrower(document.borrower)"
-                                    > 
+                                    >
                                         {{ document.borrowerName }}
-                                    </a> 
+                                    </a>
                                 </div>
                                 <div class="d-flex flex-wrap my-2">
                                     <span class="text-muted font-weight-bold mr-2">Process :</span>
@@ -95,17 +94,17 @@
                 </div>
                 <div class="separator separator-solid my-7"></div>
                 <div class="d-flex align-items-center flex-wrap">
-                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                                <span class="mr-4">
-                                    <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
-                                </span>
-                                <div class="d-flex flex-column text-dark-75">
-                                    <span class="font-weight-bolder font-size-sm">Program</span>
-                                    <span class="font-weight-bolder font-size-h5">
-                                        {{ document.loan.loanProgram_name }}
-                                    </span>
-                                </div>
-                            </div>
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                        <span class="mr-4">
+                            <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                        </span>
+                        <div class="d-flex flex-column text-dark-75">
+                            <span class="font-weight-bolder font-size-sm">Program</span>
+                            <span class="font-weight-bolder font-size-h5">
+                                {{ document.loan.loanProgram_name }}
+                            </span>
+                        </div>
+                    </div>
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
@@ -145,172 +144,162 @@
         </div>
 
         <div class="card card-custom gutter-b">
-
-                <div class="card-header align-items-center border-0 mt-4">
-                        <h3 class="card-title align-items-start flex-column">
-                            <span class="font-weight-bolder text-dark">Existing Accommodations</span>
-                        </h3>
-                    </div>
-                <div class="card-body">
-                    <div class="d-flex">
-                        <div class="flex-grow-1">
-                             
-                            <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                    <div class="table-responsive">
-                                            <table class="table table-head-custom table-head-bg table-vertical-center table-borderless">
-                                                
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="py-2 pl-7">
-                                                            <div class="d-flex align-items-center pb-2">
-                                                                
-                                                                    <a
-                                                                        href="#"
-                                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg" 
-                                                                    >
-                                                                        Loan Window
-                                                                    </a>
-                                                                
-                                                            </div>
-                                                            <div class="d-flex align-items-center  pb-2"> 
-                                                                        <a  href="#"
-                                                                            class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg" 
-                                                                        >
-                                                                            Credit Line Amount
-                                                                        </a>
-                                                            </div>
-                                                            <div class="d-flex align-items-center  pb-2"> 
-                                                                    <a  href="#"
-                                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg" 
-                                                                    >
-                                                                        Approval Date
-                                                                  </a>
-                                                             </div>
-                                                             <div class="d-flex align-items-center  pb-2"> 
-                                                                    <a  href="#"
-                                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg" 
-                                                                    >
-                                                                        Expiry Date
-                                                                  </a>
-                                                             </div>
-                                                             <div class="d-flex align-items-center  pb-2"> 
-                                                                    <a  href="#"
-                                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg" 
-                                                                    >
-                                                                        Total Availments
-                                                                  </a>
-                                                             </div>
-                                                        </td>
-                                                        <td ng-repeat="window in windows">
-
-                                                            <div class=" pb-2">
-                                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                                    {{ window.name}}
-                                                                </span>
-                                                            </div>
-                                                            <div class=" pb-2">
-                                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                                     
-                                                                    {{ window.creditLineAmount | currency :'₱'}}
-                                                                </span>
-                                                            </div>
-
-                                                            <div class=" pb-2">
-                                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg"  ng-bind="window.activeLoan ? (window.activeLoan.dateCreated | date : 'medium') : 'N/A'"> 
-                                                                        {{ window.activeLoan.dateCreated | date : 'medium' }} 
-                                                                </span>
-                                                            </div>
-                                                            <div class=" pb-2">
-                                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-bind="window.activeLoan ? (window.activeLoan.dateCreated | date : 'medium') : 'N/A'"> 
-                                                                           
-                                                                    </span>
-                                                                 
-                                                            </div>
-                                                            <div class=" pb-2">
-                                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" >
-                                                                            
-                                                                        {{ window.totalAvailments | currency :'₱'}}
-                                                                    </span>
-                                                            </div>
-           
-                                                        </td>
-                                                        <td >
-                                                            <div class=" pb-2">
-                                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                                    Total
-                                                                </span>
-                                                            
-                                                            </div>
-                                                            <div class=" pb-2">
-                                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                                         &nbsp;
-                                                                    </span>
-                                                                
-                                                            </div>
-                                                            <div class=" pb-2">
-                                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                                        &nbsp;
-                                                                    </span>
-                                                            
-                                                            </div>
-                                                            <div class=" pb-2">
-                                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                                        &nbsp;
-                                                                    </span>
-                                                                
-                                                            </div>
-                                                            <div class=" pb-2">
-                                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                                            {{ borrower.totalAvailments | currency :'₱'}}
-                                                                    </span>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                     
-                                                </tbody>
-                                               
-                                            </table>
-                                            <div
-                                                class="d-flex justify-content-center align-items-center flex-wrap"
-                                                ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                                            >
-                                                <div class="d-flex flex-wrap py-2 mr-3">
-                                                    <button
+            <div class="card-header align-items-center border-0 mt-4">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="font-weight-bolder text-dark">Existing Accommodations</span>
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap">
+                            <div class="table-responsive">
+                                <table
+                                    class="table table-head-custom table-head-bg table-vertical-center table-borderless"
+                                >
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-2 pl-7">
+                                                <div class="d-flex align-items-center pb-2">
+                                                    <a
                                                         href="#"
-                                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                                        ng-disabled="currentPageDocument(subProcess) == 0"
-                                                        ng-click="gotoPrevDocument(subProcess)"
+                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
                                                     >
-                                                        <i class="fas fa-chevron-left icon-sm"></i>
-                                                    </button>
-                                                    <button
-                                                        href="#"
-                                                        class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                                        ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                                        ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                                        ng-click="jumpToPageDocument(n,subProcess)"
-                                                    >
-                                                        <small>{{n}}</small>
-                                                    </button>
-                                                    <button
-                                                        href="#"
-                                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                                        ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                                        ng-click="gotoNextDocument(subProcess)"
-                                                    >
-                                                        <i class="fas fa-chevron-right icon-sm"></i>
-                                                    </button>
+                                                        Loan Window
+                                                    </a>
                                                 </div>
-                                            </div>
-                                        </div>
+                                                <div class="d-flex align-items-center pb-2">
+                                                    <a
+                                                        href="#"
+                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
+                                                    >
+                                                        Credit Line Amount
+                                                    </a>
+                                                </div>
+                                                <div class="d-flex align-items-center pb-2">
+                                                    <a
+                                                        href="#"
+                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
+                                                    >
+                                                        Approval Date
+                                                    </a>
+                                                </div>
+                                                <div class="d-flex align-items-center pb-2">
+                                                    <a
+                                                        href="#"
+                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
+                                                    >
+                                                        Expiry Date
+                                                    </a>
+                                                </div>
+                                                <div class="d-flex align-items-center pb-2">
+                                                    <a
+                                                        href="#"
+                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
+                                                    >
+                                                        Total Availments
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td class="py-2" ng-repeat="window in windows">
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        {{ window.name}}
+                                                    </span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        {{ window.creditLineAmount | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span
+                                                        class="text-dark-75 font-weight-bolder d-block font-size-lg"
+                                                        ng-bind="window.activeLoan ? (window.activeLoan.dateCreated | date : 'medium') : 'N/A'"
+                                                    >
+                                                        {{ window.activeLoan.dateCreated | date : 'medium' }}
+                                                    </span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span
+                                                        class="text-dark-75 font-weight-bolder d-block font-size-lg"
+                                                        ng-bind="window.activeLoan ? (window.activeLoan.dateCreated | date : 'medium') : 'N/A'"
+                                                    ></span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        {{ window.totalAvailments | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        Total
+                                                    </span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        &nbsp;
+                                                    </span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        &nbsp;
+                                                    </span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        &nbsp;
+                                                    </span>
+                                                </div>
+                                                <div class="pb-2">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        {{ borrower.totalAvailments | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div
+                                    class="d-flex justify-content-center align-items-center flex-wrap"
+                                    ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
+                                >
+                                    <div class="d-flex flex-wrap py-2 mr-3">
+                                        <button
+                                            href="#"
+                                            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                            ng-disabled="currentPageDocument(subProcess) == 0"
+                                            ng-click="gotoPrevDocument(subProcess)"
+                                        >
+                                            <i class="fas fa-chevron-left icon-sm"></i>
+                                        </button>
+                                        <button
+                                            href="#"
+                                            class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
+                                            ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
+                                            ng-repeat="n in pageRangeDocument(borrower.documents.length)"
+                                            ng-click="jumpToPageDocument(n,subProcess)"
+                                        >
+                                            <small>{{n}}</small>
+                                        </button>
+                                        <button
+                                            href="#"
+                                            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                            ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
+                                            ng-click="gotoNextDocument(subProcess)"
+                                        >
+                                            <i class="fas fa-chevron-right icon-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                           
                         </div>
                     </div>
-                  
-                    
                 </div>
             </div>
+        </div>
     </div>
     <div class="col-xl-5">
         <div class="card card-custom card-stretch gutter-b">

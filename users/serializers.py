@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework import serializers
 from .models import *
+from committees.serializers import CommitteeSerializer
 
 class AccountTypeSerializer(ModelSerializer):
 
@@ -47,9 +48,11 @@ class UserProfileSerializer(ModelSerializer):
         read_only_fields = ('user', )
 
 class UserSerializer(ModelSerializer):
+    committeeUserAccount = CommitteeSerializer(many=True,required=False)   
     profile = UserProfileSerializer(many=True,required=False)   
-    fullName = serializers.CharField(read_only=True)
+    fullName = serializers.CharField(read_only=True)    
     account_type_text = serializers.CharField(read_only=True)
+    committeePosition = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         profile = validated_data.pop('profile')
@@ -57,8 +60,9 @@ class UserSerializer(ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         
-        for prof in profile:
-            UserProfile.objects.create(**prof,user=user)
+        if profile:
+            for prof in profile:
+                UserProfile.objects.create(**prof,user=user)
 
         return user
 
@@ -99,4 +103,4 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id','fullName','username','email_address','password','account_type','account_type_text','is_active','date_joined','profile']
+        fields = ['id','fullName','username','email_address','password','account_type','account_type_text','is_active','date_joined','profile','committeeUserAccount','committeePosition']

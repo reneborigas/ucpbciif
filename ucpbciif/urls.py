@@ -47,7 +47,9 @@ urlpatterns = [
 
     #committes
     path('committees', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-
+    path('committees/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('committees/<str:officeName>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('committees/<str:officeName>/<int:committee>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     
     #processes
     path('files', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
@@ -59,8 +61,6 @@ urlpatterns = [
     path('api/auth/',include('auth.urls')),
     path('api/borrowers/',include('borrowers.urls'),name='borrowers'),
     path('api/documents/',include('documents.urls'),name='documents'),
-    
-
     path('api/loans/',include('loans.urls'),name='loans'),
     path('api/processes/',include('processes.urls'),name='processes'),
     path('api/committees/',include('committees.urls'),name='committees'),

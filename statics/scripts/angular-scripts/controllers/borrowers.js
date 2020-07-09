@@ -400,79 +400,79 @@ define(function () {
                 $scope.borrower = response.data[0];
                 $scope.getBorrowerAttachments($scope.borrowerId);
 
-                $http.get('/api/processes/subprocesses/',{ params: { borrowerId: $scope.borrowerId } }).then(
+                $http.get('/api/processes/subprocesses/', { params: { borrowerId: $scope.borrowerId } }).then(
                     function (response) {
                         $scope.subprocesses = response.data;
-                        $scope.subProcessCurrentPage.length = 0
-                        angular.forEach($scope.subprocesses,function(subprocess){
-                            $scope.subProcessCurrentPage[subprocess.name] = 0
-                        })
-                    //     if($scope.borrower.documents.length){
-                            
-                    //     angular.forEach($scope.subprocesses, function (subProcess) {                          
-                    //         angular.forEach($scope.borrower.documents, function (document) {
-                    //             if (document.subProcess.id === subProcess.id) {
+                        $scope.subProcessCurrentPage.length = 0;
+                        angular.forEach($scope.subprocesses, function (subprocess) {
+                            $scope.subProcessCurrentPage[subprocess.name] = 0;
+                        });
+                        //     if($scope.borrower.documents.length){
 
-                    //                 if (!document.documentMovements[0].status.isFinalStatus) {
-                    //                     subProcess.isAllowed = false;
-                    //                     subProcess.isAllowedByParent = false;
-                    //                 } else { 
-                    //                     if (subProcess.relatedProcesses.length) {
-                    //                         angular.forEach($scope.borrower.documents, function (document) {
-                    //                             if (document.subProcess.id === subProcess.relatedProcesses[0].id) {
-                    //                                 $scope.document_item = document;
+                        //     angular.forEach($scope.subprocesses, function (subProcess) {
+                        //         angular.forEach($scope.borrower.documents, function (document) {
+                        //             if (document.subProcess.id === subProcess.id) {
 
-                    //                             }
-                    //                         });
-                    //                         if (!$scope.document_item.documentMovements[0].status.isFinalStatus) {
-                    //                             subProcess.isAllowedByParent = false;
-                    //                         } else {
-                    //                             if (
-                    //                                 !$scope.document_item.documentMovements[0].status.isNegativeResult
-                    //                             ) {
-                    //                                 subProcess.isAllowedByParent = true;
-                    //                             } else {
-                    //                                 subProcess.isAllowedByParent = false;
-                    //                             }
-                    //                         }
-                    //                     } else {
-                    //                         subProcess.isAllowedByParent = true;
-                                             
-                    //                     }
-                    //                     subProcess.isAllowed = true;
-                    //                 }
-                    //             }else{ 
-                    //                 if (subProcess.relatedProcesses.length) {
-                    //                     angular.forEach($scope.borrower.documents, function (document) {
-                    //                         if (document.subProcess.id === subProcess.relatedProcesses[0].id) {
-                    //                             $scope.document_item = document;
+                        //                 if (!document.documentMovements[0].status.isFinalStatus) {
+                        //                     subProcess.isAllowed = false;
+                        //                     subProcess.isAllowedByParent = false;
+                        //                 } else {
+                        //                     if (subProcess.relatedProcesses.length) {
+                        //                         angular.forEach($scope.borrower.documents, function (document) {
+                        //                             if (document.subProcess.id === subProcess.relatedProcesses[0].id) {
+                        //                                 $scope.document_item = document;
 
-                    //                         }
-                    //                     });
-                    //                     if (!$scope.document_item.documentMovements[0].status.isFinalStatus) {
-                    //                         subProcess.isAllowedByParent = false;
-                    //                     } else {
-                    //                         if (
-                    //                             !$scope.document_item.documentMovements[0].status.isNegativeResult
-                    //                         ) {
-                    //                             subProcess.isAllowedByParent = true;
-                    //                         } else {
-                    //                             subProcess.isAllowedByParent = false;
-                    //                         }
-                    //                     }
-                    //                 } else {
-                    //                     subProcess.isAllowedByParent = true;
-                                         
-                    //                 }                                    
-                    //                 subProcess.isAllowed = true;
-                    //             }
-                    //         });
-                    //     });
-                        
-                    //  }else{
-                    //     $scope.subprocesses[0].isAllowed=true;
-                    //     $scope.subprocesses[0].isAllowedByParent=true; 
-                    //  }
+                        //                             }
+                        //                         });
+                        //                         if (!$scope.document_item.documentMovements[0].status.isFinalStatus) {
+                        //                             subProcess.isAllowedByParent = false;
+                        //                         } else {
+                        //                             if (
+                        //                                 !$scope.document_item.documentMovements[0].status.isNegativeResult
+                        //                             ) {
+                        //                                 subProcess.isAllowedByParent = true;
+                        //                             } else {
+                        //                                 subProcess.isAllowedByParent = false;
+                        //                             }
+                        //                         }
+                        //                     } else {
+                        //                         subProcess.isAllowedByParent = true;
+
+                        //                     }
+                        //                     subProcess.isAllowed = true;
+                        //                 }
+                        //             }else{
+                        //                 if (subProcess.relatedProcesses.length) {
+                        //                     angular.forEach($scope.borrower.documents, function (document) {
+                        //                         if (document.subProcess.id === subProcess.relatedProcesses[0].id) {
+                        //                             $scope.document_item = document;
+
+                        //                         }
+                        //                     });
+                        //                     if (!$scope.document_item.documentMovements[0].status.isFinalStatus) {
+                        //                         subProcess.isAllowedByParent = false;
+                        //                     } else {
+                        //                         if (
+                        //                             !$scope.document_item.documentMovements[0].status.isNegativeResult
+                        //                         ) {
+                        //                             subProcess.isAllowedByParent = true;
+                        //                         } else {
+                        //                             subProcess.isAllowedByParent = false;
+                        //                         }
+                        //                     }
+                        //                 } else {
+                        //                     subProcess.isAllowedByParent = true;
+
+                        //                 }
+                        //                 subProcess.isAllowed = true;
+                        //             }
+                        //         });
+                        //     });
+
+                        //  }else{
+                        //     $scope.subprocesses[0].isAllowed=true;
+                        //     $scope.subprocesses[0].isAllowedByParent=true;
+                        //  }
                     },
                     function (error) {
                         toastr.error(
@@ -601,17 +601,17 @@ define(function () {
             $scope.currentPageAttachment = n - 1;
         };
 
-        $scope.subProcessCurrentPage = {}
+        $scope.subProcessCurrentPage = {};
 
-        $scope.currentPageDocument = function(subProcess){
+        $scope.currentPageDocument = function (subProcess) {
             var currentPage;
-            angular.forEach($scope.subProcessCurrentPage,function(value,key){
-                if (subProcess.name == key){
+            angular.forEach($scope.subProcessCurrentPage, function (value, key) {
+                if (subProcess.name == key) {
                     currentPage = value;
                 }
-            })
+            });
             return currentPage;
-        }
+        };
 
         $scope.pageSizeDocument = 5;
 
@@ -625,19 +625,16 @@ define(function () {
         };
 
         $scope.gotoPrevDocument = function (subProcess) {
-            $scope.subProcessCurrentPage[subProcess.name]--
+            $scope.subProcessCurrentPage[subProcess.name]--;
         };
 
         $scope.gotoNextDocument = function (subProcess) {
-            $scope.subProcessCurrentPage[subProcess.name]++
+            $scope.subProcessCurrentPage[subProcess.name]++;
         };
 
-        $scope.jumpToPageDocument = function (n,subProcess) {
+        $scope.jumpToPageDocument = function (n, subProcess) {
             $scope.subProcessCurrentPage[subProcess.name] = n - 1;
         };
-
-
-
 
         $scope.fileAttachment = {
             attachment: [],
@@ -962,171 +959,157 @@ define(function () {
             $scope.loanPrograms = data;
         });
 
-        $http.get('/api/processes/subprocesses/', { params: { subProcessId: $scope.subProcessId,borrowerId: $scope.borrowerId } }).then(
-            function (response) {
-                $scope.subProcess = response.data[0];
- 
+        $http
+            .get('/api/processes/subprocesses/', {
+                params: { subProcessId: $scope.subProcessId, borrowerId: $scope.borrowerId },
+            })
+            .then(
+                function (response) {
+                    $scope.subProcess = response.data[0];
 
-                $scope.document = {
-                    name: '',
-                    description: '',
-                    remarks: '',
-                    borrower: $scope.borrowerId,
-                    subProcess: $scope.subProcess,
-                    subProcessId: $scope.subProcessId,
-                    documentType: 1,
-                    createdBy: appFactory.getCurrentUser(),
-                    committee: '',
-                    loan:''
-                };
-
-                $scope.loan = {
-                    loanid:null,
-                    amount: '',
-                    interestRate: '',
-                    term: '',
-                    loanProgram:'',
-                    purpose:'',
-                    security:'',
-                    status:1,
-                    borrower: $scope.borrowerId,  
-                    createdBy: appFactory.getCurrentUser(), 
-                };
-                 
-                if($scope.subProcess.parentLastDocumentLoan){
-                    $scope.loan = {
-                        loanid:$scope.subProcess.parentLastDocumentLoan.id,
-                        amount:  parseFloat($scope.subProcess.parentLastDocumentLoan.amount),
-                        interestRate: parseFloat($scope.subProcess.parentLastDocumentLoan.interestRate),
-                        term: $scope.subProcess.parentLastDocumentLoan.term,
-                        loanProgram: $scope.subProcess.parentLastDocumentLoan.loanProgram,
-                        purpose:$scope.subProcess.parentLastDocumentLoan.purpose,
-                        security:$scope.subProcess.parentLastDocumentLoan.security,
-                        status:1,
-                        borrower: $scope.borrowerId,  
-                        term_name:$scope.subProcess.parentLastDocumentLoan.term_name,
-                        loanProgram_name:$scope.subProcess.parentLastDocumentLoan.loanProgram_name,
-                        createdBy: appFactory.getCurrentUser(), 
+                    $scope.document = {
+                        name: '',
+                        description: '',
+                        remarks: '',
+                        borrower: $scope.borrowerId,
+                        subProcess: $scope.subProcess,
+                        subProcessId: $scope.subProcessId,
+                        documentType: 1,
+                        createdBy: appFactory.getCurrentUser(),
+                        committee: '',
+                        loan: '',
                     };
-     
-                    
-                }
 
+                    $scope.loan = {
+                        loanid: null,
+                        amount: '',
+                        interestRate: '',
+                        term: '',
+                        loanProgram: '',
+                        purpose: '',
+                        security: '',
+                        status: 1,
+                        borrower: $scope.borrowerId,
+                        createdBy: appFactory.getCurrentUser(),
+                    };
 
-                $scope.checkLoanDetails = function(){
-
-                    if ($scope.subProcess.parentLastDocumentLoan){
-                        return true;
-                    }else{
-                        if($scope.newLoanDetailsForm.$valid){
-                            return true;
-                        }
-                        else{
-                            return false;
-                        }
-                         
+                    if ($scope.subProcess.parentLastDocumentLoan) {
+                        $scope.loan = {
+                            loanid: $scope.subProcess.parentLastDocumentLoan.id,
+                            amount: parseFloat($scope.subProcess.parentLastDocumentLoan.amount),
+                            interestRate: parseFloat($scope.subProcess.parentLastDocumentLoan.interestRate),
+                            term: $scope.subProcess.parentLastDocumentLoan.term,
+                            loanProgram: $scope.subProcess.parentLastDocumentLoan.loanProgram,
+                            purpose: $scope.subProcess.parentLastDocumentLoan.purpose,
+                            security: $scope.subProcess.parentLastDocumentLoan.security,
+                            status: 1,
+                            borrower: $scope.borrowerId,
+                            term_name: $scope.subProcess.parentLastDocumentLoan.term_name,
+                            loanProgram_name: $scope.subProcess.parentLastDocumentLoan.loanProgram_name,
+                            createdBy: appFactory.getCurrentUser(),
+                        };
                     }
-                     
-                }
-                console.log($scope.loan);
-                $scope.save = function () {
 
-                    if ($scope.newLoanApplicationForm.$valid &&   $scope.checkLoanDetails() ) {
-                        swal({
-                            title: 'Create New Loan Application',
-                            text: 'Do you want to save and create this loan application file?',
-                            icon: 'info',
-                            buttons: {
-                                cancel: true,
-                                confirm: 'Create',
-                            },
-                        }).then((isConfirm) => {
-                            if (isConfirm) {
-
-                                if($scope.loan.loanid){
-                                    console.log("Loan Exists");
-                                    $scope.document.loanid = $scope.loan.loanid;
-                                    console.log($scope.document);
-                                    $http
-                                    .post('/api/documents/documents/', $scope.document)
-
-                                    .then(
-                                        function () {
-
-                                            toastr.success('Success', 'New loan application file created.');
-
-
-                                            swal('Success!', 'New Loan Application File Created.', 'success');
-                                            $state.go('app.borrowers.info', { borrowerId: $scope.borrowerId });
-
-
-                                           
-                                        },
-                                        function (error) {
-                                            toastr.error(
-                                                'Error ' + error.status + ' ' + error.statusText,
-                                                'Could not create new loan application file. Please contact System Administrator.'
-                                            );
-                                        }
-                                    );
-                                }
-                                else{
-
-                                
-                                $http
-                                .post('/api/loans/loans/', $scope.loan)
-
-                                .then(
-                                    function (loanResponse) { 
-
-                                        $scope.document.loanid = loanResponse.data.id;
+                    $scope.checkLoanDetails = function () {
+                        if ($scope.subProcess.parentLastDocumentLoan) {
+                            return true;
+                        } else {
+                            if ($scope.newLoanDetailsForm.$valid) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    };
+                    console.log($scope.loan);
+                    $scope.save = function () {
+                        if ($scope.newLoanApplicationForm.$valid && $scope.checkLoanDetails()) {
+                            swal({
+                                title: 'Create New Loan Application',
+                                text: 'Do you want to save and create this loan application file?',
+                                icon: 'info',
+                                buttons: {
+                                    cancel: true,
+                                    confirm: 'Create',
+                                },
+                            }).then((isConfirm) => {
+                                if (isConfirm) {
+                                    if ($scope.loan.loanid) {
+                                        console.log('Loan Exists');
+                                        $scope.document.loanid = $scope.loan.loanid;
                                         console.log($scope.document);
                                         $http
-                                        .post('/api/documents/documents/', $scope.document)
-    
-                                        .then(
-                                            function () {
-    
-                                                toastr.success('Success', 'New loan application file created.');
+                                            .post('/api/documents/documents/', $scope.document)
 
+                                            .then(
+                                                function () {
+                                                    toastr.success('Success', 'New loan application file created.');
 
-                                                swal('Success!', 'New Loan Application File Created.', 'success');
-                                                $state.go('app.borrowers.info', { borrowerId: $scope.borrowerId });
-    
-    
-                                               
-                                            },
-                                            function (error) {
-                                                toastr.error(
-                                                    'Error ' + error.status + ' ' + error.statusText,
-                                                    'Could not create new loan application file. Please contact System Administrator.'
-                                                );
-                                            }
-                                        );
-                                        
-                                    },
-                                    function (error) {
-                                        toastr.error(
-                                            'Error ' + error.status + ' ' + error.statusText,
-                                            'Could not create new loan details record. Please contact System Administrator.'
-                                        );
+                                                    swal('Success!', 'New Loan Application File Created.', 'success');
+                                                    $state.go('app.borrowers.info', { borrowerId: $scope.borrowerId });
+                                                },
+                                                function (error) {
+                                                    toastr.error(
+                                                        'Error ' + error.status + ' ' + error.statusText,
+                                                        'Could not create new loan application file. Please contact System Administrator.'
+                                                    );
+                                                }
+                                            );
+                                    } else {
+                                        $http
+                                            .post('/api/loans/loans/', $scope.loan)
+
+                                            .then(
+                                                function (loanResponse) {
+                                                    $scope.document.loanid = loanResponse.data.id;
+                                                    console.log($scope.document);
+                                                    $http
+                                                        .post('/api/documents/documents/', $scope.document)
+
+                                                        .then(
+                                                            function () {
+                                                                toastr.success(
+                                                                    'Success',
+                                                                    'New loan application file created.'
+                                                                );
+
+                                                                swal(
+                                                                    'Success!',
+                                                                    'New Loan Application File Created.',
+                                                                    'success'
+                                                                );
+                                                                $state.go('app.borrowers.info', {
+                                                                    borrowerId: $scope.borrowerId,
+                                                                });
+                                                            },
+                                                            function (error) {
+                                                                toastr.error(
+                                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                                    'Could not create new loan application file. Please contact System Administrator.'
+                                                                );
+                                                            }
+                                                        );
+                                                },
+                                                function (error) {
+                                                    toastr.error(
+                                                        'Error ' + error.status + ' ' + error.statusText,
+                                                        'Could not create new loan details record. Please contact System Administrator.'
+                                                    );
+                                                }
+                                            );
                                     }
-                                ); 
-
-                                 }
-                               
-                            }
-                        });
-                    }
-                };
-            },
-            function (error) {
-                toastr.error(
-                    'Error ' + error.status + ' ' + error.statusText,
-                    'Could not retrieve Sub Process Information. Please contact System Administrator.'
-                );
-            }
-        );
+                                }
+                            });
+                        }
+                    };
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Sub Process Information. Please contact System Administrator.'
+                    );
+                }
+            );
 
         $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
             function (response) {

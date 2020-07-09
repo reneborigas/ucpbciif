@@ -16,7 +16,7 @@ define(function () {
         $scope.tableDocuments = new NgTableParams(
             {
                 page: 1,
-                count: 10,
+                count: 15,
             },
             {
                 counts: [10, 20, 30, 50, 100],
@@ -25,6 +25,7 @@ define(function () {
                         .get('/api/documents/documents/', { params: { subProcessId: $scope.subProcessId } })
                         .then(
                             function (response) {
+                                console.log($scope.subProcessId);
                                 var filteredData = params.filter()
                                     ? $filter('filter')(response.data, params.filter())
                                     : response.data;
@@ -60,7 +61,7 @@ define(function () {
                 count: 10,
             },
             {
-                counts: [],
+                counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
                     return $http.get('/api/documents/documentmovements/').then(
                         function (response) {
@@ -121,9 +122,7 @@ define(function () {
     ) {
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
-        
 
-            
             // appFactory.getActivities($scope.documentId).then(function(data) {
 
             // 	$scope.currentStep = response.data[0];
@@ -149,7 +148,7 @@ define(function () {
                             //             if($scope.stepRequirements[0]){
                             //                 $scope.goToRequirement($scope.stepRequirements[0].id);
                             //             }
-                                        
+
                             //             // $scope.currentRequirement.attachments =
                             //             // 	$scope.currentRequirement.stepRequirementAttachments;
                             //         },
@@ -221,36 +220,30 @@ define(function () {
             .then(
                 function (response) {
                     $scope.document = response.data[0];
-                
+
                     $scope.loadProcessRequirements();
                     $scope.loadNotes();
-                  
 
                     $http
-                    .get('/api/borrowers/borrowers/', {
-                        params: { borrowerId: $scope.document.borrower},
-                    })
-                    .then(
-                        function (response) {
-                            $scope.borrower = response.data[0];
-                        
-                            
-                            appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
-                                console.log(data);
-                                $scope.windows = data; 
-                            }); 
-                           
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not retrieve Borrower Information. Please contact System Administrator.'
-                            );
-                        }
-                    );
-                    
-                    
-                   
+                        .get('/api/borrowers/borrowers/', {
+                            params: { borrowerId: $scope.document.borrower },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.borrower = response.data[0];
+
+                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                    console.log(data);
+                                    $scope.windows = data;
+                                });
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
                 },
                 function (error) {
                     toastr.error(
@@ -259,10 +252,6 @@ define(function () {
                     );
                 }
             );
-        
-
-
-
 
         $scope.loadNotes = function () {
             return appFactory.getContentTypeId('note').then(function (data) {
@@ -272,30 +261,27 @@ define(function () {
             });
         };
 
-
-
-        $scope.loadProcessRequirements = function(){
-
+        $scope.loadProcessRequirements = function () {
             $http
-            .get('/api/processes/processrequirements/', { params: { subProcessId: $scope.document.subProcess.id } })
-            .then(
-                function (response) {
-                    $scope.processRequirements = response.data;
+                .get('/api/processes/processrequirements/', { params: { subProcessId: $scope.document.subProcess.id } })
+                .then(
+                    function (response) {
+                        $scope.processRequirements = response.data;
 
-                    $scope.currentRequirement = $scope.processRequirements[0];
-                    if($scope.processRequirements[0]){
-                        $scope.goToRequirement($scope.processRequirements[0].id);
-                    } 
-                    // $scope.currentRequirement.attachments =
-                    // 	$scope.currentRequirement.stepRequirementAttachments;
-                },
-                function (error) {
-                    toastr.error(
-                        'Error ' + error.status + ' ' + error.statusText,
-                        'Could not retrieve Process Requirements Information. Please contact System Administrator.'
-                    );
-                }
-            );
+                        $scope.currentRequirement = $scope.processRequirements[0];
+                        if ($scope.processRequirements[0]) {
+                            $scope.goToRequirement($scope.processRequirements[0].id);
+                        }
+                        // $scope.currentRequirement.attachments =
+                        // 	$scope.currentRequirement.stepRequirementAttachments;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Process Requirements Information. Please contact System Administrator.'
+                        );
+                    }
+                );
         };
         $http.get('/api/documents/documentmovements/', { params: { documentId: $scope.documentId } }).then(
             function (response) {
@@ -321,7 +307,6 @@ define(function () {
             }
         );
 
-      
         $scope.getRequirement = function () {
             for (var i = 0; i < $scope.stepRequirements.length; i++) {
                 if ($scope.currentRequirement.id == $scope.stepRequirements[i].id) {
@@ -336,7 +321,10 @@ define(function () {
                     $scope.currentRequirement = $scope.processRequirements[i];
                     $http
                         .get('/api/processes/processrequirementsattachments/', {
-                            params: { processRequirementId: $scope.currentRequirement.id, documentId: $scope.documentId },
+                            params: {
+                                processRequirementId: $scope.currentRequirement.id,
+                                documentId: $scope.documentId,
+                            },
                         })
                         .then(
                             function (response) {
@@ -642,7 +630,7 @@ define(function () {
                     function () {
                         toastr.success('Success', 'Note added succesfully.');
                         $scope.loadNotes();
-                        
+
                         $scope.newNote.noteDescription = '';
                         noteBlockUI.stop();
                     },
@@ -660,10 +648,6 @@ define(function () {
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };
-
-
-
-
     });
 
     app.controller('DocumentAddController', function DocumentAddController(
