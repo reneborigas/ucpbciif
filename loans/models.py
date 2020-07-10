@@ -165,20 +165,28 @@ class LoanProgram(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
+    def getActiveCreditline(self,borrower):
+       
+        if self.programLoans.all().last():
+            return self.programCreditLines.filter(status__name='APPROVED',borrower=borrower).last()
+
+        return None
+
     def getActiveLoan(self,borrower):
        
         if self.programLoans.all().last():
-            return self.programLoans.filter(status__name='RELEASED',borrower=borrower).last()
+            return self.programLoans.filter(status__name='APPROVED',borrower=borrower).last()
 
         return None
 
     def getTotalAvailments(self,borrower):
          
-        if(not self.programLoans.filter(status__name='RELEASED',borrower=borrower)):
+        if(not self.programLoans.filter(status__name='APPROVED',borrower=borrower)):
             return 0
-        return self.programLoans.filter(status__name='RELEASED',borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+        return self.programLoans.filter(status__name='APPROVED',borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
    
+
 
 class Loan(models.Model):
 
@@ -236,8 +244,16 @@ class Loan(models.Model):
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
-        related_name="loanCreatedBy",
+        related_name="creditLineCreatedBy",
         null = True,
+    )
+    dateApproved = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+    dateReleased = models.DateTimeField(
+        blank=True,
+        null=True
     )
 
     dateCreated = models.DateTimeField(
@@ -252,3 +268,146 @@ class Loan(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.borrower,self.amount)
+
+   
+
+class Amortization(models.Model):
+
+
+    
+    
+    loan = models.ForeignKey(
+        Loan,
+        on_delete=models.CASCADE,
+        related_name="amortizations",
+        blank=True,
+        null=True
+    )
+
+    days = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    )
+
+
+    schedule = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+    
+    principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    
+    interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    
+    vat = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    total = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    
+    principalBalance = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="amortizationStatuses",
+    )
+ 
+     
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="amortizationCreatedBy",
+        null = True,
+    )
+ 
+
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+
+    def __str__(self):
+        return "%s %s" % (self.loan,self.schedule)
+
+
+ 
+class CreditLine(models.Model):
+
+    borrower =  models.ForeignKey(
+        'borrowers.Borrower',
+        on_delete=models.CASCADE,
+        related_name="creditLines",
+    )
+    
+
+    loanProgram =  models.ForeignKey(
+       LoanProgram,
+        on_delete=models.CASCADE,
+        related_name="programCreditLines", 
+    )
+
+    amount = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    interestRate = models.DecimalField( max_digits=5, decimal_places=2,blank=False) 
+
+    term =  models.ForeignKey(
+       Term,
+        on_delete=models.SET_NULL,
+        related_name="creditLines",
+          null = True,
+    )
+ 
+    purpose = models.TextField(
+        blank = True,
+        null = True,
+    )
+
+    security = models.TextField(
+        blank = True,
+        null = True,
+    )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="creditLineStatuses",
+    )
+ 
+     
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="loanCreatedBy",
+        null = True,
+    )
+
+    dateApproved = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
+    dateExpired = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s %s" % (self.borrower,self.amount)
+ 

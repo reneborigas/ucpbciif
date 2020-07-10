@@ -443,9 +443,29 @@ define(function () {
                 if (isConfirm) {
                     $http.post('/api/documents/documentmovements/', $scope.documentMovement).then(
                         function () {
-                            toastr.success('Success', 'File successfully moved to the next phase.');
-                            swal('Success!', 'File successfully moved to the next phase', 'success');
-                            $state.reload();
+                            
+                             
+                            if(output.callBackLink){
+
+                                var param = {
+                                    'documentid':$scope.documentMovement.document
+                                }
+    
+                                $http.post(output.callBackLink, param).then(function(response) {
+                                    console.log(response);
+                                });
+                                toastr.success('Success', 'File successfully moved to the next phase.');
+                                swal('Success!', 'File successfully moved to the next phase', 'success');
+                                $state.reload();
+                            }else{
+
+                                toastr.success('Success', 'File successfully moved to the next phase.');
+                                swal('Success!', 'File successfully moved to the next phase', 'success');
+                                $state.reload();
+                            }
+                           
+                            
+                           
                         },
                         function (error) {
                             toastr.error(

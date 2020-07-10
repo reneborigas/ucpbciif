@@ -8,8 +8,8 @@ from committees.models import Committee
 from processes.models import Statuses,Step,Output,SubProcess
 from processes.serializers import OutputSerializer,StatusSerializer,SubProcessSerializer
 from committees.serializers import NoteSerializer
-from loans.serializers import LoanSerializer
-from loans.models import Loan 
+from loans.serializers import LoanSerializer,CreditLineSerializer
+from loans.models import Loan ,CreditLine
 
 
 class DocumentMovementSerializer(ModelSerializer): 
@@ -26,9 +26,7 @@ class DocumentMovementSerializer(ModelSerializer):
 
 
     def create(self, validated_data): 
-
-
-
+ 
 
          
         document = Document.objects.get(pk=validated_data.get("document").id)
@@ -70,8 +68,11 @@ class DocumentSerializer(ModelSerializer):
     documentCode = serializers.CharField(read_only=True)
     notes = NoteSerializer(many=True,read_only=True)
     loan = LoanSerializer(read_only=True)
+    creditLine = CreditLineSerializer(read_only=True)
 
-    loanid= serializers.CharField()
+    loanid= serializers.CharField(required=False)
+    creditlineid= serializers.CharField(required=False)
+
     currentStatus = StatusSerializer(read_only=True)
     
     documentMovements = DocumentMovementSerializer(many=True,read_only=True)
@@ -102,19 +103,35 @@ class DocumentSerializer(ModelSerializer):
             if(lastDocument.documentMovements.last().status.isFinalStatus and not lastDocument.documentMovements.last().status.isNegativeResult):
                 parentDocument = lastDocument
 
-        loan = Loan.objects.get(pk=validated_data.get("loanid" ))
-
         document=Document(
-        subProcess=subProcess,
-        name=validated_data.get("name" ),
-        code=subProcess.code, 
-        documentType=validated_data.get("documentType" ), 
-        borrower=validated_data.get("borrower" ), 
-        loan=loan,
-        parentDocument=parentDocument
-        )
+            subProcess=subProcess,
+            name=validated_data.get("name" ),
+            code=subProcess.code, 
+            documentType=validated_data.get("documentType" ), 
+            borrower=validated_data.get("borrower" ),
+            parentDocument=parentDocument
+            )
 
+        creditlineid = validated_data.get("creditlineid" )
+        if creditlineid is not None:  
+            creditLine = CreditLine.objects.get(pk=validated_data.get("creditlineid" )) 
+            if creditLine:
+                document.creditLine = creditLine
+
+        loanid = validated_data.get("loanid" )
+        if loanid is not None: 
+            loan = Loan.objects.get(pk=loanid)
+            if loan:
+               document.loan = loan
+
+       
          
+       
+
+       
+
+           
+        
         document.save()
 
         # document = Document.objects.create(**validated_data) 

@@ -10,6 +10,7 @@ class LoginView(views.APIView):
     
     @method_decorator(csrf_protect)
     def post(self,request):
+  
         user = authenticate(
             username=request.data.get("username"),
             password=request.data.get("password"))

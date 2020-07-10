@@ -3,7 +3,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
 from committees.serializers import PositionSerializer 
-from loans.serializers import LoanSerializer
+from loans.serializers import LoanSerializer, CreditLineSerializer
 
 class RelatedProcessSerializer(serializers.ModelSerializer):
     relatedProcesses = serializers.PrimaryKeyRelatedField(queryset=SubProcess.objects.all(), many=True)
@@ -15,6 +15,8 @@ class RelatedProcessSerializer(serializers.ModelSerializer):
 class SubProcessSerializer(ModelSerializer): 
     canCreateNewFile = serializers.CharField(read_only=True)
     parentLastDocumentLoan = LoanSerializer(read_only=True)
+    parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
+
 
     relatedProcesses = RelatedProcessSerializer(many=True,read_only=True)
     def create(self, validated_data):

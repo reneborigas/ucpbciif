@@ -132,7 +132,7 @@
                                             <span class="text-dark-75">File Name</span>
                                         </th>
                                         <th style="min-width: 120px;">Created</th>
-                                        <th style="min-width: 120px;">Updated</th>
+                                        <th style="min-width: 120px;">Approved</th>
                                         <th style="min-width: 120px;">Status</th>
                                     </tr>
                                 </thead>
@@ -159,8 +159,8 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                {{ document.dateUpdated | date: 'medium' }}
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-if="document.dateApproved">
+                                              {{ document.dateApproved | date: 'medium' }} 
                                             </span>
                                         </td>
                                         <td>

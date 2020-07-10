@@ -7,13 +7,14 @@ from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 
 from borrowers.models import Borrower
 
+
 class LoanViewSet(ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer 
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name'))
+        queryset = Loan.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related('amortizations')
         loanId = self.request.query_params.get('loanId', None)
 
         if loanId is not None:
@@ -21,6 +22,34 @@ class LoanViewSet(ModelViewSet):
 
         return queryset
 
+class AmortizationViewSet(ModelViewSet):
+    queryset = Amortization.objects.all()
+    serializer_class = AmortizationSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Amortization.objects.order_by('id')
+        amortizationId = self.request.query_params.get('amortizationId', None)
+
+        if amortizationId is not None:
+            queryset = queryset.filter(id=amortizationId)
+
+        return queryset
+
+class CreditLineViewSet(ModelViewSet):
+    
+    queryset = CreditLine.objects.all()
+    serializer_class = CreditLineSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = CreditLine.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name'))
+        creditLineId = self.request.query_params.get('creditlineid', None)
+      
+        if creditLineId is not None:
+            queryset = queryset.filter(id=creditLineId)
+       
+        return queryset
 
  
 class LoanProgramViewSet(ModelViewSet):
@@ -44,6 +73,7 @@ class LoanProgramViewSet(ModelViewSet):
             
             for window in queryset:
                 window.activeLoan = window.getActiveLoan(borrower)
+                window.activeCreditLine = window.getActiveCreditline(borrower)
                 window.totalAvailments = window.getTotalAvailments(borrower)
 
         return queryset

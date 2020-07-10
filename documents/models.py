@@ -108,8 +108,16 @@ class Document(models.Model):
         'loans.Loan',
         on_delete=models.CASCADE,
         related_name="loanDocuments",
+        blank=True,
+        null=True
     )
-
+    creditLine = models.ForeignKey(
+        'loans.CreditLine',
+        on_delete=models.CASCADE,
+        related_name="creditLineDocuments",
+        blank=True,
+        null=True
+    )
     subProcess = models.ForeignKey(
         'processes.SubProcess',
         on_delete=models.CASCADE,
@@ -128,6 +136,12 @@ class Document(models.Model):
         on_delete=models.SET_NULL,
         related_name="documentCreatedBy",
         null = True,
+    )
+
+    
+    dateApproved = models.DateTimeField(
+        blank=True,
+        null=True
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,

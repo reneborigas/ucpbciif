@@ -7,6 +7,124 @@ from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 
 from committees.models import Position
 from borrowers.models import Borrower
+from loans.models import CreditLine,Loan,Amortization
+from documents.models import Document
+from rest_framework import status, views
+from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+from loans.models import Status
+from django.utils import timezone
+
+
+def generateAmortizationSchedule(loan,request):
+    noOfItems = loan.term.days / loan.term.paymentPeriod.paymentCycle
+    schedule = loan.dateReleased  + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+    
+    for i in range(int(noOfItems)):
+        amortization = Amortization(
+            schedule = schedule,
+            loan = loan,
+            days= loan.term.paymentPeriod.paymentCycle,
+            principal = 0,
+            interest = 0,
+            vat = 0,
+            total = 0,
+            principalBalance = 0,
+            status = Status.objects.get(pk=1),
+            createdBy = request.user
+        )
+        amortization.save()
+
+        schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+
+
+class CreditLineApprovedView(views.APIView):
+    
+    # @method_decorator(csrf_protect)
+    def post(self,request):
+
+        documentid = request.data.get("documentid") 
+        if documentid:  
+            document = Document.objects.get(pk=documentid)
+            document.dateApproved = timezone.now()
+            document.save()
+
+            creditLine = document.creditLine
+            creditLine.dateApproved = timezone.now()
+            creditLine.dateExpired = timezone.now() + timezone.timedelta(days=365)
+
+
+            creditLine.status= Status.objects.get(pk=6) #APPROVED
+            creditLine.save()
+
+
+            return Response({
+                'status': 'Accepted',
+                'message': 'Credit Line Updated'
+            },status= status.HTTP_202_ACCEPTED)
+ 
+        return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
+
+class LoanAvailmemtApprovedView(views.APIView):
+    
+    # @method_decorator(csrf_protect)
+    def post(self,request):
+
+        documentid = request.data.get("documentid") 
+        print(documentid)
+        if documentid:  
+            document = Document.objects.get(pk=documentid)
+            document.dateApproved = timezone.now()
+            document.save()
+
+            loan = document.loan
+            loan.dateApproved = timezone.now() 
+
+            loan.status= Status.objects.get(pk=6) #APPROVED
+            loan.save()
+    
+
+            return Response({
+                'status': 'Accepted',
+                'message': 'Loan Updated'
+            },status= status.HTTP_202_ACCEPTED)
+ 
+        return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
+
+class LoanReleasedView(views.APIView):
+    
+    # @method_decorator(csrf_protect)
+
+
+    
+
+    def post(self,request):
+
+        documentid = request.data.get("documentid") 
+        print(documentid)
+        if documentid:  
+            document = Document.objects.get(pk=documentid)
+            document.dateApproved = timezone.now()
+            document.save()
+
+
+            loan = document.loan
+            loan.dateReleased = timezone.now() 
+
+            loan.status= Status.objects.get(pk=6) #APPROVED
+            loan.save()
+            generateAmortizationSchedule(loan,request)
+
+            return Response({
+                'status': 'Accepted',
+                'message': 'Loan Updated'
+            },status= status.HTTP_202_ACCEPTED)
+ 
+        return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
+
+
+    
 
 class SubProcessViewSet(ModelViewSet):
     queryset = SubProcess.objects.all()
@@ -31,8 +149,15 @@ class SubProcessViewSet(ModelViewSet):
             
             for subProcess in queryset:
                 subProcess.canCreateNewFile = subProcess.isCanCreateNewFile(borrower)
-                subProcess.parentLastDocumentLoan = subProcess.getParentLastDocument(borrower)       
-       
+                parentLastDocument = subProcess.getParentLastDocument(borrower)
+               
+                if parentLastDocument:
+                    if parentLastDocument.loan:
+                        subProcess.parentLastDocumentLoan = parentLastDocument.loan
+ 
+                    if parentLastDocument.creditLine:
+                        subProcess.parentLastDocumentCreditLine = parentLastDocument.creditLine
+        
          
       
         return queryset

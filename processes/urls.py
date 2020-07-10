@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from .api import *
+from django.urls import path
 
 router = DefaultRouter()
 
@@ -11,5 +12,14 @@ router.register(r'steprequirementsattachments',StepRequirementAttachmentViewSet)
 router.register(r'processrequirements',ProcessRequirementViewSet) 
 router.register(r'processrequirementsattachments',ProcessRequirementAttachmentViewSet) 
 router.register(r'statuses',StatusViewSet) 
+ 
 
-urlpatterns = router.urls
+
+urlpatterns =  [ path('creditlineapproved/', CreditLineApprovedView.as_view()),
+        path('loanavailmentapproved/', LoanAvailmemtApprovedView.as_view()),
+        path('loanreleased/', LoanReleasedView.as_view()),
+        ]
+
+
+urlpatterns += router.urls
+ 

@@ -955,7 +955,7 @@ define(function () {
         appFactory.getTerm().then(function (data) {
             $scope.terms = data;
         });
-        appFactory.getLoanProgram().then(function (data) {
+        appFactory.getLoanPrograms().then(function (data) {
             $scope.loanPrograms = data;
         });
 
@@ -980,8 +980,10 @@ define(function () {
                         loan: '',
                     };
 
-                    $scope.loan = {
-                        loanid: null,
+                 
+
+                    $scope.creditLine = {
+                        creditlineid: null,
                         amount: '',
                         interestRate: '',
                         term: '',
@@ -993,7 +995,43 @@ define(function () {
                         createdBy: appFactory.getCurrentUser(),
                     };
 
+                    if ($scope.subProcess.parentLastDocumentCreditLine) {
+                     
+
+                        $scope.creditLine = {
+                            creditlineid: $scope.subProcess.parentLastDocumentCreditLine.id,
+                            amount: parseFloat($scope.subProcess.parentLastDocumentCreditLine.amount),
+                            interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
+                            term: $scope.subProcess.parentLastDocumentCreditLine.term,
+                            loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
+                            purpose: $scope.subProcess.parentLastDocumentCreditLine.purpose,
+                            security: $scope.subProcess.parentLastDocumentCreditLine.security,
+                            status: 1,
+                            borrower: $scope.borrowerId,
+                            term_name: $scope.subProcess.parentLastDocumentCreditLine.term_name,
+                            loanProgram_name: $scope.subProcess.parentLastDocumentCreditLine.loanProgram_name,
+                            createdBy: appFactory.getCurrentUser(),
+                        };
+
+                        $scope.loan = {
+                            loanid: null,
+                            amount: '',
+                            interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
+                            term: $scope.subProcess.parentLastDocumentCreditLine.term,
+                            loanProgram:  $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
+                            purpose: '',
+                            security: '',
+                            status: 1,
+                            borrower: $scope.borrowerId,
+                            createdBy: appFactory.getCurrentUser(),
+                        };
+                        
+
+                    }
+
                     if ($scope.subProcess.parentLastDocumentLoan) {
+                     
+
                         $scope.loan = {
                             loanid: $scope.subProcess.parentLastDocumentLoan.id,
                             amount: parseFloat($scope.subProcess.parentLastDocumentLoan.amount),
@@ -1008,22 +1046,83 @@ define(function () {
                             loanProgram_name: $scope.subProcess.parentLastDocumentLoan.loanProgram_name,
                             createdBy: appFactory.getCurrentUser(),
                         };
+
+                        
+
                     }
 
-                    $scope.checkLoanDetails = function () {
-                        if ($scope.subProcess.parentLastDocumentLoan) {
+ 
+                    // $scope.checkLoanDetails = function () {
+                    //     if ($scope.subProcess.parentLastDocumentLoan) {
+                    //         return true;
+                    //     } else {
+                    //         if ($scope.newLoanDetailsForm.$valid) {
+                    //             return true;
+                    //         } else {
+                    //             return false;
+                    //         }
+                    //     }
+                    // };
+                    // $scope.checkCreditLineDetails = function () {
+                    //     if ($scope.subProcess.parentLastDocumentCreditLine) {
+                    //         return true;
+                    //     } else {
+                    //         if ($scope.newCreditLineDetailsForm.$valid) {
+                    //             return true;
+                    //         } else {
+                    //             return false;
+                    //         }
+                    //     }
+                    // };
+
+                    $scope.createDocument = function(){
+
+                        $http
+                        .post('/api/documents/documents/', $scope.document)
+
+                        .then(
+                            function () {
+                                toastr.success('Success', 'New loan application file created.');
+
+                                swal('Success!', 'New Loan Application File Created.', 'success');
+                                $state.go('app.borrowers.info', { borrowerId: $scope.borrowerId });
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not create new loan application file. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    };
+                    $scope.checkDetails = function () {
+                        if ($scope.subProcess.parentLastDocumentCreditLine) {
+
+                            if ($scope.subProcess.parentLastDocumentCreditLine) {
+                                return true;
+                            } else {
+                                if ($scope.newCreditLineDetailsForm.$valid) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+
                             return true;
                         } else {
-                            if ($scope.newLoanDetailsForm.$valid) {
+                            if ($scope.newCreditLineDetailsForm.$valid) {
                                 return true;
                             } else {
                                 return false;
                             }
                         }
                     };
+
+
                     console.log($scope.loan);
                     $scope.save = function () {
-                        if ($scope.newLoanApplicationForm.$valid && $scope.checkLoanDetails()) {
+                        if ($scope.newLoanApplicationForm.$valid && $scope.checkDetails()) {
+                            
                             swal({
                                 title: 'Create New Loan Application',
                                 text: 'Do you want to save and create this loan application file?',
@@ -1034,61 +1133,50 @@ define(function () {
                                 },
                             }).then((isConfirm) => {
                                 if (isConfirm) {
-                                    if ($scope.loan.loanid) {
-                                        console.log('Loan Exists');
-                                        $scope.document.loanid = $scope.loan.loanid;
-                                        console.log($scope.document);
-                                        $http
-                                            .post('/api/documents/documents/', $scope.document)
 
-                                            .then(
-                                                function () {
-                                                    toastr.success('Success', 'New loan application file created.');
+                                    if ($scope.creditLine.creditlineid) {
+                                        console.log('Credit Line Exists');
+                                        $scope.document.creditlineid = $scope.creditLine.creditlineid;
+                                        
+                                         
+                                        if ($scope.loan.loanid) {
+                                            console.log('Loan Exists');
+                                            $scope.document.loanid = $scope.loan.loanid;
+                                            console.log($scope.document);
+                                            $scope.createDocument();
+    
+                                        } else {
+                                            $http
+                                                .post('/api/loans/loans/', $scope.loan)
+    
+                                                .then(
+                                                    function (loanResponse) {
+                                                        $scope.document.loanid = loanResponse.data.id;
+                                                        console.log($scope.document);
+                                                        $scope.createDocument();
 
-                                                    swal('Success!', 'New Loan Application File Created.', 'success');
-                                                    $state.go('app.borrowers.info', { borrowerId: $scope.borrowerId });
-                                                },
-                                                function (error) {
-                                                    toastr.error(
-                                                        'Error ' + error.status + ' ' + error.statusText,
-                                                        'Could not create new loan application file. Please contact System Administrator.'
-                                                    );
-                                                }
-                                            );
+
+                                                    },
+                                                    function (error) {
+                                                        toastr.error(
+                                                            'Error ' + error.status + ' ' + error.statusText,
+                                                            'Could not create new loan details record. Please contact System Administrator.'
+                                                        );
+                                                    }
+                                                );
+                                        }
+    
+
+                                        
                                     } else {
                                         $http
-                                            .post('/api/loans/loans/', $scope.loan)
+                                            .post('/api/loans/creditlines/', $scope.creditLine)
 
                                             .then(
                                                 function (loanResponse) {
-                                                    $scope.document.loanid = loanResponse.data.id;
+                                                    $scope.document.creditlineid = loanResponse.data.id;
                                                     console.log($scope.document);
-                                                    $http
-                                                        .post('/api/documents/documents/', $scope.document)
-
-                                                        .then(
-                                                            function () {
-                                                                toastr.success(
-                                                                    'Success',
-                                                                    'New loan application file created.'
-                                                                );
-
-                                                                swal(
-                                                                    'Success!',
-                                                                    'New Loan Application File Created.',
-                                                                    'success'
-                                                                );
-                                                                $state.go('app.borrowers.info', {
-                                                                    borrowerId: $scope.borrowerId,
-                                                                });
-                                                            },
-                                                            function (error) {
-                                                                toastr.error(
-                                                                    'Error ' + error.status + ' ' + error.statusText,
-                                                                    'Could not create new loan application file. Please contact System Administrator.'
-                                                                );
-                                                            }
-                                                        );
+                                                    $scope.createDocument();
                                                 },
                                                 function (error) {
                                                     toastr.error(
@@ -1098,6 +1186,11 @@ define(function () {
                                                 }
                                             );
                                     }
+
+                                   
+
+
+
                                 }
                             });
                         }

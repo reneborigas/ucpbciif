@@ -158,7 +158,7 @@ class SubProcess(models.Model):
                 if(lastDocument.documentMovements.last().status.isFinalStatus and not lastDocument.documentMovements.last().status.isNegativeResult):
                     isAllowedByParent = True
 
-            return lastDocument.loan
+                return lastDocument    
         return None
 
     def __str__(self):
@@ -331,6 +331,10 @@ class Output(models.Model):
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="outputs",
     )
+    callBackLink= models.TextField(
+        blank = True,
+        null = True,
+    )
     nextStep = models.ForeignKey(
         Step,
         on_delete=models.CASCADE,
@@ -406,7 +410,7 @@ class StepRequirement(models.Model):
     dateUpdated = models.DateTimeField(
         auto_now_add=True,
     )
-    isDeleted = models.BooleanField(
+    isDeleted = models.BooleanField( 
         default=False,
     )
 

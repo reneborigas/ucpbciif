@@ -7,4 +7,6 @@ admin.site.register(LoanProgram)
 admin.site.register(Term)
 admin.site.register(PaymentPeriod)
 admin.site.register(Status)
+admin.site.register(CreditLine)
+admin.site.register(Amortization)
  
