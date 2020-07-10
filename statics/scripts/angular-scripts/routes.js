@@ -563,6 +563,79 @@ define(function () {
                 .state('simple.500', {
                     url: '/500',
                     templateUrl: '/statics/html/views/pages/500.html',
+                })
+
+                //Print
+                .state('print', {
+                    abstract: true,
+                    templateUrl: '/statics/partials/layouts/print.html',
+                    resolve: {
+                        loadCSS: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load([
+                                    {
+                                        serie: true,
+                                        name: 'Font Awesome',
+                                        files: ['/statics/assets/fonts/font-awesome/css/fontawesome-all.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Simple Line Icons',
+                                        files: ['/statics/assets/fonts/simple-line-icons/css/simple-line-icons.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Styles',
+                                        files: ['/statics/assets/css/style.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Custom Styles',
+                                        files: ['/statics/assets/css/custom.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngTable Styles',
+                                        files: ['/statics/libs/ngTable/ng-table.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngBlock Styles',
+                                        files: ['/statics/libs/ngBlock/angular-block-ui.css'],
+                                    },
+                                ]);
+                            },
+                        ],
+                    },
+                })
+                .state('print.documents', {
+                    url: '/print',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/documents.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('print.documents.loan_release', {
+                    url: '/files/:documentId',
+                    templateUrl: '/statics/partials/pages/documents/documents-loan-release.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loan Release Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.documentId = $stateParams.documentId;
+                        appFactory.getDocumentName($scope.documentId).then(function (data) {
+                            $scope.fileName = data;
+                        });
+                    },
                 });
 
             $urlRouterProvider.otherwise('/');

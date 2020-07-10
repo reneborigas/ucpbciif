@@ -1,0 +1,580 @@
+<div class="row" ng-controller="DocumentLoanReleasePrintController">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
+                    <h2>RELEASE SHEET</h2>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="text-left">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="p-0" width="25%">Account Name:</td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
+                                    <strong>{{ document.borrowerName }}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0" width="25%">Subject:</td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
+                                    Release of {{ document.loan.amount | currency :'₱'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0" width="25%">Bank Account Number:</td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
+                                    {{}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="text-left">
+                <ul class="upper-roman pl-3 font-weight-bold">
+                    <li>
+                        Background Information
+                        <ul class="list-unstyled pl-3">
+                            <li>
+                                <table
+                                    class="table table-print font-weight-normal table-borderless"
+                                    style="border-spacing: 1rem 0rem; border-collapse: separate;"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5" align="left" class="p-0">
+                                                A. Existing Accomodation
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="p-0" width="20%">Loan Window</td>
+                                            <td
+                                                ng-repeat="window in windows"
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                {{ window.name}}
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                Total
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0" width="20%">Credit Line Amount</td>
+                                            <td
+                                                ng-repeat="window in windows"
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                <span
+                                                    class="text-dark-75"
+                                                    ng-bind="window.activeCreditLine ? (window.activeCreditLine.amount | currency :'₱') : '₱0.00'"
+                                                ></span>
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0" width="20%">Approval Date</td>
+                                            <td
+                                                ng-repeat="window in windows"
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                <span
+                                                    class="text-dark-75"
+                                                    ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateApproved | date : 'mediumDate') : 'N/A'"
+                                                ></span>
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0" width="20%">Expiry Date</td>
+                                            <td
+                                                ng-repeat="window in windows"
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                <span
+                                                    class="text-dark-75"
+                                                    ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateExpired | date : 'mediumDate') : 'N/A'"
+                                                ></span>
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0" width="20%">Total Availments</td>
+                                            <td
+                                                ng-repeat="window in windows"
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                {{ window.totalAvailments | currency :'₱'}}
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                {{ borrower.totalAvailments | currency :'₱'}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li>
+                                <table
+                                    class="table table-print font-weight-normal table-borderless"
+                                    style="border-spacing: 1rem 0rem; border-collapse: separate;"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5" align="left" class="p-0">
+                                                B. Outstanding Obligation as of {{ dateToday | date :'mediumDate' }}
+                                            </th>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <th class="p-0">Availment Number</th>
+                                            <th class="p-0">Availment Date</th>
+                                            <th class="p-0">Maturity Date</th>
+                                            <th class="p-0">Amount Availed</th>
+                                            <th class="p-0">O/S Balance (P'0000)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                Name
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                Name
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20"
+                                                align="middle"
+                                            >
+                                                Name
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="right"
+                                            >
+                                                Name
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="right"
+                                            >
+                                                Name
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="pt-3 pr-0 font-weight-bold" align="right">
+                                                Name
+                                            </td>
+                                            <td class="pt-3 pr-0 font-weight-bold" width="20%" align="right">
+                                                Name
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li>
+                                <table
+                                    class="table table-print font-weight-normal table-borderless"
+                                    style="border-spacing: 1rem 0rem; border-collapse: separate;"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3" align="left" class="p-0">
+                                                C. This Release
+                                            </th>
+                                            <th colspan="2" align="left" class="p-0">
+                                                Secured by:
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="p-0" width="20%">#:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                            <td></td>
+                                            <td class="p-0" width="20%">PDCs:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                x
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0" width="20%">Windows:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                {{ document.creditLine.loanProgram_name }}
+                                            </td>
+                                            <td></td>
+                                            <td class="p-0" width="20%">JSS:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                x
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0" width="20%">Loan Amount:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                {{ document.loan.amount | currency :'₱'}}
+                                            </td>
+                                            <td></td>
+                                            <td class="p-0" width="20%">
+                                                REM
+                                                <small>(TCT # 15966/18199)</small>
+                                                :
+                                            </td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            >
+                                                x
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li>
+                                <table
+                                    class="table table-print font-weight-normal table-borderless"
+                                    style="border-spacing: 1rem 0rem; border-collapse: separate;"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3" align="left" class="p-0">
+                                                C. Financial Ratios as of {{ dateToday | date :'mediumDate' }}
+                                            </th>
+                                            <th colspan="2" align="left" class="p-0">
+                                                After Financing
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">PDR:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                            <td class="p-0" width="20%">CR:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">CR:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                            <td class="p-0" width="20%">RAR:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">RAR:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">DOSRI (LR):</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">DER:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">APLL Required LR:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">APLL Required MF:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">APLL Required AR:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">Set-up:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">Overage:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0" width="20%">Net margin:</td>
+                                            <td
+                                                class="p-0"
+                                                style="border-bottom: 1pt solid #464e5f !important;"
+                                                width="20%"
+                                                align="middle"
+                                            ></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Compliance with Pre-Release Requirements
+                        <table
+                            class="table table-print font-weight-normal table-borderless"
+                            style="border-spacing: 1rem 0rem; border-collapse: separate;"
+                        >
+                            <tbody>
+                                <tr>
+                                    <td class="p-0" width="20%" align="middle">
+                                        <u>on file</u>
+                                    </td>
+                                    <td class="p-0" width="20%">- Credit Agreement</td>
+                                    <td></td>
+                                    <td
+                                        class="p-0"
+                                        style="border-bottom: 1pt solid #464e5f !important;"
+                                        width="20%"
+                                        align="middle"
+                                    >
+                                        x
+                                    </td>
+                                    <td class="p-0" width="20%">- Availment Letter/AR:</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0" width="20%" align="middle">
+                                        <u>on file</u>
+                                    </td>
+                                    <td class="p-0" width="20%">- Amendment to CLA</td>
+                                    <td></td>
+                                    <td
+                                        class="p-0"
+                                        style="border-bottom: 1pt solid #464e5f !important;"
+                                        width="20%"
+                                        align="middle"
+                                    >
+                                        x
+                                    </td>
+                                    <td class="p-0" width="20%">- March 31, 2020 IFS:</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0" width="20%" align="middle">
+                                        <u>on file</u>
+                                    </td>
+                                    <td class="p-0" width="20%">- Surety Agreement</td>
+                                    <td></td>
+                                    <td
+                                        class="p-0"
+                                        style="border-bottom: 1pt solid #464e5f !important;"
+                                        width="20%"
+                                        align="middle"
+                                    >
+                                        x
+                                    </td>
+                                    <td class="p-0" width="20%">- Schedule of DOSRI Loan:</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0" width="20%" align="middle">
+                                        <u>on file</u>
+                                    </td>
+                                    <td class="p-0" width="20%">- Promissory Note</td>
+                                    <td></td>
+                                    <td
+                                        class="p-0"
+                                        style="border-bottom: 1pt solid #464e5f !important;"
+                                        width="20%"
+                                        align="middle"
+                                    >
+                                        x
+                                    </td>
+                                    <td class="p-0" width="20%">- Aging of past Due Loan:</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0" width="20%" align="middle">
+                                        <u>on file</u>
+                                    </td>
+                                    <td class="p-0" width="20%">- Disclosure Statement</td>
+                                    <td></td>
+                                    <td
+                                        class="p-0"
+                                        style="border-bottom: 1pt solid #464e5f !important;"
+                                        width="20%"
+                                        align="middle"
+                                    >
+                                        x
+                                    </td>
+                                    <td class="p-0" width="20%">- Signed Notice of Approval:</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0" width="20%" align="middle">
+                                        <u>on file</u>
+                                    </td>
+                                    <td class="p-0" width="20%">- PDCs of Prev Release</td>
+                                    <td></td>
+                                    <td
+                                        class="p-0"
+                                        style="border-bottom: 1pt solid #464e5f !important;"
+                                        width="20%"
+                                        align="middle"
+                                    >
+                                        x
+                                    </td>
+                                    <td class="p-0" width="20%">- Certificate of Compliance:</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0" width="20%" align="middle">
+                                        <u>on file</u>
+                                    </td>
+                                    <td class="p-0" width="20%" colspan="2">- Liquidation Report of Prev Release</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -118,7 +118,8 @@ define(function () {
         $state,
         $timeout,
         blockUI,
-        $q
+        $q,
+        $window
     ) {
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
@@ -443,29 +444,22 @@ define(function () {
                 if (isConfirm) {
                     $http.post('/api/documents/documentmovements/', $scope.documentMovement).then(
                         function () {
-                            
-                             
-                            if(output.callBackLink){
-
+                            if (output.callBackLink) {
                                 var param = {
-                                    'documentid':$scope.documentMovement.document
-                                }
-    
-                                $http.post(output.callBackLink, param).then(function(response) {
+                                    documentid: $scope.documentMovement.document,
+                                };
+
+                                $http.post(output.callBackLink, param).then(function (response) {
                                     console.log(response);
                                 });
                                 toastr.success('Success', 'File successfully moved to the next phase.');
                                 swal('Success!', 'File successfully moved to the next phase', 'success');
                                 $state.reload();
-                            }else{
-
+                            } else {
                                 toastr.success('Success', 'File successfully moved to the next phase.');
                                 swal('Success!', 'File successfully moved to the next phase', 'success');
                                 $state.reload();
                             }
-                           
-                            
-                           
                         },
                         function (error) {
                             toastr.error(
@@ -668,6 +662,10 @@ define(function () {
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };
+
+        $scope.previewLoanRelease = function (id) {
+            $window.open('/print/files/' + id, '_blank', 'width=800,height=800');
+        };
     });
 
     app.controller('DocumentAddController', function DocumentAddController(
@@ -712,5 +710,58 @@ define(function () {
                 }
             });
         };
+    });
+
+    app.controller('DocumentLoanReleasePrintController', function DocumentListController(
+        $http,
+        $filter,
+        $scope,
+        toastr,
+        NgTableParams,
+        $state,
+        $timeout,
+        appFactory,
+        $window
+    ) {
+        $scope.dateToday = new Date();
+        $http
+            .get('/api/documents/documents/', {
+                params: { documentId: $scope.documentId },
+            })
+            .then(
+                function (response) {
+                    $scope.document = response.data[0];
+
+                    $http
+                        .get('/api/borrowers/borrowers/', {
+                            params: { borrowerId: $scope.document.borrower },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.borrower = response.data[0];
+
+                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                    console.log(data);
+                                    $scope.windows = data;
+                                    $timeout(function () {
+                                        $window.print();
+                                    }, 500);
+                                });
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Document Information. Please contact System Administrator.'
+                    );
+                }
+            );
     });
 });

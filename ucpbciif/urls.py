@@ -25,9 +25,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-
-    path('', lambda request: redirect('/login', permanent=False)),
+    # path('', lambda request: redirect('/login', permanent=False)),
     path('login', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('dashboard', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     
@@ -57,6 +55,10 @@ urlpatterns = [
     path('files/<str:documentType>/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     path('400', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+
+    #print
+    path('print/files/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+
     # App Urls
     path('api/auth/',include('auth.urls')),
     path('api/borrowers/',include('borrowers.urls'),name='borrowers'),

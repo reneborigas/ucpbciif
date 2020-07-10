@@ -23307,6 +23307,9 @@ a.text-dark-75:hover {
     .table {
         border-collapse: collapse !important;
     }
+    .table.table-print {
+        border-collapse: separate !important;
+    }
     .table td,
     .table th {
         background-color: #fff !important;

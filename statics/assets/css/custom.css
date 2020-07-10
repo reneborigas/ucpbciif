@@ -2628,3 +2628,19 @@ hr.transparent {
 		padding: .5rem 2rem
 	}
 }
+
+ul.upper-roman {
+	list-style-type: upper-roman;
+}
+
+ul.lower-roman {
+	list-style-type: lower-roman;
+}
+
+ul.upper-alpha {
+	list-style-type: upper-alpha;
+}
+
+ul.lower-alpha {
+	list-style-type: lower-alpha;
+}

@@ -55,37 +55,18 @@ require.config({
         ocLazyLoad: {
             deps: ['angular'],
         },
-
-        // 'auth': {
-        // 	deps: [ 'angular' ]
-        // },
-
         ngToastr: {
             deps: ['angular'],
         },
         ngTable: {
             deps: ['angular'],
         },
-        // 'ngTouch':{
-        //     deps: ['angular']
-        // },
-        // 'ngBootstrap':{
-        //     deps: ['angular','ngAnimate','ngTouch']
-        // },
-        // 'ngDatepicker': {
-        // 	deps: [ 'ngBootstrap' ]
-        // },
         ngBlock: {
             deps: ['angular'],
         },
         ngSweetalert: {
             deps: ['angular', 'sweetalert'],
         },
-        // 'index': {
-        // 	deps: [
-        // 		'jquery','angular','ngAnimate','ngSanitize','ngRoute','auth','toastr','ocLazyLoad','ngSweetalert','ngTable','ngBreadcrumb','ngBlock','ngBootstrap','ngAnimate'
-        // 	]
-        // }
         app: {
             deps: [
                 'jquery',
