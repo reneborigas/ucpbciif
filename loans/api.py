@@ -20,6 +20,9 @@ class LoanViewSet(ModelViewSet):
         if loanId is not None:
             queryset = queryset.filter(id=loanId)
 
+        for loan in queryset:
+            loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
+            loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
         return queryset
 
 class AmortizationViewSet(ModelViewSet):
@@ -48,7 +51,9 @@ class CreditLineViewSet(ModelViewSet):
       
         if creditLineId is not None:
             queryset = queryset.filter(id=creditLineId)
-       
+            for creditLine in queryset:
+                creditLine.remainingCreditLine = creditLine.getRemainingCreditLine()
+ 
         return queryset
 
  

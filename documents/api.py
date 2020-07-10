@@ -42,8 +42,14 @@ class DocumentViewSet(ModelViewSet):
 
         for document in queryset:
             document.currentStatus = document.getCurrentStatus() 
-            print(document.currentStatus )
-
+            print(document.currentStatus ) 
+                 
+            if  document.loan:
+                document.loan.totalAmortizationInterest =  document.loan.getTotalAmortizationInterest
+                document.loan.totalAmortizationPayment =  document.loan.getTotalAmortizationPayment
+            if document.creditLine: 
+                document.creditLine.remainingCreditLine = document.creditLine.getRemainingCreditLine()
+                
         return queryset
 
  
@@ -73,6 +79,8 @@ class DocumentMovementViewSet(ModelViewSet):
             else:
                 queryset = queryset.filter(document_id=documentId)
 
+
+         
         return queryset.prefetch_related(Prefetch('output',Output.objects.all()))
 
  

@@ -133,11 +133,12 @@
                                         </th>
                                         <th style="min-width: 120px;">Created</th>
                                         <th style="min-width: 120px;">Approved</th>
-                                        <th style="min-width: 120px;">Status</th>
+                                        <th style="min-width: 120px;">Program</th> 
+                                        <th style="min-width: 120px;">File Status</th>
                                     </tr>
                                 </thead>
                                 <tbody
-                                    ng-repeat="document in borrower.documents | orderBy: '' : true | filter: {subProcess:{id:subProcess.id}} | startFrom:currentPageDocument(subProcess)*pageSizeDocument | limitTo: pageSizeDocument"
+                                    ng-repeat="document in borrower.documents | orderBy: 'id' : true | filter: {subProcess:{id:subProcess.id}} | startFrom:currentPageDocument(subProcess)*pageSizeDocument | limitTo: pageSizeDocument"
                                 >
                                     <tr>
                                         <td class="py-2 pl-7">
@@ -163,6 +164,18 @@
                                               {{ document.dateApproved | date: 'medium' }} 
                                             </span>
                                         </td>
+                                        <td>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-if="document.loan">
+                                                        {{ document.loan.loanProgram_name  }} 
+                                                 
+                                                </span>
+
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-if="document.creditLine && !document.loan">
+                                                        {{ document.creditLine.loanProgram_name  }} 
+                                                 
+                                                </span>
+                                        </td>
+                                        
                                         <td>
                                             <span
                                                 class="label label-lg label-inline font-weight-bold py-4"

@@ -93,7 +93,7 @@ class SubProcess(models.Model):
 
             lastDocument = Document.objects.filter(
                 borrower=borrower,
-                subProcess = self.relatedProcesses.last(),
+                subProcess = self.relatedProcesses.last()
 
                 ).order_by('id').last()
 
@@ -104,7 +104,12 @@ class SubProcess(models.Model):
                 else:
                     print("here")
                     isAllowedByParent = False
-            
+
+                if lastDocument.loan:
+                    print(lastDocument.loan.status)
+                    if lastDocument.loan.status.name =='RELEASED':
+                        isAllowedByParent = False
+
         lastDocument = Document.objects.filter(
             borrower=borrower,
             subProcess = self,

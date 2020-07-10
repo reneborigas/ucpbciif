@@ -126,7 +126,7 @@
                             </span>
                         </div>
                     </div>
-
+                   
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1" ng-if="document.loan">
                             <span class="mr-4">
                                 <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
@@ -138,6 +138,18 @@
                                 </span>
                             </div>
                         </div>
+
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                            <span class="mr-4">
+                                <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                            </span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Remaining Credit Line Amount</span>
+                                <span class="font-weight-bolder font-size-h5">
+                                    {{  document.creditLine.remainingCreditLine | currency :'₱'}}
+                                </span>
+                            </div>
+                    </div>
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
@@ -488,7 +500,80 @@
 
                                             
                                         </tr>
-                                          
+                                        <tr>
+                                             
+                                            
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                           Total
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td>
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                            {{ document.loan.amortizations.length}}
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td>
+    
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                          
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td>
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                            {{  document.loan.amount | currency :'₱'}}
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td>
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                            {{ document.loan.totalAmortizationInterest | currency :'₱'}}
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td>
+    
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                           
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td>
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                                {{ document.loan.totalAmortizationPayment | currency :'₱'}} 
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td>
+    
+                                                <td class="py-2 pl-7">
+                                                    <div class="pb-2">
+                                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                             
+                                                        </span>
+                                                    </div>
+                                                     
+                                                </td> 
+    
+                                                
+                                            </tr>
+                                              
                                     </tbody>
                                 </table>
                                 <div

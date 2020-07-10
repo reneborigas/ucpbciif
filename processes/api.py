@@ -15,29 +15,43 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from loans.models import Status
 from django.utils import timezone
+from loans import PMT
+
+
 
 
 def generateAmortizationSchedule(loan,request):
-    noOfItems = loan.term.days / loan.term.paymentPeriod.paymentCycle
+    noOfPaymentSchedules = loan.term.days / loan.term.paymentPeriod.paymentCycle
     schedule = loan.dateReleased  + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+
+    pmt = PMT()
     
-    for i in range(int(noOfItems)):
+    print(pmt.payment)
+    print(pmt.nextStartingValue)
+    print(pmt.interest)
+    print(pmt.principal)
+
+    loanAmount = loan.amount
+    for i in range(int(noOfPaymentSchedules)):
+
+        pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
+
         amortization = Amortization(
             schedule = schedule,
             loan = loan,
             days= loan.term.paymentPeriod.paymentCycle,
-            principal = 0,
-            interest = 0,
+            principal = pmt.principal,
+            interest = pmt.interest,
             vat = 0,
-            total = 0,
-            principalBalance = 0,
+            total = pmt.payment,
+            principalBalance = pmt.nextStartingValue,
             status = Status.objects.get(pk=1),
             createdBy = request.user
         )
         amortization.save()
 
         schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
-
+        loanAmount = pmt.nextStartingValue
 
 class CreditLineApprovedView(views.APIView):
     
@@ -112,7 +126,7 @@ class LoanReleasedView(views.APIView):
             loan = document.loan
             loan.dateReleased = timezone.now() 
 
-            loan.status= Status.objects.get(pk=6) #APPROVED
+            loan.status= Status.objects.get(pk=5) #RELEASED
             loan.save()
             generateAmortizationSchedule(loan,request)
 
@@ -157,8 +171,10 @@ class SubProcessViewSet(ModelViewSet):
  
                     if parentLastDocument.creditLine:
                         subProcess.parentLastDocumentCreditLine = parentLastDocument.creditLine
-        
-         
+                         
+                        subProcess.parentLastDocumentCreditLine.remainingCreditLine = subProcess.parentLastDocumentCreditLine.getRemainingCreditLine()
+ 
+
       
         return queryset
 

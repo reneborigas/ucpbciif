@@ -575,6 +575,8 @@ define(function () {
                 );
         };
 
+
+      
         var attachmentBlockUI = blockUI.instances.get('attachmentBlockUI');
 
         $scope.currentPageAttachment = 0;
@@ -958,7 +960,60 @@ define(function () {
         appFactory.getLoanPrograms().then(function (data) {
             $scope.loanPrograms = data;
         });
+        $scope.exceeded = false;
+        $scope.$watch(
+            'loan.amount',
+            function (newTerm, oldTerm) {
+                 if(newTerm > $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine){
+                  console.log("invalid");
+                 
+                  $scope.exceeded = true;
+                 }else{
+                   
+                    $scope.exceeded=false;
+                 }
+            },
+            true
+        );
 
+        $scope.loadBorrower = function () {
+            if($scope.creditLine.creditlineid){
+                $scope.params= { borrowerId: $scope.borrowerId,loanProgramId: $scope.creditLine.loanProgram }
+            }else{
+                $scope.params= { borrowerId: $scope.borrowerId }
+            }
+            
+            console.log($scope.params);
+            $http.get('/api/borrowers/borrowers/', { params:$scope.params}  ).then(
+                function (response) {
+                    $scope.borrower = response.data[0];
+                    $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat(
+                        $scope.borrower.cooperative.paidUpCapitalInitial
+                    );
+                    $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized);
+                    $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue);
+                    $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp);
+                    $scope.borrower.cooperative.cdaRegistrationDate = new Date(
+                        $scope.borrower.cooperative.cdaRegistrationDate
+                    );
+                    angular.forEach($scope.borrower.cooperative.directors, function (director) {
+                        director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop);
+                    });
+                    angular.forEach($scope.borrower.cooperative.standingCommittees, function (standingCommittee) {
+                        standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop);
+                    });
+                    angular.forEach($scope.borrower.cooperative.grants, function (grant) {
+                        grant.amount = parseFloat(grant.amount);
+                    });
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Borrower Information. Please contact System Administrator.'
+                    );
+                }
+            );
+        };
         $http
             .get('/api/processes/subprocesses/', {
                 params: { subProcessId: $scope.subProcessId, borrowerId: $scope.borrowerId },
@@ -966,7 +1021,7 @@ define(function () {
             .then(
                 function (response) {
                     $scope.subProcess = response.data[0];
-
+                   
                     $scope.document = {
                         name: '',
                         description: '',
@@ -1016,6 +1071,7 @@ define(function () {
                         $scope.loan = {
                             loanid: null,
                             amount: '',
+                            creditLine : $scope.subProcess.parentLastDocumentCreditLine.id,
                             interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
                             term: $scope.subProcess.parentLastDocumentCreditLine.term,
                             loanProgram:  $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
@@ -1035,6 +1091,7 @@ define(function () {
                         $scope.loan = {
                             loanid: $scope.subProcess.parentLastDocumentLoan.id,
                             amount: parseFloat($scope.subProcess.parentLastDocumentLoan.amount),
+                            creditLine:$scope.subProcess.parentLastDocumentLoan.creditLine,
                             interestRate: parseFloat($scope.subProcess.parentLastDocumentLoan.interestRate),
                             term: $scope.subProcess.parentLastDocumentLoan.term,
                             loanProgram: $scope.subProcess.parentLastDocumentLoan.loanProgram,
@@ -1050,7 +1107,7 @@ define(function () {
                         
 
                     }
-
+                    $scope.loadBorrower();
  
                     // $scope.checkLoanDetails = function () {
                     //     if ($scope.subProcess.parentLastDocumentLoan) {
@@ -1204,36 +1261,7 @@ define(function () {
                 }
             );
 
-        $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
-            function (response) {
-                $scope.borrower = response.data[0];
-                $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat(
-                    $scope.borrower.cooperative.paidUpCapitalInitial
-                );
-                $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized);
-                $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue);
-                $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp);
-                $scope.borrower.cooperative.cdaRegistrationDate = new Date(
-                    $scope.borrower.cooperative.cdaRegistrationDate
-                );
-                angular.forEach($scope.borrower.cooperative.directors, function (director) {
-                    director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop);
-                });
-                angular.forEach($scope.borrower.cooperative.standingCommittees, function (standingCommittee) {
-                    standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop);
-                });
-                angular.forEach($scope.borrower.cooperative.grants, function (grant) {
-                    grant.amount = parseFloat(grant.amount);
-                });
-            },
-            function (error) {
-                toastr.error(
-                    'Error ' + error.status + ' ' + error.statusText,
-                    'Could not retrieve Borrower Information. Please contact System Administrator.'
-                );
-            }
-        );
-
+      
         $scope.cancel = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };

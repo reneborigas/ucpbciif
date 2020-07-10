@@ -116,6 +116,29 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                    <span class="mr-4">
+                                        <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                                    </span>
+                                    <div class="d-flex flex-column text-dark-75">
+                                        <span class="font-weight-bolder font-size-sm">Total Availment</span>
+                                        <span class="font-weight-bolder font-size-h5">
+                                            {{  borrower.totalAvailmentPerProgram | currency :'₱'}}
+                                        </span>
+                                    </div>
+                            </div>
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                    <span class="mr-4">
+                                        <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                                    </span>
+                                    <div class="d-flex flex-column text-dark-75">
+                                        <span class="font-weight-bolder font-size-sm">Remaining Credit Line Amount</span>
+                                        <span class="font-weight-bolder font-size-h5">
+                                            {{  subProcess.parentLastDocumentCreditLine.remainingCreditLine | currency :'₱'}}
+                                        </span>
+                                    </div>
+                            </div>
+                           
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                                 <span class="mr-4">
                                     <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
                                 </span>
@@ -247,8 +270,7 @@
                                     <div class="col-lg-3 col-xl-6">
                                         <input
                                             type="number"
-                                            min="0"
-                                            step="0.01"
+                                            min="0" 
                                             class="form-control"
                                             id="amount"
                                             name="amount"
@@ -386,12 +408,12 @@
                                         <input
                                             type="number"
                                             min="0"
-                                            step="0.01"
+                                             
                                             class="form-control"
                                             id="amount"
                                             name="amount"
                                             ng-model="loan.amount"
-                                            ng-class="{'is-invalid' : newLoanDetailsForm.amount.$invalid && newLoanDetailsForm.amount.$touched, 'is-valid' : newLoanDetailsForm.amount.$valid && newLoanDetailsForm.amount.$touched }"
+                                            ng-class="{'is-invalid' : newLoanDetailsForm.amount.$invalid && newLoanDetailsForm.amount.$touched || exceeded, 'is-valid' : newLoanDetailsForm.amount.$valid && newLoanDetailsForm.amount.$touched && !exceeded }"
                                             required
                                         />
                                         <span
@@ -400,6 +422,13 @@
                                         >
                                             Please enter amount.
                                         </span>
+
+                                        <span
+                                        class="form-text text-muted"
+                                        ng-show="newLoanDetailsForm.amount.$touched && newLoanDetailsForm.amount.$invalid || exceeded"
+                                    >
+                                        Amount exceeds remaining credit loan amount.
+                                    </span>
                                     </div>
                                 </div>
 
@@ -574,7 +603,7 @@
                                     </button>
                                 </div>
                                 <div>
-                                    <button class="btn btn-success text-uppercase p-2 pl-3 pr-3" ng-click="save()">
+                                    <button class="btn btn-success text-uppercase p-2 pl-3 pr-3" ng-click="save()" ng-disabled="exceeded">
                                         Submit
                                     </button>
                                 </div>

@@ -401,9 +401,15 @@ class Borrower(models.Model):
     
     def getTotalAvailments(self):
          
-        if(not self.loans.filter(status__name='APPROVED')):
+        if(not self.loans.filter(status__name='RELEASED')):
             return 0
-        return self.loans.filter(status__name='APPROVED').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+        return self.loans.filter(status__name='RELEASED').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+
+    def getTotalAvailmentsPerProgram(self,loanProgramId):
+         
+        if(not self.loans.filter(status__name='RELEASED')):
+            return 0
+        return self.loans.filter(status__name='RELEASED',loanProgram_id=loanProgramId).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
 
 def attachment_directory_path(instance, filename):
