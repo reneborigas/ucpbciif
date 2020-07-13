@@ -25,9 +25,11 @@ require.config({
         // 'ngDatepicker': 'libs/ui-datepicker/datetime-picker.min',
         // 'ngTouch' : 'libs/angular/angular-touch.min',
         // 'ngBootstrap' : 'libs/angular/angular-ui-bootstrap-tpls.min',
+
+        ngTags: 'libs/ngTags/ng-tags-input.min',
+
         ngToastr: 'libs/toastr/dist/js/angular-toastr.tpls.min',
         ngTable: 'libs/ngTable/ng-table',
-        // 'index': 'scripts/angular-scripts/index',
         sweetalert: 'libs/sweetalert/sweetalert.min',
         ngSweetalert: 'libs/sweetalert/SweetAlert',
         ngBlock: 'libs/ngBlock/angular-block-ui.min',
@@ -64,6 +66,9 @@ require.config({
         ngBlock: {
             deps: ['angular'],
         },
+        ngTags: {
+            deps: ['angular'],
+        },
         ngSweetalert: {
             deps: ['angular', 'sweetalert'],
         },
@@ -81,6 +86,7 @@ require.config({
                 'ngTable',
                 'ngSweetalert',
                 'ngBlock',
+                'ngTags',
             ],
         },
         routes: {

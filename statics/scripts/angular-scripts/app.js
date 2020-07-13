@@ -10,6 +10,7 @@ define(function () {
         'ngTable',
         'oitozero.ngSweetAlert',
         'blockUI',
+        'ngTagsInput',
     ]);
 
     app.config([

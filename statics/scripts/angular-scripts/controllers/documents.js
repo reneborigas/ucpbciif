@@ -666,6 +666,10 @@ define(function () {
         $scope.previewLoanRelease = function (id) {
             $window.open('/print/files/' + id, '_blank', 'width=800,height=800');
         };
+
+        $scope.previewAmortizationSchedule = function (id) {
+            $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
+        };
     });
 
     app.controller('DocumentAddController', function DocumentAddController(
@@ -712,7 +716,60 @@ define(function () {
         };
     });
 
-    app.controller('DocumentLoanReleasePrintController', function DocumentListController(
+    app.controller('DocumentLoanReleasePrintController', function DocumentLoanReleasePrintController(
+        $http,
+        $filter,
+        $scope,
+        toastr,
+        NgTableParams,
+        $state,
+        $timeout,
+        appFactory,
+        $window
+    ) {
+        $scope.dateToday = new Date();
+        $http
+            .get('/api/documents/documents/', {
+                params: { documentId: $scope.documentId },
+            })
+            .then(
+                function (response) {
+                    $scope.document = response.data[0];
+
+                    $http
+                        .get('/api/borrowers/borrowers/', {
+                            params: { borrowerId: $scope.document.borrower },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.borrower = response.data[0];
+
+                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                    console.log(data);
+                                    $scope.windows = data;
+                                    $timeout(function () {
+                                        $window.print();
+                                    }, 500);
+                                });
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Document Information. Please contact System Administrator.'
+                    );
+                }
+            );
+    });
+
+    app.controller('DocumentAmortizationSchedulePrintController', function DocumentAmortizationSchedulePrintController(
         $http,
         $filter,
         $scope,

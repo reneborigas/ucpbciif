@@ -56,6 +56,7 @@ define(function () {
 
         $scope.forgotPass = function () {};
 
+        console.log(appLoginService.isLoggedIn())
         if (appLoginService.isLoggedIn()) {
             // var user = JSON.parse(localStorage.getItem('currentUser'));
             // var now = new Date();

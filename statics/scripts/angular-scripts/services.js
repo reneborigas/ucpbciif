@@ -77,7 +77,6 @@ define(function () {
 
         function redirectIfNotLoggedIn() {
             if (!isLoggedIn()) {
-                // window.location.href = '/login';
                 $state.go('simple.login');
             }
         }

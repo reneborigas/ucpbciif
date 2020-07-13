@@ -79,6 +79,11 @@ define(function () {
                                         name: 'ngBlock Styles',
                                         files: ['/statics/libs/ngBlock/angular-block-ui.css'],
                                     },
+                                    {
+                                        serie: true,
+                                        name: 'ngTag Styles',
+                                        files: ['/statics/libs/ngTags/ng-tags-input.min.css'],
+                                    },
                                 ]);
                             },
                         ],
@@ -629,6 +634,19 @@ define(function () {
                     templateUrl: '/statics/partials/pages/documents/documents-loan-release.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Loan Release Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.documentId = $stateParams.documentId;
+                        appFactory.getDocumentName($scope.documentId).then(function (data) {
+                            $scope.fileName = data;
+                        });
+                    },
+                })
+                .state('print.documents.amortization_schedule', {
+                    url: '/files/amortization/:documentId',
+                    templateUrl: '/statics/partials/pages/documents/documents-amortization-schedule.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Amortization Schedule Print',
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.documentId = $stateParams.documentId;
