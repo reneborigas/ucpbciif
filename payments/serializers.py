@@ -11,7 +11,7 @@ from loans import PMT
 
 
 
-def generateAmortizationSchedule(loan,lastPayment):
+def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
     paidItems = loan.amortizations.filter(amortizationStatus__name='PAID').count()
 
     noOfPaymentSchedules = loan.term.days / loan.term.paymentPeriod.paymentCycle
@@ -24,8 +24,7 @@ def generateAmortizationSchedule(loan,lastPayment):
     print(pmt.interest)
     print(pmt.principal)
 
-    loanAmount = loan.amount
-     
+    loanAmount = loan.amount 
 
     amortization = Amortization( 
             loan = loan,
@@ -35,13 +34,38 @@ def generateAmortizationSchedule(loan,lastPayment):
         )
     amortization.save()
 
-    
+    currentAmortization.amortizationItems.all()
 
-    for i in range(int(noOfPaymentSchedules)):
+    # for i in range(int(noOfPaymentSchedules)):
+    i = 1
+    loanAmount = lastPayment.outStandingBalance
+           
+    for amortizationItem in currentAmortization.amortizationItems.order_by('id').all():
+        print(currentAmortization.amortizationItems.all().count())
+        print("count")
+        print(amortizationItem.total)
+        
+        print(paidItems)
+        print(i)
+        print("heres")
+        if (i  <= (paidItems) ):
+           
+            print(loanAmount)
+            print("pasok")
+            amortizationItem.amortization = amortization
+            amortizationItem.pk =None
+            if (i  == (paidItems) ):
+                amortizationItem.principalBalance = loanAmount
+                amortizationItem.total =  lastPayment.total
+                  
+            amortizationItem.save()
 
-        pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
+        else:
+         
+            pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (i-1))
 
-        amortizationItem = AmortizationItem(
+            
+            amortizationItem = AmortizationItem(
             schedule = schedule,
             amortization = amortization,
             days= loan.term.paymentPeriod.paymentCycle,
@@ -51,21 +75,14 @@ def generateAmortizationSchedule(loan,lastPayment):
             total = pmt.payment,
             principalBalance = pmt.nextStartingValue,
             amortizationStatus = AmortizationStatus.objects.get(pk=1), 
-        )
-        amortizationItem.save()
+            )
+             
+            amortizationItem.save() 
+ 
+            schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+            loanAmount = pmt.nextStartingValue
 
-        schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
-        loanAmount = pmt.nextStartingValue
-        
-        print(paidItems - 1)
-        print(i)
-        print("heres")
-        if (i == (paidItems - 1) ):
-            loanAmount = lastPayment.outStandingBalance
-            print(loanAmount)
-            print("pasok")
-
-
+        i = i+1
 
 class PaymentTypeSerializer(ModelSerializer):
      
@@ -93,7 +110,7 @@ class PaymentSerializer(ModelSerializer):
         # payment.loan.getCurrentAmortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=2)
         # payment.loan.getCurrentAmortizationItem.save()
 
-        generateAmortizationSchedule(payment.loan,payment)
+        generateAmortizationSchedule(payment.loan,payment,payment.amortization)
 
         return payment
 
