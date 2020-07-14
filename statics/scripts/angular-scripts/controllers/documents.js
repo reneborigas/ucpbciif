@@ -25,7 +25,7 @@ define(function () {
                         .get('/api/documents/documents/', { params: { subProcessId: $scope.subProcessId } })
                         .then(
                             function (response) {
-                                console.log($scope.subProcessId);
+                                console.log(response.data);
                                 var filteredData = params.filter()
                                     ? $filter('filter')(response.data, params.filter())
                                     : response.data;

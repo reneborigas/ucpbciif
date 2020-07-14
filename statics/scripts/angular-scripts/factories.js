@@ -76,8 +76,7 @@ define(function () {
             getSubProcessId: function (subProcessName) {
                 return $http.get('/api/documents/documents/', { params: { subProcessName: subProcessName } }).then(
                     function (response) {
-                        console.log(response.data[0].subProcess);
-                        return response.data[0].subProcess;
+                        return response.data[0].subProcess.id;
                     },
                     function (error) {
                         toastr.error(
@@ -95,7 +94,7 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve Sub Process Please contact System Administrator.'
+                            'Could not retrieve Sub Process. Please contact System Administrator.'
                         );
                     }
                 );

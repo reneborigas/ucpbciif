@@ -118,27 +118,6 @@ define(function () {
                     ncyBreadcrumb: {
                         label: 'Home',
                     },
-                    // resolve: {
-                    // 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load files for an existing module
-                    // 		return $ocLazyLoad.load([
-                    // 			{
-                    // 				serie: true,
-                    // 				name: 'chart.js',
-                    // 				files: [
-                    // 					'node_modules/chart.js/dist/Chart.min.js',
-                    // 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
-                    // 				]
-                    // 			},
-                    // 		]);
-                    // 	}],
-                    // 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load controllers
-                    // 		return $ocLazyLoad.load({
-                    // 			files: ['js/controllers/main.js']
-                    // 		});
-                    // 	}]
-                    // }
                     controller: function (appLoginService) {
                         appLoginService.setTitle = 'test';
                     },
@@ -172,27 +151,6 @@ define(function () {
                     ncyBreadcrumb: {
                         label: 'Borrowers',
                     },
-                    // resolve: {
-                    // 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load files for an existing module
-                    // 		return $ocLazyLoad.load([
-                    // 			{
-                    // 				serie: true,
-                    // 				name: 'chart.js',
-                    // 				files: [
-                    // 					'node_modules/chart.js/dist/Chart.min.js',
-                    // 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
-                    // 				]
-                    // 			},
-                    // 		]);
-                    // 	}],
-                    // 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load controllers
-                    // 		return $ocLazyLoad.load({
-                    // 			files: ['js/controllers/main.js']
-                    // 		});
-                    // 	}]
-                    // },
                 })
                 .state('app.borrowers.add', {
                     url: '/add',
@@ -204,27 +162,6 @@ define(function () {
                         label: 'Add',
                         parent: 'app.borrowers.list',
                     },
-                    // resolve: {
-                    // 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load files for an existing module
-                    // 		return $ocLazyLoad.load([
-                    // 			{
-                    // 				serie: true,
-                    // 				name: 'chart.js',
-                    // 				files: [
-                    // 					'node_modules/chart.js/dist/Chart.min.js',
-                    // 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
-                    // 				]
-                    // 			},
-                    // 		]);
-                    // 	}],
-                    // 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load controllers
-                    // 		return $ocLazyLoad.load({
-                    // 			files: ['js/controllers/main.js']
-                    // 		});
-                    // 	}]
-                    // },
                 })
                 .state('app.borrowers.create_loan_application', {
                     url: '/:borrowerId/new-file/:subProcessId',
@@ -248,27 +185,6 @@ define(function () {
                             $scope.subProcess = data;
                         });
                     },
-                    // resolve: {
-                    // 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load files for an existing module
-                    // 		return $ocLazyLoad.load([
-                    // 			{
-                    // 				serie: true,
-                    // 				name: 'chart.js',
-                    // 				files: [
-                    // 					'node_modules/chart.js/dist/Chart.min.js',
-                    // 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
-                    // 				]
-                    // 			},
-                    // 		]);
-                    // 	}],
-                    // 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load controllers
-                    // 		return $ocLazyLoad.load({
-                    // 			files: ['js/controllers/main.js']
-                    // 		});
-                    // 	}]
-                    // },
                 })
                 .state('app.borrowers.info', {
                     url: '/:borrowerId',
@@ -286,27 +202,6 @@ define(function () {
                             $scope.borrowerName = data;
                         });
                     },
-                    // resolve: {
-                    // 	loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load files for an existing module
-                    // 		return $ocLazyLoad.load([
-                    // 			{
-                    // 				serie: true,
-                    // 				name: 'chart.js',
-                    // 				files: [
-                    // 					'node_modules/chart.js/dist/Chart.min.js',
-                    // 					'node_modules/angular-chart.js/dist/angular-chart.min.js'
-                    // 				]
-                    // 			},
-                    // 		]);
-                    // 	}],
-                    // 	loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    // 		// you can lazy load controllers
-                    // 		return $ocLazyLoad.load({
-                    // 			files: ['js/controllers/main.js']
-                    // 		});
-                    // 	}]
-                    // },
                 })
                 .state('app.borrowers.edit', {
                     url: '/:borrowerId/edit',
@@ -323,121 +218,6 @@ define(function () {
                         appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
                             $scope.borrowerName = data;
                         });
-                    },
-                })
-                .state('app.payments', {
-                    url: '/payments',
-                    template: '<ui-view></ui-view>',
-                    abstract: true,
-                    ncyBreadcrumb: {
-                        label: 'Payments',
-                        skip: true,
-                    },
-                    params: { title: 'Payments', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
-                    resolve: {
-                        loadController: [
-                            '$ocLazyLoad',
-                            function ($ocLazyLoad) {
-                                return $ocLazyLoad.load({
-                                    files: ['/statics/scripts/angular-scripts/controllers/payments.js'],
-                                });
-                            },
-                        ],
-                    },
-                })
-                .state('app.payments.list', {
-                    url: '',
-                    templateUrl: '/statics/partials/pages/payments/payments-list.html',
-                    data: {
-                        pageTitle: 'UCPB CIIF | Payments List',
-                        stateTitle: 'Payments',
-                    },
-                    ncyBreadcrumb: {
-                        label: 'Payments', 
-                    },
-                    params: { title: 'Payments', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
-                    // resolve: {
-                    //     loadController: [
-                    //         '$ocLazyLoad',
-                    //         function ($ocLazyLoad) {
-                    //             return $ocLazyLoad.load({
-                    //                 files: ['/statics/scripts/angular-scripts/controllers/payment.js'],
-                    //             });
-                    //         },
-                    //     ],
-                    // },
-                })
-                .state('app.payments.new', {
-                    url: '/:loanId',
-                    templateUrl: '/statics/partials/pages/payments/payments-new.html',
-                    data: {
-                        pageTitle: 'UCPB CIIF | New Payment',
-                    },
-                    ncyBreadcrumb: {
-                        label: 'New Payment',
-                        parent: 'app.loans.info',
-                    },
-                    params: { title: 'New Payment', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
-                    controller: function ($scope, $stateParams, appFactory) {
-                        $scope.loanId = $stateParams.loanId;
-                    },
-                })
-
-
-                .state('app.loans', {
-                    url: '/loans',
-                    template: '<ui-view></ui-view>',
-                    abstract: true,
-                    ncyBreadcrumb: {
-                        label: 'Loans',
-                        skip: true,
-                    },
-                    params: { title: 'Loans', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
-                    resolve: {
-                        loadController: [
-                            '$ocLazyLoad',
-                            function ($ocLazyLoad) {
-                                return $ocLazyLoad.load({
-                                    files: ['/statics/scripts/angular-scripts/controllers/loans.js'],
-                                });
-                            },
-                        ],
-                    },
-                })
-                .state('app.loans.list', {
-                    url: '',
-                    templateUrl: '/statics/partials/pages/loans/loans-list.html',
-                    data: {
-                        pageTitle: 'UCPB CIIF | Loans List',
-                        stateTitle: 'Loans',
-                    },
-                    ncyBreadcrumb: {
-                        label: 'Loans', 
-                    },
-                    params: { title: 'Loans', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
-                    resolve: {
-                        loadController: [
-                            '$ocLazyLoad',
-                            function ($ocLazyLoad) {
-                                return $ocLazyLoad.load({
-                                    files: ['/statics/scripts/angular-scripts/controllers/loans.js'],
-                                });
-                            },
-                        ],
-                    },
-                })
-                .state('app.loans.info', {
-                    url: '/:loanId',
-                    templateUrl: '/statics/partials/pages/loans/loans-info.html',
-                    data: {
-                        pageTitle: 'UCPB CIIF | Loan Info',
-                    },
-                    ncyBreadcrumb: {
-                        label:  'Loan No. {{loanId}}',
-                        parent: 'app.loans.list',
-                    },
-                    controller: function ($scope, $stateParams, appFactory) {
-                        $scope.loanId = $stateParams.loanId;
                     },
                 })
                 .state('app.documents', {
@@ -468,11 +248,17 @@ define(function () {
                     ncyBreadcrumb: {
                         label: 'Files',
                     },
-                    controller: function ($scope, $stateParams, appFactory) {
-                        $scope.subProcessName = appFactory.unSlugify($stateParams.subProcessName);
-                        appFactory.getSubProcessId($scope.subProcessName).then(function (data) {
-                            $scope.subProcessId = data;
-                        });
+                    resolve: {
+                        fetchSubProcessId: function ($stateParams, appFactory) {
+                            return appFactory
+                                .getSubProcessId(appFactory.unSlugify($stateParams.subProcessName))
+                                .then(function (data) {
+                                    return data;
+                                });
+                        },
+                    },
+                    controller: function ($scope, fetchSubProcessId) {
+                        $scope.subProcessId = fetchSubProcessId;
                     },
                 })
                 .state('app.documents.info', {
@@ -492,6 +278,60 @@ define(function () {
                         });
                     },
                 })
+                .state('app.loans', {
+                    url: '/loans',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Loans',
+                        skip: true,
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/loans.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.loans.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/loans/loans-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loans List',
+                        stateTitle: 'Loans',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Loans',
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/loans.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.loans.info', {
+                    url: '/:loanId',
+                    templateUrl: '/statics/partials/pages/loans/loans-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loan Info',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Loan No. {{loanId}}',
+                        parent: 'app.loans.list',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
                 .state('app.loans.add', {
                     url: '/add',
                     templateUrl: '/statics/partials/pages/loans/loans-add.html',
@@ -500,6 +340,51 @@ define(function () {
                         parent: 'app.loans.list',
                     },
                 })
+                .state('app.payments', {
+                    url: '/payments',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Payments',
+                        skip: true,
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/payments.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.payments.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/payments/payments-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Payments List',
+                        stateTitle: 'Payments',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Payments',
+                    },
+                })
+                .state('app.payments.new', {
+                    url: '/:loanId',
+                    templateUrl: '/statics/partials/pages/payments/payments-new.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | New Payment',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'New Payment',
+                        parent: 'app.loans.info',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
+
                 .state('app.committees', {
                     url: '/committees',
                     template: '<ui-view></ui-view>',
@@ -701,7 +586,7 @@ define(function () {
                                 });
                             },
                         ],
-                    },  
+                    },
                 })
                 .state('print.documents.loan_release', {
                     url: '/files/:loandId',

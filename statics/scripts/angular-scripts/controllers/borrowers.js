@@ -13,17 +13,13 @@ define(function () {
         appFactory,
         NgTableParams
     ) {
-        $scope.totalRecords;
-        $scope.countFrom;
-        $scope.countTo;
-
         $scope.tableBorrowers = new NgTableParams(
             {
                 page: 1,
                 count: 10,
             },
             {
-                counts: [],
+                counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
                     return $http.get('/api/borrowers/borrowers/').then(
                         function (response) {
@@ -38,15 +34,6 @@ define(function () {
                                 params.page() * params.count()
                             );
                             params.total(response.data.length);
-
-                            $scope.countFrom = (params.page() - 1) * params.count() + 1;
-                            $scope.countTo =
-                                params.count() * params.page() > params.total()
-                                    ? params.total()
-                                    : params.count() * params.page();
-                            $scope.totalRecords = params.total();
-                            var count = $scope.tableBorrowers._params.count;
-                            $scope.globalPageCount = count.toString();
 
                             var page = orderedData.slice(
                                 (params.page() - 1) * params.count(),
@@ -86,12 +73,6 @@ define(function () {
                                 params.page() * params.count()
                             );
                             params.total(response.data.length);
-
-                            // $scope.countFrom = ((params.page() - 1) * params.count()) + 1;
-                            // $scope.countTo = params.count() * params.page() > params.total() ? params.total() : params.count() * params.page();
-                            // $scope.totalRecords = params.total();
-                            // var count = $scope.tableBorrowers._params.count
-                            // $scope.globalPageCount = count.toString()
 
                             var page = orderedData.slice(
                                 (params.page() - 1) * params.count(),
@@ -1075,7 +1056,7 @@ define(function () {
                             interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
                             term: $scope.subProcess.parentLastDocumentCreditLine.term,
                             termid: $scope.subProcess.parentLastDocumentCreditLine.term.id,
-                            
+
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',

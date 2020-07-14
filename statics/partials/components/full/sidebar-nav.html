@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar" ng-controller="SideBarController">
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
@@ -18,8 +18,8 @@
                     Borrowers
                 </a>
             </li>
-            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.components')}">
-                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.components')}">
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.documents')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.documents')}">
                     <i class="fas fa-hand-holding-usd"></i>
                     Files
                 </a>
@@ -28,22 +28,11 @@
                         <a
                             class="nav-link"
                             ui-sref-active="active"
-                            ui-sref="app.documents.list({ subProcessName : 'credit-line-approval' })"
+                            ng-repeat="subProcessSlug in subProcessSlugs"
+                            ui-sref="app.documents.list({ subProcessName : subProcessSlug.slug })"
                         >
                             <i class="fas fa-spinner"></i>
-                            Loan Applications
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.components.buttons">
-                            <i class="fas fa-spinner"></i>
-                            Processing
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.components.social-buttons">
-                            <i class="icon-puzzle"></i>
-                            Collections
+                            {{ subProcessSlug.name }}
                         </a>
                     </li>
                 </ul>
@@ -55,11 +44,7 @@
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a
-                            class="nav-link"
-                            ui-sref-active="active"
-                            ui-sref="app.loans.list">
-                        
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.loans.list">
                             <i class="fas fa-spinner"></i>
                             Loan List
                         </a>

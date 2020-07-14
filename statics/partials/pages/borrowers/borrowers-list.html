@@ -11,7 +11,8 @@
                     </div>
                     <div class="card-toolbar">
                         <button type="button" class="btn btn-primary float-right" ui-sref="app.borrowers.add">
-                            <i class="fad fa-user-plus mr-2"></i>New Borrower</i>
+                            <i class="fad fa-user-plus mr-2"></i>
+                            New Borrower
                         </button>
                     </div>
                 </div>
@@ -22,83 +23,131 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto"/>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Search..."
+                                                ng-model="searchTermAuto"
+                                            />
                                             <span><i class="far fa-search"></i></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-xl-4 mt-5 mt-lg-0">
-                                <div class="text-right">
-                                    <label>Show 
-                                        <select class="custom-select custom-select-sm form-control form-control-sm table-length" ng-model="globalPageCount">
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select> 
-                                    entries</label>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <table class="table table-vertical-center table-borderless datatable-table" ng-table="tableBorrowers">
-                        <tr class="datatable-row" ng-repeat-start="borrower in $data" align="center">
-                            <td class="datatable-cell" data-title="'NAME'" sortable="'cooperativeName'">
-
-                                <a href="" ng-click="contactPerson.$hideRows = !contactPerson.$hideRows" ng-init="group.$hideRows = false">
-                                    <i class="fas fa-chevron-right m-r-10" ng-class="{ ' fa-chevron-right': !contactPerson.$hideRows, ' fa-chevron-down': contactPerson.$hideRows }"></i>                                        
-                                </a>
-
-                                {{ borrower.cooperativeName }}
-                            </td>
-                            <td class="datatable-cell" data-title="'TIN #'" sortable="'tin'">
-                                {{ borrower.tin }}
-                            </td>
-                            <td class="datatable-cell" data-title="'ADDRESS'" sortable="'address'">
-                                {{ borrower.address }}
-                            </td>
-                            <td class="datatable-cell" data-title="'PHONE #'" sortable="'phoneNo'">
-                                {{ borrower.phoneNo }}
-                            </td>
-                            <td class="datatable-cell" data-title="'ACTIONS'">
-                                <div class="dropdown dropdown-inline">
-                                    <button type="button" class="btn btn-icon btn-sm btn-icon-md" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="fal fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <a class="dropdown-item" href="" ng-click="view(borrower.borrowerId)"><i class="fal fa-eye mr-2"></i>View</a>
-                                        <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)"><i class="fal fa-edit mr-2"></i>Edit</a>
-                                        <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)"><i class="fal fa-trash-alt mr-2"></i>Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr ng-hide="!contactPerson.$hideRows" ng-repeat-end align="center">
-                            <td colspan="5">
-                                <table class="table table-vertical-center table-light table-borderless" ng-table="tableBorrowersContactPerson">
-                                    <tr ng-repeat="borrower in $data | filter : {  borrowerId : borrower.borrowerId }" align="center">
-                                        <td data-title="'Full Name'" style="width: 28%">
-                                            {{ borrower.contactPerson.firstname  }} {{ borrower.contactPerson.middlename  }} {{ borrower.contactPerson.lastname  }}
-                                        </td>
-                                        <td data-title="'Address'" style="width: 18%">
-                                            {{ borrower.contactPerson.address }}
-                                        </td>
-                                        <td data-title="'Phone Number'" style="width: 18%">
-                                            {{ borrower.contactPerson.phoneNo }}                                 
-                                        </td>
-                                        <td data-title="'Telephone Number'" style="width: 18%">
-                                            {{ borrower.contactPerson.telNo }}
-                                        </td>
-                                        <td data-title="'Email Address'" style="width: 18%">
-                                            {{ borrower.contactPerson.emailAddress }}                                 
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="datatable datatable-default datatable-subtable">
+                        <table
+                            class="table table-vertical-center datatable-table"
+                            ng-table="tableBorrowers"
+                            template-pagination="statics/partials/customs/pagination.html"
+                        >
+                            <tr class="datatable-row" ng-repeat-start="borrower in $data">
+                                <td class="datatable-cell-sorted datatable-cell datatable-cell-center">
+                                    <a
+                                        href=""
+                                        ng-click="contactPerson.$hideRows = !contactPerson.$hideRows"
+                                        ng-init="group.$hideRows = false"
+                                    >
+                                        <i
+                                            class="fas fa-chevron-right m-r-10"
+                                            ng-class="{ ' fa-chevron-right': !contactPerson.$hideRows, ' fa-chevron-down': contactPerson.$hideRows }"
+                                        ></i>
+                                    </a>
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'NAME'"
+                                    sortable="'cooperativeName'"
+                                >
+                                    {{ borrower.cooperativeName }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'TIN #'"
+                                    sortable="'tin'"
+                                >
+                                    {{ borrower.tin }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'ADDRESS'"
+                                    sortable="'address'"
+                                >
+                                    {{ borrower.address }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'PHONE #'"
+                                    sortable="'phoneNo'"
+                                >
+                                    {{ borrower.phoneNo }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'ACTIONS'"
+                                >
+                                    <a
+                                        href=""
+                                        class="btn btn-sm btn-clean btn-icon mr-2"
+                                        ng-click="view(borrower.borrowerId)"
+                                    >
+                                        <i class="fad fa-eye"></i>
+                                    </a>
+                                    <a
+                                        href=""
+                                        class="btn btn-sm btn-clean btn-icon mr-2"
+                                        ng-click="edit(borrower.borrowerId)"
+                                    >
+                                        <i class="fad fa-edit"></i>
+                                    </a>
+                                    <a
+                                        href=""
+                                        class="btn btn-sm btn-clean btn-icon mr-2"
+                                        ng-click="delete(borrower.borrowerId)"
+                                    >
+                                        <i class="fad fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr ng-hide="!contactPerson.$hideRows" ng-repeat-end align="center">
+                                <td colspan="6">
+                                    <table
+                                        class="table table-vertical-center table-light table-borderless"
+                                        ng-table="tableBorrowersContactPerson"
+                                    >
+                                        <tr
+                                            ng-repeat="borrower in $data | filter : {  borrowerId : borrower.borrowerId }"
+                                            align="center"
+                                        >
+                                            <td data-title="'Full Name'" style="width: 28%;">
+                                                {{ borrower.contactPerson.firstname }} {{
+                                                borrower.contactPerson.middlename }} {{ borrower.contactPerson.lastname
+                                                }}
+                                            </td>
+                                            <td data-title="'Address'" style="width: 18%;">
+                                                {{ borrower.contactPerson.address }}
+                                            </td>
+                                            <td data-title="'Phone Number'" style="width: 18%;">
+                                                {{ borrower.contactPerson.phoneNo }}
+                                            </td>
+                                            <td data-title="'Telephone Number'" style="width: 18%;">
+                                                {{ borrower.contactPerson.telNo }}
+                                            </td>
+                                            <td data-title="'Email Address'" style="width: 18%;">
+                                                {{ borrower.contactPerson.emailAddress }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

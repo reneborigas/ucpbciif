@@ -38,7 +38,7 @@ class DocumentViewSet(ModelViewSet):
             queryset = queryset.filter(subProcessName=subProcessName)
 
         if subProcessId is not None:
-            queryset = queryset.filter(subProcess=subProcessId)
+            queryset = queryset.filter(subProcessId=subProcessId)
 
         for document in queryset:
             document.currentStatus = document.getCurrentStatus() 
