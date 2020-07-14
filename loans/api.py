@@ -14,7 +14,7 @@ class LoanViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related('amortizations')
+        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related('amortizations')
         loanId = self.request.query_params.get('loanId', None)
 
         if loanId is not None:
@@ -23,6 +23,10 @@ class LoanViewSet(ModelViewSet):
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
             loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
+            loan.latestAmortization = loan.getLatestAmortization 
+            loan.outStandingBalance = loan.getOutstandingBalance
+            loan.currentAmortizationItem = loan.getCurrentAmortizationItem
+
         return queryset
 
 class AmortizationViewSet(ModelViewSet):

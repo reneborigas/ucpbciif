@@ -4,6 +4,8 @@ from rest_framework import serializers
 from .models import *
 
 
+# from borrowers.serializers import BorrowerSerializer
+
 
 
 
@@ -44,11 +46,29 @@ class TermSerializer(ModelSerializer):
 
 
 
-class AmortizationSerializer(ModelSerializer):
+class AmortizationItemSerializer(ModelSerializer):
     # termName = serializers.CharField(read_only=True) 
 
-     
 
+    def create(self, validated_data):
+        amortizationitem = AmortizationItem.objects.create(**validated_data) 
+        return amortizationitem
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = AmortizationItem        
+        fields = '__all__'
+
+class AmortizationSerializer(ModelSerializer):
+    # termName = serializers.CharField(read_only=True) 
+    amortizationItems = AmortizationItemSerializer(many=True,read_only=True)
     def create(self, validated_data):
         amortization = Amortization.objects.create(**validated_data) 
         return amortization
@@ -65,7 +85,6 @@ class AmortizationSerializer(ModelSerializer):
         model = Amortization        
         fields = '__all__'
 
-
 class StatusSerializer(ModelSerializer): 
  
 
@@ -81,34 +100,6 @@ class StatusSerializer(ModelSerializer):
     class Meta:
         model = Status        
         fields = '__all__'
-
-
-class LoanSerializer(ModelSerializer):
-    # termName = serializers.CharField(read_only=True) 
-    amortizations =  AmortizationSerializer(many=True,read_only=True)
-    term_name = serializers.ReadOnlyField(source='term.name')
-    loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
-    totalAmortizationInterest = serializers.CharField(read_only=True)
-    totalAmortizationPayment = serializers.CharField(read_only=True)
-    # status=StatusSerializer(read_only=True)
-
-    def create(self, validated_data):
-        loan = Loan.objects.create(**validated_data) 
-        return loan
-
-    def update(self, instance, validated_data):
-        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
-        # instance.loanName = validated_data.get("loanName", instance.loanName)
-        # instance.borrower =  validated_data.get("borrower", instance.borrower)
-        instance.save()
-
-        return instance
-    
-    class Meta:
-        model = Loan        
-        fields = '__all__'
-
-
 
 
 class CreditLineSerializer(ModelSerializer): 
@@ -129,6 +120,49 @@ class CreditLineSerializer(ModelSerializer):
     class Meta:
         model = CreditLine        
         fields = '__all__'
+ 
+
+class LoanSerializer(ModelSerializer):
+    # termName = serializers.CharField(read_only=True) 
+    status_name = serializers.ReadOnlyField(source='status.name')
+
+    creditLine_amount= serializers.ReadOnlyField(source='creditLine.amount')
+    creditLine_dateApproved = serializers.ReadOnlyField(source='creditLine.dateApproved')
+    creditLine_dateExpired = serializers.ReadOnlyField(source='creditLine.dateExpired')
+    borrower_name = serializers.ReadOnlyField(source='borrower.cooperative.name')
+    borrower_id = serializers.ReadOnlyField(source='borrower.borrowerId')
+    amortization     =  AmortizationSerializer(many=True,read_only=True)
+    term_name = serializers.ReadOnlyField(source='term.name')
+    loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
+    totalAmortizationInterest = serializers.CharField(read_only=True)
+    latestAmortization =  AmortizationSerializer(read_only=True)
+
+    outStandingBalance = serializers.CharField(read_only=True)
+    currentAmortizationItem =   AmortizationItemSerializer(read_only=True)
+    # status=StatusSerializer(read_only=True)
+    term = TermSerializer(read_only=True)
+    parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
+    # borrower = BorrowerSerializer(read_only=True)
+    def create(self, validated_data):
+
+        loan = Loan.objects.create(**validated_data) 
+        loan.term = loan.creditLine.term
+        loan.save()
+        return loan
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = Loan        
+        fields = '__all__'
+ 
+
 
         
 class LoanProgramSerializer(ModelSerializer): 

@@ -1,4 +1,4 @@
-<div class="row" ng-controller="DocumentInfoController">
+<div class="row" ng-controller="LoanInfoController">
     <div class="col-xl-12">
         <div class="card card-custom gutter-b">
             <div class="card-body">
@@ -10,25 +10,24 @@
                                     href="#"
                                     class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3"
                                 >
-                                    {{ document.name }}
+                                    Loan No. {{ loan.id }}
                                     <span class="label label-light-info label-inline font-weight-bolder ml-2">
-                                        {{document.currentStatus.name}}
+                                        {{loan.status_name}}
                                     </span>
                                     <!-- <i class="fas fa-check-circle text-success icon-md ml-2"></i> -->
                                 </a>
                             </div>
-
-                            <div class="my-lg-0 my-1" ng-if="document.loan">
-                                <a
+                            <div class="my-lg-0 my-1">
+                                <!-- <a
                                     href="#"
                                     class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                                    ng-click="previewLoanRelease(document.loan.id)"
+                                    ng-click="previewLoanRelease(loan.id)"
                                 >
                                     Loan Release Sheet
-                                </a>
-                                <!-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> -->
+                                </a> -->
+                                <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase" 
+                                ng-click="newPayment(loan.id)"  ng-if="loan.dateReleased">New Payment</a>  
                             </div>
-                            
                         </div>
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
                             <div class="mr-3">
@@ -37,20 +36,12 @@
                                     <a
                                         href="#"
                                         class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
-                                        ng-click="viewBorrower(document.borrower)"
+                                        ng-click="viewBorrower(loan.borrower)"
                                     >
-                                        {{ document.borrowerName }}
+                                        {{ loan.borrower_name }}
                                     </a>
                                 </div>
-                                <div class="d-flex flex-wrap my-2">
-                                    <span class="text-muted font-weight-bold mr-2">Process :</span>
-                                    <a
-                                        href="#"
-                                        class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
-                                    >
-                                        {{ document.subProcessName }}
-                                    </a>
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="d-flex align-items-center flex-wrap justify-content-between">
@@ -62,13 +53,13 @@
                                 Etiam elementum neque non tempor dapibus.
                             </div>
                             <div class="d-flex flex-wrap align-items-center py-2">
-                                <div class="d-flex align-items-center mr-10" ng-show="document.loan.dateReleased">
+                                <div class="d-flex align-items-center mr-10" ng-show="loan.dateReleased">
                                     <div class="mr-6">
                                         <div class="font-weight-bold mb-2">Release Date</div>
                                         <span
                                             class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold"
                                         >
-                                            {{ document.loan.dateReleased | date: 'mediumDate' }}
+                                            {{  loan.dateReleased | date: 'mediumDate' }}
                                         </span>
                                     </div>
                                     <div class="mr-6">
@@ -76,7 +67,7 @@
                                         <span
                                             class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold"
                                         >
-                                            {{ document.creditLine.dateApproved | date: 'mediumDate' }}
+                                            {{ loan.creditLine_dateApproved | date: 'mediumDate' }}
                                         </span>
                                     </div>
                                     <div class="">
@@ -84,24 +75,11 @@
                                         <span
                                             class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold"
                                         >
-                                            {{ document.creditLine.dateExpired | date: 'mediumDate' }}
+                                            {{ loan.creditLine_dateExpired | date: 'mediumDate' }}
                                         </span>
                                     </div>
                                 </div>
-                                <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
-                                    <span class="font-weight-bold">Progress</span>
-                                    <div class="progress progress-xs mt-2 mb-2">
-                                        <div
-                                            class="progress-bar bg-success"
-                                            role="progressbar"
-                                            style="width: 63%;"
-                                            aria-valuenow="50"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100"
-                                        ></div>
-                                    </div>
-                                    <span class="font-weight-bolder text-dark">78%</span>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -115,7 +93,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Program</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ document.creditLine.loanProgram_name }}
+                                {{ loan.loanProgram_name }}
                             </span>
                         </div>
                     </div>
@@ -126,24 +104,24 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Credit Line Amount</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ document.creditLine.amount | currency :'₱'}}
+                                {{ loan.creditLine_amount | currency :'₱'}}
                             </span>
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1" ng-if="document.loan">
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1"  >
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
                         </span>
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Loan Amount</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ document.loan.amount | currency :'₱'}}
+                                {{ loan.amount | currency :'₱'}}
                             </span>
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
                         </span>
@@ -153,7 +131,7 @@
                                 {{ document.creditLine.remainingCreditLine | currency :'₱'}}
                             </span>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
@@ -161,7 +139,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ document.creditLine.interestRate }}
+                                {{ loan.interestRate }}
                                 <span>%</span>
                             </span>
                         </div>
@@ -173,7 +151,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Term</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ document.creditLine.term_name }}
+                                {{ loan.term_name }}
                             </span>
                         </div>
                     </div>
@@ -337,7 +315,7 @@
             </div>
         </div>
 
-        <div class="card card-custom gutter-b" ng-if="document.loan.dateReleased">
+        <div class="card card-custom gutter-b" ng-if="loan.dateReleased">
             <div class="card-header align-items-center border-0 mt-4">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Amortization Schedule</span>
@@ -346,7 +324,7 @@
                     <a
                         href="#"
                         class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                        ng-click="previewAmortizationSchedule(document.loan.id)"
+                        ng-click="previewAmortizationSchedule(loan.id)"
                     >
                         Preview
                     </a>
@@ -425,7 +403,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr ng-repeat="amortization in document.loan.latestAmortization.amortizationItems">
+                                        <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems">
                                             <td class="py-2 pl-7">
                                                 <div class="pb-2">
                                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
@@ -497,7 +475,7 @@
                                             <td class="py-2 pl-7">
                                                 <div class="pb-2">
                                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        {{ document.loan.amortizations.length}}
+                                                        {{ loan.amortizations.length}}
                                                     </span>
                                                 </div>
                                             </td>
@@ -512,14 +490,14 @@
                                             <td class="py-2 pl-7">
                                                 <div class="pb-2">
                                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        {{ document.loan.amount | currency :'₱'}}
+                                                        {{ loan.amount | currency :'₱'}}
                                                     </span>
                                                 </div>
                                             </td>
                                             <td class="py-2 pl-7">
                                                 <div class="pb-2">
                                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        {{ document.loan.totalAmortizationInterest | currency :'₱'}}
+                                                        {{ loan.totalAmortizationInterest | currency :'₱'}}
                                                     </span>
                                                 </div>
                                             </td>
@@ -534,7 +512,7 @@
                                             <td class="py-2 pl-7">
                                                 <div class="pb-2">
                                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        {{ document.loan.totalAmortizationPayment | currency :'₱'}}
+                                                        {{ loan.totalAmortizationPayment | currency :'₱'}}
                                                     </span>
                                                 </div>
                                             </td>
@@ -588,255 +566,8 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-5">
-        <div class="card card-custom card-stretch gutter-b">
-            <div class="card-header align-items-center border-0 mt-4">
-                <h3 class="card-title align-items-start flex-column">
-                    <span class="font-weight-bolder text-dark">Activities</span>
-                </h3>
-            </div>
-            <div class="card-body pt-4">
-                <div class="timeline timeline-6 mt-3">
-                    <div
-                        class="timeline-item align-items-start"
-                        ng-repeat="documentMovement in documentMovements | orderBy:'-'"
-                    >
-                        <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">
-                            {{ documentMovement.dateCreated | date : 'medium' }}
-                        </div>
-                        <div class="timeline-badge">
-                            <i class="fal fa-genderless text-success icon-xxl"></i>
-                        </div>
-                        <div class="timeline-content text-dark-50">
-                            <div class="d-flex mb-3">
-                                <h6 class="text-dark-75 text-hover-primary font-weight-bold">
-                                    {{ documentMovement.name }}
-                                    <span ng-if="documentMovement.outputName">-</span>
-                                    {{ documentMovement.outputName }}
-                                </h6>
-                                <span class="label label-light-info font-weight-bolder label-inline ml-2">
-                                    {{ documentMovement.statusName }}
-                                </span>
-                            </div>
-                            <p class="p-0 font-size-h6">
-                                {{ documentMovement.description }}
-                            </p>
-                            <p class="p-0">
-                                <i class="font-size-sm">Commitee: {{ documentMovement.committeeName }}</i>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-7">
-        <div class="card card-custom card-stretch-half gutter-b" ng-if="currentStep">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Procedure</h3>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
-                        <p>Current Step</p>
-                        <h4 class="mb-0">
-                            <span ng-repeat="position in currentStep.position">
-                                {{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}
-                            </span>
-                        </h4>
-                        <p>Assigned Committee</p>
-                        <h6 class="mb-0">{{ currentStep.description}}</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card card-custom card-stretch-half gutter-b">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Requirements</h3>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="vertical-wizard">
-                    <div class="wizard-nav border-right py-8 px-8 py-lg-12 px-lg-8">
-                        <div class="wizard-steps">
-                            <div
-                                class="wizard-step"
-                                ng-class="{'active':processRequirement.id === currentRequirement.id }"
-                                ng-repeat="processRequirement in processRequirements"
-                                ng-click="goToRequirement(processRequirement.id)"
-                            >
-                                <div class="wizard-wrapper">
-                                    <div class="wizard-icon">
-                                        <i class="fad fa-file-plus"></i>
-                                    </div>
-                                    <div class="wizard-label">
-                                        <h3 class="wizard-title">
-                                            {{ processRequirement.name }}
-                                        </h3>
-                                        <div class="wizard-desc">
-                                            {{ processRequirement.isRequiredText }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8" block-ui="attachmentBlockUI">
-                        <div class="row">
-                            <div class="offset-xxl-2 col-xxl-8">
-                                <div class="pb-5">
-                                    <div class="pb-5">
-                                        <div class="font-size-h6">
-                                            {{ currentRequirement.name }}
-                                            <span class="text-muted pt-2 font-size-sm d-block">
-                                                {{ currentRequirement.description }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ul class="text-dark list-unstyled">
-                                        <li class="font-size-h6">Attachments</li>
-                                        <ul class="font-size-h7">
-                                            <li
-                                                ng-repeat="stepRequirementAttachment in currentRequirement.attachments | startFrom:currentPageAttachment*pageSizeAttachment | limitTo: pageSizeAttachment "
-                                            >
-                                                <a
-                                                    href=""
-                                                    ng-click="downloadFile(stepRequirementAttachment.fileAttachment,stepRequirementAttachment.fileName)"
-                                                >
-                                                    {{ stepRequirementAttachment.fileName | trimStringWithExtension: 20
-                                                    }} -
-                                                    <span
-                                                        ng-if="stepRequirementAttachment.description"
-                                                        ng-bind="stepRequirementAttachment.description"
-                                                    ></span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </ul>
-                                    <div
-                                        class="d-flex justify-content-center align-items-center flex-wrap"
-                                        ng-if="pageRangeAttachment(currentRequirement.attachments.length).length > 1"
-                                    >
-                                        <div class="d-flex flex-wrap py-2 mr-3">
-                                            <button
-                                                href="#"
-                                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                                ng-disabled="currentPageAttachment == 0"
-                                                ng-click="gotoPrevAttachment()"
-                                            >
-                                                <i class="fas fa-chevron-left icon-sm"></i>
-                                            </button>
-                                            <button
-                                                href="#"
-                                                class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                                ng-class="{ 'active' : n == currentPageAttachment + 1 }"
-                                                ng-repeat="n in pageRangeAttachment(currentRequirement.attachments.length)"
-                                                ng-click="jumpToPageAttachment(n)"
-                                            >
-                                                <small>{{n}}</small>
-                                            </button>
-                                            <button
-                                                href="#"
-                                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                                ng-disabled="currentPageAttachment >=currentRequirement.attachments.length/pageSizeAttachment - 1"
-                                                ng-click="gotoNextAttachment()"
-                                            >
-                                                <i class="fas fa-chevron-right icon-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pb-5">
-                                    <div class="form-group">
-                                        <label>File Attachment</label>
-                                        <input
-                                            type="file"
-                                            id="fileAttachment"
-                                            name="fileAttachment"
-                                            multiple
-                                            select-ng-files="fileAttachment"
-                                            ng-model="fileAttachment.attachment"
-                                            hidden
-                                        />
-                                        <div class="dropzone dropzone-multi">
-                                            <div class="dropzone-panel mb-lg-0 mb-2">
-                                                <a
-                                                    class="dropzone-select btn btn-light-primary font-weight-bold btn-sm"
-                                                    ng-click="selectFile()"
-                                                >
-                                                    Select files
-                                                </a>
-                                                <a
-                                                    class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm"
-                                                >
-                                                    Remove All
-                                                </a>
-                                            </div>
-                                            <div class="dropzone-items">
-                                                <div class="dropzone-item" ng-repeat="file in fileList">
-                                                    <div class="dropzone-file">
-                                                        <div class="dropzone-filename">
-                                                            <span>{{ file.name }}</span>
-                                                            <strong>
-                                                                <span>({{ file.size/1000 | number : 2 }} KB)</span>
-                                                            </strong>
-                                                        </div>
-                                                        <div class="dropzone-error" data-dz-errormessage></div>
-                                                    </div>
-                                                    <div class="dropzone-toolbar">
-                                                        <span
-                                                            class="dropzone-delete"
-                                                            data-dz-remove
-                                                            ng-click="removeFile($index)"
-                                                        >
-                                                            <i class="fal fa-times icon-md"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description *</label>
-                                        <textarea
-                                            ng-model="newAttachment.attachmentDescription"
-                                            name="attachmentDescription"
-                                            type="text"
-                                            rows="4"
-                                            cols="50"
-                                            class="form-control form-control-solid form-control-lg textarea"
-                                        ></textarea>
-                                        <span class="form-text text-muted">Please enter attachment description.</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end border-top mt-5 pt-10">
-                                    <button
-                                        class="btn btn-outline-primary ont-weight-bold text-uppercase"
-                                        type="button"
-                                        ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription"
-                                        ng-click="attachFile(currentRequirement)"
-                                    >
-                                        <i class="fal fa-plus mr-2"></i>
-                                        Attach
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
+    
     <div class="col-xl-5">
         <div class="card card-custom card-stretch gutter-b">
             <div class="card-header">
@@ -930,67 +661,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-7">
-        <div class="card card-custom card-stretch gutter-b">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Actions</h3>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="vertical-wizard">
-                    <div class="wizard-nav border-right py-8 px-8 py-lg-12 px-lg-8">
-                        <ul class="text-dark list-unstyled">
-                            <li class="font-size-h6">Summary</li>
-                            <ul class="font-size-h7">
-                                <li>Added attachment file to requirement 1.</li>
-                            </ul>
-                        </ul>
-                    </div>
-                    <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8">
-                        <div class="row">
-                            <div class="offset-xxl-2 col-xxl-10">
-                                <form class="form" id="kt_form">
-                                    <div class="pb-5">
-                                        <div class="form-group">
-                                            <label>Final Remarks</label>
-                                            <textarea
-                                                ng-model="remarks"
-                                                name="remarks"
-                                                type="text"
-                                                rows="4"
-                                                cols="50"
-                                                class="form-control form-control-solid form-control-lg textarea"
-                                            ></textarea>
-                                            <span class="form-text text-muted">Please enter your final Remarks.</span>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="d-flex align-items-center flex-lg-fill justify-content-end border-top mt-5 pt-10"
-                                    >
-                                        <div>
-                                            <span ng-repeat="output in currentStep.outputs">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
-                                                    ng-click="takeActions(document.id,output,currentStep)"
-                                                >
-                                                    {{output.name}}
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <div class="col-xl-3">
         <!-- <div class="row">
             <div class="col-xl-12">

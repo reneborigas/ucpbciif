@@ -325,6 +325,64 @@ define(function () {
                         });
                     },
                 })
+                .state('app.payments', {
+                    url: '/payments',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Payments',
+                        skip: true,
+                    },
+                    params: { title: 'Payments', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/payments.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.payments.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/payments/payments-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Payments List',
+                        stateTitle: 'Payments',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Payments', 
+                    },
+                    params: { title: 'Payments', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+                    // resolve: {
+                    //     loadController: [
+                    //         '$ocLazyLoad',
+                    //         function ($ocLazyLoad) {
+                    //             return $ocLazyLoad.load({
+                    //                 files: ['/statics/scripts/angular-scripts/controllers/payment.js'],
+                    //             });
+                    //         },
+                    //     ],
+                    // },
+                })
+                .state('app.payments.new', {
+                    url: '/:loanId',
+                    templateUrl: '/statics/partials/pages/payments/payments-new.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | New Payment',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'New Payment',
+                        parent: 'app.loans.info',
+                    },
+                    params: { title: 'New Payment', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
+
 
                 .state('app.loans', {
                     url: '/loans',
@@ -349,9 +407,12 @@ define(function () {
                 .state('app.loans.list', {
                     url: '',
                     templateUrl: '/statics/partials/pages/loans/loans-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loans List',
+                        stateTitle: 'Loans',
+                    },
                     ncyBreadcrumb: {
-                        label: 'Loans',
-                        skip: true,
+                        label: 'Loans', 
                     },
                     params: { title: 'Loans', subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
                     resolve: {
@@ -365,7 +426,20 @@ define(function () {
                         ],
                     },
                 })
-
+                .state('app.loans.info', {
+                    url: '/:loanId',
+                    templateUrl: '/statics/partials/pages/loans/loans-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loan Info',
+                    },
+                    ncyBreadcrumb: {
+                        label:  'Loan No. {{loanId}}',
+                        parent: 'app.loans.list',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
                 .state('app.documents', {
                     url: '/files',
                     template: '<ui-view></ui-view>',
@@ -623,23 +697,23 @@ define(function () {
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load({
-                                    files: ['/statics/scripts/angular-scripts/controllers/documents.js'],
+                                    files: ['/statics/scripts/angular-scripts/controllers/loans.js'],
                                 });
                             },
                         ],
-                    },
+                    },  
                 })
                 .state('print.documents.loan_release', {
-                    url: '/files/:documentId',
+                    url: '/files/:loandId',
                     templateUrl: '/statics/partials/pages/documents/documents-loan-release.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Loan Release Print',
                     },
                     controller: function ($scope, $stateParams, appFactory) {
-                        $scope.documentId = $stateParams.documentId;
-                        appFactory.getDocumentName($scope.documentId).then(function (data) {
-                            $scope.fileName = data;
-                        });
+                        $scope.loandId = $stateParams.loandId;
+                        // appFactory.getDocumentName($scope.documentId).then(function (data) {
+                        //     $scope.fileName = data;
+                        // });
                     },
                 })
                 .state('print.documents.amortization_schedule', {

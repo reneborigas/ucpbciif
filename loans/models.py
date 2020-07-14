@@ -50,6 +50,47 @@ class Status(models.Model):
     def __str__(self):
         return "%s" % (self.name  )
 
+
+class AmortizationStatus(models.Model):  
+    name = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+   
+   
+    isDefault = models.BooleanField(
+        default=False
+    )    
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="amortizationtatusesCreatedBy",
+        null = True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+     
+    
+    def __str__(self):
+        return "%s" % (self.name  )
+
 class PaymentPeriod(models.Model):
     name = models.CharField(
         max_length=255,
@@ -272,9 +313,7 @@ class Loan(models.Model):
         'borrowers.Borrower',
         on_delete=models.CASCADE,
         related_name="loans",
-    )
-    
-    
+    ) 
 
     creditLine =  models.ForeignKey(
        CreditLine,
@@ -350,20 +389,69 @@ class Loan(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
+     
 
     def __str__(self):
         return "%s %s" % (self.borrower,self.amount)
 
+    def getLatestAmortization(self):
+      
+        return  self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+
     def getTotalAmortizationInterest(self):
-        return self.amortizations.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest'] 
+         
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+      
+        if latestAmortization: 
+            return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
+        return 0
 
     def getTotalAmortizationPayment(self):
-         return self.amortizations.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment'] 
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+      
+        if latestAmortization: 
+            return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']   
+        return 0
 
-class Amortization(models.Model):
+    def getOutstandingBalance(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        print(totalPayments)
+        if latestAmortization: 
+            
+            return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
+ 
+        return   0  
+
+    def getTotalPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+      
+        if latestAmortization: 
+            
+            return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
+ 
+        return   0  
+
+    def getCurrentAmortizationItem(self):
+        
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        amortizations = self.amortizations.filter(amortizationStatus__name='PAID')
 
 
-    
+        if latestAmortization: 
+            i = 0
+            for item in latestAmortization.amortizationItems.order_by('id').all():
+                if (i==amortizations.count()): 
+                    return item
+                i = i + 1 
+  
+
+class Amortization(models.Model): 
     
     loan = models.ForeignKey(
         Loan,
@@ -372,34 +460,12 @@ class Amortization(models.Model):
         blank=True,
         null=True
     )
-
-    days = models.PositiveIntegerField(
-        blank=False,
-        null=False,
-        default=0
-    )
-
-
-    schedule = models.DateTimeField(
-        blank=True,
-        null=True
-    )
-    
-    principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-    
-    interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-    
-    vat = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
-    total = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-    
-    principalBalance = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
-    status = models.ForeignKey(
-        Status,
+     
+    amortizationStatus = models.ForeignKey(
+        AmortizationStatus,
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
-        related_name="amortizationStatuses",
+        related_name="amortizationStatusesAmortizations",
     )
  
      
@@ -423,7 +489,66 @@ class Amortization(models.Model):
 
 
     def __str__(self):
-        return "%s %s" % (self.loan,self.schedule)
+        return "%s %s" % (self.loan,self.amortizationStatus.name)
+
+    
+
+class AmortizationItem(models.Model): 
+    
+    
+    amortization = models.ForeignKey(
+        Amortization,
+        on_delete=models.CASCADE,
+        related_name="amortizationItems",
+        blank=True,
+        null=True
+    )
+
+
+    days = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+
+    schedule = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+    
+    principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    
+    interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    
+    vat = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    total = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    
+    principalBalance = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    amortizationStatus = models.ForeignKey(
+        AmortizationStatus,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="amortizationItemStatuses",
+    )
+ 
+      
+ 
+
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+
+    def __str__(self):
+        return "%s %s" % (self.amortization.loan,self.schedule)
 
 
  

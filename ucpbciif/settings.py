@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'settings',
     'borrowers',
     'loans',
+    'payments',
     'processes',
     'committees',
     'documents'

@@ -1,4 +1,4 @@
-<div class="row" ng-controller="DocumentLoanReleasePrintController">
+<div class="row" ng-controller="LoanReleasePrintController">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-md-12">
@@ -14,13 +14,13 @@
                             <tr>
                                 <td class="p-0" width="25%">Account Name:</td>
                                 <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
-                                    <strong>{{ document.borrowerName }}</strong>
+                                    <strong>{{ loan.borrower_name }}</strong>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="p-0" width="25%">Subject:</td>
                                 <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
-                                    Release of {{ document.loan.amount | currency :'₱'}}
+                                    Release of {{ loan.amount | currency :'₱'}}
                                 </td>
                             </tr>
                             <tr>
@@ -179,14 +179,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr ng-repeat="obligation in borrower.loans">
                                             <td
                                                 class="p-0"
                                                 style="border-bottom: 1pt solid #464e5f !important;"
                                                 width="20%"
                                                 align="middle"
                                             >
-                                                Name
+                                                {{obligation.id}}
                                             </td>
                                             <td
                                                 class="p-0"
@@ -194,7 +194,7 @@
                                                 width="20%"
                                                 align="middle"
                                             >
-                                                Name
+                                              {{obligation.dateReleased | date :"mediumDate"}}
                                             </td>
                                             <td
                                                 class="p-0"
@@ -202,7 +202,7 @@
                                                 width="20"
                                                 align="middle"
                                             >
-                                                Name
+                                            {{obligation.creditLine_dateExpired | date :"mediumDate"}}
                                             </td>
                                             <td
                                                 class="p-0"
@@ -210,7 +210,7 @@
                                                 width="20%"
                                                 align="right"
                                             >
-                                                Name
+                                            {{ obligation.amount | currency :'₱'}}
                                             </td>
                                             <td
                                                 class="p-0"
@@ -218,15 +218,15 @@
                                                 width="20%"
                                                 align="right"
                                             >
-                                                Name
+                                            {{ obligation.amount | currency :'₱'}}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="4" class="pt-3 pr-0 font-weight-bold" align="right">
-                                                Name
+                                            <td colspan="4" class="pt-3 pr-0 font-weight-bold" align="right"> 
+                                                {{ borrower.totalAvailments | currency :'₱'}}
                                             </td>
                                             <td class="pt-3 pr-0 font-weight-bold" width="20%" align="right">
-                                                Name
+                                                {{ 0 | currency :'₱'}}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -275,7 +275,7 @@
                                                 width="20%"
                                                 align="middle"
                                             >
-                                                {{ document.creditLine.loanProgram_name }}
+                                                {{ loan.loanProgram_name }}
                                             </td>
                                             <td></td>
                                             <td class="p-0" width="20%">JSS:</td>
@@ -296,7 +296,7 @@
                                                 width="20%"
                                                 align="middle"
                                             >
-                                                {{ document.loan.amount | currency :'₱'}}
+                                                {{ loan.amount | currency :'₱'}}
                                             </td>
                                             <td></td>
                                             <td class="p-0" width="20%">

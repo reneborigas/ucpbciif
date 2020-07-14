@@ -33,6 +33,20 @@ define(function () {
                     }
                 );
             },
+
+            getLoanNumber: function (documentId) {
+                return $http.get('/api/documents/documents/', { params: { documentId: documentId } }).then(
+                    function (response) {
+                        return response.data[0].name;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Borrower Name. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getDocumentName: function (documentId) {
                 return $http.get('/api/documents/documents/', { params: { documentId: documentId } }).then(
                     function (response) {
@@ -169,6 +183,21 @@ define(function () {
                     }
                 );
             },
+
+            getPaymentType: function () {
+                return $http.get('/api/payments/paymenttypes/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Payment Type list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+
             getCommitteeName: function (committeeId) {
                 return $http.get('/api/committees/committees/', { params: { committeeId: committeeId } }).then(
                     function (response) {

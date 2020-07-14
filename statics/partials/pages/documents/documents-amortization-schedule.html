@@ -1,4 +1,4 @@
-<div class="row" ng-controller="DocumentAmortizationSchedulePrintController">
+<div class="row" ng-controller="AmortizationSchedulePrintController">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-md-12">
@@ -26,7 +26,7 @@
                             <tr>
                                 <td class="p-0">Borrower Name:</td>
                                 <td class="p-0" colspan="4">
-                                    <strong>{{ document.borrowerName }}</strong>
+                                    <strong>{{ loan.borrower_name }}</strong>
                                 </td>
                                 <td class="p-0">Emp No:</td>
                                 <td class="p-0"colspan="2">
@@ -40,23 +40,23 @@
                                 </td>
                                 <td class="p-0">Granted:</td>
                                 <td class="p-0"colspan="2">
-                                    {{ document.creditLine.dateApproved | date: 'mediumDate' }}
+                                    {{ loan.creditLine_dateApproved | date: 'mediumDate' }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="p-0">Maturity:</td>
                                 <td class="p-0" colspan="2">
-                                    {{ document.creditLine.dateExpired | date: 'mediumDate' }}
+                                    {{ loan.creditLine_dateExpired | date: 'mediumDate' }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="p-0">PN No./Loan No.:</td>
                                 <td class="p-0" colspan="2">
-                                    {{}} 
+                                    {{ loan.id}} 
                                 </td>
                                 <td class="p-0">Kind of Loan:</td>
                                 <td class="p-0">
-                                    {{ document.creditLine.loanProgram_name }}
+                                    {{ loan.loanProgram_name }}
                                 </td>
                                 <td class="p-0">Province:</td>
                                 <td class="p-0" colspan="2">
@@ -66,15 +66,15 @@
                             <tr>
                                 <td class="p-0">Amount of Loan:</td>
                                 <td class="p-0" colspan="2">
-                                    {{ document.loan.amount | currency :'₱'}}
+                                    {{ loan.amount | currency :'₱'}}
                                 </td>
                                 <td class="p-0">Loan Term:</td>
                                 <td class="p-0">
-                                    {{}}
+                                    {{ loan.term.days }} days
                                 </td>
                                 <td class="p-0">Mode of Payment:</td>
-                                <td class="p-0" colspan="2">
-                                    {{}}
+                                <td class="p-0" >
+                                    {{loan.term.paymentPeriod.name }}
                                 </td>
                             </tr> 
                             <tr>
@@ -88,7 +88,7 @@
                                 </td>
                                 <td class="p-0" width="10%">Interest Rate:</td>
                                 <td class="p-0" >
-                                    {{ document.creditLine.interestRate }}
+                                    {{ loan.interestRate }}
                                 </td>
                                 <td class="p-0" width="10%">S/A #:</td>
                                 <td class="p-0" >
@@ -171,7 +171,7 @@
                                 </td>
     
                             </tr>
-                            <tr ng-repeat="amortization in document.loan.amortizations">
+                            <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems">
                                 <td class="">
                                     <div class="">
                                         <span class="text-dark-75">
@@ -245,7 +245,7 @@
                                 <td class="">
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ document.loan.amortizations.length}}
+                                            {{ loan.amortizations.length}}
                                         </span>
                                     </div>
                                 </td>
@@ -260,14 +260,14 @@
                                 <td class="">
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ document.loan.amount | currency :'₱'}}
+                                            {{ loan.amount | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ document.loan.totalAmortizationInterest | currency :'₱'}}
+                                            {{ loan.totalAmortizationInterest | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
@@ -282,7 +282,7 @@
                                 <td class="">
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ document.loan.totalAmortizationPayment | currency :'₱'}}
+                                            {{ loan.totalAmortizationPayment | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>

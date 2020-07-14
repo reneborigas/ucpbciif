@@ -47,6 +47,7 @@ class DocumentViewSet(ModelViewSet):
             if  document.loan:
                 document.loan.totalAmortizationInterest =  document.loan.getTotalAmortizationInterest
                 document.loan.totalAmortizationPayment =  document.loan.getTotalAmortizationPayment
+                document.loan.latestAmortization = document.loan.getLatestAmortization
             if document.creditLine: 
                 document.creditLine.remainingCreditLine = document.creditLine.getRemainingCreditLine()
                 

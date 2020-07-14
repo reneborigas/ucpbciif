@@ -3,7 +3,7 @@ define(function () {
 
     var app = angular.module('app');
 
-    app.controller('LoanListController', function LoanListController(
+    app.controller('PaymentListController', function LoanListController(
         $http,
         $filter,
         $scope,
@@ -72,7 +72,7 @@ define(function () {
         };
     });
 
-    app.controller('LoanInfoController', function LoanInfoController(
+    app.controller('NewPaymentController', function NewPaymentController(
         $http,
         $filter,
         $scope,
@@ -85,7 +85,12 @@ define(function () {
         $q,
         $window
     ) {
+        appFactory.getPaymentType().then(function (data) {
+            $scope.paymentTypes = data;
+        });
+
         
+       
 
         $http
             .get('/api/loans/loans/', {
@@ -94,7 +99,82 @@ define(function () {
             .then(
                 function (response) {
                     $scope.loan = response.data[0];
- 
+
+                    $scope.payment = {
+                        loan: $scope.loan.id ,
+                        amortization: $scope.loan.latestAmortization.id ,
+                        check: '',
+                        cash: '',
+                        total: '',
+                        balance: '',
+                        paymentType: '',
+                        checkNo: '',
+                        bankACcount: '',
+                        datePayment: '',
+                        outStandingBalance:'',
+                        remarks: '',
+                        description: '',
+                        paymentStatus: '2',
+                        createdBy:'1'
+                    };
+
+                    // $scope.insufficient = false;
+                    $scope.$watch(
+                        'payment.cash',
+                        function (newTerm, oldTerm) {
+                            $scope.payment.total = $scope.payment.cash +  $scope.payment.check
+                        },
+                        true
+                    );
+                    $scope.$watch(
+                        'payment.check',
+                        function (newTerm, oldTerm) {
+                            $scope.payment.total = $scope.payment.cash +  $scope.payment.check
+                        },
+                        true
+                    );
+                    $scope.$watch(
+                        'payment.total',
+                        function (newTerm, oldTerm) {
+                            
+                            console.log(newTerm);
+                            $scope.payment.balance =  $scope.getBalance();
+                            $scope.payment.overPayment =  $scope.getOverPayment();
+                            $scope.payment.outStandingBalance =  $scope.getOutStandingBalance();
+
+                            console.log( $scope.payment.outStandingBalance);
+                        },
+                        true
+                    );
+                    
+
+                    // $scope.$watch(
+                    //     'payment.total',
+                    //     function (newTerm, oldTerm) {
+                    //         if (newTerm > $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine) {
+                    //             //Error
+                    //             console.log('invalid');
+
+                    //             $scope.exceeded = true;
+                    //         } else {
+                    //             $scope.exceeded = false;
+                    //         }
+                    //     },
+                    //     true
+                    // );
+
+                    $scope.$watch(
+                        'payment.paymentType',
+                        function (newTerm, oldTerm) {
+                           console.log(newTerm);
+                           $scope.payment.cash = 0;
+                           $scope.payment.check = 0;
+                           $scope.payment.checkNo = '';
+                        },
+                        true
+                    );
+
+
                     $http
                         .get('/api/borrowers/borrowers/', {
                             params: { borrowerId: $scope.loan.borrower },
@@ -122,13 +202,66 @@ define(function () {
                         'Could not retrieve Loan Information. Please contact System Administrator.'
                     );
                 }
-            );
-
+            ); 
         
+        $scope.getBalance = function () {
+            if ($scope.loan.currentAmortizationItem.total - $scope.payment.total <=0){
+                return 0;
+            }
+            return   $scope.loan.currentAmortizationItem.total - $scope.payment.total;
+        }
 
-        $scope.newPayment = function ( id) { 
-            $state.go('app.payments.new', { loanId: id });
-        };
+        $scope.getOverPayment = function () {
+            if ($scope.payment.total - $scope.loan.currentAmortizationItem.total <=0){
+                return 0;
+            }
+            return $scope.payment.total - $scope.loan.currentAmortizationItem.total ;
+        }
+
+        $scope.getOutStandingBalance = function () {
+            console.log( $scope.loan.currentAmortizationItem.interest);
+            return   (((parseFloat($scope.loan.currentAmortizationItem.principalBalance) + parseFloat($scope.loan.currentAmortizationItem.principal) ) - $scope.payment.total)) + parseFloat($scope.loan.currentAmortizationItem.interest)  ;
+        }
+        // + parseFloat($scope.loan.currentAmortizationItem.interest)
+        $scope.save = function () {
+
+            $scope.payment.total = $scope.payment.cash + $scope.payment.check;
+            $scope.payment.balance =   ($scope.getBalance().toFixed(2));
+            $scope.payment.overPayment =  ($scope.getOverPayment().toFixed(2));
+            $scope.payment.outStandingBalance =  ($scope.getOutStandingBalance().toFixed(2));
+
+            console.log($scope.payment.balance );
+            console.log($scope.payment.overPayment );
+            if ($scope.newPaymentDetailsForm.$valid) { 
+                swal({
+                    title: 'Save Payment',
+                    text: 'Do you want to save new payment record?',
+                    icon: 'info',
+                    buttons: {
+                        cancel: true,
+                        confirm: 'Save',
+                    },
+                }).then((isConfirm) => {
+                    if (isConfirm) {
+                        $http.post('/api/payments/payments/', $scope.payment).then(
+                            function () {
+                                toastr.success('Success', 'Payment Successful.');
+                                swal('Success!', 'Payment Successful.', 'success');
+                                $state.go('app.loans.info', { loanId: $scope.payment.loan });
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not create payment. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    }
+                });
+            }
+            
+        };    
+        
 
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
@@ -141,6 +274,9 @@ define(function () {
         $scope.previewAmortizationSchedule = function (id) {
             $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
         };
+
+
+
     });
 
     app.controller('DocumentAddController', function DocumentAddController(
@@ -185,10 +321,6 @@ define(function () {
                 }
             });
         };
-
-
-       
-
     });
 
     app.controller('LoanReleasePrintController', function LoanReleasePrintController(

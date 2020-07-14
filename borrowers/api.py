@@ -5,7 +5,7 @@ from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from documents.models import Document,DocumentMovement
-
+from loans.models import Loan
 class BorrowerViewSet(ModelViewSet):
     queryset = Borrower.objects.all()
     serializer_class = BorrowerSerializer 
@@ -13,6 +13,7 @@ class BorrowerViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = Borrower.objects.prefetch_related('borrowerAttachments', Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
+        Prefetch( 'loans',queryset=Loan.objects.filter(status__name='RELEASED').order_by('dateReleased')),
             Prefetch('cooperative',Cooperative.objects.annotate(
                 cooperativeTypeText=F('cooperativeType__name')
             ).all()),

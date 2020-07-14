@@ -1057,6 +1057,7 @@ define(function () {
                             amount: parseFloat($scope.subProcess.parentLastDocumentCreditLine.amount),
                             interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
                             term: $scope.subProcess.parentLastDocumentCreditLine.term,
+
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: $scope.subProcess.parentLastDocumentCreditLine.purpose,
                             security: $scope.subProcess.parentLastDocumentCreditLine.security,
@@ -1073,6 +1074,8 @@ define(function () {
                             creditLine: $scope.subProcess.parentLastDocumentCreditLine.id,
                             interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
                             term: $scope.subProcess.parentLastDocumentCreditLine.term,
+                            termid: $scope.subProcess.parentLastDocumentCreditLine.term.id,
+                            
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',

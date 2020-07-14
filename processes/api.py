@@ -7,13 +7,13 @@ from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 
 from committees.models import Position
 from borrowers.models import Borrower
-from loans.models import CreditLine,Loan,Amortization
+from loans.models import CreditLine,Loan,Amortization,AmortizationItem
 from documents.models import Document
 from rest_framework import status, views
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
-from loans.models import Status
+from loans.models import Status,AmortizationStatus
 from django.utils import timezone
 from loans import PMT
 
@@ -32,23 +32,31 @@ def generateAmortizationSchedule(loan,request):
     print(pmt.principal)
 
     loanAmount = loan.amount
+
+    amortization = Amortization( 
+            loan = loan,
+             
+            amortizationStatus = AmortizationStatus.objects.get(pk=1),
+            createdBy = request.user
+        )
+    amortization.save()
+
     for i in range(int(noOfPaymentSchedules)):
 
         pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
 
-        amortization = Amortization(
+        amortizationItem = AmortizationItem(
             schedule = schedule,
-            loan = loan,
+            amortization = amortization,
             days= loan.term.paymentPeriod.paymentCycle,
             principal = pmt.principal,
             interest = pmt.interest,
             vat = 0,
             total = pmt.payment,
             principalBalance = pmt.nextStartingValue,
-            status = Status.objects.get(pk=1),
-            createdBy = request.user
+            amortizationStatus = AmortizationStatus.objects.get(pk=1), 
         )
-        amortization.save()
+        amortizationItem.save()
 
         schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
         loanAmount = pmt.nextStartingValue
