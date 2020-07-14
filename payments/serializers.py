@@ -56,7 +56,7 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
             amortizationItem.pk =None
             if (i  == (paidItems) ):
                 amortizationItem.principalBalance = loanAmount
-                amortizationItem.total =  lastPayment.total
+                # amortizationItem.total =  lastPayment.total
                   
             amortizationItem.save()
 
