@@ -14,11 +14,18 @@ class LoanViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related('amortizations')
+        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
         loanId = self.request.query_params.get('loanId', None)
+        borrowerId = self.request.query_params.get('borrowerId', None)
+        status = self.request.query_params.get('status', None)
 
         if loanId is not None:
             queryset = queryset.filter(id=loanId)
+        if borrowerId is not None:
+            queryset = queryset.filter(borrower__borrowerId=borrowerId)
+
+        if status is not None:
+            queryset = queryset.filter(status__name=status)
 
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
@@ -26,6 +33,16 @@ class LoanViewSet(ModelViewSet):
             loan.latestAmortization = loan.getLatestAmortization 
             loan.outStandingBalance = loan.getOutstandingBalance
             loan.currentAmortizationItem = loan.getCurrentAmortizationItem
+            loan.totalObligations = loan.getTotalObligations
+            loan.latestPayment = loan.getLatestPayment
+            loan.totalPayment = loan.getTotalPayment
+            loan.interestBalance = loan.getInterestBalance
+
+            for amortization in loan.amortizations.all() : 
+
+                amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
+                amortization.totalObligations = amortization.getTotalObligations
+
 
         return queryset
 
@@ -35,12 +52,16 @@ class AmortizationViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Amortization.objects.order_by('id')
+        queryset = Amortization.objects.order_by('-id')
         amortizationId = self.request.query_params.get('amortizationId', None)
 
         if amortizationId is not None:
             queryset = queryset.filter(id=amortizationId)
 
+        for amortization in queryset:
+            amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
+            amortization.totalObligations = amortization.getTotalObligations
+            
         return queryset
 
 class CreditLineViewSet(ModelViewSet):

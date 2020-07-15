@@ -13,7 +13,7 @@ class BorrowerViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = Borrower.objects.prefetch_related('borrowerAttachments', Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
-        Prefetch( 'loans',queryset=Loan.objects.filter(status__name='RELEASED').order_by('dateReleased')),
+        Prefetch( 'loans',queryset=Loan.objects.order_by('dateReleased')),
             Prefetch('cooperative',Cooperative.objects.annotate(
                 cooperativeTypeText=F('cooperativeType__name')
             ).all()),
@@ -28,12 +28,13 @@ class BorrowerViewSet(ModelViewSet):
         borrowerId = self.request.query_params.get('borrowerId', None)
         loanProgramId = self.request.query_params.get('loanProgramId', None)
 
-
+# .filter(status__name='RELEASED')
         if borrowerId is not None:
             queryset = queryset.filter(borrowerId=borrowerId)
 
         for borrower in queryset:
             borrower.totalAvailments = borrower.getTotalAvailments
+            borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance
 
             if loanProgramId is not None: 
                 borrower.totalAvailmentPerProgram = borrower.getTotalAvailmentsPerProgram(loanProgramId)

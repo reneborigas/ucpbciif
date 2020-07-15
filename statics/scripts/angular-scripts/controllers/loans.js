@@ -94,7 +94,7 @@ define(function () {
             .then(
                 function (response) {
                     $scope.loan = response.data[0];
- 
+                    $scope.currentAmortization = $scope.loan.amortizations[0];
                     $http
                         .get('/api/borrowers/borrowers/', {
                             params: { borrowerId: $scope.loan.borrower },
@@ -140,6 +140,28 @@ define(function () {
 
         $scope.previewAmortizationSchedule = function (id) {
             $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
+        };
+
+        
+        $scope.loadAmortization = function (id) { 
+
+              $http
+              .get('/api/loans/amortizations/', {
+                  params: { amortizationId: id },
+              })
+              .then(
+                  function (response) { 
+                      $scope.currentAmortization= response.data[0];
+                  },
+                  function (error) {
+                      toastr.error(
+                          'Error ' + error.status + ' ' + error.statusText,
+                          'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                      );
+                  }
+              );
+              
+              console.log(  $scope.currentAmortization);
         };
     });
 
@@ -234,6 +256,26 @@ define(function () {
                                 );
                             }
                         );
+
+
+
+                        $http
+                        .get('/api/loans/loans/', {
+                            params: { borrowerId: $scope.loan.borrower,status:'RELEASED' },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.loans = response.data;
+
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Loans Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
+
                 },
                 function (error) {
                     toastr.error(

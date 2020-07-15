@@ -376,10 +376,17 @@ define(function () {
         $q,
         blockUI
     ) {
+        $scope.dateToday = new Date();
         $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
             function (response) {
                 $scope.borrower = response.data[0];
                 $scope.getBorrowerAttachments($scope.borrowerId);
+
+                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                    console.log(data);
+                    $scope.windows = data;
+                });
+
                 $http.get('/api/processes/subprocesses/', { params: { borrowerId: $scope.borrowerId } }).then(
                     function (response) {
                         $scope.subprocesses = response.data;
@@ -387,6 +394,24 @@ define(function () {
                         angular.forEach($scope.subprocesses, function (subprocess) {
                             $scope.subProcessCurrentPage[subprocess.name] = 0;
                         });
+
+                $http.get('/api/loans/loans/', {
+                    params: { borrowerId: $scope.borrowerId,status:'RELEASED' },
+                })
+                .then(
+                    function (response) {
+                        $scope.loans = response.data;
+
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Loans Information. Please contact System Administrator.'
+                        );
+                    }
+                );  
+
+
                         //     if($scope.borrower.documents.length){
 
                         //     angular.forEach($scope.subprocesses, function (subProcess) {
@@ -475,7 +500,9 @@ define(function () {
         $scope.edit = function (id) {
             $state.go('app.borrowers.edit', { borrowerId: id });
         };
-
+        $scope.viewLoan = function (id) {
+            $state.go('app.loans.info', { loanId: id });
+        };
         $scope.goToFile = function (subProcessName, id) {
             console.log(subProcessName);
             var subProcessNameSlug = appFactory.slugify(subProcessName);

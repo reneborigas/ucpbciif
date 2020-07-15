@@ -405,6 +405,18 @@ class Borrower(models.Model):
             return 0
         return self.loans.filter(status__name='RELEASED').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
+    def getTotalOutstandingBalance(self):
+         
+        if(not self.loans.filter(status__name='RELEASED')):
+            return 0
+        totalBalance = 0 
+        for loan in self.loans.filter(status__name='RELEASED'):
+            totalBalance = totalBalance + loan.getOutstandingBalance()
+            print(totalBalance)
+
+        
+        return totalBalance
+
     def getTotalAvailmentsPerProgram(self,loanProgramId):
          
         if(not self.loans.filter(status__name='RELEASED')):

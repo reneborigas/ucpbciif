@@ -4,6 +4,7 @@ from rest_framework import serializers
 from .models import *
 from loans.models import AmortizationStatus,Amortization,AmortizationItem,Status
 from users.models import CustomUser
+ 
 # from borrowers.serializers import BorrowerSerializer
 
 from loans import PMT
@@ -56,32 +57,46 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
             amortizationItem.pk =None
             if (i  == (paidItems) ):
                 amortizationItem.principalBalance = loanAmount
-                # amortizationItem.total =  lastPayment.total
+                amortizationItem.total =  lastPayment.total
                   
             amortizationItem.save()
 
         else:
-         
-            pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (i-1))
+            if (loanAmount>0):
+                pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (i-1))
 
+                
+                amortizationItem = AmortizationItem(
+                schedule = schedule,
+                amortization = amortization,
+                days= loan.term.paymentPeriod.paymentCycle,
+                principal = pmt.principal,
+                interest = pmt.interest,
+                vat = 0,
+                total = pmt.payment,
+                principalBalance = pmt.nextStartingValue,
+                amortizationStatus = AmortizationStatus.objects.get(pk=1), 
+                )
+                
+                 
+            else:
+                amortizationItem = AmortizationItem(
+                schedule = schedule,
+                amortization = amortization,
+                days= loan.term.paymentPeriod.paymentCycle,
+                principal = 0,
+                interest = 0,
+                vat = 0,
+                total = 0,
+                principalBalance = 0,
+                amortizationStatus = AmortizationStatus.objects.get(pk=1), 
+                )
+                
             
-            amortizationItem = AmortizationItem(
-            schedule = schedule,
-            amortization = amortization,
-            days= loan.term.paymentPeriod.paymentCycle,
-            principal = pmt.principal,
-            interest = pmt.interest,
-            vat = 0,
-            total = pmt.payment,
-            principalBalance = pmt.nextStartingValue,
-            amortizationStatus = AmortizationStatus.objects.get(pk=1), 
-            )
-             
-            amortizationItem.save() 
- 
-            schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
-            loanAmount = pmt.nextStartingValue
+                loanAmount = pmt.nextStartingValue
 
+            amortizationItem.save()
+        schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
         i = i+1
 
 class PaymentTypeSerializer(ModelSerializer):
@@ -101,7 +116,13 @@ class PaymentTypeSerializer(ModelSerializer):
 
          
 class PaymentSerializer(ModelSerializer):
+    paymentType_name = serializers.ReadOnlyField(source='paymentType.name')
      
+    
+    amortizationItem_schedule  = serializers.ReadOnlyField(source='amortizationItem.schedule')
+    amortizationItem_principal  = serializers.ReadOnlyField(source='amortizationItem.principal')
+    amortizationItem_interest = serializers.ReadOnlyField(source='amortizationItem.interest')
+    amortizationItem_total  = serializers.ReadOnlyField(source='amortizationItem.total')
     def create(self, validated_data):
         payment = Payment.objects.create(**validated_data) 
 

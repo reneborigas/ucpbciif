@@ -398,12 +398,33 @@ class Loan(models.Model):
       
         return  self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
 
+    def getLatestPayment(self):
+      
+        return  self.payments.filter(paymentStatus__name='TENDERED').order_by('-id').first()
+
     def getTotalAmortizationInterest(self):
          
         latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
       
         if latestAmortization: 
             return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
+        return 0
+
+
+    # def getTotalAmortizationInterestByAmortization(self,amortizationId):
+         
+    #     latestAmortization = self.amortizations.filter(amortization__id=amortizationId,amortizationStatus__name='UNPAID').order_by('-id').first()
+      
+    #     if latestAmortization: 
+    #         return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
+    #     return 0
+
+    def getTotalObligations(self):
+         
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+      
+        if latestAmortization: 
+            return latestAmortization.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations']  
         return 0
 
     def getTotalAmortizationPayment(self):
@@ -424,16 +445,23 @@ class Loan(models.Model):
             return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
  
         return   0  
+        
+    def getInterestBalance(self):
+  
+         
+        latestPayment =self.payments.filter(paymentStatus__name='TENDERED').order_by('-id').first()
+         
+        if latestPayment: 
+           
+            # return self.getTotalAmortizationInterest() -  latestPayment.amortizationItem.interest
+            return self.getTotalAmortizationInterest() - self.payments.filter(paymentStatus__name='TENDERED').aggregate(totalPaidInterest=Sum(F('amortizationItem__interest') ))['totalPaidInterest']
+        return   0  
 
     def getTotalPayment(self):
         totalPayments = 0
         if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
             totalPayments =  self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']
-        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
-      
-        if latestAmortization: 
-            
-            return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
+            return  totalPayments
  
         return   0  
 
@@ -487,11 +515,15 @@ class Amortization(models.Model):
         default=False,
     )
 
-
+    
     def __str__(self):
         return "%s %s" % (self.loan,self.amortizationStatus.name)
 
+    def getTotalAmortizationInterest(self):
+        return self.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
     
+    def getTotalObligations(self):
+        return self.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations'] 
 
 class AmortizationItem(models.Model): 
     

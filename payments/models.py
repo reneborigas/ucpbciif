@@ -93,7 +93,11 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         related_name="payments",
     ) 
-      
+    amortizationItem =  models.ForeignKey(
+        'loans.AmortizationItem',
+        on_delete=models.CASCADE,
+        related_name="payments",
+    ) 
     cash = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
 
     check = models.DecimalField( max_digits=12, decimal_places=2,blank=False)

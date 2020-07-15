@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
-
+from payments.serializers import PaymentSerializer
 
 # from borrowers.serializers import BorrowerSerializer
 
@@ -69,6 +69,8 @@ class AmortizationItemSerializer(ModelSerializer):
 class AmortizationSerializer(ModelSerializer):
     # termName = serializers.CharField(read_only=True) 
     amortizationItems = AmortizationItemSerializer(many=True,read_only=True)
+    totalAmortizationInterest = serializers.CharField(read_only=True)
+    totalObligations = serializers.CharField(read_only=True)
     def create(self, validated_data):
         amortization = Amortization.objects.create(**validated_data) 
         return amortization
@@ -125,20 +127,28 @@ class CreditLineSerializer(ModelSerializer):
 class LoanSerializer(ModelSerializer):
     # termName = serializers.CharField(read_only=True) 
     status_name = serializers.ReadOnlyField(source='status.name')
-
+    payments = PaymentSerializer(many=True,read_only=True)
     creditLine_amount= serializers.ReadOnlyField(source='creditLine.amount')
     creditLine_dateApproved = serializers.ReadOnlyField(source='creditLine.dateApproved')
     creditLine_dateExpired = serializers.ReadOnlyField(source='creditLine.dateExpired')
     borrower_name = serializers.ReadOnlyField(source='borrower.cooperative.name')
     borrower_id = serializers.ReadOnlyField(source='borrower.borrowerId')
-    amortization     =  AmortizationSerializer(many=True,read_only=True)
+    amortizations     =  AmortizationSerializer(many=True,read_only=True)
     term_name = serializers.ReadOnlyField(source='term.name')
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
     totalAmortizationInterest = serializers.CharField(read_only=True)
+    totalObligations = serializers.CharField(read_only=True)
     latestAmortization =  AmortizationSerializer(read_only=True)
 
+    latestPayment =  PaymentSerializer(read_only=True)
+
     outStandingBalance = serializers.CharField(read_only=True)
+    interestBalance= serializers.CharField(read_only=True)
+
+    totalPayment = serializers.CharField(read_only=True)
     currentAmortizationItem =   AmortizationItemSerializer(read_only=True)
+
+    
     # status=StatusSerializer(read_only=True)
     term = TermSerializer(read_only=True)
     parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
@@ -181,3 +191,5 @@ class LoanProgramSerializer(ModelSerializer):
     class Meta:
         model = LoanProgram        
         fields = '__all__'
+
+

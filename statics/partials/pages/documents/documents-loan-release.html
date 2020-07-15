@@ -179,7 +179,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="obligation in borrower.loans">
+                                        <tr ng-repeat="obligation in loans">
                                             <td
                                                 class="p-0"
                                                 style="border-bottom: 1pt solid #464e5f !important;"
@@ -218,7 +218,7 @@
                                                 width="20%"
                                                 align="right"
                                             >
-                                            {{ obligation.amount | currency :'₱'}}
+                                            {{ obligation.outStandingBalance     | currency :'₱'}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -226,7 +226,7 @@
                                                 {{ borrower.totalAvailments | currency :'₱'}}
                                             </td>
                                             <td class="pt-3 pr-0 font-weight-bold" width="20%" align="right">
-                                                {{ 0 | currency :'₱'}}
+                                                {{ borrower.totalOutstandingBalance | currency :'₱'}}
                                             </td>
                                         </tr>
                                     </tbody>

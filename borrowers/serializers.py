@@ -228,6 +228,7 @@ class BorrowerSerializer(ModelSerializer):
     borrowerAttachments = BorrowerAttachmentSerializer(many=True)
     totalAvailments = serializers.CharField(read_only=True)
     totalAvailmentPerProgram = serializers.CharField(read_only=True)
+    totalOutstandingBalance = serializers.CharField(read_only=True)
     loans = LoanSerializer(many=True,read_only=True)
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)
