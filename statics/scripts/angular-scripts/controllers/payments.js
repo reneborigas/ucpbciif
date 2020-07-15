@@ -93,7 +93,7 @@ define(function () {
                     $scope.payment = {
                         loan: $scope.loan.id,
                         amortization: $scope.loan.latestAmortization.id,
-                        amortizationItem: $scope.loan.currentAmortizationItem.id ,
+                        amortizationItem: $scope.loan.currentAmortizationItem.id,
                         check: '',
                         cash: '',
                         total: '',
@@ -210,24 +210,22 @@ define(function () {
         $scope.getOutStandingBalance = function () {
             console.log($scope.loan.currentAmortizationItem.interest);
 
-            if ($scope.payment.total > parseFloat($scope.loan.currentAmortizationItem.total)){
-                return ( 
-                    ( parseFloat($scope.loan.currentAmortizationItem.principalBalance) +
-                     parseFloat($scope.loan.currentAmortizationItem.principal) -
-                     $scope.payment.total +
-                     parseFloat($scope.loan.currentAmortizationItem.interest)) + (parseFloat($scope.loan.interestBalance) - parseFloat($scope.loan.currentAmortizationItem.interest) )
-                 );
-            }else{
-                return ( 
-                    ( parseFloat($scope.loan.currentAmortizationItem.principalBalance) +
-                     parseFloat($scope.loan.currentAmortizationItem.principal) -
-                     $scope.payment.total +
-                     parseFloat($scope.loan.currentAmortizationItem.interest)) 
-                 );
-
-
+            if ($scope.payment.total > parseFloat($scope.loan.currentAmortizationItem.total)) {
+                return (
+                    parseFloat($scope.loan.currentAmortizationItem.principalBalance) +
+                    parseFloat($scope.loan.currentAmortizationItem.principal) -
+                    $scope.payment.total +
+                    parseFloat($scope.loan.currentAmortizationItem.interest) +
+                    (parseFloat($scope.loan.interestBalance) - parseFloat($scope.loan.currentAmortizationItem.interest))
+                );
+            } else {
+                return (
+                    parseFloat($scope.loan.currentAmortizationItem.principalBalance) +
+                    parseFloat($scope.loan.currentAmortizationItem.principal) -
+                    $scope.payment.total +
+                    parseFloat($scope.loan.currentAmortizationItem.interest)
+                );
             }
-           
         };
         // + parseFloat($scope.loan.currentAmortizationItem.interest)
         $scope.save = function () {
