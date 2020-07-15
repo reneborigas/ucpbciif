@@ -6,13 +6,14 @@ from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, Expres
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from documents.models import Document,DocumentMovement
 from loans.models import Loan
+from payments.models import Payment
 class BorrowerViewSet(ModelViewSet):
     queryset = Borrower.objects.all()
     serializer_class = BorrowerSerializer 
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Borrower.objects.prefetch_related('borrowerAttachments', Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
+        queryset = Borrower.objects.prefetch_related('borrowerAttachments',  Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
         Prefetch( 'loans',queryset=Loan.objects.order_by('dateReleased')),
             Prefetch('cooperative',Cooperative.objects.annotate(
                 cooperativeTypeText=F('cooperativeType__name')
@@ -35,7 +36,10 @@ class BorrowerViewSet(ModelViewSet):
         for borrower in queryset:
             borrower.totalAvailments = borrower.getTotalAvailments
             borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance
+            borrower.payments = borrower.getPayments
+            borrower.totalPayments = borrower.getTotalPayments
 
+             
             if loanProgramId is not None: 
                 borrower.totalAvailmentPerProgram = borrower.getTotalAvailmentsPerProgram(loanProgramId)
                 

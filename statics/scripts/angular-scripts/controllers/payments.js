@@ -13,7 +13,7 @@ define(function () {
         $timeout,
         appFactory
     ) {
-        $scope.tableLoans = new NgTableParams(
+        $scope.tablePayments = new NgTableParams(
             {
                 page: 1,
                 count: 15,
@@ -21,7 +21,7 @@ define(function () {
             {
                 counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
-                    return $http.get('/api/loans/loans/').then(
+                    return $http.get('/api/payments/payments/').then(
                         function (response) {
                             var filteredData = params.filter()
                                 ? $filter('filter')(response.data, params.filter())
@@ -44,18 +44,24 @@ define(function () {
                         function (error) {
                             toastr.error(
                                 'Error ' + error.status + ' ' + error.statusText,
-                                'Could not Load Loans. Please contact System Administrator.'
+                                'Could not Load Payments. Please contact System Administrator.'
                             );
                         }
                     );
                 },
             }
         );
+        $scope.viewLoan = function (id) {
+            $state.go('app.loans.info', { loanId: id });
+        };
 
+        $scope.viewBorrower = function (id) {
+            $state.go('app.borrowers.info', { borrowerId: id });
+        };
         $scope.$watch(
             'searchTermAuto',
             function (newTerm, oldTerm) {
-                $scope.tableLoans.filter({ $: newTerm });
+                $scope.tablePayments.filter({ $: newTerm });
             },
             true
         );

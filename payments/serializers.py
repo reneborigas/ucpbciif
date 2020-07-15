@@ -123,6 +123,9 @@ class PaymentSerializer(ModelSerializer):
     amortizationItem_principal  = serializers.ReadOnlyField(source='amortizationItem.principal')
     amortizationItem_interest = serializers.ReadOnlyField(source='amortizationItem.interest')
     amortizationItem_total  = serializers.ReadOnlyField(source='amortizationItem.total')
+    borrower_name  = serializers.ReadOnlyField(source='loan.borrower.cooperative.name')
+    borrower_id  = serializers.ReadOnlyField(source='loan.borrower.borrowerId')
+    # loan_no  = serializers.ReadOnlyField(source='amortizationItem.total')
     def create(self, validated_data):
         payment = Payment.objects.create(**validated_data) 
 

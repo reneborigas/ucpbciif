@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import date
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum
-
+from payments.models import Payment
 
 class ContactPerson(models.Model):
     firstname = models.CharField(
@@ -423,6 +423,14 @@ class Borrower(models.Model):
             return 0
         return self.loans.filter(status__name='RELEASED',loanProgram_id=loanProgramId).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
+
+    def getPayments(self):
+        return Payment.objects.filter(loan__borrower=self).exclude(isDeleted=True).order_by('-id')
+
+    
+    def getTotalPayments(self): 
+
+        return Payment.objects.filter(loan__borrower=self,paymentStatus__name='TENDERED').exclude(isDeleted=True).aggregate(totalPayments=Sum(F('total') ))['totalPayments'] 
 
 def attachment_directory_path(instance, filename):
     # ext = filename.split('.')[-1]

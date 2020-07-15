@@ -23,45 +23,55 @@
                         </div> 
                     </div>
                     <div class="datatable datatable-default datatable-subtable">
-                        <table class="table table-vertical-center datatable-table" ng-table="tableLoans" template-pagination="statics/partials/customs/pagination.html">
-                            <tr class="datatable-row" ng-repeat="loan in $data">
+                        <table class="table table-vertical-center datatable-table" ng-table="tablePayments" template-pagination="statics/partials/customs/pagination.html">
+                            <tr class="datatable-row" ng-repeat="payment in $data">
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'LOAN NO.'" sortable="'id'">
-                                    {{ loan.id }}
+                                        <a href="#" ng-click="viewLoan(payment.loan)">   LN{{ payment.loan }}</a>
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'" sortable="'borrower_name'">
-                                    {{ loan.borrower_name }}
+                                        <a href="#" ng-click="viewBorrower(payment.borrower_id)">     {{ payment.borrower_name }}</a>
+                                </td>     
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT FOR'" sortable="'amortizationItem_schedule'">
+                                        {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'WINDOW'" sortable="'loanProgram_name'">
-                                    {{ loan.loanProgram_name }}
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PRINCIPAL'" sortable="'amortizationItem_principal'">
+                                        {{ payment.amortizationItem_principal | currency :'₱'}}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
-                                    {{ loan.term_name }}
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'INTEREST'" sortable="'amortizationItem_interest'">
+                                        {{ payment.amortizationItem_interest | currency :'₱'}}
                                 </td>
 
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CREDIT LINE AMOUNT'" sortable="'creditLine_amount'">
-                                    {{ loan.creditLine_amount  | currency :'₱'}}
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TOTAL PAYABLE'" sortable="'amortizationItem_total'">
+                                        {{ payment.amortizationItem_total | currency :'₱'}}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'LOAN AMOUNT'" sortable="'amount'">
-                                    {{ loan.amount  | currency :'₱'}}
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT DATE'" sortable="'datePayment'">
+                                        {{ payment.datePayment | date: 'mediumDate' }}
                                 </td>
                                 
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'INTEREST RATE'" sortable="'interestRate'">
-                                    {{ loan.interestRate }}
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT TYPE'" sortable="'paymentType_name'">
+                                        {{ payment.paymentType_name }}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'DATE RELEASED'" sortable="'dateReleased'">
-                                    {{ loan.dateReleased | date:'mediumDate'  }}
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TOTAL PAYMENT'" sortable="'total'">
+                                        {{ payment.total | currency :'₱'}}
                                 </td>  
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'status_name'">
-                                        {{ loan.status_name }}
-                                    </td>                       
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
-                                   
-                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(loan.id)">
-                                        <i class="fad fa-eye"></i>
-                                    </a>
-                                     
-                                     
-                                </td>
+                                <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CHECK NO'" sortable="'checkNo'">
+                                        {{ payment.checkNo}}
+                                </td>   
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BANK ACCOUNY'" sortable="'bankAccount'">
+                                        {{ payment.bankAccount }}
+                                </td>                  -->
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'balance'">
+                                        {{ payment.balance | currency :'₱'}}
+                                </td>      
+                                
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'OVER PAYMENT'" sortable="'overPayment'">
+                                        {{ payment.overPayment | currency :'₱'}}
+                                </td>     
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'dateCreated'">
+                                        {{ payment.dateCreated | date: 'mediumDate' }}
+                                </td>     
+                               
+                                 
                             </tr>
                              
                         </table>

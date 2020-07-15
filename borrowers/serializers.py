@@ -5,6 +5,7 @@ from .models import *
 from documents.serializers import DocumentSerializer
 from processes.serializers import SubProcessSerializer
 from loans.serializers import LoanSerializer
+from payments.serializers import PaymentSerializer
 class ContactPersonSerializer(ModelSerializer):
     contactPersonName = serializers.CharField(read_only=True)
 
@@ -230,6 +231,8 @@ class BorrowerSerializer(ModelSerializer):
     totalAvailmentPerProgram = serializers.CharField(read_only=True)
     totalOutstandingBalance = serializers.CharField(read_only=True)
     loans = LoanSerializer(many=True,read_only=True)
+    payments = PaymentSerializer(many=True,read_only=True)
+    totalPayments =  serializers.CharField(read_only=True)
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)
     
