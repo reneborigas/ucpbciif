@@ -29,7 +29,7 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
 
     amortization = Amortization( 
             loan = loan,
-             
+            dateReleased = loan.dateReleased  + timezone.timedelta(days=1),
             amortizationStatus = AmortizationStatus.objects.get(pk=1),
             createdBy = CustomUser.objects.get(pk=1)
         )
@@ -77,8 +77,8 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 principalBalance = pmt.nextStartingValue,
                 amortizationStatus = AmortizationStatus.objects.get(pk=1), 
                 )
-                
-                 
+                amortizationItem.save()
+                loanAmount = pmt.nextStartingValue
             else:
                 amortizationItem = AmortizationItem(
                 schedule = schedule,
@@ -93,9 +93,9 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 )
                 
             
-                loanAmount = pmt.nextStartingValue
+            
 
-            amortizationItem.save()
+                amortizationItem.save()
         schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
         i = i+1
 
@@ -135,7 +135,7 @@ class PaymentSerializer(ModelSerializer):
         # payment.loan.getCurrentAmortizationItem.save()
 
         generateAmortizationSchedule(payment.loan,payment,payment.amortization)
-
+        
         return payment
 
     def update(self, instance, validated_data):

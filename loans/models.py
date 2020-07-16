@@ -495,7 +495,11 @@ class Amortization(models.Model):
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="amortizationStatusesAmortizations",
     )
- 
+    dateReleased = models.DateTimeField(
+        blank=True,
+        null=True
+       
+    )
      
     createdBy = models.ForeignKey(
         'users.CustomUser',
@@ -503,7 +507,7 @@ class Amortization(models.Model):
         related_name="amortizationCreatedBy",
         null = True,
     )
- 
+    
 
     dateCreated = models.DateTimeField(
         auto_now_add=True,

@@ -203,9 +203,12 @@
                             </span>
                             <div class="d-flex flex-column text-dark-75">
                                 <span class="font-weight-bolder font-size-sm">Principal Balance</span>
-                                <span class="font-weight-bolder font-size-h5">
+                                <span class="font-weight-bolder font-size-h5" ng-if="loan.latestPayment">
                                     {{ loan.latestPayment.outStandingBalance | currency :'₱'}}
                                 </span>
+                                <span class="font-weight-bolder font-size-h5" ng-if="!loan.latestPayment">
+                                        {{ loan.totalObligations | currency :'₱'}}
+                                    </span>
                             </div>
                         </div>
 
@@ -620,6 +623,64 @@
                             </tr>
                         </thead>
                         <tbody>
+                                <tr>
+                                        <td>
+                                            <div class="text-center px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                   0
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ loan.latestAmortization.dateReleased | date: 'mediumDate' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                  
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                  
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                  
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                   
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ loan.amount | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
                             <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems">
                                 <td>
                                     <div class="text-center px-2">
@@ -1159,6 +1220,64 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                    <tr>
+                                            <td>
+                                                <div class="text-center px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                       0
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        {{ loan.latestAmortization.dateReleased | date: 'mediumDate' }}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-center px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                      
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                      
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                      
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                       
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        {{ loan.amount | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                 <tr ng-repeat="amortizationItem in currentAmortization.amortizationItems">
                                     <td>
                                         <div class="text-center px-2">

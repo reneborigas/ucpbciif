@@ -107,7 +107,7 @@ define(function () {
                         paymentType: '',
                         checkNo: '',
                         bankACcount: '',
-                        datePayment: '',
+                        datePayment: new Date( $scope.loan.currentAmortizationItem.schedule),
                         outStandingBalance: '',
                         remarks: '',
                         description: '',
@@ -242,6 +242,9 @@ define(function () {
 
             console.log($scope.payment.balance);
             console.log($scope.payment.overPayment);
+            console.log($scope.payment.outStandingBalance);
+            console.log($scope.payment);    
+            
             if ($scope.newPaymentDetailsForm.$valid) {
                 swal({
                     title: 'Save Payment',

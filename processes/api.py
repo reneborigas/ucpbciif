@@ -35,7 +35,7 @@ def generateAmortizationSchedule(loan,request):
 
     amortization = Amortization( 
             loan = loan,
-             
+            dateReleased = loan.dateReleased  + timezone.timedelta(days=1),
             amortizationStatus = AmortizationStatus.objects.get(pk=1),
             createdBy = request.user
         )
