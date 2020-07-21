@@ -36,7 +36,7 @@ define(function () {
                             function () {
                                 toastr.success('Success', 'Logging in');
                                 $timeout(function () {
-                                    window.location.href = '/dashboard';
+                                    window.location.href = '/menu';
                                 }, 1000);
                             },
                             function (error) {
@@ -56,7 +56,7 @@ define(function () {
 
         $scope.forgotPass = function () {};
 
-        console.log(appLoginService.isLoggedIn())
+        console.log(appLoginService.isLoggedIn());
         if (appLoginService.isLoggedIn()) {
             // var user = JSON.parse(localStorage.getItem('currentUser'));
             // var now = new Date();

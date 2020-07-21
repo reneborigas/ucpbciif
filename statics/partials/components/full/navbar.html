@@ -1,4 +1,4 @@
-<header class="app-header navbar">
+<header class="app-header navbar" ng-controller="NavBarController">
     <button class="navbar-toggler d-lg-none" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,7 +9,10 @@
     <button class="navbar-toggler sidebar-minimizer d-none d-lg-block" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <ul class="nav navbar-nav ml-auto d-md-down-none" ng-controller="NavBarController">
+    <a class="btn btn-icon btn-clean" type="button" ng-click="gotToMetro()">
+        <i class="fad fa-th-large"></i>
+    </a>
+    <ul class="nav navbar-nav ml-auto d-md-down-none">
         <li class="nav-item dropdown">
             <a
                 class="nav-link"

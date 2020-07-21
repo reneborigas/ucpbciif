@@ -314,11 +314,13 @@
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-clean btn-icon" ng-click="showExistingAccomodations = !showExistingAccomodations">
                     <i
-                        ng-class=" showExistingAccomodations ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "
+                        class="wide text-warning"
+                        ng-class=" showExistingAccomodations ? 'fal fa-angle-up' : 'fal fa-angle-down' "
                     ></i>
                 </a>
             </div>
         </div>
+
         <div
             class="card card-custom gutter-b"
             ng-if="document.loan.dateReleased"
@@ -551,7 +553,8 @@
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-clean btn-icon" ng-click="showAmortizationSchedules = !showAmortizationSchedules">
                     <i
-                        ng-class=" showAmortizationSchedules ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "
+                        class="wide text-warning"
+                        ng-class=" showAmortizationSchedules ? 'fal fa-angle-up' : 'fal fa-angle-down' "
                     ></i>
                 </a>
             </div>

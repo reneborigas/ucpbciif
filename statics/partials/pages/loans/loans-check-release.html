@@ -3,7 +3,7 @@
         <div class="check text-left p-2">
             <table class="table table-borderless">
                 <tbody>
-                    <tr class="d-print-none">
+                    <tr class="">
                         <td class="p-0 font-size-xs" width="10%">ACCOUNT No</td>
                         <td class="p-0 font-size-xs" width="15%"></td>
                         <td class="p-0 font-size-xs" width="45%">ACCOUNT NAME</td>
@@ -20,22 +20,22 @@
                     </tr>
                     <tr>
                         <td class="p-0 pt-6" colspan="3"></td>
-                        <td class="d-print-none p-0 pt-6 font-size-sm font-weight-bolder align-bottom">DATE</td>
+                        <td class="p-0 pt-6 font-size-sm font-weight-bolder align-bottom">DATE</td>
                         <td class="p-0 pt-6" colspan="2">{{ dateToday | date : 'MM/dd/yyyy'}}</td>
                     </tr>
                     <tr>
-                        <td class="d-print-none p-0 font-size-sm font-weight-bolder align-bottom">
+                        <td class="p-0 font-size-sm font-weight-bolder align-bottom">
                             PAY TO THE ORDER OF
                         </td>
                         <td class="p-0 align-middle" colspan="2">**{{ loan.borrower_name }}**</td>
-                        <td class="d-print-none p-0 font-size-sm font-weight-bolder align-middle text-center">₱</td>
+                        <td class="p-0 font-size-sm font-weight-bolder align-middle text-center">₱</td>
                         <td class="p-0 align-middle" colspan="2">{{ loan.amount | number:2 }}</td>
                     </tr>
                     <tr>
-                        <td class="d-print-none p-0 font-size-sm font-weight-bolder align-bottom">PESOS</td>
+                        <td class="p-0 font-size-sm font-weight-bolder align-bottom">PESOS</td>
                         <td class="p-0" colspan="5">**{{ loanAmountWords }} Pesos Only**</td>
                     </tr>
-                    <tr class="d-print-none">
+                    <tr class="">
                         <td class="p-0 font-size-xs text-right text-italic" colspan="6">
                             “I/We allow the electronic clearing of this check and hereby waive the presentation for
                             payment of this original to UCPB.
