@@ -97,6 +97,7 @@
                 </div>
             </div>
         </div>
+
         <div class="card card-custom gutter-b" ng-init="showExistingAccomodations = true">
             <div class="card-header align-items-center border-0 mt-4">
                 <h3 class="card-title align-items-start flex-column">
@@ -200,7 +201,8 @@
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-clean btn-icon" ng-click="showExistingAccomodations = !showExistingAccomodations">
                     <i
-                        ng-class=" showExistingAccomodations ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "
+                        class="wide text-warning"
+                        ng-class=" showExistingAccomodations ? 'fal fa-angle-up' : 'fal fa-angle-down' "
                     ></i>
                 </a>
             </div>
@@ -359,7 +361,10 @@
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-clean btn-icon" ng-click="showObligations = !showObligations">
-                    <i ng-class=" showObligations ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "></i>
+                    <i
+                        class="wide text-warning"
+                        ng-class=" showObligations ? 'fal fa-angle-up' : 'fal fa-angle-down' "
+                    ></i>
                 </a>
             </div>
         </div>
@@ -581,7 +586,7 @@
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-clean btn-icon" ng-click="showLoans = !showLoans">
-                    <i ng-class=" showLoans ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "></i>
+                    <i class="wide text-warning" ng-class=" showLoans ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
                 </a>
             </div>
         </div>
@@ -900,7 +905,10 @@
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-clean btn-icon" ng-click="showPaymentHistory = !showPaymentHistory">
-                    <i ng-class=" showPaymentHistory ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "></i>
+                    <i
+                        class="wide text-warning"
+                        ng-class=" showPaymentHistory ? 'fal fa-angle-up' : 'fal fa-angle-down' "
+                    ></i>
                 </a>
             </div>
         </div>

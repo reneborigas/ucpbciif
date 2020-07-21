@@ -3,10 +3,13 @@ define(function () {
 
     var app = angular.module('app');
 
-    app.controller('NavBarController', function NavBarController($scope, appFactory, appLoginService) {
+    app.controller('NavBarController', function NavBarController($scope, appFactory, appLoginService, $state) {
         appFactory.getCurrentUserInfo().then(function (data) {
             $scope.user = data;
         });
+        $scope.gotToMetro = function () {
+            $state.go('main.menu');
+        };
         $scope.logout = appLoginService.logout;
         $scope.showHeader = false;
         $scope.showHeader = appLoginService.isLoggedIn();
@@ -42,5 +45,11 @@ define(function () {
                 );
             }
         );
+    });
+
+    app.controller('MetroController', function MetroController($scope, $state) {
+        $scope.goToLMS = function () {
+            $state.go('app.dashboard');
+        };
     });
 });

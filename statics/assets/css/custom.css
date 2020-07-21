@@ -2650,3 +2650,6 @@ ul.lower-alpha {
 	height:288px;
 	background: #fff;
 }
+
+.fal.wide { transform: scale(3.5,1); }
+

@@ -89,36 +89,42 @@
         </div>
     </div>
 </div> -->
-<div class="flex-row align-items-center">
-    <div class="row justify-content-center px-40">
+<div class="flex-row align-items-center" ng-controller="MetroController">
+    <div class="row justify-content-center px-40 pt-40">
         <div class="card-deck">
-            <div class="card" style="width: 300px;">
-                <div class="card-body text-center align-items-center">
+            <div class="card card-custom gutter-b card-stretch bg-hover-secondary-o-1" ng-click="goToLMS()">
+                <div class="card-body text-center pt-4">
                     <div class="mt-7">
-                        <i
-                            class="fad fa-coins icon-8x"
-                            style="--fa-primary-color: #3699ff; --fa-secondary-color: #3699ff91;"
-                        ></i>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-custom overlay" style="width: 300px;">
-                <div class="card-body p-0">
-                    <div class="overlay-wrapper text-center">
-                        <div class="mt-10">
+                        <div class="symbol symbol-circle symbol-lg-90">
                             <i
-                                class="fad fa-coins icon-8x"
-                                style="--fa-primary-color: #3699ff; --fa-secondary-color: #3699ff91;"
+                                class="fad fa-hand-holding-usd icon-8x"
+                                style="--fa-primary-color: #3699ff; --fa-secondary-color: #3d36ffbd;"
                             ></i>
                         </div>
                     </div>
-                    <div class="overlay-layer m-5 align-items-end justify-content-start">
-                        <div class="d-flex flex-column align-items-start mb-5 ml-5">
-                            <span class="font-size-h4 font-weight-bolder text-primary">
-                                Accounting System
-                            </span>
+                    <div class="my-4">
+                        <a href="#" class="text-dark font-weight-bold font-size-h4">
+                            Loan Management System
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-custom gutter-b card-stretch bg-dark-o-35" ng-click="goToAS()">
+                <div class="card-body text-center pt-4">
+                    <div class="mt-7">
+                        <div class="symbol symbol-circle symbol-lg-90">
+                            <i
+                                class="fad fa-analytics icon-8x"
+                                style="--fa-primary-color: #ffbb00; --fa-secondary-color: #ffbb0091;"
+                            ></i>
                         </div>
                     </div>
+                    <div class="my-4">
+                        <a href="#" class="text-dark font-weight-bold font-size-h4">
+                            Accounting System
+                        </a>
+                    </div>
+                    <div>(In Progress)</div>
                 </div>
             </div>
         </div>

@@ -41,7 +41,7 @@ define(function () {
                     return transition.router.stateService.target('simple.login');
                 }
                 if (transition.to().name == 'simple.login' && appLoginService.isLoggedIn()) {
-                    return transition.router.stateService.target('app.dashboard');
+                    return transition.router.stateService.target('main.menu');
                 }
             });
 
