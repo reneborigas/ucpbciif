@@ -107,7 +107,7 @@ define(function () {
                         paymentType: '',
                         checkNo: '',
                         bankACcount: '',
-                        datePayment: new Date( $scope.loan.currentAmortizationItem.schedule),
+                        datePayment: new Date($scope.loan.currentAmortizationItem.schedule),
                         outStandingBalance: '',
                         remarks: '',
                         description: '',
@@ -243,8 +243,8 @@ define(function () {
             console.log($scope.payment.balance);
             console.log($scope.payment.overPayment);
             console.log($scope.payment.outStandingBalance);
-            console.log($scope.payment);    
-            
+            console.log($scope.payment);
+
             if ($scope.newPaymentDetailsForm.$valid) {
                 swal({
                     title: 'Save Payment',
@@ -345,7 +345,7 @@ define(function () {
         $scope.dateToday = new Date();
         $http
             .get('/api/loans/loans/', {
-                params: { loanId: $scope.loandId },
+                params: { loanId: $scope.loanId },
             })
             .then(
                 function (response) {

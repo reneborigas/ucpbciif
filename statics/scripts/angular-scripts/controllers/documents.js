@@ -232,10 +232,11 @@ define(function () {
                         .then(
                             function (response) {
                                 $scope.borrower = response.data[0];
-
+                                $scope.showAccomodations = false;
                                 appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
+                                    $scope.showAccomodations = true;
                                 });
                             },
                             function (error) {

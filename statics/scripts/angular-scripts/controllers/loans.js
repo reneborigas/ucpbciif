@@ -13,7 +13,6 @@ define(function () {
         $timeout,
         appFactory
     ) {
- 
         $scope.tableLoans = new NgTableParams(
             {
                 page: 1,
@@ -22,41 +21,36 @@ define(function () {
             {
                 counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
-                    return $http
-                        .get('/api/loans/loans/')
-                        .then(
-                            function (response) {
-                               
-                                var filteredData = params.filter()
-                                    ? $filter('filter')(response.data, params.filter())
-                                    : response.data;
-                                var orderedData = params.sorting()
-                                    ? $filter('orderBy')(filteredData, params.orderBy())
-                                    : filteredData;
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
-                                params.total(response.data.length);
+                    return $http.get('/api/loans/loans/').then(
+                        function (response) {
+                            var filteredData = params.filter()
+                                ? $filter('filter')(response.data, params.filter())
+                                : response.data;
+                            var orderedData = params.sorting()
+                                ? $filter('orderBy')(filteredData, params.orderBy())
+                                : filteredData;
+                            var page = orderedData.slice(
+                                (params.page() - 1) * params.count(),
+                                params.page() * params.count()
+                            );
+                            params.total(response.data.length);
 
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
-                                return page;
-                            },
-                            function (error) {
-                                toastr.error(
-                                    'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not Load Loans. Please contact System Administrator.'
-                                );
-                            }
-                        );
+                            var page = orderedData.slice(
+                                (params.page() - 1) * params.count(),
+                                params.page() * params.count()
+                            );
+                            return page;
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not Load Loans. Please contact System Administrator.'
+                            );
+                        }
+                    );
                 },
             }
         );
-
-        
 
         $scope.$watch(
             'searchTermAuto',
@@ -66,8 +60,7 @@ define(function () {
             true
         );
 
-        $scope.view = function ( id) {
-            
+        $scope.view = function (id) {
             $state.go('app.loans.info', { loanId: id });
         };
     });
@@ -85,11 +78,9 @@ define(function () {
         $q,
         $window
     ) {
-        
-
         $http
             .get('/api/loans/loans/', {
-                params: {  loanId: $scope.loanId },
+                params: { loanId: $scope.loanId },
             })
             .then(
                 function (response) {
@@ -102,10 +93,11 @@ define(function () {
                         .then(
                             function (response) {
                                 $scope.borrower = response.data[0];
-
+                                $scope.showAccomodations = false;
                                 appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
+                                    $scope.showAccomodations = true;
                                 });
                             },
                             function (error) {
@@ -124,9 +116,7 @@ define(function () {
                 }
             );
 
-        
-
-        $scope.newPayment = function ( id) { 
+        $scope.newPayment = function (id) {
             $state.go('app.payments.new', { loanId: id });
         };
 
@@ -142,26 +132,28 @@ define(function () {
             $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
         };
 
-        
-        $scope.loadAmortization = function (id) { 
+        $scope.loadAmortization = function (id) {
+            $http
+                .get('/api/loans/amortizations/', {
+                    params: { amortizationId: id },
+                })
+                .then(
+                    function (response) {
+                        $scope.currentAmortization = response.data[0];
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                        );
+                    }
+                );
 
-              $http
-              .get('/api/loans/amortizations/', {
-                  params: { amortizationId: id },
-              })
-              .then(
-                  function (response) { 
-                      $scope.currentAmortization= response.data[0];
-                  },
-                  function (error) {
-                      toastr.error(
-                          'Error ' + error.status + ' ' + error.statusText,
-                          'Could not retrieve Amortizaion Information. Please contact System Administrator.'
-                      );
-                  }
-              );
-              
-              console.log(  $scope.currentAmortization);
+            console.log($scope.currentAmortization);
+        };
+
+        $scope.previewCheckRelease = function (id) {
+            $window.open('/print/loans/check/' + id, '_blank', 'width=800,height=800');
         };
     });
 
@@ -207,10 +199,6 @@ define(function () {
                 }
             });
         };
-
-
-       
-
     });
 
     app.controller('LoanReleasePrintController', function LoanReleasePrintController(
@@ -227,12 +215,12 @@ define(function () {
         $scope.dateToday = new Date();
         $http
             .get('/api/loans/loans/', {
-                params: { loanId: $scope.loandId },
+                params: { loanId: $scope.loanId },
             })
             .then(
                 function (response) {
                     $scope.loan = response.data[0];
-                     
+
                     $http
                         .get('/api/borrowers/borrowers/', {
                             params: { borrowerId: $scope.loan.borrower },
@@ -257,16 +245,13 @@ define(function () {
                             }
                         );
 
-
-
-                        $http
+                    $http
                         .get('/api/loans/loans/', {
-                            params: { borrowerId: $scope.loan.borrower,status:'RELEASED' },
+                            params: { borrowerId: $scope.loan.borrower, status: 'RELEASED' },
                         })
                         .then(
                             function (response) {
                                 $scope.loans = response.data;
-
                             },
                             function (error) {
                                 toastr.error(
@@ -275,7 +260,76 @@ define(function () {
                                 );
                             }
                         );
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Loan Information. Please contact System Administrator.'
+                    );
+                }
+            );
+    });
 
+    app.controller('CheckReleasePrintController', function CheckReleasePrintController(
+        $http,
+        $filter,
+        $scope,
+        toastr,
+        NgTableParams,
+        $state,
+        $timeout,
+        appFactory,
+        $window
+    ) {
+        $scope.dateToday = new Date();
+        $http
+            .get('/api/loans/loans/', {
+                params: { loanId: $scope.loanId },
+            })
+            .then(
+                function (response) {
+                    $scope.loan = response.data[0];
+                    $scope.loanAmountWords = appFactory.convertAmountToWords(response.data[0].amount);
+                    $http
+                        .get('/api/borrowers/borrowers/', {
+                            params: { borrowerId: $scope.loan.borrower },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.borrower = response.data[0];
+
+                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                    console.log(data);
+                                    $scope.windows = data;
+                                });
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
+
+                    $http
+                        .get('/api/loans/loans/', {
+                            params: { borrowerId: $scope.loan.borrower, status: 'RELEASED' },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.loans = response.data;
+
+                                // $timeout(function () {
+                                //     $window.print();
+                                // }, 500);
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Loans Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
                 },
                 function (error) {
                     toastr.error(

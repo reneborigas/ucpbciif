@@ -15,7 +15,7 @@ define(function () {
             });
 
             $breadcrumbProvider.setOptions({
-                prefixStateName: 'app.main',
+                prefixStateName: 'app.dashboard',
                 includeAbstract: true,
                 // template: '<li class="breadcrumb-item" ng-repeat="step in steps" ng-class="{active: $last}" ng-switch="$last || !!step.abstract"><a ng-switch-when="false" href="{{step.ncyBreadcrumbLink}}">{{step.ncyBreadcrumbLabel}}</a><span ng-switch-when="true">{{step.ncyBreadcrumbLabel}}</span></li>'
                 templateUrl: '/statics/partials/components/full/breadcrumb.html',
@@ -27,9 +27,9 @@ define(function () {
             });
 
             $stateProvider
-                .state('app', {
+                .state('main', {
                     abstract: true,
-                    templateUrl: '/statics/partials/layouts/full.html',
+                    templateUrl: '/statics/partials/layouts/metro.html',
                     ncyBreadcrumb: {
                         label: 'Root',
                         skip: true,
@@ -48,16 +48,6 @@ define(function () {
                                         serie: true,
                                         name: 'Simple Line Icons',
                                         files: ['/statics/assets/fonts/simple-line-icons/css/simple-line-icons.css'],
-                                    },
-                                    {
-                                        serie: true,
-                                        name: 'App Styles',
-                                        files: ['/statics/assets/css/style.css'],
-                                    },
-                                    {
-                                        serie: true,
-                                        name: 'Custom Styles',
-                                        files: ['/statics/assets/css/custom.css'],
                                     },
                                     {
                                         serie: true,
@@ -84,6 +74,100 @@ define(function () {
                                         name: 'ngTag Styles',
                                         files: ['/statics/libs/ngTags/ng-tags-input.min.css'],
                                     },
+                                    {
+                                        serie: true,
+                                        name: 'App Styles',
+                                        files: ['/statics/assets/css/style.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Custom Styles',
+                                        files: ['/statics/assets/css/custom.css'],
+                                    },
+                                ]);
+                            },
+                        ],
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/app.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('main.menu', {
+                    url: '/menu',
+                    templateUrl: '/statics/partials/components/metro/metro-view.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Metro View',
+                        stateTitle: 'Metro View',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Home',
+                    },
+                    controller: function (appLoginService) {
+                        appLoginService.setTitle = 'test';
+                    },
+                })
+                .state('app', {
+                    abstract: true,
+                    templateUrl: '/statics/partials/layouts/full.html',
+                    ncyBreadcrumb: {
+                        label: 'Root',
+                        skip: true,
+                    },
+                    resolve: {
+                        loadCSS: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load([
+                                    {
+                                        serie: true,
+                                        name: 'Font Awesome',
+                                        files: ['/statics/assets/fonts/font-awesome/css/fontawesome-all.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Simple Line Icons',
+                                        files: ['/statics/assets/fonts/simple-line-icons/css/simple-line-icons.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Toastr Styles',
+                                        files: ['/statics/libs/toastr/dist/css/angular-toastr.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Sweet Alert Styles',
+                                        files: ['/statics/libs/sweetalert/sweetalert.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngTable Styles',
+                                        files: ['/statics/libs/ngTable/ng-table.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngBlock Styles',
+                                        files: ['/statics/libs/ngBlock/angular-block-ui.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngTag Styles',
+                                        files: ['/statics/libs/ngTags/ng-tags-input.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'App Styles',
+                                        files: ['/statics/assets/css/style.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Custom Styles',
+                                        files: ['/statics/assets/css/custom.css'],
+                                    },
                                 ]);
                             },
                         ],
@@ -108,7 +192,7 @@ define(function () {
                         // }],
                     },
                 })
-                .state('app.main', {
+                .state('app.dashboard', {
                     url: '/dashboard',
                     templateUrl: '/statics/partials/pages/dashboard/dashboard.html',
                     data: {
@@ -481,18 +565,38 @@ define(function () {
                                     },
                                     {
                                         serie: true,
-                                        name: 'Styles',
+                                        name: 'Toastr Styles',
+                                        files: ['/statics/libs/toastr/dist/css/angular-toastr.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Sweet Alert Styles',
+                                        files: ['/statics/libs/sweetalert/sweetalert.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngTable Styles',
+                                        files: ['/statics/libs/ngTable/ng-table.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngBlock Styles',
+                                        files: ['/statics/libs/ngBlock/angular-block-ui.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngTag Styles',
+                                        files: ['/statics/libs/ngTags/ng-tags-input.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'App Styles',
                                         files: ['/statics/assets/css/style.css'],
                                     },
                                     {
                                         serie: true,
                                         name: 'Custom Styles',
                                         files: ['/statics/assets/css/custom.css'],
-                                    },
-                                    {
-                                        serie: true,
-                                        name: 'Toastr Styles',
-                                        files: ['/statics/libs/toastr/dist/css/angular-toastr.min.css'],
                                     },
                                 ]);
                             },
@@ -550,16 +654,6 @@ define(function () {
                                     },
                                     {
                                         serie: true,
-                                        name: 'Styles',
-                                        files: ['/statics/assets/css/style.css'],
-                                    },
-                                    {
-                                        serie: true,
-                                        name: 'Custom Styles',
-                                        files: ['/statics/assets/css/custom.css'],
-                                    },
-                                    {
-                                        serie: true,
                                         name: 'ngTable Styles',
                                         files: ['/statics/libs/ngTable/ng-table.min.css'],
                                     },
@@ -567,6 +661,21 @@ define(function () {
                                         serie: true,
                                         name: 'ngBlock Styles',
                                         files: ['/statics/libs/ngBlock/angular-block-ui.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'ngTag Styles',
+                                        files: ['/statics/libs/ngTags/ng-tags-input.min.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'App Styles',
+                                        files: ['/statics/assets/css/style.css'],
+                                    },
+                                    {
+                                        serie: true,
+                                        name: 'Custom Styles',
+                                        files: ['/statics/assets/css/custom.css'],
                                     },
                                 ]);
                             },
@@ -589,13 +698,13 @@ define(function () {
                     },
                 })
                 .state('print.documents.loan_release', {
-                    url: '/files/:loandId',
+                    url: '/files/:loanId',
                     templateUrl: '/statics/partials/pages/documents/documents-loan-release.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Loan Release Print',
                     },
                     controller: function ($scope, $stateParams, appFactory) {
-                        $scope.loandId = $stateParams.loandId;
+                        $scope.loanId = $stateParams.loanId;
                         // appFactory.getDocumentName($scope.documentId).then(function (data) {
                         //     $scope.fileName = data;
                         // });
@@ -612,6 +721,16 @@ define(function () {
                         appFactory.getDocumentName($scope.documentId).then(function (data) {
                             $scope.fileName = data;
                         });
+                    },
+                })
+                .state('print.documents.check_release', {
+                    url: '/loans/check/:loanId',
+                    templateUrl: '/statics/partials/pages/loans/loans-check-release.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Check Release Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
                     },
                 });
 

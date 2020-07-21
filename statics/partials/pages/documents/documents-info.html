@@ -179,15 +179,15 @@
                 </div>
             </div>
         </div>
-        <div class="card card-custom gutter-b">
+        <div class="card card-custom gutter-b" ng-init="showExistingAccomodations = true">
             <div class="card-header align-items-center border-0 mt-4">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Existing Accommodations</span>
                 </h3>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" ng-show="showExistingAccomodations">
                 <div class="table-responsive">
-                    <table class="table table-borderless mb-8" align="center">
+                    <table class="table table-borderless mb-8" align="center" ng-if="showAccomodations">
                         <tbody>
                             <tr>
                                 <td class="p-0" width="18%">
@@ -311,8 +311,19 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer d-flex justify-content-center p-0">
+                <a class="btn btn-clean btn-icon" ng-click="showExistingAccomodations = !showExistingAccomodations">
+                    <i
+                        ng-class=" showExistingAccomodations ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "
+                    ></i>
+                </a>
+            </div>
         </div>
-        <div class="card card-custom gutter-b" ng-if="document.loan.dateReleased">
+        <div
+            class="card card-custom gutter-b"
+            ng-if="document.loan.dateReleased"
+            ng-init="showAmortizationSchedules = true"
+        >
             <div class="card-header align-items-center border-0 mt-4">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Amortization Schedule</span>
@@ -327,7 +338,7 @@
                     </a>
                 </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" ng-show="showAmortizationSchedules">
                 <div class="table-responsive">
                     <table class="table table-bordered mb-8">
                         <thead class="table-active">
@@ -536,6 +547,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card-footer d-flex justify-content-center p-0">
+                <a class="btn btn-clean btn-icon" ng-click="showAmortizationSchedules = !showAmortizationSchedules">
+                    <i
+                        ng-class=" showAmortizationSchedules ? 'fal fa-angle-double-up' : 'fal fa-angle-double-down' "
+                    ></i>
+                </a>
             </div>
         </div>
     </div>

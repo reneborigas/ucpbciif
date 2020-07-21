@@ -277,7 +277,7 @@ define(function () {
         };
 
         $scope.addDirector = function () {
-            $scope.borrower.directors.push({
+            $scope.cooperative.directors.push({
                 name: '',
                 department: '',
                 position: '',
@@ -291,11 +291,11 @@ define(function () {
         };
 
         $scope.removeDirector = function (index) {
-            $scope.borrower.directors.splice(index, 1);
+            $scope.cooperative.directors.splice(index, 1);
         };
 
         $scope.addCommittee = function () {
-            $scope.borrower.standingCommittees.push({
+            $scope.cooperative.standingCommittees.push({
                 name: '',
                 position: '',
                 educationalAttainment: '',
@@ -308,7 +308,7 @@ define(function () {
         };
 
         $scope.removeCommittee = function (index) {
-            $scope.borrower.standingCommittees.splice(index, 1);
+            $scope.cooperative.standingCommittees.splice(index, 1);
         };
 
         $scope.save = function () {
@@ -381,10 +381,11 @@ define(function () {
             function (response) {
                 $scope.borrower = response.data[0];
                 $scope.getBorrowerAttachments($scope.borrowerId);
-
+                $scope.showAccomodations = false;
                 appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
                     console.log(data);
                     $scope.windows = data;
+                    $scope.showAccomodations = true;
                 });
 
                 $http.get('/api/processes/subprocesses/', { params: { borrowerId: $scope.borrowerId } }).then(
@@ -395,22 +396,21 @@ define(function () {
                             $scope.subProcessCurrentPage[subprocess.name] = 0;
                         });
 
-                $http.get('/api/loans/loans/', {
-                    params: { borrowerId: $scope.borrowerId,status:'RELEASED' },
-                })
-                .then(
-                    function (response) {
-                        $scope.loans = response.data;
-
-                    },
-                    function (error) {
-                        toastr.error(
-                            'Error ' + error.status + ' ' + error.statusText,
-                            'Could not retrieve Loans Information. Please contact System Administrator.'
-                        );
-                    }
-                );  
-
+                        $http
+                            .get('/api/loans/loans/', {
+                                params: { borrowerId: $scope.borrowerId, status: 'RELEASED' },
+                            })
+                            .then(
+                                function (response) {
+                                    $scope.loans = response.data;
+                                },
+                                function (error) {
+                                    toastr.error(
+                                        'Error ' + error.status + ' ' + error.statusText,
+                                        'Could not retrieve Loans Information. Please contact System Administrator.'
+                                    );
+                                }
+                            );
 
                         //     if($scope.borrower.documents.length){
 

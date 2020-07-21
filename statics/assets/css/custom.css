@@ -2644,3 +2644,9 @@ ul.upper-alpha {
 ul.lower-alpha {
 	list-style-type: lower-alpha;
 }
+
+.check {
+	width:768px;
+	height:288px;
+	background: #fff;
+}

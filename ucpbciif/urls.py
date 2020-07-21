@@ -28,6 +28,7 @@ urlpatterns = [
     path('', lambda request: redirect('/login', permanent=False)),
     path('login', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('dashboard', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('menu', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     
     
     #loans
@@ -65,6 +66,7 @@ urlpatterns = [
     #print
     path('print/files/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('print/files/amortization/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('print/loans/check/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     # App Urls
     path('api/auth/',include('auth.urls')),
