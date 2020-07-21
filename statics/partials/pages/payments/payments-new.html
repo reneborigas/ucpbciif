@@ -318,14 +318,14 @@
                                         class="form-control"
                                         id="interestPayment"
                                         name="interestPayment"
-                                        ng-model="payment.check"
+                                        ng-model="payment.interestPayment"
                                         ng-class="{'is-invalid' : newPaymentDetailsForm.interestPayment.$invalid && newPaymentDetailsForm.interestPayment.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.interestPayment.$valid && newPaymentDetailsForm.interestPayment.$touched && !exceeded }"
                                         required
                                         price
                                     />
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.check.$touched && newPaymentDetailsForm.check.$invalid"
+                                        ng-show="newPaymentDetailsForm.interestPayment.$touched && newPaymentDetailsForm.interestPayment.$invalid"
                                     >
                                         Please enter payment for interest.
                                     </span>
@@ -576,7 +576,7 @@
                         <div class="mr-2">
                             <button
                                 class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
-                                ng-click="cancel(borrower.borrowerId)"
+                                ng-click="cancel(loan.id)"
                             >
                                 Cancel
                             </button>
@@ -585,7 +585,7 @@
                             <button
                                 class="btn btn-success text-uppercase p-2 pl-3 pr-3"
                                 ng-click="save()"
-                                ng-disabled="insufficient"
+                                ng-disabled="insufficient || payment.total <= 0"
                             >
                                 Accept Payment
                             </button>

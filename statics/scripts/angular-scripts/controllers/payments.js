@@ -100,12 +100,13 @@ define(function () {
                         loan: $scope.loan.id,
                         amortization: $scope.loan.latestAmortization.id,
                         amortizationItem: $scope.loan.currentAmortizationItem.id,
-                        check: '',
-                        cash: '',
-                        total: '',
+                        check: '0',
+                        cash: '0',
+                        total: '0',
                         balance: '',
                         paymentType: '',
                         checkNo: '',
+                        interestPayment: '0',
                         bankACcount: '',
                         datePayment: new Date($scope.loan.currentAmortizationItem.schedule),
                         outStandingBalance: '',
@@ -119,14 +120,24 @@ define(function () {
                     $scope.$watch(
                         'payment.cash',
                         function (newTerm, oldTerm) {
-                            $scope.payment.total = $scope.payment.cash + $scope.payment.check;
+                            $scope.payment.total = parseFloat($scope.payment.cash) +  parseFloat($scope.payment.interestPayment) + parseFloat($scope.payment.check);
                         },
                         true
                     );
                     $scope.$watch(
                         'payment.check',
                         function (newTerm, oldTerm) {
-                            $scope.payment.total = $scope.payment.cash + $scope.payment.check;
+                            $scope.payment.total = parseFloat($scope.payment.cash) +  parseFloat($scope.payment.interestPayment) + parseFloat($scope.payment.check);
+                        },
+                        true
+                    );
+                    
+                    $scope.$watch(
+                        'payment.interestPayment',
+                        function (newTerm, oldTerm) {
+
+                            $scope.payment.total = parseFloat($scope.payment.cash) +  parseFloat($scope.payment.interestPayment) + parseFloat($scope.payment.check);
+                          
                         },
                         true
                     );
@@ -135,9 +146,9 @@ define(function () {
                         'payment.total',
                         function (newTerm, oldTerm) {
                             console.log(newTerm);
-                            $scope.payment.balance = $scope.getBalance();
-                            $scope.payment.overPayment = $scope.getOverPayment();
-                            $scope.payment.outStandingBalance = $scope.getOutStandingBalance();
+                            $scope.payment.balance = $scope.getBalance().toFixed(2);;
+                            $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);;
+                            $scope.payment.outStandingBalance = $scope.getOutStandingBalance().toFixed(2);;
 
                             console.log($scope.payment.outStandingBalance);
                         },
@@ -235,7 +246,8 @@ define(function () {
         };
         // + parseFloat($scope.loan.currentAmortizationItem.interest)
         $scope.save = function () {
-            $scope.payment.total = $scope.payment.cash + $scope.payment.check;
+            $scope.payment.total = parseFloat($scope.payment.cash) + parseFloat($scope.payment.check) + parseFloat($scope.payment.interestPayment);
+            $scope.payment.total = $scope.payment.total.toFixed(2)
             $scope.payment.balance = $scope.getBalance().toFixed(2);
             $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);
             $scope.payment.outStandingBalance = $scope.getOutStandingBalance().toFixed(2);
@@ -277,13 +289,17 @@ define(function () {
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };
-
+        
         $scope.previewLoanRelease = function (id) {
             $window.open('/print/files/' + id, '_blank', 'width=800,height=800');
         };
 
         $scope.previewAmortizationSchedule = function (id) {
             $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
+        };
+        
+        $scope.cancel = function (id) {
+            $state.go('app.loans.info', { loanId: id });
         };
     });
 
