@@ -99,107 +99,109 @@
         </div>
 
         <div class="card card-custom gutter-b" ng-init="showExistingAccomodations = true">
-            <div class="card-header align-items-center border-0 mt-4">
+            <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Existing Accommodations</span>
                 </h3>
             </div>
-            <div class="card-body p-0" ng-show="showExistingAccomodations">
-                <div class="table-responsive">
-                    <table class="table table-borderless mb-8" align="center" ng-if="showAccomodations">
-                        <tbody>
-                            <tr>
-                                <td class="p-0" width="18%">
-                                    <div class="py-3 pl-24 bg-secondary">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Loan Window
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-light">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Credit Line Amount
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-secondary">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Approval Date
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-light">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Expiry Date
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-secondary">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Total Availments
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="p-0" ng-repeat="window in windows" style="width: 20%;">
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            {{ window.name}}
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span
-                                            class="text-dark-75 font-weight-normal font-size-lg"
-                                            ng-bind="window.activeCreditLine ? (window.activeCreditLine.amount | currency :'₱') : '₱0.00'"
-                                        ></span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span
-                                            class="text-dark-75 font-weight-normal font-size-lg"
-                                            ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateApproved | date : 'mediumDate') : 'N/A'"
-                                        ></span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span
-                                            class="text-dark-75 font-weight-normal font-size-lg"
-                                            ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateExpired | date : 'mediumDate') : 'N/A'"
-                                        ></span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ window.totalAvailments | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="p-0 text-right">
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            Total
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            &nbsp;
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            &nbsp;
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            &nbsp;
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ borrower.totalAvailments | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="card-body p-0">
+                <div class="slide" ng-show="showExistingAccomodations">
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-8" align="center" ng-show="showAccomodations">
+                            <tbody>
+                                <tr>
+                                    <td class="p-0" width="18%">
+                                        <div class="py-3 pl-16 bg-secondary">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
+                                                Loan Window
+                                            </a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-light">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
+                                                Credit Line Amount
+                                            </a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-secondary">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
+                                                Approval Date
+                                            </a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-light">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
+                                                Expiry Date
+                                            </a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-secondary">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
+                                                Total Availments
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="p-0" ng-repeat="window in windows" style="width: 20%;">
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">
+                                                {{ window.name}}
+                                            </span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span
+                                                class="text-dark-75 font-weight-normal font-size-lg"
+                                                ng-bind="window.activeCreditLine ? (window.activeCreditLine.amount | currency :'₱') : '₱0.00'"
+                                            ></span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span
+                                                class="text-dark-75 font-weight-normal font-size-lg"
+                                                ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateApproved | date : 'mediumDate') : 'N/A'"
+                                            ></span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span
+                                                class="text-dark-75 font-weight-normal font-size-lg"
+                                                ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateExpired | date : 'mediumDate') : 'N/A'"
+                                            ></span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ window.totalAvailments | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="p-0 text-right">
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">
+                                                Total
+                                            </span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">
+                                                &nbsp;
+                                            </span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">
+                                                &nbsp;
+                                            </span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">
+                                                &nbsp;
+                                            </span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ borrower.totalAvailments | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
-                <a class="btn btn-clean btn-icon" ng-click="showExistingAccomodations = !showExistingAccomodations">
+                <a class="btn btn-icon" ng-click="showExistingAccomodations = !showExistingAccomodations">
                     <i
                         class="wide text-warning"
                         ng-class=" showExistingAccomodations ? 'fal fa-angle-up' : 'fal fa-angle-down' "
@@ -209,7 +211,7 @@
         </div>
 
         <div class="card card-custom gutter-b" ng-init="showObligations = true">
-            <div class="card-header align-items-center border-0 mt-4">
+            <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">
                         Outstanding Obligations as of {{ dateToday | date :'mediumDate' }}
@@ -225,142 +227,144 @@
                     </a> -->
                 </div>
             </div>
-            <div class="card-body p-0" ng-show="showObligations">
-                <div class="table-responsive">
-                    <table class="table table-bordered mb-8">
-                        <thead class="table-active">
-                            <tr>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            NO.
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            WINDOW
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            AVAILEMENT DATE
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            MATURITY DATE
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            AMOUNT AVAILED
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            OUTSTANDING BALANCE
-                                        </span>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="loan in loans">
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            <a href="#" ng-click="viewLoan(loan.id)">{{ loan.id }}</a>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.loanProgram_name }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.dateReleased | date:'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.creditLine_dateExpired | date:'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.amount | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.outStandingBalance | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="table-success">
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ borrower.totalAvailments | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ borrower.totalOutstandingBalance | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="card-body p-0">
+                <div class="slide" ng-show="showObligations">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-8">
+                            <thead class="table-active">
+                                <tr>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                NO.
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                WINDOW
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                AVAILEMENT DATE
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                MATURITY DATE
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                AMOUNT AVAILED
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                OUTSTANDING BALANCE
+                                            </span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="loan in loans">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                <a href="#" ng-click="viewLoan(loan.id)">{{ loan.id }}</a>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.loanProgram_name }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.dateReleased | date:'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.creditLine_dateExpired | date:'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.amount | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.outStandingBalance | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-success">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ borrower.totalAvailments | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ borrower.totalOutstandingBalance | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
-                <a class="btn btn-clean btn-icon" ng-click="showObligations = !showObligations">
+                <a class="btn btn-icon" ng-click="showObligations = !showObligations">
                     <i
                         class="wide text-warning"
                         ng-class=" showObligations ? 'fal fa-angle-up' : 'fal fa-angle-down' "
@@ -370,7 +374,7 @@
         </div>
 
         <div class="card card-custom gutter-b" ng-init="showLoans = true">
-            <div class="card-header align-items-center border-0 mt-4">
+            <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Loans</span>
                 </h3>
@@ -384,527 +388,531 @@
                     </a> -->
                 </div>
             </div>
-            <div class="card-body p-0" ng-show="showLoans">
-                <div class="table-responsive">
-                    <table class="table table-bordered mb-8">
-                        <thead class="table-active">
-                            <tr>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            NO.
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            WINDOW
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            TERM
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            CREDIT LINE AMOUNT
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            LOAN AMOUNT
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            INTEREST RATE
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            DATE RELEASED
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            STATUS
-                                        </span>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="loan in borrower.loans">
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            <a href="#" ng-click="viewLoan(loan.id)">{{ loan.id }}</a>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.loanProgram_name }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.term_name }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.creditLine_amount | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.amount | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.interestRate }} %
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.dateReleased | date:'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ loan.status_name }}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="table-success">
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div
-                        class="d-flex justify-content-center align-items-center flex-wrap"
-                        ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                    >
-                        <div class="d-flex flex-wrap py-2 mr-3">
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageDocument(subProcess) == 0"
-                                ng-click="gotoPrevDocument(subProcess)"
-                            >
-                                <i class="fas fa-chevron-left icon-sm"></i>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                ng-click="jumpToPageDocument(n,subProcess)"
-                            >
-                                <small>{{n}}</small>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                ng-click="gotoNextDocument(subProcess)"
-                            >
-                                <i class="fas fa-chevron-right icon-sm"></i>
-                            </button>
+            <div class="card-body p-0">
+                <div class="slide" ng-show="showLoans">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-8">
+                            <thead class="table-active">
+                                <tr>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                NO.
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                WINDOW
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                TERM
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                CREDIT LINE AMOUNT
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                LOAN AMOUNT
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                INTEREST RATE
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                DATE RELEASED
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                STATUS
+                                            </span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="loan in borrower.loans">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                <a href="#" ng-click="viewLoan(loan.id)">{{ loan.id }}</a>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.loanProgram_name }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.term_name }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.creditLine_amount | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.amount | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.interestRate }} %
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.dateReleased | date:'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.status_name }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-success">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div
+                            class="d-flex justify-content-center align-items-center flex-wrap"
+                            ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
+                        >
+                            <div class="d-flex flex-wrap py-2 mr-3">
+                                <button
+                                    href="#"
+                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                    ng-disabled="currentPageDocument(subProcess) == 0"
+                                    ng-click="gotoPrevDocument(subProcess)"
+                                >
+                                    <i class="fas fa-chevron-left icon-sm"></i>
+                                </button>
+                                <button
+                                    href="#"
+                                    class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
+                                    ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
+                                    ng-repeat="n in pageRangeDocument(borrower.documents.length)"
+                                    ng-click="jumpToPageDocument(n,subProcess)"
+                                >
+                                    <small>{{n}}</small>
+                                </button>
+                                <button
+                                    href="#"
+                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                    ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
+                                    ng-click="gotoNextDocument(subProcess)"
+                                >
+                                    <i class="fas fa-chevron-right icon-sm"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
-                <a class="btn btn-clean btn-icon" ng-click="showLoans = !showLoans">
+                <a class="btn btn-icon" ng-click="showLoans = !showLoans">
                     <i class="wide text-warning" ng-class=" showLoans ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
                 </a>
             </div>
         </div>
 
         <div class="card card-custom gutter-b" ng-init="showPaymentHistory = true">
-            <div class="card-header align-items-center border-0 mt-4">
+            <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Payment History</span>
                 </h3>
                 <div class="card-toolbar"></div>
             </div>
-            <div class="card-body p-0" ng-show="showPaymentHistory">
-                <div class="table-responsive">
-                    <table class="table table-bordered mb-8">
-                        <thead class="table-active">
-                            <tr>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Loan
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Payment For
-                                        </span>
-                                    </div>
-                                </th>
+            <div class="card-body p-0 slide">
+                <div class="slide" ng-show="showPaymentHistory">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-8">
+                            <thead class="table-active">
+                                <tr>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Loan
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Payment For
+                                            </span>
+                                        </div>
+                                    </th>
 
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Principal
-                                        </span>
-                                    </div>
-                                </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Principal
+                                            </span>
+                                        </div>
+                                    </th>
 
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Interest
-                                        </span>
-                                    </div>
-                                </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Interest
+                                            </span>
+                                        </div>
+                                    </th>
 
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Total Payable
-                                        </span>
-                                    </div>
-                                </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Total Payable
+                                            </span>
+                                        </div>
+                                    </th>
 
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Payment Date
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Payment Type
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Total Payment
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Check No.
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Bank Account
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Balance
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Overpayment
-                                        </span>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 text-uppercase font-size-lg">
-                                            Date Tendered
-                                        </span>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="payment in borrower.payments">
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            <a href="#" ng-click="viewLoan(payment.loan)">LN{{ payment.loan}}</a>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Payment Date
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Payment Type
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Total Payment
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Check No.
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Bank Account
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Balance
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Overpayment
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Date Tendered
+                                            </span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="payment in borrower.payments">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                <a href="#" ng-click="viewLoan(payment.loan)">LN{{ payment.loan}}</a>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
 
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.amortizationItem_principal | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.amortizationItem_interest | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.amortizationItem_total | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.amortizationItem_principal | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.amortizationItem_interest | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.amortizationItem_total | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
 
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.datePayment | date: 'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.paymentType_name }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.total | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.checkNo}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.bankAccount }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.balance | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.overPayment | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ payment.dateCreated | date: 'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="table-success">
-                                <td>
-                                    <div class="text-center px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Total
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ borrower.totalPayments | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right px-2">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div
-                        class="d-flex justify-content-center align-items-center flex-wrap"
-                        ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                    >
-                        <div class="d-flex flex-wrap py-2 mr-3">
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageDocument(subProcess) == 0"
-                                ng-click="gotoPrevDocument(subProcess)"
-                            >
-                                <i class="fas fa-chevron-left icon-sm"></i>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                ng-click="jumpToPageDocument(n,subProcess)"
-                            >
-                                <small>{{n}}</small>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                ng-click="gotoNextDocument(subProcess)"
-                            >
-                                <i class="fas fa-chevron-right icon-sm"></i>
-                            </button>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.datePayment | date: 'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.paymentType_name }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.total | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.checkNo}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.bankAccount }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.balance | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.overPayment | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.dateCreated | date: 'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-success">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                Total
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ borrower.totalPayments | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div
+                            class="d-flex justify-content-center align-items-center flex-wrap"
+                            ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
+                        >
+                            <div class="d-flex flex-wrap py-2 mr-3">
+                                <button
+                                    href="#"
+                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                    ng-disabled="currentPageDocument(subProcess) == 0"
+                                    ng-click="gotoPrevDocument(subProcess)"
+                                >
+                                    <i class="fas fa-chevron-left icon-sm"></i>
+                                </button>
+                                <button
+                                    href="#"
+                                    class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
+                                    ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
+                                    ng-repeat="n in pageRangeDocument(borrower.documents.length)"
+                                    ng-click="jumpToPageDocument(n,subProcess)"
+                                >
+                                    <small>{{n}}</small>
+                                </button>
+                                <button
+                                    href="#"
+                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                    ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
+                                    ng-click="gotoNextDocument(subProcess)"
+                                >
+                                    <i class="fas fa-chevron-right icon-sm"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
-                <a class="btn btn-clean btn-icon" ng-click="showPaymentHistory = !showPaymentHistory">
+                <a class="btn btn-icon" ng-click="showPaymentHistory = !showPaymentHistory">
                     <i
                         class="wide text-warning"
                         ng-class=" showPaymentHistory ? 'fal fa-angle-up' : 'fal fa-angle-down' "

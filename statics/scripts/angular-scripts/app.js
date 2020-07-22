@@ -11,6 +11,7 @@ define(function () {
         'oitozero.ngSweetAlert',
         'blockUI',
         'ngTagsInput',
+        'ngAnimate',
     ]);
 
     app.config([

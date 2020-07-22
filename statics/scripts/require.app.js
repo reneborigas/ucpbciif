@@ -21,6 +21,7 @@ require.config({
         factories: 'scripts/angular-scripts/factories',
         services: 'scripts/angular-scripts/services',
         filters: 'scripts/angular-scripts/filters',
+        animations: 'scripts/angular-scripts/animations',
 
         // 'ngDatepicker': 'libs/ui-datepicker/datetime-picker.min',
         // 'ngTouch' : 'libs/angular/angular-touch.min',
@@ -107,11 +108,14 @@ require.config({
         filters: {
             deps: ['app'],
         },
+        animations: {
+            deps: ['app'],
+        },
     },
 });
 
 require(['jquery', 'popper', 'bootstrap'], function () {});
 
-require(['app', 'routes', 'directives', 'factories', 'services', 'filters'], function () {
+require(['app', 'routes', 'directives', 'factories', 'services', 'filters', 'animations'], function () {
     angular.bootstrap(document, ['app']);
 });
