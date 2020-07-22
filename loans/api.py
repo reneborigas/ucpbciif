@@ -126,6 +126,22 @@ class TermViewSet(ModelViewSet):
       
         return queryset
 
+class InterestRateViewSet(ModelViewSet):
+    queryset = InterestRate.objects.all()
+    serializer_class = InterestRateSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = InterestRate.objects.order_by('id')
+        interestRateId = self.request.query_params.get('interestRateId', None)
+
+        if interestRateId is not None:
+            queryset = queryset.filter(id=interestRateId)
+
+
+      
+        return queryset
+
 
 class PaymentPeriodViewSet(ModelViewSet):
     queryset = Loan.objects.all()

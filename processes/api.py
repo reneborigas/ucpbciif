@@ -17,7 +17,7 @@ from loans.models import Status,AmortizationStatus
 from django.utils import timezone
 from loans import PMT
 
-
+from datetime import datetime
 
 
 def generateAmortizationSchedule(loan,request):
@@ -43,7 +43,7 @@ def generateAmortizationSchedule(loan,request):
 
     for i in range(int(noOfPaymentSchedules)):
 
-        pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
+        pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
 
         amortizationItem = AmortizationItem(
             schedule = schedule,
@@ -113,6 +113,55 @@ class LoanAvailmemtApprovedView(views.APIView):
             },status= status.HTTP_202_ACCEPTED)
  
         return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
+
+
+
+class CalculatePMTView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+
+    def post(self,request):
+        params = request.data.get("params") 
+        
+        print(params)
+        datePayment = datetime.strptime(params["datePayment"], '%m/%d/%Y')  
+        dateSchedule = datetime.strptime(params["dateSchedule"], '%m/%d/%Y')  
+        loanId = params["loanId"]
+
+        loan = Loan.objects.get(pk=loanId)
+        loanAmount = loan.amount
+        latestPayment = loan.getLatestPayment()
+        if latestPayment:
+           loanAmount = latestPayment.outStandingBalance
+
+        pmt = PMT()
+     
+        # loanAmount = loan.amount
+        print(loanAmount)
+        delta = dateSchedule - datePayment
+        days =  loan.term.paymentPeriod.paymentCycle - delta.days
+
+        noOfPaymentSchedules = loan.term.days / days
+        print(noOfPaymentSchedules  )
+        pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
+         
+
+        return Response({
+            'datePayment':datePayment,
+            'dateSchedule':dateSchedule, 
+            'days': days,
+            'principal':pmt.principal,
+            'interest':pmt.interest,
+            'totalToPay':pmt.payment,
+            'status': 'Accepted',
+            'principalBalance':pmt.nextStartingValue,
+            'message': 'PMT Calculated'
+        },status= status.HTTP_202_ACCEPTED)
+ 
+        # return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
+
+
+    
 
 class LoanReleasedView(views.APIView):
     

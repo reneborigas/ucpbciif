@@ -100,6 +100,11 @@ define(function () {
                         loan: $scope.loan.id,
                         amortization: $scope.loan.latestAmortization.id,
                         amortizationItem: $scope.loan.currentAmortizationItem.id,
+                        principal: '0',
+                        days:'0',
+                        interest: '0',
+                        totalToPay: '0', 
+                        principalBalance:'0',
                         check: '0',
                         cash: '0',
                         total: '0',
@@ -115,7 +120,42 @@ define(function () {
                         paymentStatus: '2',
                         createdBy: '1',
                     };
+                    $scope.$watch(
+                        'payment.datePayment',
+                        function (newTerm, oldTerm) {
+                            console.log($scope.payment.loan);
+                            console.log(new Date( $scope.loan.currentAmortizationItem.schedule).toLocaleDateString());
+                            $http.post('/api/processes/calculatepmt/', { params: { datePayment:  newTerm.toLocaleDateString(),loanId: $scope.payment.loan
+                                 , dateSchedule :  new Date($scope.loan.currentAmortizationItem.schedule).toLocaleDateString() } }).then(
+                                function (response) {
+                                    console.log( response.data);
+                                    $scope.newAmortization = response.data;
+                                   
+                                    $scope.payment.days = $scope.newAmortization.days;
+                                    $scope.payment.principal = $scope.newAmortization.principal;
+                                    $scope.payment.interest = $scope.newAmortization.interest;
+                                    $scope.payment.totalToPay = $scope.newAmortization.totalToPay;
+                                    $scope.payment.principalBalance = $scope.newAmortization.principalBalance;
 
+
+                                    $scope.payment.total = parseFloat($scope.payment.cash) + parseFloat($scope.payment.check) + parseFloat($scope.payment.interestPayment);
+                                    $scope.payment.total = parseFloat($scope.payment.total);
+                                    $scope.payment.balance = $scope.getBalance();
+                                    $scope.payment.overPayment = $scope.getOverPayment();
+                                    $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
+                        
+                                  
+                                },
+                                function (error) {
+                                    toastr.error(
+                                        'Error ' + error.status + error.statusText,
+                                        'Could not calculate amortization. Please contact System Administrator.'
+                                    );
+                                }
+                            );
+                        },
+                        true
+                    );
                     // $scope.insufficient = false;
                     $scope.$watch(
                         'payment.cash',
@@ -146,9 +186,9 @@ define(function () {
                         'payment.total',
                         function (newTerm, oldTerm) {
                             console.log(newTerm);
-                            $scope.payment.balance = $scope.getBalance().toFixed(2);;
-                            $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);;
-                            $scope.payment.outStandingBalance = $scope.getOutStandingBalance().toFixed(2);;
+                            $scope.payment.balance = $scope.getBalance();
+                            $scope.payment.overPayment = $scope.getOverPayment();
+                            $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2); 
 
                             console.log($scope.payment.outStandingBalance);
                         },
@@ -181,6 +221,8 @@ define(function () {
                         true
                     );
 
+                    
+
                     $http
                         .get('/api/borrowers/borrowers/', {
                             params: { borrowerId: $scope.loan.borrower },
@@ -211,46 +253,51 @@ define(function () {
             );
 
         $scope.getBalance = function () {
-            if ($scope.loan.currentAmortizationItem.total - $scope.payment.total <= 0) {
+            if (parseFloat($scope.payment.totalToPay) - parseFloat($scope.payment.total) <= 0) {
                 return 0;
             }
-            return $scope.loan.currentAmortizationItem.total - $scope.payment.total;
+            return parseFloat($scope.payment.totalToPay) - parseFloat($scope.payment.total);
         };
 
         $scope.getOverPayment = function () {
-            if ($scope.payment.total - $scope.loan.currentAmortizationItem.total <= 0) {
+            if (parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPay) <= 0) {
                 return 0;
             }
-            return $scope.payment.total - $scope.loan.currentAmortizationItem.total;
+            return parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPay);
         };
 
         $scope.getOutStandingBalance = function () {
-            console.log($scope.loan.currentAmortizationItem.interest);
-
-            if ($scope.payment.total > parseFloat($scope.loan.currentAmortizationItem.total)) {
+            console.log(parseFloat($scope.payment.total));
+            console.log(parseFloat($scope.payment.totalToPay));
+            if( $scope.getOverPayment().toFixed(2) >=1){
+            // if (parseFloat($scope.payment.total).toFixed(2) > parseFloat($scope.payment.totalToPay).toFixed(2)) {
                 return (
-                    parseFloat($scope.loan.currentAmortizationItem.principalBalance) +
-                    parseFloat($scope.loan.currentAmortizationItem.principal) -
-                    $scope.payment.total +
-                    parseFloat($scope.loan.currentAmortizationItem.interest) +
-                    (parseFloat($scope.loan.interestBalance) - parseFloat($scope.loan.currentAmortizationItem.interest))
+                    parseFloat($scope.payment.principalBalance) +
+                    parseFloat($scope.payment.principal) -
+                    parseFloat($scope.payment.total) +
+                    parseFloat($scope.payment.interest) +
+                    (parseFloat($scope.loan.interestBalance) - parseFloat($scope.payment.interest))
                 );
             } else {
                 return (
-                    parseFloat($scope.loan.currentAmortizationItem.principalBalance) +
-                    parseFloat($scope.loan.currentAmortizationItem.principal) -
-                    $scope.payment.total +
-                    parseFloat($scope.loan.currentAmortizationItem.interest)
+                    parseFloat($scope.payment.principalBalance) +
+                    parseFloat($scope.payment.principal) -
+                    parseFloat($scope.payment.total) +
+                    parseFloat($scope.payment.interest)
                 );
             }
         };
         // + parseFloat($scope.loan.currentAmortizationItem.interest)
         $scope.save = function () {
             $scope.payment.total = parseFloat($scope.payment.cash) + parseFloat($scope.payment.check) + parseFloat($scope.payment.interestPayment);
-            $scope.payment.total = $scope.payment.total.toFixed(2)
-            $scope.payment.balance = $scope.getBalance().toFixed(2);
-            $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);
-            $scope.payment.outStandingBalance = $scope.getOutStandingBalance().toFixed(2);
+            $scope.payment.total = parseFloat($scope.payment.total).toFixed(2)
+            $scope.payment.balance = parseFloat($scope.getBalance()).toFixed(2);
+            $scope.payment.overPayment = parseFloat($scope.getOverPayment()).toFixed(2);
+            $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
+            $scope.payment.interest =  parseFloat($scope.payment.interest).toFixed(2);
+            $scope.payment.principalBalance = parseFloat($scope.payment.principalBalance).toFixed(2);
+            $scope.payment.principal = parseFloat($scope.payment.principal).toFixed(2);
+            $scope.payment.totalToPay = parseFloat($scope.payment.totalToPay).toFixed(2);
 
             console.log($scope.payment.balance);
             console.log($scope.payment.overPayment);
@@ -301,6 +348,10 @@ define(function () {
         $scope.cancel = function (id) {
             $state.go('app.loans.info', { loanId: id });
         };
+
+
+
+        
     });
 
     app.controller('DocumentAddController', function DocumentAddController(

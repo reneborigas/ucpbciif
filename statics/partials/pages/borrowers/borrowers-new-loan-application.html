@@ -145,7 +145,7 @@
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                                     <span class="font-weight-bolder font-size-h5">
-                                        {{ creditLine.interestRate }}
+                                        {{ creditLine.interestRate_amount }}
                                         <span>%</span>
                                     </span>
                                 </div>
@@ -209,7 +209,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ loan.interestRate }}
+                                {{ loan.interestRate_amount  }}
                                 <span>%</span>
                             </span>
                         </div>
@@ -287,7 +287,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Interest Rate</label>
                                     <div class="col-lg-3 col-xl-6">
                                         <input
@@ -307,6 +307,30 @@
                                             ng-show="newCreditLineDetailsForm.interestRate.$touched && newCreditLineDetailsForm.interestRate.$invalid"
                                         >
                                             Please enter interest rate.
+                                        </span>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group row">
+                                    <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">
+                                        Interest Rate
+                                    </label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <select
+                                            class="form-control"
+                                            id="interestRate"
+                                            name="interestRate"
+                                            ng-model="creditLine.interestRate"
+                                            ng-options="interestRate.id as (interestRate.interestRate) for interestRate in interestRates"
+                                            ng-class="{'is-invalid' : newCreditLineDetailsForm.interestRate.$invalid &&
+                                            newCreditLineDetailsForm.interestRate.$touched, 'is-valid' : newCreditLineDetailsForm.interestRate.$valid && newCreditLineDetailsForm.interestRate.$touched }"
+                                            required
+                                        ></select>
+                                        <span
+                                            class="form-text text-muted"
+                                            ng-show="newCreditLineDetailsForm.interestRate.$touched && newCreditLineDetailsForm.interestRate.$invalid"
+                                        >
+                                            Please select interest rate.
                                         </span>
                                     </div>
                                 </div>

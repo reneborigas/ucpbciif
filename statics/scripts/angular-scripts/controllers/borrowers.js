@@ -962,24 +962,16 @@ define(function () {
         appFactory.getTerm().then(function (data) {
             $scope.terms = data;
         });
+
+        appFactory.getInterestRates().then(function (data) {
+            $scope.interestRates = data;
+        });
+
         appFactory.getLoanPrograms().then(function (data) {
             $scope.loanPrograms = data;
         });
         $scope.exceeded = false;
-        $scope.$watch(
-            'loan.amount',
-            function (newTerm, oldTerm) {
-                if (newTerm > $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine) {
-                    //Error
-                    console.log('invalid');
-
-                    $scope.exceeded = true;
-                } else {
-                    $scope.exceeded = false;
-                }
-            },
-            true
-        );
+       
 
         $scope.loadCommittee = function (query) {
             return $scope.committees;
@@ -1050,6 +1042,7 @@ define(function () {
                         creditlineid: null,
                         amount: '',
                         interestRate: '',
+                         
                         term: '',
                         loanProgram: '',
                         purpose: '',
@@ -1063,9 +1056,9 @@ define(function () {
                         $scope.creditLine = {
                             creditlineid: $scope.subProcess.parentLastDocumentCreditLine.id,
                             amount: parseFloat($scope.subProcess.parentLastDocumentCreditLine.amount),
-                            interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
+                            interestRate: $scope.subProcess.parentLastDocumentCreditLine.interestRate,
                             term: $scope.subProcess.parentLastDocumentCreditLine.term,
-
+                            interestRate_amount: $scope.subProcess.parentLastDocumentCreditLine.interestRate_amount,
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: $scope.subProcess.parentLastDocumentCreditLine.purpose,
                             security: $scope.subProcess.parentLastDocumentCreditLine.security,
@@ -1080,10 +1073,10 @@ define(function () {
                             loanid: null,
                             amount: '',
                             creditLine: $scope.subProcess.parentLastDocumentCreditLine.id,
-                            interestRate: parseFloat($scope.subProcess.parentLastDocumentCreditLine.interestRate),
+                            interestRate:$scope.subProcess.parentLastDocumentCreditLine.interestRate,
                             term: $scope.subProcess.parentLastDocumentCreditLine.term,
                             termid: $scope.subProcess.parentLastDocumentCreditLine.term.id,
-
+                            
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',
@@ -1091,6 +1084,21 @@ define(function () {
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
+
+                        $scope.$watch(
+                            'loan.amount',
+                            function (newTerm, oldTerm) {
+                                if (newTerm > $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine) {
+                                    //Error
+                                    console.log('invalid');
+                
+                                    $scope.exceeded = true;
+                                } else {
+                                    $scope.exceeded = false;
+                                }
+                            },
+                            true
+                        );
                     }
 
                     if ($scope.subProcess.parentLastDocumentLoan) {
@@ -1098,7 +1106,8 @@ define(function () {
                             loanid: $scope.subProcess.parentLastDocumentLoan.id,
                             amount: parseFloat($scope.subProcess.parentLastDocumentLoan.amount),
                             creditLine: $scope.subProcess.parentLastDocumentLoan.creditLine,
-                            interestRate: parseFloat($scope.subProcess.parentLastDocumentLoan.interestRate),
+                            interestRate: $scope.subProcess.parentLastDocumentLoan.interestRate,
+                            interestRate_amount: $scope.subProcess.parentLastDocumentLoan.interestRate_amount,
                             term: $scope.subProcess.parentLastDocumentLoan.term,
                             loanProgram: $scope.subProcess.parentLastDocumentLoan.loanProgram,
                             purpose: $scope.subProcess.parentLastDocumentLoan.purpose,

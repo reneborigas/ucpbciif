@@ -143,7 +143,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ loan.interestRate }}
+                                {{ loan.interestRate_amount   }}
                                 <span>%</span>
                             </span>
                         </div>
@@ -882,21 +882,21 @@
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_principal | currency :'₱'}}
+                                                {{ payment.principal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_interest | currency :'₱'}}
+                                                {{ payment.interest | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_total | currency :'₱'}}
+                                                {{ payment.totalToPay | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -1352,15 +1352,15 @@
                             ></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <a
+                            <button
                                 href="#"
                                 class="btn btn-light-primary font-weight-bold"
                                 ng-disabled="!newNote.noteDescription"
-                                ng-click="addNote(document)"
+                                ng-click="addNote(loan)"
                             >
                                 <i class="fal fa-plus mr-2"></i>
                                 Add Notes
-                            </a>
+                            </button>
                         </div>
                     </form>
                     <div class="separator separator-dashed my-10"></div>

@@ -228,6 +228,35 @@ class LoanProgram(models.Model):
 
    
 
+
+class InterestRate(models.Model):
+
+    interestRate = models.DecimalField( max_digits=5, decimal_places=2,blank=False) 
+     
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="interestRateCreatedBy",
+        null = True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+    def __str__(self):
+        return "%s" % (self.interestRate)
+
+
 class CreditLine(models.Model):
 
     borrower =  models.ForeignKey(
@@ -245,8 +274,12 @@ class CreditLine(models.Model):
 
     amount = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
 
-    interestRate = models.DecimalField( max_digits=5, decimal_places=2,blank=False) 
-
+    # interestRate = models.DecimalField( max_digits=5, decimal_places=2,blank=False) 
+    interestRate =  models.ForeignKey(
+       InterestRate,
+        on_delete=models.CASCADE,
+        related_name="creditLines", 
+    )
     term =  models.ForeignKey(
        Term,
         on_delete=models.SET_NULL,
@@ -307,6 +340,7 @@ class CreditLine(models.Model):
             return self.amount - int(totalLoanAvailments)
         return self.amount
 
+
 class Loan(models.Model):
 
     borrower =  models.ForeignKey(
@@ -327,9 +361,14 @@ class Loan(models.Model):
         related_name="programLoans", 
     )
 
+    interestRate =  models.ForeignKey(
+       InterestRate,
+        on_delete=models.CASCADE,
+        related_name="loans", 
+    )
     amount = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
 
-    interestRate = models.DecimalField( max_digits=5, decimal_places=2,blank=False) 
+    # interestRate = models.DecimalField( max_digits=5, decimal_places=2,blank=False) 
 
     term =  models.ForeignKey(
        Term,
@@ -454,7 +493,7 @@ class Loan(models.Model):
         if latestPayment: 
            
             # return self.getTotalAmortizationInterest() -  latestPayment.amortizationItem.interest
-            return self.getTotalAmortizationInterest() - self.payments.filter(paymentStatus__name='TENDERED').aggregate(totalPaidInterest=Sum(F('amortizationItem__interest') ))['totalPaidInterest']
+            return self.getTotalAmortizationInterest() - self.payments.filter(paymentStatus__name='TENDERED').aggregate(totalPaidInterest=Sum(F('interest') ))['totalPaidInterest']
         return   0  
 
     def getTotalPayment(self):

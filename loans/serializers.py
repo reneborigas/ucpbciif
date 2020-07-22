@@ -46,6 +46,21 @@ class TermSerializer(ModelSerializer):
 
 
 
+class InterestRateSerializer(ModelSerializer):
+   
+    def create(self, validated_data):
+        interestRate = InterestRate.objects.create(**validated_data) 
+        return interestRate
+
+    def update(self, instance, validated_data):
+         
+
+        return instance
+    
+    class Meta:
+        model = InterestRate        
+        fields = '__all__'
+
 class AmortizationItemSerializer(ModelSerializer):
     # termName = serializers.CharField(read_only=True) 
 
@@ -107,6 +122,8 @@ class StatusSerializer(ModelSerializer):
 class CreditLineSerializer(ModelSerializer): 
 
     term_name = serializers.ReadOnlyField(source='term.name')
+    interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
+
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
     remainingCreditLine = serializers.CharField(read_only=True)
  
@@ -135,6 +152,7 @@ class LoanSerializer(ModelSerializer):
     borrower_id = serializers.ReadOnlyField(source='borrower.borrowerId')
     amortizations     =  AmortizationSerializer(many=True,read_only=True)
     term_name = serializers.ReadOnlyField(source='term.name')
+    interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
     totalAmortizationInterest = serializers.CharField(read_only=True)
     totalObligations = serializers.CharField(read_only=True)

@@ -142,7 +142,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ loan.interestRate }}
+                                {{ loan.interestRate_amount  }}
                                 <span>%</span>
                             </span>
                         </div>
@@ -183,6 +183,13 @@
                                     </div>
                                 </th>
                                 <th>
+                                    <div class="text-right pl-16">
+                                        <span class="text-dark-75 text-uppercase font-size-lg">
+                                            Days
+                                        </span>
+                                    </div>
+                                </th>
+                                <th>
                                     <div class="text-right px-2">
                                         <span class="text-dark-75 text-uppercase font-size-lg">
                                             Principal
@@ -215,6 +222,13 @@
                                     </div>
                                 </td>
                                 <td>
+                                    <div class="text-right pl-16">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{loan.currentAmortizationItem.days }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
                                     <div class="text-right px-2">
                                         <span class="text-dark-75 font-weight-bolder font-size-lg">
                                             {{loan.currentAmortizationItem.principal | currency :'₱'}}
@@ -236,9 +250,86 @@
                                     </div>
                                 </td>
                             </tr>
+                            <thead class="table-active">
+                                <tr>
+                                    <th>
+                                        <div class="pl-16">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Payment Date
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right pl-16">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Days
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Principal
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Interest
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Total Amortization
+                                            </span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>
+                                    <div class="pl-16">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{payment.datePayment | date :'mediumDate'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-right pl-16">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{payment.days }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-right px-2">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{payment.principal | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-right px-2">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{payment.interest | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-right px-2">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{payment.totalToPay | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+                
             </div>
             <div class="card-body">
                 <form class="form mt-0" name="newPaymentDetailsForm">

@@ -8,4 +8,7 @@ router.register(r'loans',LoanViewSet)
 router.register(r'terms',TermViewSet)
 router.register(r'paymentperiods',PaymentPeriodViewSet)
 router.register(r'loanprograms',LoanProgramViewSet) 
+router.register(r'interestrates',InterestRateViewSet) 
+
+
 urlpatterns = router.urls
