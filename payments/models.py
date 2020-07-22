@@ -101,6 +101,9 @@ class Payment(models.Model):
     cash = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
 
     check = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    interestPayment = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
     checkNo = models.CharField(
         max_length=255,
         blank = True,
