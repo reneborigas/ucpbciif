@@ -85,6 +85,8 @@ define(function () {
             .then(
                 function (response) {
                     $scope.loan = response.data[0];
+                    $scope.loan.outStandingBalance = parseFloat($scope.loan.outStandingBalance);
+                    console.log($scope.loan.outStandingBalance <= 0);
                     $scope.currentAmortization = $scope.loan.amortizations[0];
                     $http
                         .get('/api/borrowers/borrowers/', {
