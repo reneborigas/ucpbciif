@@ -89,76 +89,76 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="separator separator-solid my-7"></div>
-                <div class="d-flex align-items-center flex-wrap">
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Program</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ creditLine.loanProgram_name }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Credit Line Amount</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ creditLine.amount | currency :'₱'}}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Total Availment</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ borrower.totalAvailmentPerProgram | currency :'₱'}}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Remaining Credit Line Amount</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ subProcess.parentLastDocumentCreditLine.remainingCreditLine | currency :'₱'}}
-                            </span>
-                        </div>
-                    </div>
+                        <div class="separator separator-solid my-7"></div>
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                <span class="mr-4">
+                                    <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                                </span>
+                                <div class="d-flex flex-column text-dark-75">
+                                    <span class="font-weight-bolder font-size-sm">Program</span>
+                                    <span class="font-weight-bolder font-size-h5">
+                                        {{ creditLine.loanProgram_name }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                <span class="mr-4">
+                                    <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                                </span>
+                                <div class="d-flex flex-column text-dark-75">
+                                    <span class="font-weight-bolder font-size-sm">Credit Line Amount</span>
+                                    <span class="font-weight-bolder font-size-h5">
+                                        {{ creditLine.amount | currency :'₱'}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                <span class="mr-4">
+                                    <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                                </span>
+                                <div class="d-flex flex-column text-dark-75">
+                                    <span class="font-weight-bolder font-size-sm">Total Availment</span>
+                                    <span class="font-weight-bolder font-size-h5">
+                                        {{ borrower.totalAvailmentPerProgram | currency :'₱'}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                <span class="mr-4">
+                                    <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                                </span>
+                                <div class="d-flex flex-column text-dark-75">
+                                    <span class="font-weight-bolder font-size-sm">Remaining Credit Line Amount</span>
+                                    <span class="font-weight-bolder font-size-h5">
+                                        {{ subProcess.parentLastDocumentCreditLine.remainingCreditLine | currency :'₱'}}
+                                    </span>
+                                </div>
+                            </div>
 
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Interest Rate</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ creditLine.interestRate }}
-                                <span>%</span>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Term</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ creditLine.term_name }}
-                            </span>
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                <span class="mr-4">
+                                    <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
+                                </span>
+                                <div class="d-flex flex-column text-dark-75">
+                                    <span class="font-weight-bolder font-size-sm">Interest Rate</span>
+                                    <span class="font-weight-bolder font-size-h5">
+                                        {{ creditLine.interestRate_amount }}
+                                        <span>%</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                                <span class="mr-4">
+                                    <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                                </span>
+                                <div class="d-flex flex-column text-dark-75">
+                                    <span class="font-weight-bolder font-size-sm">Term</span>
+                                    <span class="font-weight-bolder font-size-h5">
+                                        {{ creditLine.term_name }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -208,7 +208,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ loan.interestRate }}
+                                {{ loan.interestRate_amount }}
                                 <span>%</span>
                             </span>
                         </div>
@@ -287,7 +287,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Interest Rate</label>
                                     <div class="col-lg-3 col-xl-6">
                                         <input
@@ -307,6 +307,30 @@
                                             ng-show="newCreditLineDetailsForm.interestRate.$touched && newCreditLineDetailsForm.interestRate.$invalid"
                                         >
                                             Please enter interest rate.
+                                        </span>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group row">
+                                    <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">
+                                        Interest Rate
+                                    </label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <select
+                                            class="form-control"
+                                            id="interestRate"
+                                            name="interestRate"
+                                            ng-model="creditLine.interestRate"
+                                            ng-options="interestRate.id as (interestRate.interestRate) for interestRate in interestRates"
+                                            ng-class="{'is-invalid' : newCreditLineDetailsForm.interestRate.$invalid &&
+                                            newCreditLineDetailsForm.interestRate.$touched, 'is-valid' : newCreditLineDetailsForm.interestRate.$valid && newCreditLineDetailsForm.interestRate.$touched }"
+                                            required
+                                        ></select>
+                                        <span
+                                            class="form-text text-muted"
+                                            ng-show="newCreditLineDetailsForm.interestRate.$touched && newCreditLineDetailsForm.interestRate.$invalid"
+                                        >
+                                            Please select interest rate.
                                         </span>
                                     </div>
                                 </div>

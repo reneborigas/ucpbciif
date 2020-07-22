@@ -160,7 +160,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ document.creditLine.interestRate }}
+                                {{ document.creditLine.interestRate_amount  }}
                                 <span>%</span>
                             </span>
                         </div>
@@ -476,7 +476,7 @@
                                     <td>
                                         <div class="px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ document.loan.amortizations.length}}
+                                               
                                             </span>
                                         </div>
                                     </td>
@@ -836,7 +836,7 @@
                             ></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <a
+                            <button
                                 href="#"
                                 class="btn btn-light-primary font-weight-bold"
                                 ng-disabled="!newNote.noteDescription"
@@ -844,7 +844,7 @@
                             >
                                 <i class="fal fa-plus mr-2"></i>
                                 Add Notes
-                            </a>
+                            </button>
                         </div>
                     </form>
                     <div class="separator separator-dashed my-10"></div>

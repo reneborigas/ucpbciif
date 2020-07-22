@@ -222,8 +222,37 @@ define(function () {
                     }
                 );
             },
+
+            getInterestRates: function () {
+                return $http.get('/api/loans/interestrates/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve interst rate list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+
             getLoanPrograms: function (borrowerId) {
                 console.log(borrowerId);
+                return $http.get('/api/loans/loanprograms/', { params: { borrowerId: borrowerId } }).then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve loan program list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            recalculatePMT: function (params) {
+                console.log(params);
                 return $http.get('/api/loans/loanprograms/', { params: { borrowerId: borrowerId } }).then(
                     function (response) {
                         return response.data;

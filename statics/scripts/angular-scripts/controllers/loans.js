@@ -100,7 +100,11 @@ define(function () {
                                     console.log(data);
                                     $scope.windows = data;
                                     $scope.showAccomodations = true;
+                                    
                                 });
+
+
+                                $scope.loadNotes();
                             },
                             function (error) {
                                 toastr.error(
@@ -118,6 +122,13 @@ define(function () {
                 }
             );
 
+        $scope.loadNotes = function () {
+            return appFactory.getContentTypeId('note').then(function (data) {
+                return appFactory.getNotes($scope.loanId, data).then(function (response) {
+                    $scope.notes = response;
+                });
+            });
+        };
         $scope.newPayment = function (id) {
             $state.go('app.payments.new', { loanId: id });
         };
@@ -157,6 +168,71 @@ define(function () {
         $scope.previewCheckRelease = function (id) {
             $window.open('/print/loans/check/' + id, '_blank', 'width=800,height=800');
         };
+
+        var noteBlockUI = blockUI.instances.get('noteBlockUI');
+
+        $scope.currentPageNote = 0;
+        $scope.pageSizeNote = 5;
+
+        $scope.pageRangeNote = function (size) {
+            var pages = [];
+            var range = Math.ceil(size / $scope.pageSizeNote);
+            for (var i = 1; i <= range; i++) {
+                pages.push(i);
+            }
+            return pages;
+        };
+
+        $scope.gotoPrevNote = function () {
+            $scope.currentPageNote--;
+        };
+
+        $scope.gotoNextNote = function () {
+            $scope.currentPageNote++;
+        };
+
+        $scope.jumpToPageNote = function (n) {
+            $scope.currentPageNote = n - 1;
+        };
+
+        $scope.newNote = {
+            noteDescription: '',
+        };
+
+        $scope.addNote = function (loan) {
+            noteBlockUI.start('Adding Note...');
+            $scope.note = {
+                committee: 1, //default commiitee to be replaced with
+                object_type: 'Loan',
+                object_id: loan.id,
+                content_type: '',
+                note: $scope.newNote.noteDescription,
+            };
+            return appFactory.getContentTypeId('note').then(function (data) {
+                $scope.note.content_type = data;
+                console.log($scope.note);
+                return $http.post('/api/committees/notes/', $scope.note).then(
+                    function () {
+                        toastr.success('Success', 'Note added succesfully.');
+                        $scope.loadNotes();
+
+                        $scope.newNote.noteDescription = '';
+                        noteBlockUI.stop();
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not create new record. Please contact System Administrator.'
+                        );
+                        noteBlockUI.stop();
+                    }
+                );
+            });
+        };
+
+
+
+
     });
 
     app.controller('DocumentAddController', function DocumentAddController(

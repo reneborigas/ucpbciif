@@ -11,4 +11,5 @@ admin.site.register(CreditLine)
 admin.site.register(Amortization)
 admin.site.register(AmortizationItem)
 admin.site.register(AmortizationStatus)
+admin.site.register(InterestRate)
   

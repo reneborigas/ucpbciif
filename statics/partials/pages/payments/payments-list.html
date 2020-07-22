@@ -35,14 +35,14 @@
                                         {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PRINCIPAL'" sortable="'amortizationItem_principal'">
-                                        {{ payment.amortizationItem_principal | currency :'₱'}}
+                                        {{ payment.principal | currency :'₱'}}
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'INTEREST'" sortable="'amortizationItem_interest'">
-                                        {{ payment.amortizationItem_interest | currency :'₱'}}
+                                        {{ payment.interest | currency :'₱'}}
                                 </td>
 
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TOTAL PAYABLE'" sortable="'amortizationItem_total'">
-                                        {{ payment.amortizationItem_total | currency :'₱'}}
+                                        {{ payment.totalToPay | currency :'₱'}}
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT DATE'" sortable="'datePayment'">
                                         {{ payment.datePayment | date: 'mediumDate' }}
@@ -60,7 +60,7 @@
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BANK ACCOUNY'" sortable="'bankAccount'">
                                         {{ payment.bankAccount }}
                                 </td>                  -->
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'balance'">
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BALANCE'" sortable="'balance'">
                                         {{ payment.balance | currency :'₱'}}
                                 </td>      
                                 

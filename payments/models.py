@@ -98,6 +98,20 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         related_name="payments",
     ) 
+
+    days = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+
+    principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    totalToPay = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    principalBalance = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+
+    
     cash = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
 
     check = models.DecimalField( max_digits=12, decimal_places=2,blank=False)

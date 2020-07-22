@@ -58,12 +58,16 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
             if (i  == (paidItems) ):
                 amortizationItem.principalBalance = loanAmount
                 amortizationItem.total =  lastPayment.total
-                  
+                amortizationItem.days =  lastPayment.days
+                amortizationItem.schedule = lastPayment.datePayment
+                amortizationItem.principal = lastPayment.principal
+                amortizationItem.interest = lastPayment.interest
+                
             amortizationItem.save()
-
+            schedule = lastPayment.datePayment
         else:
             if (loanAmount>0):
-                pmt = pmt.getPayment(loanAmount,loan.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (i-1))
+                pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (i-1))
 
                 
                 amortizationItem = AmortizationItem(
