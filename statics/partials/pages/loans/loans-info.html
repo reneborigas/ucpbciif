@@ -38,10 +38,9 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
                             <div class="mr-3">
                                 <div class="d-flex flex-wrap my-2">
-                                    <span class="text-muted font-weight-bold mr-2">Borrower :</span>
                                     <a
                                         href="#"
-                                        class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
+                                        class="text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
                                         ng-click="viewBorrower(loan.borrower)"
                                     >
                                         {{ loan.borrower_name }}
@@ -143,7 +142,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Interest Rate</span>
                             <span class="font-weight-bolder font-size-h5">
-                                {{ loan.interestRate }}
+                                {{ loan.interestRate_amount }}
                                 <span>%</span>
                             </span>
                         </div>
@@ -882,21 +881,21 @@
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_principal | currency :'₱'}}
+                                                {{ payment.principal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_interest | currency :'₱'}}
+                                                {{ payment.interest | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_total | currency :'₱'}}
+                                                {{ payment.totalToPay | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -1352,15 +1351,15 @@
                             ></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <a
+                            <button
                                 href="#"
                                 class="btn btn-light-primary font-weight-bold"
                                 ng-disabled="!newNote.noteDescription"
-                                ng-click="addNote(document)"
+                                ng-click="addNote(loan)"
                             >
                                 <i class="fal fa-plus mr-2"></i>
                                 Add Notes
-                            </a>
+                            </button>
                         </div>
                     </form>
                     <div class="separator separator-dashed my-10"></div>
