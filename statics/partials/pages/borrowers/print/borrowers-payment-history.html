@@ -1,0 +1,272 @@
+<div class="row" ng-controller="BorrowerPrintController">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
+                    <h2 class="text-uppercase">PAYMENT HISTORY AS OF {{ dateToday | date :'mediumDate' }}</h2>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="text-left">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="p-0 font-weight-bolder" width="25%">Account Name:</td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
+                                    <strong>{{ borrower.cooperativeName }}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 font-weight-bolder" width="25%">Address:</td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
+                                    {{ borrower.address}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0 font-weight-bolder" width="25%">Contact Person:</td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
+                                    {{ borrower.contactPersonName }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row p-0">
+            <div class="col-md-12">
+                <div class="table-responsive text-right">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr
+                                style="
+                                    border-bottom: 1pt solid #464e5f !important;
+                                    border-top: 1pt solid #464e5f !important;
+                                "
+                            >
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Loan
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Payment For
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Principal
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Interest
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Total Payable
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Payment Date
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Payment Type
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Total Payment
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Check No.
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Bank Account
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Balance
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Overpayment
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Date Tendered
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="payment in borrower.payments">
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            LN{{ payment.loan}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.principal | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.interest | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.totalToPay | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.datePayment | date: 'mediumDate' }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.paymentType_name }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.total | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.checkNo}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.bankAccount }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.balance | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.overPayment | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm">
+                                            {{ payment.dateCreated | date: 'mediumDate' }}
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr
+                                style="
+                                    border-bottom: 1pt solid #464e5f !important;
+                                    border-top: 1pt solid #464e5f !important;
+                                "
+                            >
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm font-weight-bolder text-uppercase">
+                                            Total
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="" colspan="6">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm font-weight-bolder">
+                                            {{ borrower.totalPayments | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="" colspan="5">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

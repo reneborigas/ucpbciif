@@ -13,7 +13,8 @@ angular
     .directive('button', cardCollapseDirective)
     .directive('button', minimizeMenuTogglerDirective)
     .directive('selectNgFiles', selectNgFiles)
-    .directive('price', price);
+    .directive('price', price)
+    .directive('pagination', pagination);
 
 function includeReplace() {
     var directive = {
@@ -359,5 +360,53 @@ function price($filter) {
             }
             return modelNum;
         }
+    }
+}
+
+function pagination() {
+    var directive = {
+        restrict: 'E',
+        transclude: 'true',
+        link: link,
+        templateUrl: 'statics/partials/customs/pagination-directive.html',
+        scope: {
+            data: '=',
+            pageSize: '=',
+            currentPage: '=currentpage',
+        },
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.currentPage = 0;
+
+        scope.pageRange = function () {
+            var pages = [];
+            var range = Math.ceil(scope.data.length / scope.pageSize);
+            for (var i = 1; i <= range; i++) {
+                pages.push(i);
+            }
+            return pages;
+        };
+
+        scope.gotoPrev = function () {
+            scope.currentPage--;
+        };
+
+        scope.gotoNext = function () {
+            scope.currentPage++;
+        };
+
+        scope.jumpToPage = function (n) {
+            scope.currentPage = n - 1;
+        };
+
+        scope.atStart = function () {
+            return scope.currentPage === 0;
+        };
+
+        scope.atEnd = function () {
+            return scope.currentPage >= scope.data.length / scope.pageSize - 1;
+        };
     }
 }

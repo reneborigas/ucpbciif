@@ -16,7 +16,7 @@ define(function () {
         $scope.tableLoans = new NgTableParams(
             {
                 page: 1,
-                count: 15,
+                count: 10,
             },
             {
                 counts: [10, 20, 30, 50, 100],
@@ -100,9 +100,7 @@ define(function () {
                                     console.log(data);
                                     $scope.windows = data;
                                     $scope.showAccomodations = true;
-                                    
                                 });
-
 
                                 $scope.loadNotes();
                             },
@@ -121,6 +119,26 @@ define(function () {
                     );
                 }
             );
+
+        $scope.loadAmortization = function (id) {
+            $http
+                .get('/api/loans/amortizations/', {
+                    params: { amortizationId: id },
+                })
+                .then(
+                    function (response) {
+                        $scope.currentAmortization = response.data[0];
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+
+            console.log($scope.currentAmortization);
+        };
 
         $scope.loadNotes = function () {
             return appFactory.getContentTypeId('note').then(function (data) {
@@ -145,55 +163,29 @@ define(function () {
             $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
         };
 
-        $scope.loadAmortization = function (id) {
-            $http
-                .get('/api/loans/amortizations/', {
-                    params: { amortizationId: id },
-                })
-                .then(
-                    function (response) {
-                        $scope.currentAmortization = response.data[0];
-                    },
-                    function (error) {
-                        toastr.error(
-                            'Error ' + error.status + ' ' + error.statusText,
-                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
-                        );
-                    }
-                );
+        $scope.previewPaymentHistory = function (id) {
+            $window.open('/print/loans/payment-history/' + id, '_blank', 'width=800,height=800');
+        };
 
-            console.log($scope.currentAmortization);
+        $scope.previewAmortizationHistory = function (id) {
+            $window.open('/print/loans/amortization-history/' + id, '_blank', 'width=800,height=800');
         };
 
         $scope.previewCheckRelease = function (id) {
             $window.open('/print/loans/check/' + id, '_blank', 'width=800,height=800');
         };
 
+        // -- Start Simple Pagination --
+        $scope.currentPage = {
+            notes: 0,
+        };
+
+        $scope.pageSize = {
+            notes: 5,
+        };
+        // -- End Simple Pagination --
+
         var noteBlockUI = blockUI.instances.get('noteBlockUI');
-
-        $scope.currentPageNote = 0;
-        $scope.pageSizeNote = 5;
-
-        $scope.pageRangeNote = function (size) {
-            var pages = [];
-            var range = Math.ceil(size / $scope.pageSizeNote);
-            for (var i = 1; i <= range; i++) {
-                pages.push(i);
-            }
-            return pages;
-        };
-
-        $scope.gotoPrevNote = function () {
-            $scope.currentPageNote--;
-        };
-
-        $scope.gotoNextNote = function () {
-            $scope.currentPageNote++;
-        };
-
-        $scope.jumpToPageNote = function (n) {
-            $scope.currentPageNote = n - 1;
-        };
 
         $scope.newNote = {
             noteDescription: '',
@@ -229,55 +221,51 @@ define(function () {
                 );
             });
         };
-
-
-
-
     });
 
-    app.controller('DocumentAddController', function DocumentAddController(
-        $http,
-        $filter,
-        $scope,
-        toastr,
-        NgTableParams,
-        $state,
-        $timeout
-    ) {
-        $scope.loan = {
-            loanName: '',
-            loanAmount: '',
-            borrower: '',
-        };
+    // app.controller('DocumentAddController', function DocumentAddController(
+    //     $http,
+    //     $filter,
+    //     $scope,
+    //     toastr,
+    //     NgTableParams,
+    //     $state,
+    //     $timeout
+    // ) {
+    //     $scope.loan = {
+    //         loanName: '',
+    //         loanAmount: '',
+    //         borrower: '',
+    //     };
 
-        $scope.save = function () {
-            swal({
-                title: 'Create Document',
-                text: 'Do you want to save and create this loan?',
-                icon: 'info',
-                buttons: {
-                    cancel: true,
-                    confirm: 'Create',
-                },
-            }).then((isConfirm) => {
-                if (isConfirm) {
-                    $http.post('/api/documents/documents/', $scope.loan).then(
-                        function () {
-                            toastr.success('Success', 'New loan created.');
-                            swal('Success!', 'New Borrower Created.', 'success');
-                            $state.go('app.documents.list');
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not create new record. Please contact System Administrator.'
-                            );
-                        }
-                    );
-                }
-            });
-        };
-    });
+    //     $scope.save = function () {
+    //         swal({
+    //             title: 'Create Document',
+    //             text: 'Do you want to save and create this loan?',
+    //             icon: 'info',
+    //             buttons: {
+    //                 cancel: true,
+    //                 confirm: 'Create',
+    //             },
+    //         }).then((isConfirm) => {
+    //             if (isConfirm) {
+    //                 $http.post('/api/documents/documents/', $scope.loan).then(
+    //                     function () {
+    //                         toastr.success('Success', 'New loan created.');
+    //                         swal('Success!', 'New Borrower Created.', 'success');
+    //                         $state.go('app.documents.list');
+    //                     },
+    //                     function (error) {
+    //                         toastr.error(
+    //                             'Error ' + error.status + ' ' + error.statusText,
+    //                             'Could not create new record. Please contact System Administrator.'
+    //                         );
+    //                     }
+    //                 );
+    //             }
+    //         });
+    //     };
+    // });
 
     app.controller('LoanReleasePrintController', function LoanReleasePrintController(
         $http,
@@ -418,7 +406,94 @@ define(function () {
             );
     });
 
-    app.controller('AmortizationSchedulePrintController', function DocumentAmortizationSchedulePrintController(
+    app.controller('AmortizationHistoryPrintController', function AmortizationHistoryPrintController(
+        $http,
+        $filter,
+        $scope,
+        toastr,
+        NgTableParams,
+        $state,
+        $timeout,
+        appFactory,
+        $window
+    ) {
+        $scope.dateToday = new Date();
+        $http
+            .get('/api/loans/loans/', {
+                params: { loanId: $scope.loanId },
+            })
+            .then(
+                function (response) {
+                    $scope.loan = response.data[0];
+                    $http
+                        .get('/api/borrowers/borrowers/', {
+                            params: { borrowerId: $scope.loan.borrower },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.borrower = response.data[0];
+
+                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                    console.log(data);
+                                    $scope.windows = data;
+                                });
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
+
+                    $http
+                        .get('/api/loans/loans/', {
+                            params: { borrowerId: $scope.loan.borrower, status: 'RELEASED' },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.loans = response.data;
+
+                                // $timeout(function () {
+                                //     $window.print();
+                                // }, 500);
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Loans Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Loan Information. Please contact System Administrator.'
+                    );
+                }
+            );
+
+        $scope.loadAmortization = function (id) {
+            $http
+                .get('/api/loans/amortizations/', {
+                    params: { amortizationId: id },
+                })
+                .then(
+                    function (response) {},
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+
+            console.log($scope.currentAmortization);
+        };
+    });
+
+    app.controller('AmortizationSchedulePrintController', function AmortizationSchedulePrintController(
         $http,
         $filter,
         $scope,

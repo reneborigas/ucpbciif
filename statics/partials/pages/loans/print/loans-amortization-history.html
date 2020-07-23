@@ -1,0 +1,340 @@
+<div class="row" ng-controller="AmortizationHistoryPrintController">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
+                    <h2>HEAD OFFICE</h2>
+                    <h2>MAKATI CITY</h2>
+                </div>
+            </div>
+            <div class="col-md-12 my-4" style="border-bottom: 1pt solid #464e5f !important;">
+                <div class="text-center">
+                    <h4>Amortization History</h4>
+                </div>
+            </div>
+            <div class="col-md-12" style="border-bottom: 1pt solid #464e5f !important;">
+                <div class="text-left">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="p-0">Borrower Name:</td>
+                                <td class="p-0" colspan="4">
+                                    <strong>{{ loan.borrower_name }}</strong>
+                                </td>
+                                <td class="p-0">Emp No:</td>
+                                <td class="p-0" colspan="2">
+                                    {{}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0" rowspan="2">Address:</td>
+                                <td class="p-0" rowspan="2" colspan="4">
+                                    <strong>{{ borrower.address }}</strong>
+                                </td>
+                                <td class="p-0">Granted:</td>
+                                <td class="p-0" colspan="2">
+                                    {{ loan.creditLine_dateApproved | date: 'mediumDate' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0">Maturity:</td>
+                                <td class="p-0" colspan="2">
+                                    {{ loan.creditLine_dateExpired | date: 'mediumDate' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0">PN No./Loan No.:</td>
+                                <td class="p-0" colspan="2">
+                                    {{ loan.id}}
+                                </td>
+                                <td class="p-0">Kind of Loan:</td>
+                                <td class="p-0">
+                                    {{ loan.loanProgram_name }}
+                                </td>
+                                <td class="p-0">Province:</td>
+                                <td class="p-0" colspan="2">
+                                    {{}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0">Amount of Loan:</td>
+                                <td class="p-0" colspan="2">
+                                    {{ loan.amount | currency :'₱'}}
+                                </td>
+                                <td class="p-0">Loan Term:</td>
+                                <td class="p-0">
+                                    {{ loan.term.days }} days
+                                </td>
+                                <td class="p-0">Mode of Payment:</td>
+                                <td class="p-0">
+                                    {{loan.term.paymentPeriod.name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-0" width="10%">Interest Amount:</td>
+                                <td class="p-0">
+                                    0.00
+                                </td>
+                                <td class="p-0" width="10%">Adv Interest:</td>
+                                <td class="p-0">
+                                    0.00
+                                </td>
+                                <td class="p-0" width="10%">Interest Rate:</td>
+                                <td class="p-0">
+                                    {{ loan.interestRate_amount }}
+                                </td>
+                                <td class="p-0" width="10%">S/A #:</td>
+                                <td class="p-0">
+                                    {{}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row p-0 pt-12" ng-repeat="amortization in loan.amortizations">
+            <div class="col-md-12">
+                <div class="table-responsive text-right">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="text-left">
+                                <td class="p-0" colspan="8">
+                                    Amortization #{{$index + 1}} on {{ amortization.dateCreated | date :"mediumDate" }}
+                                </td>
+                            </tr>
+                            <tr
+                                style="
+                                    border-bottom: 1pt solid #464e5f !important;
+                                    border-top: 1pt solid #464e5f !important;
+                                "
+                            >
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            No.
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            Schedule
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            Days
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            Principal
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            Interest
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            VAT
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            Total Amortization
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                            Principal Balance
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            0
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ loan.latestAmortization.dateReleased | date: 'mediumDate' }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ loan.amount | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="item in amortization.amortizationItems">
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{$index+1}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ item.schedule | date: 'mediumDate' }}
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ item.days}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ item.principal | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ item.interest | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ item.vat | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ item.total | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75">
+                                            {{ item.principalBalance | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr
+                                style="
+                                    border-bottom: 1pt solid #464e5f !important;
+                                    border-top: 1pt solid #464e5f !important;
+                                "
+                            >
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
+                                            Total
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-weight-bolder">
+                                            {{ loan.amount | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-weight-bolder">
+                                            {{ amortization.totalAmortizationInterest | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -101,10 +101,10 @@ define(function () {
                         amortization: $scope.loan.latestAmortization.id,
                         amortizationItem: $scope.loan.currentAmortizationItem.id,
                         principal: '0',
-                        days:'0',
+                        days: '0',
                         interest: '0',
-                        totalToPay: '0', 
-                        principalBalance:'0',
+                        totalToPay: '0',
+                        principalBalance: '0',
                         check: '0',
                         cash: '0',
                         total: '0',
@@ -124,35 +124,46 @@ define(function () {
                         'payment.datePayment',
                         function (newTerm, oldTerm) {
                             console.log($scope.payment.loan);
-                            console.log(new Date( $scope.loan.currentAmortizationItem.schedule).toLocaleDateString());
-                            $http.post('/api/processes/calculatepmt/', { params: { datePayment:  newTerm.toLocaleDateString(),loanId: $scope.payment.loan
-                                 , dateSchedule :  new Date($scope.loan.currentAmortizationItem.schedule).toLocaleDateString() } }).then(
-                                function (response) {
-                                    console.log( response.data);
-                                    $scope.newAmortization = response.data;
-                                   
-                                    $scope.payment.days = $scope.newAmortization.days;
-                                    $scope.payment.principal = $scope.newAmortization.principal;
-                                    $scope.payment.interest = $scope.newAmortization.interest;
-                                    $scope.payment.totalToPay = $scope.newAmortization.totalToPay;
-                                    $scope.payment.principalBalance = $scope.newAmortization.principalBalance;
+                            console.log(new Date($scope.loan.currentAmortizationItem.schedule).toLocaleDateString());
+                            $http
+                                .post('/api/processes/calculatepmt/', {
+                                    params: {
+                                        datePayment: newTerm.toLocaleDateString(),
+                                        loanId: $scope.payment.loan,
+                                        dateSchedule: new Date(
+                                            $scope.loan.currentAmortizationItem.schedule
+                                        ).toLocaleDateString(),
+                                    },
+                                })
+                                .then(
+                                    function (response) {
+                                        console.log(response.data);
+                                        $scope.newAmortization = response.data;
 
+                                        $scope.payment.days = $scope.newAmortization.days;
+                                        $scope.payment.principal = $scope.newAmortization.principal;
+                                        $scope.payment.interest = $scope.newAmortization.interest;
+                                        $scope.payment.totalToPay = $scope.newAmortization.totalToPay;
+                                        $scope.payment.principalBalance = $scope.newAmortization.principalBalance;
 
-                                    $scope.payment.total = parseFloat($scope.payment.cash) + parseFloat($scope.payment.check) + parseFloat($scope.payment.interestPayment);
-                                    $scope.payment.total = parseFloat($scope.payment.total);
-                                    $scope.payment.balance = $scope.getBalance();
-                                    $scope.payment.overPayment = $scope.getOverPayment();
-                                    $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
-                        
-                                  
-                                },
-                                function (error) {
-                                    toastr.error(
-                                        'Error ' + error.status + error.statusText,
-                                        'Could not calculate amortization. Please contact System Administrator.'
-                                    );
-                                }
-                            );
+                                        $scope.payment.total =
+                                            parseFloat($scope.payment.cash) +
+                                            parseFloat($scope.payment.check) +
+                                            parseFloat($scope.payment.interestPayment);
+                                        $scope.payment.total = parseFloat($scope.payment.total);
+                                        $scope.payment.balance = $scope.getBalance();
+                                        $scope.payment.overPayment = $scope.getOverPayment();
+                                        $scope.payment.outStandingBalance = parseFloat(
+                                            $scope.getOutStandingBalance()
+                                        ).toFixed(2);
+                                    },
+                                    function (error) {
+                                        toastr.error(
+                                            'Error ' + error.status + error.statusText,
+                                            'Could not calculate amortization. Please contact System Administrator.'
+                                        );
+                                    }
+                                );
                         },
                         true
                     );
@@ -160,24 +171,31 @@ define(function () {
                     $scope.$watch(
                         'payment.cash',
                         function (newTerm, oldTerm) {
-                            $scope.payment.total = parseFloat($scope.payment.cash) +  parseFloat($scope.payment.interestPayment) + parseFloat($scope.payment.check);
+                            $scope.payment.total =
+                                parseFloat($scope.payment.cash) +
+                                parseFloat($scope.payment.interestPayment) +
+                                parseFloat($scope.payment.check);
                         },
                         true
                     );
                     $scope.$watch(
                         'payment.check',
                         function (newTerm, oldTerm) {
-                            $scope.payment.total = parseFloat($scope.payment.cash) +  parseFloat($scope.payment.interestPayment) + parseFloat($scope.payment.check);
+                            $scope.payment.total =
+                                parseFloat($scope.payment.cash) +
+                                parseFloat($scope.payment.interestPayment) +
+                                parseFloat($scope.payment.check);
                         },
                         true
                     );
-                    
+
                     $scope.$watch(
                         'payment.interestPayment',
                         function (newTerm, oldTerm) {
-
-                            $scope.payment.total = parseFloat($scope.payment.cash) +  parseFloat($scope.payment.interestPayment) + parseFloat($scope.payment.check);
-                          
+                            $scope.payment.total =
+                                parseFloat($scope.payment.cash) +
+                                parseFloat($scope.payment.interestPayment) +
+                                parseFloat($scope.payment.check);
                         },
                         true
                     );
@@ -188,7 +206,7 @@ define(function () {
                             console.log(newTerm);
                             $scope.payment.balance = $scope.getBalance();
                             $scope.payment.overPayment = $scope.getOverPayment();
-                            $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2); 
+                            $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
 
                             console.log($scope.payment.outStandingBalance);
                         },
@@ -220,8 +238,6 @@ define(function () {
                         },
                         true
                     );
-
-                    
 
                     $http
                         .get('/api/borrowers/borrowers/', {
@@ -269,8 +285,8 @@ define(function () {
         $scope.getOutStandingBalance = function () {
             console.log(parseFloat($scope.payment.total));
             console.log(parseFloat($scope.payment.totalToPay));
-            if( $scope.getOverPayment().toFixed(2) >=1){
-            // if (parseFloat($scope.payment.total).toFixed(2) > parseFloat($scope.payment.totalToPay).toFixed(2)) {
+            if ($scope.getOverPayment().toFixed(2) >= 1) {
+                // if (parseFloat($scope.payment.total).toFixed(2) > parseFloat($scope.payment.totalToPay).toFixed(2)) {
                 return (
                     parseFloat($scope.payment.principalBalance) +
                     parseFloat($scope.payment.principal) -
@@ -289,12 +305,15 @@ define(function () {
         };
         // + parseFloat($scope.loan.currentAmortizationItem.interest)
         $scope.save = function () {
-            $scope.payment.total = parseFloat($scope.payment.cash) + parseFloat($scope.payment.check) + parseFloat($scope.payment.interestPayment);
-            $scope.payment.total = parseFloat($scope.payment.total).toFixed(2)
+            $scope.payment.total =
+                parseFloat($scope.payment.cash) +
+                parseFloat($scope.payment.check) +
+                parseFloat($scope.payment.interestPayment);
+            $scope.payment.total = parseFloat($scope.payment.total).toFixed(2);
             $scope.payment.balance = parseFloat($scope.getBalance()).toFixed(2);
             $scope.payment.overPayment = parseFloat($scope.getOverPayment()).toFixed(2);
             $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
-            $scope.payment.interest =  parseFloat($scope.payment.interest).toFixed(2);
+            $scope.payment.interest = parseFloat($scope.payment.interest).toFixed(2);
             $scope.payment.principalBalance = parseFloat($scope.payment.principalBalance).toFixed(2);
             $scope.payment.principal = parseFloat($scope.payment.principal).toFixed(2);
             $scope.payment.totalToPay = parseFloat($scope.payment.totalToPay).toFixed(2);
@@ -336,7 +355,7 @@ define(function () {
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };
-        
+
         $scope.previewLoanRelease = function (id) {
             $window.open('/print/files/' + id, '_blank', 'width=800,height=800');
         };
@@ -344,59 +363,55 @@ define(function () {
         $scope.previewAmortizationSchedule = function (id) {
             $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
         };
-        
+
         $scope.cancel = function (id) {
             $state.go('app.loans.info', { loanId: id });
         };
-
-
-
-        
     });
 
-    app.controller('DocumentAddController', function DocumentAddController(
-        $http,
-        $filter,
-        $scope,
-        toastr,
-        NgTableParams,
-        $state,
-        $timeout
-    ) {
-        $scope.loan = {
-            loanName: '',
-            loanAmount: '',
-            borrower: '',
-        };
+    // app.controller('DocumentAddController', function DocumentAddController(
+    //     $http,
+    //     $filter,
+    //     $scope,
+    //     toastr,
+    //     NgTableParams,
+    //     $state,
+    //     $timeout
+    // ) {
+    //     $scope.loan = {
+    //         loanName: '',
+    //         loanAmount: '',
+    //         borrower: '',
+    //     };
 
-        $scope.save = function () {
-            swal({
-                title: 'Create Document',
-                text: 'Do you want to save and create this loan?',
-                icon: 'info',
-                buttons: {
-                    cancel: true,
-                    confirm: 'Create',
-                },
-            }).then((isConfirm) => {
-                if (isConfirm) {
-                    $http.post('/api/documents/documents/', $scope.loan).then(
-                        function () {
-                            toastr.success('Success', 'New loan created.');
-                            swal('Success!', 'New Borrower Created.', 'success');
-                            $state.go('app.documents.list');
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not create new record. Please contact System Administrator.'
-                            );
-                        }
-                    );
-                }
-            });
-        };
-    });
+    //     $scope.save = function () {
+    //         swal({
+    //             title: 'Create Document',
+    //             text: 'Do you want to save and create this loan?',
+    //             icon: 'info',
+    //             buttons: {
+    //                 cancel: true,
+    //                 confirm: 'Create',
+    //             },
+    //         }).then((isConfirm) => {
+    //             if (isConfirm) {
+    //                 $http.post('/api/documents/documents/', $scope.loan).then(
+    //                     function () {
+    //                         toastr.success('Success', 'New loan created.');
+    //                         swal('Success!', 'New Borrower Created.', 'success');
+    //                         $state.go('app.documents.list');
+    //                     },
+    //                     function (error) {
+    //                         toastr.error(
+    //                             'Error ' + error.status + ' ' + error.statusText,
+    //                             'Could not create new record. Please contact System Administrator.'
+    //                         );
+    //                     }
+    //                 );
+    //             }
+    //         });
+    //     };
+    // });
 
     app.controller('LoanReleasePrintController', function LoanReleasePrintController(
         $http,

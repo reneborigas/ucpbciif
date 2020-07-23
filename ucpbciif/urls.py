@@ -64,8 +64,14 @@ urlpatterns = [
     path('400', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     #print
+    path('print/borrowers/loans/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('print/borrowers/payment-history/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('print/borrowers/outstanding-obligations/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+
     path('print/files/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('print/files/amortization/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('print/loans/amortization-history/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('print/loans/payment-history/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('print/loans/check/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     # App Urls

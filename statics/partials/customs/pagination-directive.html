@@ -1,0 +1,29 @@
+<div class="d-flex justify-content-center align-items-center flex-wrap" ng-if="pageRange().length > 1">
+    <div class="d-flex flex-wrap py-2 mr-3">
+        <button
+            href="#"
+            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+            ng-disabled="atStart()"
+            ng-click="gotoPrev()"
+        >
+            <i class="fas fa-chevron-left icon-sm"></i>
+        </button>
+        <button
+            href="#"
+            class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
+            ng-class="{ 'active' : n == currentPage + 1 }"
+            ng-repeat="n in pageRange()"
+            ng-click="jumpToPage(n)"
+        >
+            <small>{{n}}</small>
+        </button>
+        <button
+            href="#"
+            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+            ng-disabled="atEnd()"
+            ng-click="gotoNext()"
+        >
+            <i class="fas fa-chevron-right icon-sm"></i>
+        </button>
+    </div>
+</div>

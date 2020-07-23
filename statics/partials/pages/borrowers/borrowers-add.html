@@ -2,16 +2,21 @@
     <div class="row">
         <div class="col">
             <div class="card card-transparent card-custom" ng-controller="BorrowerAddController">
-                <div class="card-body p-0">
+                <div class="card-body p-0" block-ui="borrowerBlockUI">
                     <div class="wizard">
                         <div class="wizard-nav">
                             <div class="wizard-steps">
-                                <div class="wizard-step" ng-repeat="step in steps" ng-class="{'active':step.step == currentStep}" ng-click="goToStep(step.step)">
+                                <div
+                                    class="wizard-step"
+                                    ng-repeat="step in steps"
+                                    ng-class="{'active':step.step == currentStep}"
+                                    ng-click="goToStep(step.step)"
+                                >
                                     <div class="wizard-wrapper">
                                         <div class="wizard-number">{{ step.step }}</div>
                                         <div class="wizard-label">
                                             <div class="wizard-title">{{ step.name }}</div>
-                                            <div class="wizard-desc">{{ step.desc }} </div>
+                                            <div class="wizard-desc">{{ step.desc }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -21,22 +26,38 @@
                             <div class="card-body p-0">
                                 <div class="row justify-content-center p-5">
                                     <div class="col" ng-switch="step">
-                                        <form class="form mt-0" name="wizardForm">
+                                        <form class="form mt-0" name="form.wizardForm">
                                             <ng-include src="getStepTemplate()"></ng-include>
                                             <div class="d-flex justify-content-between border-top mt-5 pt-5">
                                                 <div class="mr-2">
-                                                    <button class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3" ui-sref="app.borrowers.list">
+                                                    <button
+                                                        class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
+                                                        ui-sref="app.borrowers.list"
+                                                    >
                                                         Cancel
                                                     </button>
-                                                    <button class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3" ng-click="prevStep()" ng-hide="currentStep == '1'">
+                                                    <button
+                                                        class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
+                                                        ng-click="prevStep()"
+                                                        ng-hide="currentStep == '1'"
+                                                    >
                                                         Previous
                                                     </button>
                                                 </div>
                                                 <div>
-                                                    <button class="btn btn-success text-uppercase p-2 pl-3 pr-3" ng-disabled="true" ng-hide="currentStep == '1'">
+                                                    <button
+                                                        class="btn btn-success text-uppercase p-2 pl-3 pr-3"
+                                                        ng-disabled="checkForm()"
+                                                        ng-hide="currentStep == '1'"
+                                                        ng-click="save()"
+                                                    >
                                                         Submit
                                                     </button>
-                                                    <button class="btn btn-primary text-uppercase p-2 pl-3 pr-3" ng-click="nextStep()" ng-hide="currentStep == '4'">
+                                                    <button
+                                                        class="btn btn-primary text-uppercase p-2 pl-3 pr-3"
+                                                        ng-click="nextStep()"
+                                                        ng-hide="currentStep == '4'"
+                                                    >
                                                         Next Step
                                                     </button>
                                                 </div>
@@ -48,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-            </div>        
+            </div>
         </div>
     </div>
 </div>

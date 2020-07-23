@@ -16,7 +16,7 @@ define(function () {
         $scope.tableDocuments = new NgTableParams(
             {
                 page: 1,
-                count: 15,
+                count: 10,
             },
             {
                 counts: [10, 20, 30, 50, 100],
@@ -473,31 +473,19 @@ define(function () {
             });
         };
 
+        // -- Start Simple Pagination --
+        $scope.currentPage = {
+            attachments: 0,
+            notes: 0,
+        };
+
+        $scope.pageSize = {
+            attachments: 5,
+            notes: 5,
+        };
+        // -- End Simple Pagination --
+
         var attachmentBlockUI = blockUI.instances.get('attachmentBlockUI');
-
-        $scope.currentPageAttachment = 0;
-        $scope.pageSizeAttachment = 5;
-
-        $scope.pageRangeAttachment = function (size) {
-            var pages = [];
-            var range = Math.ceil(size / $scope.pageSizeAttachment);
-            for (var i = 1; i <= range; i++) {
-                pages.push(i);
-            }
-            return pages;
-        };
-
-        $scope.gotoPrevAttachment = function () {
-            $scope.currentPageAttachment--;
-        };
-
-        $scope.gotoNextAttachment = function () {
-            $scope.currentPageAttachment++;
-        };
-
-        $scope.jumpToPageAttachment = function (n) {
-            $scope.currentPageAttachment = n - 1;
-        };
 
         $scope.fileAttachment = {
             attachment: [],
@@ -600,30 +588,6 @@ define(function () {
         };
 
         var noteBlockUI = blockUI.instances.get('noteBlockUI');
-
-        $scope.currentPageNote = 0;
-        $scope.pageSizeNote = 5;
-
-        $scope.pageRangeNote = function (size) {
-            var pages = [];
-            var range = Math.ceil(size / $scope.pageSizeNote);
-            for (var i = 1; i <= range; i++) {
-                pages.push(i);
-            }
-            return pages;
-        };
-
-        $scope.gotoPrevNote = function () {
-            $scope.currentPageNote--;
-        };
-
-        $scope.gotoNextNote = function () {
-            $scope.currentPageNote++;
-        };
-
-        $scope.jumpToPageNote = function (n) {
-            $scope.currentPageNote = n - 1;
-        };
 
         $scope.newNote = {
             noteDescription: '',

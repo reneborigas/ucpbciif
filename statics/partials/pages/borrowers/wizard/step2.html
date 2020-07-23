@@ -4,25 +4,67 @@
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="initialMembershipSize">Initial Membership Size</label>
-                <input type="number" min="0" class="form-control" id="initialMembershipSize" name="initialMembershipSize" ng-model="cooperative.initialMembershipSize"
-                ng-class="{'is-invalid' : wizardForm.initialMembershipSize.$invalid && wizardForm.initialMembershipSize.$touched, 'is-valid' : wizardForm.initialMembershipSize.$valid && wizardForm.initialMembershipSize.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.initialMembershipSize.$touched && wizardForm.initialMembershipSize.$invalid">Please enter Initial Membership Size.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="initialMembershipSize"
+                    name="initialMembershipSize"
+                    ng-model="cooperative.initialMembershipSize"
+                    ng-class="{'is-invalid' : form.wizardForm.initialMembershipSize.$invalid && form.wizardForm.initialMembershipSize.$touched, 'is-valid' : form.wizardForm.initialMembershipSize.$valid && form.wizardForm.initialMembershipSize.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.initialMembershipSize.$touched && form.wizardForm.initialMembershipSize.$invalid"
+                >
+                    Please enter Initial Membership Size.
+                </span>
             </div>
         </div>
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="membershipSize">Current Membership Size</label>
-                <input type="number" min="0" class="form-control" id="membershipSize" name="membershipSize" ng-model="cooperative.membershipSize"
-                ng-class="{'is-invalid' : wizardForm.membershipSize.$invalid && wizardForm.membershipSize.$touched, 'is-valid' : wizardForm.membershipSize.$valid && wizardForm.membershipSize.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.membershipSize.$touched && wizardForm.membershipSize.$invalid">Please enter Current Membership Size.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="membershipSize"
+                    name="membershipSize"
+                    ng-model="cooperative.membershipSize"
+                    ng-class="{'is-invalid' : form.wizardForm.membershipSize.$invalid && form.wizardForm.membershipSize.$touched, 'is-valid' : form.wizardForm.membershipSize.$valid && form.wizardForm.membershipSize.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.membershipSize.$touched && form.wizardForm.membershipSize.$invalid"
+                >
+                    Please enter Current Membership Size.
+                </span>
             </div>
         </div>
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="noOfCooperators">Number of Cooperators</label>
-                <input type="number" min="0" class="form-control" id="noOfCooperators" name="noOfCooperators" ng-model="cooperative.noOfCooperators"
-                ng-class="{'is-invalid' : wizardForm.noOfCooperators.$invalid && wizardForm.noOfCooperators.$touched, 'is-valid' : wizardForm.noOfCooperators.$valid && wizardForm.noOfCooperators.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.noOfCooperators.$touched && wizardForm.noOfCooperators.$invalid">Please enter Number of Cooperators.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="noOfCooperators"
+                    name="noOfCooperators"
+                    ng-model="cooperative.noOfCooperators"
+                    ng-class="{'is-invalid' : form.wizardForm.noOfCooperators.$invalid && form.wizardForm.noOfCooperators.$touched, 'is-valid' : form.wizardForm.noOfCooperators.$valid && form.wizardForm.noOfCooperators.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.noOfCooperators.$touched && form.wizardForm.noOfCooperators.$invalid"
+                >
+                    Please enter Number of Cooperators.
+                </span>
             </div>
         </div>
     </div>
@@ -30,25 +72,64 @@
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="cdaRegistrationDate">CDA Registration Date</label>
-                <input type="date" class="form-control" id="cdaRegistrationDate" name="cdaRegistrationDate" ng-model="cooperative.cdaRegistrationDate"
-                ng-class="{'is-invalid' : wizardForm.cdaRegistrationDate.$invalid && wizardForm.cdaRegistrationDate.$touched, 'is-valid' : wizardForm.cdaRegistrationDate.$valid && wizardForm.cdaRegistrationDate.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.cdaRegistrationDate.$touched && wizardForm.cdaRegistrationDate.$invalid">Please enter CDA Registration Date.</span>
+                <input
+                    type="date"
+                    class="form-control"
+                    id="cdaRegistrationDate"
+                    name="cdaRegistrationDate"
+                    ng-model="cooperative.cdaRegistrationDate"
+                    ng-class="{'is-invalid' : form.wizardForm.cdaRegistrationDate.$invalid && form.wizardForm.cdaRegistrationDate.$touched, 'is-valid' : form.wizardForm.cdaRegistrationDate.$valid && form.wizardForm.cdaRegistrationDate.$touched }"
+                    required
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.cdaRegistrationDate.$touched && form.wizardForm.cdaRegistrationDate.$invalid"
+                >
+                    Please enter CDA Registration Date.
+                </span>
             </div>
         </div>
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="icRiskRating">IC Risk Rating</label>
-                <input type="text" class="form-control" id="icRiskRating" name="icRiskRating" ng-model="cooperative.icRiskRating"
-                ng-class="{'is-invalid' : wizardForm.icRiskRating.$invalid && wizardForm.icRiskRating.$touched, 'is-valid' : wizardForm.icRiskRating.$valid && wizardForm.icRiskRating.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.icRiskRating.$touched && wizardForm.icRiskRating.$invalid">Please enter IC Risk Rating.</span>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="icRiskRating"
+                    name="icRiskRating"
+                    ng-model="cooperative.icRiskRating"
+                    ng-class="{'is-invalid' : form.wizardForm.icRiskRating.$invalid && form.wizardForm.icRiskRating.$touched, 'is-valid' : form.wizardForm.icRiskRating.$valid && form.wizardForm.icRiskRating.$touched }"
+                    required
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.icRiskRating.$touched && form.wizardForm.icRiskRating.$invalid"
+                >
+                    Please enter IC Risk Rating.
+                </span>
             </div>
         </div>
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="paidUpCapitalInitial">Initial Paid Up Capital</label>
-                <input type="number" min="0" step=".01" class="form-control" id="paidUpCapitalInitial" name="paidUpCapitalInitial" ng-model="cooperative.paidUpCapitalInitial"
-                ng-class="{'is-invalid' : wizardForm.paidUpCapitalInitial.$invalid && wizardForm.paidUpCapitalInitial.$touched, 'is-valid' : wizardForm.paidUpCapitalInitial.$valid && wizardForm.paidUpCapitalInitial.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.paidUpCapitalInitial.$touched && wizardForm.paidUpCapitalInitial.$invalid">Please enter Initial Paid Up Capital.</span>
+                <input
+                    type="text"
+                    min="0"
+                    step=".01"
+                    class="form-control"
+                    id="paidUpCapitalInitial"
+                    name="paidUpCapitalInitial"
+                    ng-model="cooperative.paidUpCapitalInitial"
+                    ng-class="{'is-invalid' : form.wizardForm.paidUpCapitalInitial.$invalid && form.wizardForm.paidUpCapitalInitial.$touched, 'is-valid' : form.wizardForm.paidUpCapitalInitial.$valid && form.wizardForm.paidUpCapitalInitial.$touched }"
+                    price
+                    required
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.paidUpCapitalInitial.$touched && form.wizardForm.paidUpCapitalInitial.$invalid"
+                >
+                    Please enter Initial Paid Up Capital.
+                </span>
             </div>
         </div>
     </div>
@@ -56,17 +137,46 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="coconutFarmers">Coconut Farmer</label>
-                <input type="number" min="0" class="form-control" id="coconutFarmers" name="coconutFarmers" ng-model="cooperative.coconutFarmers"
-                ng-class="{'is-invalid' : wizardForm.coconutFarmers.$invalid && wizardForm.coconutFarmers.$touched, 'is-valid' : wizardForm.coconutFarmers.$valid && wizardForm.coconutFarmers.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.coconutFarmers.$touched && wizardForm.coconutFarmers.$invalid">Please enter Coconut Farmer.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="coconutFarmers"
+                    name="coconutFarmers"
+                    ng-model="cooperative.coconutFarmers"
+                    ng-class="{'is-invalid' : form.wizardForm.coconutFarmers.$invalid && form.wizardForm.coconutFarmers.$touched, 'is-valid' : form.wizardForm.coconutFarmers.$valid && form.wizardForm.coconutFarmers.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.coconutFarmers.$touched && form.wizardForm.coconutFarmers.$invalid"
+                >
+                    Please enter Coconut Farmer.
+                </span>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="authorized">Authorized</label>
-                <input type="number" min="0" step=".01" class="form-control" id="authorized" name="authorized" ng-model="cooperative.authorized"
-                ng-class="{'is-invalid' : wizardForm.authorized.$invalid && wizardForm.authorized.$touched, 'is-valid' : wizardForm.authorized.$valid && wizardForm.authorized.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.authorized.$touched && wizardForm.authorized.$invalid">Please enter Authorized.</span>
+                <input
+                    type="text"
+                    min="0"
+                    step=".01"
+                    class="form-control"
+                    id="authorized"
+                    name="authorized"
+                    ng-model="cooperative.authorized"
+                    ng-class="{'is-invalid' : form.wizardForm.authorized.$invalid && form.wizardForm.authorized.$touched, 'is-valid' : form.wizardForm.authorized.$valid && form.wizardForm.authorized.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.authorized.$touched && form.wizardForm.authorized.$invalid"
+                >
+                    Please enter Authorized.
+                </span>
             </div>
         </div>
     </div>
@@ -74,17 +184,45 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="fullyPaidSharesNo">Fully Paid Shares No</label>
-                <input type="number" min="0" class="form-control" id="fullyPaidSharesNo" name="fullyPaidSharesNo" ng-model="cooperative.fullyPaidSharesNo"
-                ng-class="{'is-invalid' : wizardForm.fullyPaidSharesNo.$invalid && wizardForm.fullyPaidSharesNo.$touched, 'is-valid' : wizardForm.fullyPaidSharesNo.$valid && wizardForm.fullyPaidSharesNo.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.fullyPaidSharesNo.$touched && wizardForm.fullyPaidSharesNo.$invalid">Please enter Fully Paid Shares No.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="fullyPaidSharesNo"
+                    name="fullyPaidSharesNo"
+                    ng-model="cooperative.fullyPaidSharesNo"
+                    ng-class="{'is-invalid' : form.wizardForm.fullyPaidSharesNo.$invalid && form.wizardForm.fullyPaidSharesNo.$touched, 'is-valid' : form.wizardForm.fullyPaidSharesNo.$valid && form.wizardForm.fullyPaidSharesNo.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.fullyPaidSharesNo.$touched && form.wizardForm.fullyPaidSharesNo.$invalid"
+                >
+                    Please enter Fully Paid Shares No.
+                </span>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="bookValue">Book Value</label>
-                <input type="number" min="0" class="form-control" id="bookValue" name="bookValue" ng-model="cooperative.bookValue"
-                ng-class="{'is-invalid' : wizardForm.bookValue.$invalid && wizardForm.bookValue.$touched, 'is-valid' : wizardForm.bookValue.$valid && wizardForm.bookValue.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.bookValue.$touched && wizardForm.bookValue.$invalid">Please enter Book Value.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="bookValue"
+                    name="bookValue"
+                    ng-model="cooperative.bookValue"
+                    ng-class="{'is-invalid' : form.wizardForm.bookValue.$invalid && form.wizardForm.bookValue.$touched, 'is-valid' : form.wizardForm.bookValue.$valid && form.wizardForm.bookValue.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.bookValue.$touched && form.wizardForm.bookValue.$invalid"
+                >
+                    Please enter Book Value.
+                </span>
             </div>
         </div>
     </div>
@@ -92,17 +230,47 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="parValue">Par Value</label>
-                <input type="number" min="0" step=".01" class="form-control" id="parValue" name="parValue" ng-model="cooperative.parValue"
-                ng-class="{'is-invalid' : wizardForm.parValue.$invalid && wizardForm.parValue.$touched, 'is-valid' : wizardForm.parValue.$valid && wizardForm.parValue.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.parValue.$touched && wizardForm.parValue.$invalid">Please enter Par Value.</span>
+                <input
+                    type="text"
+                    min="0"
+                    step=".01"
+                    class="form-control"
+                    id="parValue"
+                    name="parValue"
+                    ng-model="cooperative.parValue"
+                    ng-class="{'is-invalid' : form.wizardForm.parValue.$invalid && form.wizardForm.parValue.$touched, 'is-valid' : form.wizardForm.parValue.$valid && form.wizardForm.parValue.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.parValue.$touched && form.wizardForm.parValue.$invalid"
+                >
+                    Please enter Par Value.
+                </span>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="paidUp">Paid Up</label>
-                <input type="number" min="0" step=".01" class="form-control" id="paidUp" name="paidUp" ng-model="cooperative.paidUp"
-                ng-class="{'is-invalid' : wizardForm.paidUp.$invalid && wizardForm.paidUp.$touched, 'is-valid' : wizardForm.paidUp.$valid && wizardForm.paidUp.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.paidUp.$touched && wizardForm.paidUp.$invalid">Please enter Paid Up Amount.</span>
+                <input
+                    type="text"
+                    min="0"
+                    step=".01"
+                    class="form-control"
+                    id="paidUp"
+                    name="paidUp"
+                    ng-model="cooperative.paidUp"
+                    ng-class="{'is-invalid' : form.wizardForm.paidUp.$invalid && form.wizardForm.paidUp.$touched, 'is-valid' : form.wizardForm.paidUp.$valid && form.wizardForm.paidUp.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.paidUp.$touched && form.wizardForm.paidUp.$invalid"
+                >
+                    Please enter Paid Up Amount.
+                </span>
             </div>
         </div>
     </div>
@@ -110,17 +278,45 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="fullyPaidPercent">Fully Paid Percent</label>
-                <input type="number" min="0" class="form-control" id="fullyPaidPercent" name="fullyPaidPercent" ng-model="cooperative.fullyPaidPercent"
-                ng-class="{'is-invalid' : wizardForm.fullyPaidPercent.$invalid && wizardForm.fullyPaidPercent.$touched, 'is-valid' : wizardForm.fullyPaidPercent.$valid && wizardForm.fullyPaidPercent.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.fullyPaidPercent.$touched && wizardForm.fullyPaidPercent.$invalid">Please enter Fully Paid Percentage.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="fullyPaidPercent"
+                    name="fullyPaidPercent"
+                    ng-model="cooperative.fullyPaidPercent"
+                    ng-class="{'is-invalid' : form.wizardForm.fullyPaidPercent.$invalid && form.wizardForm.fullyPaidPercent.$touched, 'is-valid' : form.wizardForm.fullyPaidPercent.$valid && form.wizardForm.fullyPaidPercent.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.fullyPaidPercent.$touched && form.wizardForm.fullyPaidPercent.$invalid"
+                >
+                    Please enter Fully Paid Percentage.
+                </span>
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="initialPaidUpShare">Initial Paid Up Share</label>
-                <input type="number" min="0" class="form-control" id="initialPaidUpShare" name="initialPaidUpShare" ng-model="cooperative.initialPaidUpShare"
-                ng-class="{'is-invalid' : wizardForm.initialPaidUpShare.$invalid && wizardForm.initialPaidUpShare.$touched, 'is-valid' : wizardForm.initialPaidUpShare.$valid && wizardForm.initialPaidUpShare.$touched }" required/>
-                <span class="form-text text-muted" ng-show="wizardForm.initialPaidUpShare.$touched && wizardForm.initialPaidUpShare.$invalid">Please enter Initial Paid Up Share.</span>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="initialPaidUpShare"
+                    name="initialPaidUpShare"
+                    ng-model="cooperative.initialPaidUpShare"
+                    ng-class="{'is-invalid' : form.wizardForm.initialPaidUpShare.$invalid && form.wizardForm.initialPaidUpShare.$touched, 'is-valid' : form.wizardForm.initialPaidUpShare.$valid && form.wizardForm.initialPaidUpShare.$touched }"
+                    required
+                    price
+                />
+                <span
+                    class="form-text text-muted"
+                    ng-show="form.wizardForm.initialPaidUpShare.$touched && form.wizardForm.initialPaidUpShare.$invalid"
+                >
+                    Please enter Initial Paid Up Share.
+                </span>
             </div>
         </div>
     </div>

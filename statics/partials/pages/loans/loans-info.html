@@ -40,7 +40,7 @@
                                 <div class="d-flex flex-wrap my-2">
                                     <a
                                         href="#"
-                                        class="text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
+                                        class="text-hover-info font-weight-bolder mr-lg-8 mr-5 mb-lg-0 mb-2 text-primary"
                                         ng-click="viewBorrower(loan.borrower)"
                                     >
                                         {{ loan.borrower_name }}
@@ -388,7 +388,7 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-borderless mb-8" align="center">
+                    <table class="table table-borderless mb-0" align="center">
                         <tbody>
                             <tr>
                                 <td class="p-0" width="18%">
@@ -534,7 +534,7 @@
             <div class="card-body p-0">
                 <div class="slide" ng-show="showAmortizationSchedules">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-8">
+                        <table class="table table-bordered mb-0">
                             <thead class="table-active">
                                 <tr>
                                     <th>
@@ -770,12 +770,20 @@
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Payment History</span>
                 </h3>
-                <div class="card-toolbar"></div>
+                <div class="card-toolbar">
+                    <a
+                        href="#"
+                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                        ng-click="previewPaymentHistory(loan.id)"
+                    >
+                        Preview
+                    </a>
+                </div>
             </div>
             <div class="card-body p-0">
                 <div class="slide" ng-show="showPaymentHistory">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-8">
+                        <table class="table table-bordered mb-0">
                             <thead class="table-active">
                                 <tr>
                                     <th>
@@ -1075,6 +1083,15 @@
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Amortization History</span>
                 </h3>
+                <div class="card-toolbar">
+                    <a
+                        href="#"
+                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                        ng-click="previewAmortizationHistory(loan.id)"
+                    >
+                        Preview
+                    </a>
+                </div>
             </div>
             <div class="card-header card-header-tabs-line fade-in" ng-show="showAmortizationHistory">
                 <div class="card-toolbar">
@@ -1097,7 +1114,7 @@
             <div class="card-body p-0">
                 <div class="slide" ng-show="showAmortizationHistory">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-8">
+                        <table class="table table-bordered mb-0">
                             <thead class="table-active">
                                 <tr>
                                     <th>
@@ -1367,7 +1384,7 @@
                         <div class="timeline-items">
                             <div
                                 class="timeline-item"
-                                ng-repeat="note in notes | orderBy:'-' | startFrom:currentPageNote*pageSizeNote | limitTo: pageSizeNote "
+                                ng-repeat="note in notes | orderBy:'-' | startFrom:currentPage.notes * pageSize.notes | limitTo: pageSize.notes "
                             >
                                 <div class="timeline-media">
                                     <i class="fad fa-sticky-note text-primary"></i>
@@ -1378,44 +1395,19 @@
                                     </p>
                                     <small class="text-dark-75 font-weight-bold">
                                         {{ note.committeeName }}
+                                        <small class="text-muted">- {{ note.action_time | date : 'medium' }}</small>
                                     </small>
                                     <br />
-                                    <small class="text-muted">{{ note.action_time | date : 'medium' }}</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="d-flex justify-content-center align-items-center flex-wrap"
-                        ng-if="pageRangeNote(notes.length).length > 1"
-                    >
-                        <div class="d-flex flex-wrap py-2 mr-3">
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageNote == 0"
-                                ng-click="gotoPrevNote()"
-                            >
-                                <i class="fas fa-chevron-left icon-sm"></i>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                ng-class="{ 'active' : n == currentPageNote + 1 }"
-                                ng-repeat="n in pageRangeNote(notes.length)"
-                                ng-click="jumpToPageNote(n)"
-                            >
-                                <small>{{n}}</small>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageNote >=notes.length/pageSizeNote - 1"
-                                ng-click="gotoNextNote()"
-                            >
-                                <i class="fas fa-chevron-right icon-sm"></i>
-                            </button>
-                        </div>
+                    <div ng-if="notes">
+                        <pagination
+                            data="notes"
+                            page-size="pageSize.notes"
+                            currentpage="currentPage.notes"
+                        ></pagination>
                     </div>
                 </div>
             </div>

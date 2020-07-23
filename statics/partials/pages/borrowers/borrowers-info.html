@@ -107,7 +107,7 @@
             <div class="card-body p-0">
                 <div class="slide" ng-show="showExistingAccomodations">
                     <div class="table-responsive">
-                        <table class="table table-borderless mb-8" align="center" ng-show="showAccomodations">
+                        <table class="table table-borderless mb-0" align="center" ng-show="showAccomodations">
                             <tbody>
                                 <tr>
                                     <td class="p-0" width="18%">
@@ -218,19 +218,19 @@
                     </span>
                 </h3>
                 <div class="card-toolbar">
-                    <!-- <a
+                    <a
                         href="#"
                         class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                        ng-click="previewAmortizationSchedule(loan.id)"
+                        ng-click="previewBorrowerOutstandingObligations(borrower.borrowerId)"
                     >
                         Preview
-                    </a> -->
+                    </a>
                 </div>
             </div>
             <div class="card-body p-0">
                 <div class="slide" ng-show="showObligations">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-8">
+                        <table class="table table-bordered mb-0">
                             <thead class="table-active">
                                 <tr>
                                     <th>
@@ -250,7 +250,7 @@
                                     <th>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
-                                                AVAILEMENT DATE
+                                                AVAILMENT DATE
                                             </span>
                                         </div>
                                     </th>
@@ -322,7 +322,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="table-success">
+                                <tr class="table-success" ng-if="loans.length > 0">
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -359,6 +359,13 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <tbody ng-if="loans.length == 0">
+                                <tr>
+                                    <td class="py-8" colspan="6" align="center">
+                                        No records Found
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -379,19 +386,19 @@
                     <span class="font-weight-bolder text-dark">Loans</span>
                 </h3>
                 <div class="card-toolbar">
-                    <!-- <a
+                    <a
                         href="#"
                         class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                        ng-click="previewAmortizationSchedule(loan.id)"
+                        ng-click="previewBorrowerLoans(borrower.borrowerId)"
                     >
                         Preview
-                    </a> -->
+                    </a>
                 </div>
             </div>
             <div class="card-body p-0">
                 <div class="slide" ng-show="showLoans">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-8">
+                        <table class="table table-bordered mb-0">
                             <thead class="table-active">
                                 <tr>
                                     <th>
@@ -453,7 +460,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="loan in borrower.loans">
+                                <tr
+                                    ng-repeat="loan in borrower.loans | startFrom:currentPage.loans * pageSize.loans | limitTo: pageSize.loans"
+                                >
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -492,7 +501,7 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.interestRate_amount  }} %
+                                                {{ loan.interestRate_amount }} %
                                             </span>
                                         </div>
                                     </td>
@@ -511,7 +520,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="table-success">
+                                <!-- <tr class="table-success">
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -552,40 +561,22 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
+                                </tr> -->
+                            </tbody>
+                            <tbody ng-if="borrower.loans.length == 0">
+                                <tr>
+                                    <td class="py-8" colspan="8" align="center">
+                                        No records Found
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div
-                            class="d-flex justify-content-center align-items-center flex-wrap"
-                            ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                        >
-                            <div class="d-flex flex-wrap py-2 mr-3">
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) == 0"
-                                    ng-click="gotoPrevDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-left icon-sm"></i>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                    ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                    ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                    ng-click="jumpToPageDocument(n,subProcess)"
-                                >
-                                    <small>{{n}}</small>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                    ng-click="gotoNextDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-right icon-sm"></i>
-                                </button>
-                            </div>
+                        <div ng-if="borrower.loan">
+                            <pagination
+                                data="borrower.loans"
+                                page-size="pageSize.loans"
+                                currentpage="currentPage.loans"
+                            ></pagination>
                         </div>
                     </div>
                 </div>
@@ -602,12 +593,20 @@
                 <h3 class="card-title align-items-start flex-column">
                     <span class="font-weight-bolder text-dark">Payment History</span>
                 </h3>
-                <div class="card-toolbar"></div>
+                <div class="card-toolbar">
+                    <a
+                        href="#"
+                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                        ng-click="previewBorrowerPaymentHistory(borrower.borrowerId)"
+                    >
+                        Preview
+                    </a>
+                </div>
             </div>
             <div class="card-body p-0 slide">
                 <div class="slide" ng-show="showPaymentHistory">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-8">
+                        <table class="table table-bordered mb-0">
                             <thead class="table-active">
                                 <tr>
                                     <th>
@@ -708,7 +707,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="payment in borrower.payments">
+                                <tr
+                                    ng-repeat="payment in borrower.payments | startFrom:currentPage.paymentHistory * pageSize.paymentHistory | limitTo: pageSize.paymentHistory"
+                                >
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -803,7 +804,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="table-success">
+                                <tr class="table-success" ng-if="borrower.payments.length > 0">
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -875,38 +876,20 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <tbody ng-if="borrower.payments.length == 0">
+                                <tr>
+                                    <td class="py-8" colspan="13" align="center">
+                                        No records Found
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
-                        <div
-                            class="d-flex justify-content-center align-items-center flex-wrap"
-                            ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                        >
-                            <div class="d-flex flex-wrap py-2 mr-3">
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) == 0"
-                                    ng-click="gotoPrevDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-left icon-sm"></i>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                    ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                    ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                    ng-click="jumpToPageDocument(n,subProcess)"
-                                >
-                                    <small>{{n}}</small>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                    ng-click="gotoNextDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-right icon-sm"></i>
-                                </button>
-                            </div>
+                        <div ng-if="borrower.payments">
+                            <pagination
+                                data="borrower.payments"
+                                page-size="pageSize.paymentHistory"
+                                currentpage="currentPage.paymentHistory"
+                            ></pagination>
                         </div>
                     </div>
                 </div>
@@ -1088,7 +1071,7 @@
                         <div class="pb-5">
                             <div
                                 class="mb-5"
-                                ng-repeat="borrowerAttachment in borrowerAttachments | orderBy:'':true | startFrom:currentPageAttachment*pageSizeAttachment | limitTo: pageSizeAttachment"
+                                ng-repeat="borrowerAttachment in borrowerAttachments | orderBy:'':true | startFrom:currentPage.attachments * pageSize.attachments | limitTo: pageSize.attachments"
                             >
                                 <div class="d-flex align-items-center">
                                     <a
@@ -1121,37 +1104,12 @@
                                     ></span>
                                 </p>
                             </div>
-                            <div
-                                class="d-flex justify-content-center align-items-center flex-wrap"
-                                ng-if="pageRangeAttachment(borrowerAttachments.length).length > 1"
-                            >
-                                <div class="d-flex flex-wrap py-2 mr-3">
-                                    <button
-                                        href="#"
-                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                        ng-disabled="currentPageAttachment == 0"
-                                        ng-click="gotoPrevAttachment()"
-                                    >
-                                        <i class="fas fa-chevron-left icon-sm"></i>
-                                    </button>
-                                    <button
-                                        href="#"
-                                        class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                        ng-class="{ 'active' : n == currentPageAttachment + 1 }"
-                                        ng-repeat="n in pageRangeAttachment(borrowerAttachments.length)"
-                                        ng-click="jumpToPageAttachment(n)"
-                                    >
-                                        <small>{{n}}</small>
-                                    </button>
-                                    <button
-                                        href="#"
-                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                        ng-disabled="currentPageAttachment >=borrowerAttachments.length/pageSizeAttachment - 1"
-                                        ng-click="gotoNextAttachment()"
-                                    >
-                                        <i class="fas fa-chevron-right icon-sm"></i>
-                                    </button>
-                                </div>
+                            <div ng-if="borrowerAttachments">
+                                <pagination
+                                    data="borrowerAttachments"
+                                    page-size="pageSize.attachments"
+                                    currentpage="currentPage.attachments"
+                                ></pagination>
                             </div>
                         </div>
                         <!-- <div class="pb-1">

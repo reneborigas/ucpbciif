@@ -45734,7 +45734,7 @@ button {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
-    content: '';
+    content: '\f107';
 }
 .dropdown-toggle.btn:before,
 .dropdown-toggle.nav-link:before {

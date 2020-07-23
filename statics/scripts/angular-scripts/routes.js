@@ -697,9 +697,69 @@ define(function () {
                         ],
                     },
                 })
+                .state('print.documents.borrower_outstanding_obligations', {
+                    url: '/borrowers/outstanding-obligations/:borrowerId',
+                    templateUrl: '/statics/partials/pages/borrowers/print/borrowers-outstanding-obligation.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Outstanding Obligations Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/borrowers.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('print.documents.borrower_loans', {
+                    url: '/borrowers/loans/:borrowerId',
+                    templateUrl: '/statics/partials/pages/borrowers/print/borrowers-existing-loans.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Loans Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/borrowers.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('print.documents.borrower_payment_history', {
+                    url: '/borrowers/payment-history/:borrowerId',
+                    templateUrl: '/statics/partials/pages/borrowers/print/borrowers-payment-history.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Payment History Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/borrowers.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
                 .state('print.documents.loan_release', {
                     url: '/files/:loanId',
-                    templateUrl: '/statics/partials/pages/documents/documents-loan-release.html',
+                    templateUrl: '/statics/partials/pages/documents/print/documents-loan-release.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Loan Release Print',
                     },
@@ -712,7 +772,7 @@ define(function () {
                 })
                 .state('print.documents.amortization_schedule', {
                     url: '/files/amortization/:documentId',
-                    templateUrl: '/statics/partials/pages/documents/documents-amortization-schedule.html',
+                    templateUrl: '/statics/partials/pages/documents/print/documents-amortization-schedule.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Amortization Schedule Print',
                     },
@@ -723,9 +783,29 @@ define(function () {
                         });
                     },
                 })
+                .state('print.documents.amortization_history', {
+                    url: '/loans/amortization-history/:loanId',
+                    templateUrl: '/statics/partials/pages/loans/print/loans-amortization-history.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Amortization History Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
+                .state('print.documents.payment_history', {
+                    url: '/loans/payment-history/:loanId',
+                    templateUrl: '/statics/partials/pages/loans/print/loans-payment-history.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Amortization History Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
                 .state('print.documents.check_release', {
                     url: '/loans/check/:loanId',
-                    templateUrl: '/statics/partials/pages/loans/loans-check-release.html',
+                    templateUrl: '/statics/partials/pages/loans/print/loans-check-release.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Check Release Print',
                     },

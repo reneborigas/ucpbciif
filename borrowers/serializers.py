@@ -6,6 +6,7 @@ from documents.serializers import DocumentSerializer
 from processes.serializers import SubProcessSerializer
 from loans.serializers import LoanSerializer
 from payments.serializers import PaymentSerializer
+
 class ContactPersonSerializer(ModelSerializer):
     contactPersonName = serializers.CharField(read_only=True)
 
@@ -216,6 +217,7 @@ class BorrowerAttachmentSerializer(ModelSerializer):
     class Meta:
         model = BorrowerAttachment          
         fields = '__all__'  
+
 class BorrowerSerializer(ModelSerializer):
     contactPersonName = serializers.CharField(read_only=True)
     cooperativeName = serializers.CharField(read_only=True)
@@ -233,6 +235,7 @@ class BorrowerSerializer(ModelSerializer):
     loans = LoanSerializer(many=True,read_only=True)
     payments = PaymentSerializer(many=True,read_only=True)
     totalPayments =  serializers.CharField(read_only=True)
+
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)
     
@@ -243,10 +246,37 @@ class BorrowerSerializer(ModelSerializer):
         borrower = Borrower.objects.create(**validated_data)
     
         return borrower
+
     def update(self, instance, validated_data):
 
         print("here")
         print(validated_data)
+        instance.status = validated_data.get("status",instance.status)
+        instance.clientSince = validated_data.get("clientSince",instance.clientSince)
+        instance.remarks = validated_data.get("remarks",instance.remarks)
+        instance.dateUpdated = validated_data.get("dateUpdated",instance.dateUpdated)
+        instance.isDeleted = validated_data.get("isDeleted",instance.isDeleted)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = Borrower        
+        fields = '__all__'
+
+class CRUDBorrowerSerializer(ModelSerializer):
+    contactPersonName = serializers.CharField(read_only=True)
+    cooperativeName = serializers.CharField(read_only=True)
+    tin = serializers.CharField(read_only=True)
+    address = serializers.CharField(read_only=True)
+    phoneNo = serializers.CharField(read_only=True)
+
+    def create(self, validated_data):
+        borrower = Borrower.objects.create(**validated_data)
+
+        return borrower
+
+    def update(self, instance, validated_data):
         instance.status = validated_data.get("status",instance.status)
         instance.clientSince = validated_data.get("clientSince",instance.clientSince)
         instance.remarks = validated_data.get("remarks",instance.remarks)

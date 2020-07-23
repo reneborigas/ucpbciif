@@ -4,31 +4,82 @@
         <div class="form-group">
             <label for="grantDonor">Donor</label>
             <span>*</span>
-            <input type="text" class="form-control" id="grantDonor" name="grantDonor" ng-model="grant.donor" 
-            ng-class="{'is-invalid' : wizardForm.grantDonor.$invalid && wizardForm.grantDonor.$touched, 'is-valid' : wizardForm.grantDonor.$valid && wizardForm.grantDonor.$touched }" required/>
-            <span class="form-text text-muted" ng-show="wizardForm.grantDonor.$touched && wizardForm.grantDonor.$invalid">Please enter Donor Name.</span>
+            <input
+                type="text"
+                class="form-control"
+                id="grantDonor"
+                name="grantDonor"
+                ng-model="grant.donor"
+                ng-class="{'is-invalid' : form.wizardForm.grantDonor.$invalid && form.wizardForm.grantDonor.$touched, 'is-valid' : form.wizardForm.grantDonor.$valid && form.wizardForm.grantDonor.$touched }"
+                required
+            />
+            <span
+                class="form-text text-muted"
+                ng-show="form.wizardForm.grantDonor.$touched && form.wizardForm.grantDonor.$invalid"
+            >
+                Please enter Donor Name.
+            </span>
         </div>
         <div class="form-group">
             <label for="grantProjectType">Project Type</label>
-            <input type="text" class="form-control" id="grantProjectType" name="grantProjectType" ng-model="grant.projectType"
-            ng-class="{'is-invalid' : wizardForm.grantProjectType.$invalid && wizardForm.grantProjectType.$touched, 'is-valid' : wizardForm.grantProjectType.$valid && wizardForm.grantProjectType.$touched }" required/>
-            <span class="form-text text-muted" ng-show="wizardForm.grantProjectType.$touched && wizardForm.grantProjectType.$invalid">Please enter Grant Project Type.</span>
+            <input
+                type="text"
+                class="form-control"
+                id="grantProjectType"
+                name="grantProjectType"
+                ng-model="grant.projectType"
+                ng-class="{'is-invalid' : form.wizardForm.grantProjectType.$invalid && form.wizardForm.grantProjectType.$touched, 'is-valid' : form.wizardForm.grantProjectType.$valid && form.wizardForm.grantProjectType.$touched }"
+                required
+            />
+            <span
+                class="form-text text-muted"
+                ng-show="form.wizardForm.grantProjectType.$touched && form.wizardForm.grantProjectType.$invalid"
+            >
+                Please enter Grant Project Type.
+            </span>
         </div>
         <div class="row">
             <div class="col-xl-6">
                 <div class="form-group">
                     <label for="grantAmount">Amount</label>
-                    <input type="number" min="0" step="0.01" class="form-control" id="grantAmount" name="grantAmount" ng-model="grant.amount"
-                    ng-class="{'is-invalid' : wizardForm.grantAmount.$invalid && wizardForm.grantAmount.$touched, 'is-valid' : wizardForm.grantAmount.$valid && wizardForm.grantAmount.$touched }" required/>
-                    <span class="form-text text-muted" ng-show="wizardForm.grantAmount.$touched && wizardForm.grantAmount.$invalid">Please enter Grant Project Amount.</span>
+                    <input
+                        type="text"
+                        min="0"
+                        step="0.01"
+                        class="form-control"
+                        id="grantAmount"
+                        name="grantAmount"
+                        ng-model="grant.amount"
+                        ng-class="{'is-invalid' : form.wizardForm.grantAmount.$invalid && form.wizardForm.grantAmount.$touched, 'is-valid' : form.wizardForm.grantAmount.$valid && form.wizardForm.grantAmount.$touched }"
+                        required
+                        price
+                    />
+                    <span
+                        class="form-text text-muted"
+                        ng-show="form.wizardForm.grantAmount.$touched && form.wizardForm.grantAmount.$invalid"
+                    >
+                        Please enter Grant Project Amount.
+                    </span>
                 </div>
             </div>
             <div class="col-xl-6">
                 <div class="form-group">
                     <label for="grantProjectStatus">Project Status</label>
-                    <input type="text" class="form-control" id="grantProjectStatus" name="grantProjectStatus" ng-model="grant.projectStatus"
-                    ng-class="{'is-invalid' : wizardForm.grantProjectStatus.$invalid && wizardForm.grantProjectStatus.$touched, 'is-valid' : wizardForm.grantProjectStatus.$valid && wizardForm.grantProjectStatus.$touched }" required/>
-                    <span class="form-text text-muted" ng-show="wizardForm.grantProjectStatus.$touched && wizardForm.grantProjectStatus.$invalid">Please enter Grant Project Status.</span>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="grantProjectStatus"
+                        name="grantProjectStatus"
+                        ng-model="grant.projectStatus"
+                        ng-class="{'is-invalid' : form.wizardForm.grantProjectStatus.$invalid && form.wizardForm.grantProjectStatus.$touched, 'is-valid' : form.wizardForm.grantProjectStatus.$valid && form.wizardForm.grantProjectStatus.$touched }"
+                        required
+                    />
+                    <span
+                        class="form-text text-muted"
+                        ng-show="form.wizardForm.grantProjectStatus.$touched && form.wizardForm.grantProjectStatus.$invalid"
+                    >
+                        Please enter Grant Project Status.
+                    </span>
                 </div>
             </div>
         </div>

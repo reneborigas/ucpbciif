@@ -274,7 +274,7 @@
                                             id="amount"
                                             name="amount"
                                             ng-model="creditLine.amount"
-                                            ng-class="{'is-invalid' : newCreditLineDetailsForm.amount.$invalid && newCreditLineDetailsForm.amount.$touched, 'is-valid' : newCreditLineDetailsForm.amount.$valid && newCreditLineDetailsForm.amount.$touched }"
+                                            ng-class="{'is-invalid' : newCreditLineDetailsForm.amount.$invalid && newCreditLineDetailsForm.amount.$touched && creditLine.amount <=0, 'is-valid' : newCreditLineDetailsForm.amount.$valid && newCreditLineDetailsForm.amount.$touched }"
                                             required
                                             price
                                         />
@@ -433,26 +433,24 @@
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Amount</label>
                                     <div class="col-lg-3 col-xl-6">
                                         <input
-                                            type="number"
+                                            type="text"
                                             min="0"
                                             class="form-control"
-                                            id="amount"
-                                            name="amount"
+                                            id="loanAmount"
+                                            name="loanAmount"
                                             ng-model="loan.amount"
-                                            ng-class="{'is-invalid' : newLoanDetailsForm.amount.$invalid && newLoanDetailsForm.amount.$touched || exceeded, 'is-valid' : newLoanDetailsForm.amount.$valid && newLoanDetailsForm.amount.$touched && !exceeded }"
+                                            ng-class="{'is-invalid' : newLoanDetailsForm.loanAmount.$invalid && newLoanDetailsForm.loanAmount.$touched || exceeded || loan.amount < 0 , 'is-valid' : newLoanDetailsForm.loanAmount.$valid && newLoanDetailsForm.loanAmount.$touched && !exceeded }"
                                             required
+                                            price
                                         />
                                         <span
                                             class="form-text text-muted"
-                                            ng-show="newLoanDetailsForm.amount.$touched && newLoanDetailsForm.amount.$invalid"
+                                            ng-show="newLoanDetailsForm.loanAmount.$touched && newLoanDetailsForm.loanAmount.$invalid"
                                         >
                                             Please enter amount.
                                         </span>
 
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newLoanDetailsForm.amount.$touched && newLoanDetailsForm.amount.$invalid || exceeded"
-                                        >
+                                        <span class="form-text text-muted" ng-show="exceeded">
                                             Amount exceeds remaining credit loan amount.
                                         </span>
                                     </div>

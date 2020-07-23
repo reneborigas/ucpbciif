@@ -130,8 +130,11 @@ define(function () {
         NgTableParams,
         appFactory,
         $state,
-        $timeout
+        $timeout,
+        blockUI
     ) {
+        $scope.form = {};
+
         $scope.steps = [
             {
                 step: 1,
@@ -170,19 +173,47 @@ define(function () {
         };
 
         $scope.goToStep = function (step) {
-            $scope.currentStep = step;
-            $scope.changeStep = true;
+            if ($scope.currentStep < step) {
+                if ($scope.form.wizardForm.$valid) {
+                    $scope.currentStep = step;
+                    $scope.changeStep = true;
+                } else {
+                    angular.forEach($scope.form.wizardForm.$error, function (field) {
+                        angular.forEach(field, function (errorField) {
+                            errorField.$setTouched();
+                        });
+                    });
+                }
+            } else {
+                $scope.currentStep = step;
+                $scope.changeStep = true;
+            }
         };
 
         $scope.nextStep = function () {
             $scope.changeStep = true;
-            if ($scope.wizardForm.$valid) {
+            if ($scope.form.wizardForm.$valid) {
                 $scope.currentStep = $scope.currentStep + 1;
+            } else {
+                angular.forEach($scope.form.wizardForm.$error, function (field) {
+                    angular.forEach(field, function (errorField) {
+                        errorField.$setTouched();
+                    });
+                });
             }
         };
 
         $scope.prevStep = function () {
             $scope.currentStep = $scope.currentStep - 1;
+        };
+
+        $scope.checkForm = function () {
+            var valid;
+            if ($scope.form.wizardForm.$valid) {
+                valid = false;
+            } else {
+                valid = true;
+            }
         };
 
         appFactory.getGenders().then(function (data) {
@@ -311,8 +342,10 @@ define(function () {
             $scope.cooperative.standingCommittees.splice(index, 1);
         };
 
+        var borrowerBlockUI = blockUI.instances.get('borrowerBlockUI');
+
         $scope.save = function () {
-            if ($scope.wizardForm.$valid) {
+            if ($scope.form.wizardForm.$valid) {
                 swal({
                     title: 'Create Borrower',
                     text: 'Do you want to save and create this borrower?',
@@ -323,19 +356,59 @@ define(function () {
                     },
                 }).then((isConfirm) => {
                     if (isConfirm) {
+                        borrowerBlockUI.start('Saving Borrower...');
+                        $scope.cooperative.cdaRegistrationDate = appFactory.dateWithoutTime(
+                            $scope.cooperative.cdaRegistrationDate,
+                            'yyyy-MM-dd'
+                        );
+                        $scope.borrower.clientSince = appFactory.dateWithoutTime(
+                            $scope.borrower.clientSince,
+                            'yyyy-MM-dd'
+                        );
                         $http.post('/api/borrowers/cooperatives/', $scope.cooperative).then(
                             function (responseCooperative) {
                                 return $http.post('/api/borrowers/contactpersons/', $scope.contactPerson).then(
                                     function (responseContactPerson) {
                                         $scope.borrower.cooperative = responseCooperative.data.id;
-                                        $scope.borrower.cooperative = responseContactPerson.data.id;
-                                        return $http.post('/api/borrowers/borrowers/', $scope.borrower).then(
-                                            function () {
-                                                swal('Success!', 'New Borrower Created.', 'success');
-                                                toastr.success('Success', 'New Borrower Updated.');
-                                                $state.go('app.borrower.list');
+                                        $scope.borrower.contactPerson = responseContactPerson.data.id;
+                                        return $http.post('/api/borrowers/crud-borrowers/', $scope.borrower).then(
+                                            function (responseBorrower) {
+                                                var user = JSON.parse(localStorage.getItem('currentUser'));
+                                                var userLogs = {
+                                                    user: user['id'],
+                                                    action_type: 'Created', //String value of action i.e. Created, Updated, Approved, Complete etc.
+                                                    content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
+                                                    object_id: responseBorrower.data.id, //ID of object created i.e. borrowerId, id etc.
+                                                    object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
+                                                    apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
+                                                    valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
+                                                    logDetails: [
+                                                        {
+                                                            action: 'Created ' + responseBorrower.data.name, //Details of Log
+                                                        },
+                                                    ],
+                                                };
+                                                return appFactory.getContentTypeId('borrower').then(function (data) {
+                                                    userLogs.content_type = data;
+                                                    return $http.post('/api/users/userlogs/', userLogs).then(
+                                                        function () {
+                                                            borrowerBlockUI.stop();
+                                                            swal('Success!', 'New Borrower Created.', 'success');
+                                                            toastr.success('Success', 'New Borrower Updated.');
+                                                            $state.go('app.borrowers.list');
+                                                        },
+                                                        function (error) {
+                                                            borrowerBlockUI.stop();
+                                                            toastr.error(
+                                                                'Error ' + error.status + ' ' + error.statusText,
+                                                                'Could not record logs.  Please contact System Administrator'
+                                                            );
+                                                        }
+                                                    );
+                                                });
                                             },
                                             function (error) {
+                                                borrowerBlockUI.stop();
                                                 toastr.error(
                                                     'Error ' + error.status + ' ' + error.statusText,
                                                     'Could not create new borrower. Please contact System Administrator.'
@@ -344,6 +417,7 @@ define(function () {
                                         );
                                     },
                                     function (error) {
+                                        borrowerBlockUI.stop();
                                         toastr.error(
                                             'Error ' + error.status + ' ' + error.statusText,
                                             'Could not create new contact person. Please contact System Administrator.'
@@ -352,6 +426,7 @@ define(function () {
                                 );
                             },
                             function (error) {
+                                borrowerBlockUI.stop();
                                 toastr.error(
                                     'Error ' + error.status + ' ' + error.statusText,
                                     'Could not create new cooperative. Please contact System Administrator.'
@@ -374,6 +449,7 @@ define(function () {
         $state,
         $timeout,
         $q,
+        $window,
         blockUI
     ) {
         $scope.dateToday = new Date();
@@ -582,34 +658,34 @@ define(function () {
                 );
         };
 
-        var attachmentBlockUI = blockUI.instances.get('attachmentBlockUI');
-
-        $scope.currentPageAttachment = 0;
-        $scope.pageSizeAttachment = 5;
-
-        $scope.pageRangeAttachment = function (size) {
-            var pages = [];
-            var range = Math.ceil(size / $scope.pageSizeAttachment);
-            for (var i = 1; i <= range; i++) {
-                pages.push(i);
-            }
-            return pages;
+        $scope.previewBorrowerOutstandingObligations = function (id) {
+            $window.open('/print/borrowers/outstanding-obligations/' + id, '_blank', 'width=800,height=800');
         };
 
-        $scope.gotoPrevAttachment = function () {
-            $scope.currentPageAttachment--;
+        $scope.previewBorrowerLoans = function (id) {
+            $window.open('/print/borrowers/loans/' + id, '_blank', 'width=800,height=800');
         };
 
-        $scope.gotoNextAttachment = function () {
-            $scope.currentPageAttachment++;
+        $scope.previewBorrowerPaymentHistory = function (id) {
+            $window.open('/print/borrowers/payment-history/' + id, '_blank', 'width=800,height=800');
         };
 
-        $scope.jumpToPageAttachment = function (n) {
-            $scope.currentPageAttachment = n - 1;
+        // -- Start Simple Pagination
+        $scope.currentPage = {
+            paymentHistory: 0,
+            loans: 0,
+            attachments: 0,
         };
 
+        $scope.pageSize = {
+            paymentHistory: 5,
+            loans: 5,
+            attachments: 5,
+        };
+        // -- End Simple Pagination
+
+        //  -- Start Document Files Pagination --
         $scope.subProcessCurrentPage = {};
-
         $scope.currentPageDocument = function (subProcess) {
             var currentPage;
             angular.forEach($scope.subProcessCurrentPage, function (value, key) {
@@ -642,6 +718,9 @@ define(function () {
         $scope.jumpToPageDocument = function (n, subProcess) {
             $scope.subProcessCurrentPage[subProcess.name] = n - 1;
         };
+        //  -- End Document Files Pagination --
+
+        var attachmentBlockUI = blockUI.instances.get('attachmentBlockUI');
 
         $scope.fileAttachment = {
             attachment: [],
@@ -971,7 +1050,6 @@ define(function () {
             $scope.loanPrograms = data;
         });
         $scope.exceeded = false;
-       
 
         $scope.loadCommittee = function (query) {
             return $scope.committees;
@@ -1042,7 +1120,7 @@ define(function () {
                         creditlineid: null,
                         amount: '',
                         interestRate: '',
-                         
+
                         term: '',
                         loanProgram: '',
                         purpose: '',
@@ -1073,10 +1151,10 @@ define(function () {
                             loanid: null,
                             amount: '',
                             creditLine: $scope.subProcess.parentLastDocumentCreditLine.id,
-                            interestRate:$scope.subProcess.parentLastDocumentCreditLine.interestRate,
+                            interestRate: $scope.subProcess.parentLastDocumentCreditLine.interestRate,
                             term: $scope.subProcess.parentLastDocumentCreditLine.term,
                             termid: $scope.subProcess.parentLastDocumentCreditLine.term.id,
-                            
+
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',
@@ -1091,7 +1169,7 @@ define(function () {
                                 if (newTerm > $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine) {
                                     //Error
                                     console.log('invalid');
-                
+
                                     $scope.exceeded = true;
                                 } else {
                                     $scope.exceeded = false;
@@ -1257,5 +1335,45 @@ define(function () {
         $scope.cancel = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };
+    });
+
+    app.controller('BorrowerPrintController', function BorrowerPrintController(
+        $http,
+        $filter,
+        $scope,
+        toastr,
+        NgTableParams,
+        $state,
+        $timeout,
+        appFactory,
+        $window
+    ) {
+        $scope.dateToday = new Date();
+        $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
+            function (response) {
+                $scope.borrower = response.data[0];
+                $http
+                    .get('/api/loans/loans/', {
+                        params: { borrowerId: $scope.borrowerId, status: 'RELEASED' },
+                    })
+                    .then(
+                        function (response) {
+                            $scope.loans = response.data;
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve Loans Information. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            },
+            function (error) {
+                toastr.error(
+                    'Error ' + error.status + ' ' + error.statusText,
+                    'Could not retrieve Borrower Information. Please contact System Administrator.'
+                );
+            }
+        );
     });
 });

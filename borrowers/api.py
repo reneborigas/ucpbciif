@@ -7,6 +7,29 @@ from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from documents.models import Document,DocumentMovement
 from loans.models import Loan
 from payments.models import Payment
+
+
+
+class CRUDBorrowerViewSet(ModelViewSet):
+    queryset = Borrower.objects.all()
+    serializer_class = CRUDBorrowerSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Borrower.objects.annotate(
+            contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
+            cooperativeName=F('cooperative__name'),
+            tin=F('cooperative__tin'),
+            address=F('cooperative__address'),
+            phoneNo=F('cooperative__phoneNo'),
+        ).exclude(isDeleted=True).order_by('borrowerId')
+        borrowerId = self.request.query_params.get('borrowerId', None)
+
+        if borrowerId is not None:
+            queryset = queryset.filter(borrowerId=borrowerId)
+
+        return queryset
+
 class BorrowerViewSet(ModelViewSet):
     queryset = Borrower.objects.all()
     serializer_class = BorrowerSerializer 

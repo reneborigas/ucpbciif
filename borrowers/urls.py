@@ -3,6 +3,7 @@ from .api import *
 
 router = DefaultRouter()
 
+router.register(r'crud-borrowers',CRUDBorrowerViewSet)
 router.register(r'borrowers',BorrowerViewSet)
 router.register(r'contactpersons',ContactPersonViewSet)
 router.register(r'grants',GrantViewSet)
