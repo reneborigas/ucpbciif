@@ -273,6 +273,7 @@
                                             class="form-control"
                                             id="amount"
                                             name="amount"
+                                            placeholder="Amount"
                                             ng-model="creditLine.amount"
                                             ng-class="{'is-invalid' : newCreditLineDetailsForm.amount.$invalid && newCreditLineDetailsForm.amount.$touched && creditLine.amount <=0, 'is-valid' : newCreditLineDetailsForm.amount.$valid && newCreditLineDetailsForm.amount.$touched }"
                                             required
@@ -365,6 +366,7 @@
                                             type="text"
                                             rows="4"
                                             cols="50"
+                                            placeholder="Enter purpose"
                                             class="form-control textarea"
                                             ng-model="creditLine.purpose"
                                         ></textarea>
@@ -377,6 +379,7 @@
                                             type="text"
                                             rows="4"
                                             cols="50"
+                                            placeholder="Enter security"
                                             class="form-control textarea"
                                             ng-model="creditLine.security"
                                         ></textarea>
@@ -438,6 +441,7 @@
                                             class="form-control"
                                             id="loanAmount"
                                             name="loanAmount"
+                                            placeholder="Amount"
                                             ng-model="loan.amount"
                                             ng-class="{'is-invalid' : newLoanDetailsForm.loanAmount.$invalid && newLoanDetailsForm.loanAmount.$touched || exceeded || loan.amount < 0 , 'is-valid' : newLoanDetailsForm.loanAmount.$valid && newLoanDetailsForm.loanAmount.$touched && !exceeded }"
                                             required
@@ -510,6 +514,7 @@
                                             type="text"
                                             rows="4"
                                             cols="50"
+                                            placeholder="Enter purpose"
                                             class="form-control textarea"
                                             ng-model="loan.purpose"
                                         ></textarea>
@@ -522,6 +527,7 @@
                                             type="text"
                                             rows="4"
                                             cols="50"
+                                            placeholder="Enter Security"
                                             class="form-control textarea"
                                             ng-model="loan.security"
                                         ></textarea>
@@ -563,6 +569,7 @@
                                             class="form-control"
                                             id="name"
                                             name="name"
+                                            placeholder="File Name"
                                             ng-model="document.name"
                                             ng-class="{'is-invalid' : newLoanApplicationForm.name.$invalid && newLoanApplicationForm.name.$touched, 'is-valid' : newLoanApplicationForm.name.$valid && newLoanApplicationForm.name.$touched }"
                                             required
@@ -582,6 +589,7 @@
                                             type="text"
                                             rows="4"
                                             cols="50"
+                                            placeholder="Enter Description"
                                             class="form-control textarea"
                                             ng-model="document.description"
                                         ></textarea>
@@ -590,7 +598,12 @@
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Remarks</label>
                                     <div class="col-lg-9 col-xl-6">
-                                        <input type="textarea" class="form-control" ng-model="document.remarks" />
+                                        <input 
+                                            type="textarea" 
+                                            class="form-control" 
+                                            ng-model="document.remarks" 
+                                            placeholder="Remarks"
+                                        />
                                     </div>
                                 </div>
                                 <div class="form-group row">

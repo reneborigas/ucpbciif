@@ -1,112 +1,238 @@
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Initial Membership Size</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="initialMembershipSize" name="initialMembershipSize" ng-model="borrower.cooperative.initialMembershipSize"
-        ng-class="{'is-invalid' : editForm.initialMembershipSize.$invalid && editForm.initialMembershipSize.$touched, 'is-valid' : editForm.initialMembershipSize.$valid && editForm.initialMembershipSize.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="initialMembershipSize" 
+            name="initialMembershipSize" 
+            placeholder="Initial Membership Size"
+            ng-model="borrower.cooperative.initialMembershipSize"
+            ng-class="{'is-invalid' : editForm.initialMembershipSize.$invalid && editForm.initialMembershipSize.$touched, 'is-valid' : editForm.initialMembershipSize.$valid && editForm.initialMembershipSize.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.initialMembershipSize.$touched && editForm.initialMembershipSize.$invalid">Please enter Initial Membership Size.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Current Membership Size</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="membershipSize" name="membershipSize" ng-model="borrower.cooperative.membershipSize"
-        ng-class="{'is-invalid' : editForm.membershipSize.$invalid && editForm.membershipSize.$touched, 'is-valid' : editForm.membershipSize.$valid && editForm.membershipSize.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="membershipSize" 
+            name="membershipSize" 
+            placeholder="Current Membership Size"
+            ng-model="borrower.cooperative.membershipSize"
+            ng-class="{'is-invalid' : editForm.membershipSize.$invalid && editForm.membershipSize.$touched, 'is-valid' : editForm.membershipSize.$valid && editForm.membershipSize.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.membershipSize.$touched && editForm.membershipSize.$invalid">Please enter Current Membership Size.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Number of Cooperators</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="noOfCooperators" name="noOfCooperators" ng-model="borrower.cooperative.noOfCooperators"
-        ng-class="{'is-invalid' : editForm.noOfCooperators.$invalid && editForm.noOfCooperators.$touched, 'is-valid' : editForm.noOfCooperators.$valid && editForm.noOfCooperators.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="noOfCooperators" 
+            name="noOfCooperators" 
+            placeholder="Number of Cooperators"
+            ng-model="borrower.cooperative.noOfCooperators"
+            ng-class="{'is-invalid' : editForm.noOfCooperators.$invalid && editForm.noOfCooperators.$touched, 'is-valid' : editForm.noOfCooperators.$valid && editForm.noOfCooperators.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.noOfCooperators.$touched && editForm.noOfCooperators.$invalid">Please enter Number of Cooperators.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">CDA Registration Date</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="date" class="form-control" id="cdaRegistrationDate" name="cdaRegistrationDate" ng-model="borrower.cooperative.cdaRegistrationDate"
-        ng-class="{'is-invalid' : editForm.cdaRegistrationDate.$invalid && editForm.cdaRegistrationDate.$touched, 'is-valid' : editForm.cdaRegistrationDate.$valid && editForm.cdaRegistrationDate.$touched }" required/>
+        <input 
+            type="date" 
+            class="form-control" 
+            id="cdaRegistrationDate" 
+            name="cdaRegistrationDate"
+            ng-model="borrower.cooperative.cdaRegistrationDate"
+            ng-class="{'is-invalid' : editForm.cdaRegistrationDate.$invalid && editForm.cdaRegistrationDate.$touched, 'is-valid' : editForm.cdaRegistrationDate.$valid && editForm.cdaRegistrationDate.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.cdaRegistrationDate.$touched && editForm.cdaRegistrationDate.$invalid">Please enter CDA Registration Date.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">IC Risk Rating</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="text" class="form-control" id="icRiskRating" name="icRiskRating" ng-model="borrower.cooperative.icRiskRating"
-        ng-class="{'is-invalid' : editForm.icRiskRating.$invalid && editForm.icRiskRating.$touched, 'is-valid' : editForm.icRiskRating.$valid && editForm.icRiskRating.$touched }" required/>
+        <input 
+            type="text" 
+            class="form-control" 
+            id="icRiskRating" 
+            name="icRiskRating"
+            placeholder="IC Risk Rating" 
+            ng-model="borrower.cooperative.icRiskRating"
+            ng-class="{'is-invalid' : editForm.icRiskRating.$invalid && editForm.icRiskRating.$touched, 'is-valid' : editForm.icRiskRating.$valid && editForm.icRiskRating.$touched}"  required
+        />
         <span class="form-text text-muted" ng-show="editForm.icRiskRating.$touched && editForm.icRiskRating.$invalid">Please enter IC Risk Rating.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Initial Paid Up Capital</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" step=".01" class="form-control" id="paidUpCapitalInitial" name="paidUpCapitalInitial" ng-model="borrower.cooperative.paidUpCapitalInitial"
-        ng-class="{'is-invalid' : editForm.paidUpCapitalInitial.$invalid && editForm.paidUpCapitalInitial.$touched, 'is-valid' : editForm.paidUpCapitalInitial.$valid && editForm.paidUpCapitalInitial.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            step=".01" 
+            class="form-control" 
+            id="paidUpCapitalInitial" 
+            name="paidUpCapitalInitial" 
+            placeholder="Initial Paid Up Capital"
+            ng-model="borrower.cooperative.paidUpCapitalInitial"
+            ng-class="{'is-invalid' : editForm.paidUpCapitalInitial.$invalid && editForm.paidUpCapitalInitial.$touched, 'is-valid' : editForm.paidUpCapitalInitial.$valid && editForm.paidUpCapitalInitial.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.paidUpCapitalInitial.$touched && editForm.paidUpCapitalInitial.$invalid">Please enter Initial Paid Up Capital.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Coconut Farmer</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="coconutFarmers" name="coconutFarmers" ng-model="borrower.cooperative.coconutFarmers"
-        ng-class="{'is-invalid' : editForm.coconutFarmers.$invalid && editForm.coconutFarmers.$touched, 'is-valid' : editForm.coconutFarmers.$valid && editForm.coconutFarmers.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="coconutFarmers" 
+            name="coconutFarmers" 
+            placeholder="Coconut Farmer"
+            ng-model="borrower.cooperative.coconutFarmers"
+            ng-class="{'is-invalid' : editForm.coconutFarmers.$invalid && editForm.coconutFarmers.$touched, 'is-valid' : editForm.coconutFarmers.$valid && editForm.coconutFarmers.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.coconutFarmers.$touched && editForm.coconutFarmers.$invalid">Please enter Coconut Farmer.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Authorized</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" step=".01" class="form-control" id="authorized" name="authorized" ng-model="borrower.cooperative.authorized"
-        ng-class="{'is-invalid' : editForm.authorized.$invalid && editForm.authorized.$touched, 'is-valid' : editForm.authorized.$valid && editForm.authorized.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            step=".01" 
+            class="form-control" 
+            id="authorized" 
+            name="authorized" 
+            placeholder="Authorized"
+            ng-model="borrower.cooperative.authorized"
+            ng-class="{'is-invalid' : editForm.authorized.$invalid && editForm.authorized.$touched, 'is-valid' : editForm.authorized.$valid && editForm.authorized.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.authorized.$touched && editForm.authorized.$invalid">Please enter Authorized.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Fully Paid Shares No</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="fullyPaidSharesNo" name="fullyPaidSharesNo" ng-model="borrower.cooperative.fullyPaidSharesNo"
-        ng-class="{'is-invalid' : editForm.fullyPaidSharesNo.$invalid && editForm.fullyPaidSharesNo.$touched, 'is-valid' : editForm.fullyPaidSharesNo.$valid && editForm.fullyPaidSharesNo.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="fullyPaidSharesNo" 
+            name="fullyPaidSharesNo" 
+            placeholder="Fully Paid Shares No"
+            ng-model="borrower.cooperative.fullyPaidSharesNo"
+            ng-class="{'is-invalid' : editForm.fullyPaidSharesNo.$invalid && editForm.fullyPaidSharesNo.$touched, 'is-valid' : editForm.fullyPaidSharesNo.$valid && editForm.fullyPaidSharesNo.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.fullyPaidSharesNo.$touched && editForm.fullyPaidSharesNo.$invalid">Please enter Fully Paid Shares No.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Book Value</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="bookValue" name="bookValue" ng-model="borrower.cooperative.bookValue"
-        ng-class="{'is-invalid' : editForm.bookValue.$invalid && editForm.bookValue.$touched, 'is-valid' : editForm.bookValue.$valid && editForm.bookValue.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="bookValue" 
+            name="bookValue" 
+            placeholder="Book Value"
+            ng-model="borrower.cooperative.bookValue"
+            ng-class="{'is-invalid' : editForm.bookValue.$invalid && editForm.bookValue.$touched, 'is-valid' : editForm.bookValue.$valid && editForm.bookValue.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.bookValue.$touched && editForm.bookValue.$invalid">Please enter Book Value.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Par Value</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" step=".01" class="form-control" id="parValue" name="parValue" ng-model="borrower.cooperative.parValue"
-        ng-class="{'is-invalid' : editForm.parValue.$invalid && editForm.parValue.$touched, 'is-valid' : editForm.parValue.$valid && editForm.parValue.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            step=".01" 
+            class="form-control" 
+            id="parValue" 
+            name="parValue"
+            placeholder="Par Value" 
+            ng-model="borrower.cooperative.parValue"
+            ng-class="{'is-invalid' : editForm.parValue.$invalid && editForm.parValue.$touched, 'is-valid' : editForm.parValue.$valid && editForm.parValue.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.parValue.$touched && editForm.parValue.$invalid">Please enter Par Value.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Paid Up</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" step=".01" class="form-control" id="paidUp" name="paidUp" ng-model="borrower.cooperative.paidUp"
-        ng-class="{'is-invalid' : editForm.paidUp.$invalid && editForm.paidUp.$touched, 'is-valid' : editForm.paidUp.$valid && editForm.paidUp.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            step=".01" 
+            class="form-control" 
+            id="paidUp" 
+            name="paidUp" 
+            placeholder="Paid Up"
+            ng-model="borrower.cooperative.paidUp"
+            ng-class="{'is-invalid' : editForm.paidUp.$invalid && editForm.paidUp.$touched, 'is-valid' : editForm.paidUp.$valid && editForm.paidUp.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.paidUp.$touched && editForm.paidUp.$invalid">Please enter Paid Up Amount.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Fully Paid Percent</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="fullyPaidPercent" name="fullyPaidPercent" ng-model="borrower.cooperative.fullyPaidPercent"
-        ng-class="{'is-invalid' : editForm.fullyPaidPercent.$invalid && editForm.fullyPaidPercent.$touched, 'is-valid' : editForm.fullyPaidPercent.$valid && editForm.fullyPaidPercent.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="fullyPaidPercent" 
+            name="fullyPaidPercent" 
+            placeholder="Fully Paid Percent"
+            ng-model="borrower.cooperative.fullyPaidPercent"
+            ng-class="{'is-invalid' : editForm.fullyPaidPercent.$invalid && editForm.fullyPaidPercent.$touched, 'is-valid' : editForm.fullyPaidPercent.$valid && editForm.fullyPaidPercent.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.fullyPaidPercent.$touched && editForm.fullyPaidPercent.$invalid">Please enter Fully Paid Percentage.</span>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-xl-3 col-lg-3 col-form-label text-right">Initial Paid Up Share</label>
     <div class="col-lg-3 col-xl-6">
-        <input type="number" min="0" class="form-control" id="initialPaidUpShare" name="initialPaidUpShare" ng-model="borrower.cooperative.initialPaidUpShare"
-        ng-class="{'is-invalid' : editForm.initialPaidUpShare.$invalid && editForm.initialPaidUpShare.$touched, 'is-valid' : editForm.initialPaidUpShare.$valid && editForm.initialPaidUpShare.$touched }" required/>
+        <input 
+            type="number" 
+            min="0" 
+            class="form-control" 
+            id="initialPaidUpShare" 
+            name="initialPaidUpShare" 
+            placeholder="Initial Paid Up Share"
+            ng-model="borrower.cooperative.initialPaidUpShare"
+            ng-class="{'is-invalid' : editForm.initialPaidUpShare.$invalid && editForm.initialPaidUpShare.$touched, 'is-valid' : editForm.initialPaidUpShare.$valid && editForm.initialPaidUpShare.$touched }" 
+            required
+        />
         <span class="form-text text-muted" ng-show="editForm.initialPaidUpShare.$touched && editForm.initialPaidUpShare.$invalid">Please enter Initial Paid Up Share.</span>
     </div>
 </div>

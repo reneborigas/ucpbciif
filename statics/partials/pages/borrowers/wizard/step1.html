@@ -1,13 +1,14 @@
 <div class="pb-2 mb-3">
     <div class="mb-3 font-weight-bold text-dark">Enter Borrower Basic Information</div>
     <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">Cooperative Name</label>
         <span>*</span>
         <input
             type="text"
             class="form-control"
             id="name"
             name="name"
+            placeholder="Name of Cooperative"
             ng-model="cooperative.name"
             ng-class="{'is-invalid' : form.wizardForm.name.$invalid && form.wizardForm.name.$touched, 'is-valid' : form.wizardForm.name.$valid && form.wizardForm.name.$touched }"
             required
@@ -47,6 +48,7 @@
                     class="form-control"
                     id="tin"
                     name="tin"
+                    placeholder="Taxpayer Identification Number"
                     ng-model="cooperative.tin"
                     ng-class="{'is-invalid' : form.wizardForm.tin.$invalid && form.wizardForm.tin.$touched , 'is-valid' : form.wizardForm.tin.$valid && form.wizardForm.tin.$touched }"
                     required
@@ -89,6 +91,7 @@
             class="form-control"
             id="address"
             name="address"
+            placeholder="Complete Address"
             ng-model="cooperative.address"
             ng-class="{'is-invalid' : form.wizardForm.address.$invalid && form.wizardForm.address.$touched, 'is-valid' : form.wizardForm.address.$valid && form.wizardForm.address.$touched }"
             required
@@ -110,6 +113,7 @@
                     class="form-control"
                     id="phoneNo"
                     name="phoneNo"
+                    placeholder="Phone Number"
                     ng-model="cooperative.phoneNo"
                     ng-class="{'is-invalid' : form.wizardForm.phoneNo.$invalid && form.wizardForm.phoneNo.$touched, 'is-valid' : form.wizardForm.phoneNo.$valid && form.wizardForm.phoneNo.$touched }"
                     required
@@ -131,6 +135,7 @@
                     class="form-control"
                     id="emailAddress"
                     name="emailAddress"
+                    placeholder="user@example.com"
                     ng-model="cooperative.emailAddress"
                     ng-class="{'is-invalid' : form.wizardForm.emailAddress.$invalid && form.wizardForm.emailAddress.$touched, 'is-valid' : form.wizardForm.emailAddress.$valid && form.wizardForm.emailAddress.$touched }"
                     required
@@ -148,13 +153,25 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="telNo">Telephone Number</label>
-                <input type="text" class="form-control" id="telNo" name="telNo" ng-model="cooperative.telNo" />
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="telNo" 
+                    name="telNo" 
+                    placeholder="Telephone Number"
+                    ng-model="cooperative.telNo" />
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="fax">Fax Number</label>
-                <input type="text" class="form-control" id="fax" name="fax" ng-model="cooperative.fax" />
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="fax" 
+                    name="fax" 
+                    placeholder="Fax Number"
+                    ng-model="cooperative.fax" />
             </div>
         </div>
     </div>
@@ -167,12 +184,19 @@
             class="form-control textarea"
             id="description"
             name="description"
+            placeholder="Description"
             ng-model="cooperative.description"
         ></textarea>
     </div>
     <div class="form-group">
         <label for="remarks">Remarks</label>
-        <input type="text" class="form-control" id="remarks" name="remarks" ng-model="cooperative.remarks" />
+        <input 
+            type="text" 
+            class="form-control" 
+            id="remarks" 
+            name="remarks" 
+            placeholder="Remarks"
+            ng-model="cooperative.remarks" />
     </div>
 </div>
 <div class="pb-2 mb-3">
@@ -187,6 +211,7 @@
                     class="form-control"
                     id="firstname"
                     name="firstname"
+                    placeholder="First Name"
                     ng-model="contactPerson.firstname"
                     ng-class="{'is-invalid' : form.wizardForm.firstname.$invalid && form.wizardForm.firstname.$touched , 'is-valid' : form.wizardForm.firstname.$valid && form.wizardForm.firstname.$touched }"
                     required
@@ -207,6 +232,7 @@
                     class="form-control"
                     id="middlename"
                     name="middlename"
+                    placeholder="Middle Name"
                     ng-model="contactPerson.middlename"
                 />
             </div>
@@ -220,6 +246,7 @@
                     class="form-control"
                     id="lastname"
                     name="lastname"
+                    placeholder="Last Name"
                     ng-model="contactPerson.lastname"
                     ng-class="{'is-invalid' : form.wizardForm.lastname.$invalid && form.wizardForm.lastname.$touched , 'is-valid' : form.wizardForm.lastname.$valid && form.wizardForm.lastname.$touched }"
                     required
@@ -241,6 +268,7 @@
             class="form-control"
             id="contactPersonAddress"
             name="contactPersonAddress"
+            placeholder="Complete Address"
             ng-model="contactPerson.address"
             ng-class="{'is-invalid' : form.wizardForm.contactPersonAddress.$invalid && form.wizardForm.contactPersonAddress.$touched, 'is-valid' : form.wizardForm.contactPersonAddress.$valid && form.wizardForm.contactPersonAddress.$touched }"
             required
@@ -262,6 +290,7 @@
                     class="form-control"
                     id="contactPersonPhoneNo"
                     name="contactPersonPhoneNo"
+                    placeholder="Phone Number"
                     ng-model="contactPerson.phoneNo"
                     ng-class="{'is-invalid' : form.wizardForm.contactPersonPhoneNo.$invalid && form.wizardForm.contactPersonPhoneNo.$touched, 'is-valid' : form.wizardForm.contactPersonPhoneNo.$valid && form.wizardForm.contactPersonPhoneNo.$touched }"
                     required
@@ -283,6 +312,7 @@
                     class="form-control"
                     id="contactPersonEmailAddress"
                     name="contactPersonEmailAddress"
+                    placeholder="user@example.com"
                     ng-model="contactPerson.emailAddress"
                     ng-class="{'is-invalid' : form.wizardForm.contactPersonEmailAddress.$invalid && form.wizardForm.contactPersonEmailAddress.$touched, 'is-valid' : form.wizardForm.contactPersonEmailAddress.$valid && form.wizardForm.contactPersonEmailAddress.$touched }"
                     required
