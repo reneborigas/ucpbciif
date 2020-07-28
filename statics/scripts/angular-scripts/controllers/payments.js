@@ -16,12 +16,12 @@ define(function () {
         $scope.tablePayments = new NgTableParams(
             {
                 page: 1,
-                count: 15,
+                count: 20,
             },
             {
                 counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
-                    return $http.get('/api/payments/payments/').then(
+                    return $http.get('/api/payments/payments/', { params: $scope.params }).then(
                         function (response) {
                             var filteredData = params.filter()
                                 ? $filter('filter')(response.data, params.filter())
@@ -51,13 +51,7 @@ define(function () {
                 },
             }
         );
-        $scope.viewLoan = function (id) {
-            $state.go('app.loans.info', { loanId: id });
-        };
 
-        $scope.viewBorrower = function (id) {
-            $state.go('app.borrowers.info', { borrowerId: id });
-        };
         $scope.$watch(
             'searchTermAuto',
             function (newTerm, oldTerm) {
@@ -66,9 +60,126 @@ define(function () {
             true
         );
 
-        $scope.view = function (id) {
+        appFactory.getPaymentStatus().then(function (data) {
+            $scope.paymentStatuses = data;
+        });
+
+        appFactory.getPaymentType().then(function (data) {
+            $scope.paymentTypes = data;
+        });
+
+        $scope.params = {};
+
+        $scope.filters = [
+            {
+                name: 'Borrower',
+                showFilter: false,
+                params: {
+                    param1: 'borrowerId',
+                },
+            },
+            {
+                name: 'Principal Range',
+                showFilter: false,
+                params: {
+                    param1: 'principalFrom',
+                    param2: 'principalTo',
+                },
+            },
+            {
+                name: 'Interest Range',
+                showFilter: false,
+                params: {
+                    param1: 'interestFrom',
+                    param2: 'interestTo',
+                },
+            },
+            {
+                name: 'Payment Date Range',
+                showFilter: false,
+                params: {
+                    param1: 'paymentDateFrom',
+                    param2: 'paymentDateTo',
+                },
+            },
+            {
+                name: 'Total Payment Range',
+                showFilter: false,
+                params: {
+                    param1: 'totalPaymentFrom',
+                    param2: 'totalPaymentTo',
+                },
+            },
+            {
+                name: 'Payment Type',
+                showFilter: false,
+                params: {
+                    param1: 'paymentType',
+                },
+            },
+            {
+                name: 'Status',
+                showFilter: false,
+                params: {
+                    param1: 'status',
+                },
+            },
+        ];
+
+        $scope.showFilterButton = false;
+
+        $scope.showFilter = function (filter) {
+            if (filter.showFilter) {
+                filter.showFilter = false;
+            } else {
+                filter.showFilter = true;
+            }
+
+            for (var i = 0; i < $scope.filters.length; i++) {
+                if ($scope.filters[i].showFilter == true) {
+                    $scope.showFilterButton = true;
+                    break;
+                } else {
+                    $scope.showFilterButton = false;
+                }
+            }
+        };
+
+        $scope.applyFilter = function () {
+            angular.forEach($scope.filters, function (filter) {
+                if (!filter.showFilter) {
+                    angular.forEach(filter.params, function (value, key) {
+                        delete $scope.params[value];
+                    });
+                }
+            });
+            $scope.tablePayments.reload();
+        };
+
+        $scope.resetFilter = function () {
+            angular.forEach($scope.filters, function (filter) {
+                filter.showFilter = false;
+            });
+            $scope.showFilterButton = false;
+            $scope.params = {};
+            $scope.tablePayments.reload();
+        };
+
+        $scope.viewLoan = function (id) {
             $state.go('app.loans.info', { loanId: id });
         };
+
+        $scope.viewBorrower = function (id) {
+            $state.go('app.borrowers.info', { borrowerId: id });
+        };
+
+        $scope.$watch(
+            'searchTermAuto',
+            function (newTerm, oldTerm) {
+                $scope.tablePayments.filter({ $: newTerm });
+            },
+            true
+        );
     });
 
     app.controller('NewPaymentController', function NewPaymentController(

@@ -21,7 +21,7 @@ define(function () {
             {
                 counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
-                    return $http.get('/api/loans/loans/').then(
+                    return $http.get('/api/loans/loans/', { params: $scope.params }).then(
                         function (response) {
                             var filteredData = params.filter()
                                 ? $filter('filter')(response.data, params.filter())
@@ -59,6 +59,88 @@ define(function () {
             },
             true
         );
+
+        appFactory.getLoanPrograms().then(function (data) {
+            $scope.loanPrograms = data;
+        });
+
+        appFactory.getLoanStatus().then(function (data) {
+            $scope.loanStatuses = data;
+        });
+
+        $scope.params = {};
+
+        $scope.filters = [
+            {
+                name: 'Date Released Range',
+                showFilter: false,
+                params: {
+                    param1: 'dateFrom',
+                    param2: 'dateTo',
+                },
+            },
+            {
+                name: 'Loan Range',
+                showFilter: false,
+                params: {
+                    param1: 'loanFrom',
+                    param2: 'loanTo',
+                },
+            },
+            {
+                name: 'Window',
+                showFilter: false,
+                params: {
+                    param1: 'loanProgram',
+                },
+            },
+            {
+                name: 'Status',
+                showFilter: false,
+                params: {
+                    param1: 'status',
+                },
+            },
+        ];
+
+        $scope.showFilterButton = false;
+
+        $scope.showFilter = function (filter) {
+            if (filter.showFilter) {
+                filter.showFilter = false;
+            } else {
+                filter.showFilter = true;
+            }
+
+            for (var i = 0; i < $scope.filters.length; i++) {
+                if ($scope.filters[i].showFilter == true) {
+                    $scope.showFilterButton = true;
+                    break;
+                } else {
+                    $scope.showFilterButton = false;
+                }
+            }
+        };
+
+        $scope.applyFilter = function () {
+            angular.forEach($scope.filters, function (filter) {
+                if (!filter.showFilter) {
+                    angular.forEach(filter.params, function (value, key) {
+                        delete $scope.params[value];
+                    });
+                }
+            });
+            $scope.tableLoans.reload();
+        };
+
+        $scope.resetFilter = function () {
+            angular.forEach($scope.filters, function (filter) {
+                filter.showFilter = false;
+            });
+            $scope.showFilterButton = false;
+            $scope.params = {};
+            $scope.tablePayments.reload();
+        };
 
         $scope.view = function (id) {
             $state.go('app.loans.info', { loanId: id });

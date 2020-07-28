@@ -49,15 +49,35 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center flex-wrap justify-content-between">
-                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                <br />
-                                Donec rhoncus dapibus dolor, sollicitudin porttitor felis sollicitudin ut.
-                                <br />
-                                Etiam elementum neque non tempor dapibus.
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 mr-5">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="font-weight-bolder mr-2">Program:</span>
+                                    <span class="font-weight-bolder text-dark">
+                                        {{ loan.loanProgram_name }}
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="font-weight-bolder mr-2">Loan Amount:</span>
+                                    <span class="font-weight-bolder text-dark">
+                                        {{ loan.amount | currency :'₱'}}
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="font-weight-bolder mr-2">Interest Rate:</span>
+                                    <span class="font-weight-bolder text-dark">
+                                        {{ loan.interestRate_amount }}
+                                        <span>%</span>
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="font-weight-bolder mr-2">Term:</span>
+                                    <span class="font-weight-bolder text-dark">
+                                        {{ loan.term_name }}
+                                    </span>
+                                </div>
                             </div>
                             <div class="d-flex flex-wrap align-items-center py-2">
-                                <div class="d-flex align-items-center mr-10" ng-show="loan.dateReleased">
+                                <div class="d-flex align-items-center" ng-show="loan.dateReleased">
                                     <div class="mr-6">
                                         <div class="font-weight-bold mb-2">Release Date</div>
                                         <span
@@ -89,7 +109,7 @@
                 </div>
                 <div class="separator separator-solid my-7"></div>
                 <div class="d-flex align-items-center flex-wrap">
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
                         </span>
@@ -99,8 +119,8 @@
                                 {{ loan.loanProgram_name }}
                             </span>
                         </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                    </div> -->
+                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
                         </span>
@@ -110,9 +130,9 @@
                                 {{ loan.creditLine_amount | currency :'₱'}}
                             </span>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
                         </span>
@@ -123,18 +143,6 @@
                             </span>
                         </div>
                     </div>
-
-                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Remaining Credit Line Amount</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ document.creditLine.remainingCreditLine | currency :'₱'}}
-                            </span>
-                        </div>
-                    </div> -->
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
@@ -157,7 +165,7 @@
                                 {{ loan.term_name }}
                             </span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="d-flex align-items-center flex-wrap" ng-if="loan.dateReleased">
@@ -572,13 +580,13 @@
                                             </span>
                                         </div>
                                     </th>
-                                    <th>
+                                    <!-- <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
                                                 VAT
                                             </span>
                                         </div>
-                                    </th>
+                                    </th> -->
                                     <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -621,11 +629,11 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -680,13 +688,13 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.vat | currency :'₱'}}
                                             </span>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -734,11 +742,11 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -1152,13 +1160,13 @@
                                             </span>
                                         </div>
                                     </th>
-                                    <th>
+                                    <!-- <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
                                                 VAT
                                             </span>
                                         </div>
-                                    </th>
+                                    </th> -->
                                     <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -1206,11 +1214,11 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -1260,13 +1268,13 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortizationItem.vat | currency :'₱'}}
                                             </span>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1314,11 +1322,11 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>

@@ -9,71 +9,302 @@
                         </span>
                         <h3 class="card-label">Payment List</h3>
                     </div>
-                     
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto"/>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Search..."
+                                        ng-model="searchTermAuto"
+                                    />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
+                                <div class="dropdown dropdown-inline ml-4">
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-success"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
+                                        <i class="fal fa-plus mr-1"></i>
+                                        Add Filter
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a
+                                            href=""
+                                            ng-click="showFilter(filter)"
+                                            class="dropdown-item"
+                                            ng-repeat="filter in filters"
+                                        >
+                                            <i
+                                                class="mr-2"
+                                                ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
+                                            ></i>
+                                            {{ filter.name }}
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        </div> 
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="row">
+                            <!-- <div class="col-lg-6 mb-2 mb-6" ng-if="filters[0].showFilter">
+                                <label>Borrower:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[0].params.param1]"
+                                    ng-options="loanProgram.id as loanProgram.name for loanProgram in loanPrograms"
+                                >
+                                    <option value="" disabled selected>Select Borrower</option>
+                                </select>
+                            </div> -->
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
+                                <label>Principal Range:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
+                                <label>Interest Range:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[2].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[2].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
+                                <label>Payment Date Date:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[3].params.param1]"
+                                        datepicker-localdate
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[3].params.param2]"
+                                        datepicker-localdate
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[4].showFilter">
+                                <label>Total Payment Range:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[4].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[4].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
+                                <label>Payment Type:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[5].params.param1]"
+                                    ng-options="paymentType.name as paymentType.name for paymentType in paymentTypes"
+                                >
+                                    <option value="" disabled selected>Select Payment Type</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[6].showFilter">
+                                <label>Status:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[6].params.param1]"
+                                    ng-options="paymentStatus.name as paymentStatus.name for paymentStatus in paymentStatuses"
+                                >
+                                    <option value="" disabled selected>Select Status</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row my-4" ng-if="showFilterButton">
+                            <div class="col-lg-12">
+                                <button class="btn btn-primary btn-primary-icon" ng-click="applyFilter()">
+                                    <span>
+                                        <i class="fal fa-filter"></i>
+                                        <span>Apply</span>
+                                    </span>
+                                </button>
+                                &#160;&#160;
+                                <button class="btn btn-secondary btn-secondary-icon" ng-click="resetFilter()">
+                                    <span>
+                                        <span>Clear Filters</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="datatable datatable-default datatable-subtable">
-                        <table class="table table-vertical-center datatable-table" ng-table="tablePayments" template-pagination="statics/partials/customs/pagination.html">
+                        <table
+                            class="table table-vertical-center datatable-table"
+                            ng-table="tablePayments"
+                            template-pagination="statics/partials/customs/pagination.html"
+                        >
                             <tr class="datatable-row" ng-repeat="payment in $data">
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'LOAN NO.'" sortable="'id'">
-                                        <a href="#" ng-click="viewLoan(payment.loan)">   LN{{ payment.loan }}</a>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-center"
+                                    header-class="'text-center'"
+                                    data-title="'LOAN NO.'"
+                                    sortable="'id'"
+                                >
+                                    <a href="#" ng-click="viewLoan(payment.loan)">LN{{ payment.loan }}</a>
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'" sortable="'borrower_name'">
-                                        <a href="#" ng-click="viewBorrower(payment.borrower_id)">     {{ payment.borrower_name }}</a>
-                                </td>     
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT FOR'" sortable="'amortizationItem_schedule'">
-                                        {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'BORROWER'"
+                                    sortable="'borrower_name'"
+                                >
+                                    <a href="#" ng-click="viewBorrower(payment.borrower_id)">
+                                        {{ payment.borrower_name }}
+                                    </a>
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PRINCIPAL'" sortable="'amortizationItem_principal'">
-                                        {{ payment.principal | currency :'₱'}}
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'PAYMENT FOR'"
+                                    sortable="'amortizationItem_schedule'"
+                                >
+                                    {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'INTEREST'" sortable="'amortizationItem_interest'">
-                                        {{ payment.interest | currency :'₱'}}
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'PRINCIPAL'"
+                                    sortable="'amortizationItem_principal'"
+                                >
+                                    {{ payment.principal | currency :'₱'}}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'INTEREST'"
+                                    sortable="'amortizationItem_interest'"
+                                >
+                                    {{ payment.interest | currency :'₱'}}
                                 </td>
 
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TOTAL PAYABLE'" sortable="'amortizationItem_total'">
-                                        {{ payment.totalToPay | currency :'₱'}}
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL PAYABLE'"
+                                    sortable="'amortizationItem_total'"
+                                >
+                                    {{ payment.totalToPay | currency :'₱'}}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT DATE'" sortable="'datePayment'">
-                                        {{ payment.datePayment | date: 'mediumDate' }}
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'PAYMENT DATE'"
+                                    sortable="'datePayment'"
+                                >
+                                    {{ payment.datePayment | date: 'mediumDate' }}
                                 </td>
-                                
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT TYPE'" sortable="'paymentType_name'">
-                                        {{ payment.paymentType_name }}
+
+                                <td
+                                    class="datatable-cell datatable-cell-left text-center"
+                                    header-class="'text-center'"
+                                    data-title="'PAYMENT TYPE'"
+                                    sortable="'paymentType_name'"
+                                >
+                                    {{ payment.paymentType_name }}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TOTAL PAYMENT'" sortable="'total'">
-                                        {{ payment.total | currency :'₱'}}
-                                </td>  
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL PAYMENT'"
+                                    sortable="'total'"
+                                >
+                                    {{ payment.total | currency :'₱'}}
+                                </td>
                                 <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CHECK NO'" sortable="'checkNo'">
                                         {{ payment.checkNo}}
                                 </td>   
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BANK ACCOUNY'" sortable="'bankAccount'">
                                         {{ payment.bankAccount }}
                                 </td>                  -->
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BALANCE'" sortable="'balance'">
-                                        {{ payment.balance | currency :'₱'}}
-                                </td>      
-                                
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'OVER PAYMENT'" sortable="'overPayment'">
-                                        {{ payment.overPayment | currency :'₱'}}
-                                </td>     
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'dateCreated'">
-                                        {{ payment.dateCreated | date: 'mediumDate' }}
-                                </td>     
-                               
-                                 
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'BALANCE'"
+                                    sortable="'balance'"
+                                >
+                                    {{ payment.balance | currency :'₱'}}
+                                </td>
+
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'OVER PAYMENT'"
+                                    sortable="'overPayment'"
+                                >
+                                    {{ payment.overPayment | currency :'₱'}}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'STATUS'"
+                                    sortable="'paymentStatus_name'"
+                                >
+                                    {{ payment.paymentStatus_name }}
+                                </td>
                             </tr>
-                             
                         </table>
                     </div>
                 </div>

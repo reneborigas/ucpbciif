@@ -103,26 +103,39 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
         schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
         i = i+1
 
+class PaymentStatusSerializer(ModelSerializer):
+     
+    def create(self, validated_data):
+        paymentStatus = PaymentStatus.objects.create(**validated_data) 
+
+        return paymentStatus
+
+    def update(self, instance, validated_data):
+         
+        return instance
+    
+    class Meta:
+        model = PaymentStatus        
+        fields = '__all__'
+
 class PaymentTypeSerializer(ModelSerializer):
      
     def create(self, validated_data):
         paymentType = PaymentType.objects.create(**validated_data) 
+
         return paymentType
 
     def update(self, instance, validated_data):
          
-
         return instance
     
     class Meta:
         model = PaymentType        
         fields = '__all__'
-
          
 class PaymentSerializer(ModelSerializer):
     paymentType_name = serializers.ReadOnlyField(source='paymentType.name')
-     
-    
+    paymentStatus_name = serializers.ReadOnlyField(source='paymentStatus.name')
     amortizationItem_schedule  = serializers.ReadOnlyField(source='amortizationItem.schedule')
     amortizationItem_principal  = serializers.ReadOnlyField(source='amortizationItem.principal')
     amortizationItem_interest = serializers.ReadOnlyField(source='amortizationItem.interest')
@@ -130,6 +143,7 @@ class PaymentSerializer(ModelSerializer):
     borrower_name  = serializers.ReadOnlyField(source='loan.borrower.cooperative.name')
     borrower_id  = serializers.ReadOnlyField(source='loan.borrower.borrowerId')
     # loan_no  = serializers.ReadOnlyField(source='amortizationItem.total')
+
     def create(self, validated_data):
         payment = Payment.objects.create(**validated_data) 
 
@@ -144,7 +158,6 @@ class PaymentSerializer(ModelSerializer):
 
     def update(self, instance, validated_data):
          
-
         return instance
     
     class Meta:
