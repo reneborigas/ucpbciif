@@ -4,7 +4,7 @@ from .serializers import *
 from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
-
+from datetime import datetime
 from borrowers.models import Borrower
 
 
@@ -18,9 +18,16 @@ class LoanViewSet(ModelViewSet):
         loanId = self.request.query_params.get('loanId', None)
         borrowerId = self.request.query_params.get('borrowerId', None)
         status = self.request.query_params.get('status', None)
-
+        dateFrom = self.request.query_params.get('dateFrom', None)
+        dateTo = self.request.query_params.get('dateTo', None)
+        loanFrom = self.request.query_params.get('loanFrom', None)
+        loanTo = self.request.query_params.get('loanTo', None)
+        loanTo = self.request.query_params.get('loanTo', None)
+        loanProgram = self.request.query_params.get('loanProgram', None)
+        
         if loanId is not None:
             queryset = queryset.filter(id=loanId)
+
         if borrowerId is not None:
             queryset = queryset.filter(borrower__borrowerId=borrowerId)
 
@@ -43,6 +50,14 @@ class LoanViewSet(ModelViewSet):
                 amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
                 amortization.totalObligations = amortization.getTotalObligations
 
+        if dateFrom is not None and dateTo is not None:
+            queryset=queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
+
+        if loanFrom is not None and loanTo is not None:
+            queryset=queryset.filter(amount__gte=loanFrom).filter(amount__lte=loanTo)
+
+        if loanProgram is not None:
+            queryset=queryset.filter(loanProgram=loanProgram)
 
         return queryset
 
@@ -154,5 +169,23 @@ class PaymentPeriodViewSet(ModelViewSet):
 
         if paymentPeriodId is not None:
             queryset = queryset.filter(id=paymentPeriodId)
+
+        return queryset
+
+class StatusViewSet(ModelViewSet):
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Status.objects.order_by('id')
+        statusId = self.request.query_params.get('statusId', None)
+        name = self.request.query_params.get('name', None)
+
+        if statusId is not None:
+            queryset = queryset.filter(id=statusId)
+
+        if name is not None:
+            queryset = queryset.filter(name=name)
 
         return queryset

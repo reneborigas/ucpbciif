@@ -10,8 +10,6 @@ class Status(models.Model):
         blank = False,
         null = False, 
     )
-   
-   
     isDefault = models.BooleanField(
         default=False
     )    
@@ -38,15 +36,12 @@ class Status(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
-
     isFinalStatus = models.BooleanField(
         default=False,
     )
-
     isNegativeResult = models.BooleanField(
         default=False,
     )
-    
     def __str__(self):
         return "%s" % (self.name  )
 

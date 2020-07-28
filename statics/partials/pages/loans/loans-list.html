@@ -9,61 +9,216 @@
                         </span>
                         <h3 class="card-label">Loan List</h3>
                     </div>
-                     
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto"/>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Search..."
+                                        ng-model="searchTermAuto"
+                                    />
                                     <span><i class="far fa-search"></i></span>
+                                </div>
+                                <div class="dropdown dropdown-inline ml-4">
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-success"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
+                                        <i class="fal fa-plus mr-1"></i>
+                                        Add Filter
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a
+                                            href=""
+                                            ng-click="showFilter(filter)"
+                                            class="dropdown-item"
+                                            ng-repeat="filter in filters"
+                                        >
+                                            <i
+                                                class="mr-2"
+                                                ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
+                                            ></i>
+                                            {{ filter.name }}
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <div class="row">
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[0].showFilter">
+                                <label>Release Date:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[0].params.param1]"
+                                        datepicker-localdate
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[0].params.param2]"
+                                        datepicker-localdate
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
+                                <label>Loan Range:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
+                                <label>Window:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[2].params.param1]"
+                                    ng-options="loanProgram.id as loanProgram.name for loanProgram in loanPrograms"
+                                >
+                                    <option value="" disabled selected>Select Window</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
+                                <label>Status:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[3].params.param1]"
+                                    ng-options="loanStatus.name as loanStatus.name for loanStatus in loanStatuses"
+                                >
+                                    <option value="" disabled selected>Select Status</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row my-4" ng-if="showFilterButton">
+                            <div class="col-lg-12">
+                                <button class="btn btn-primary btn-primary-icon" ng-click="applyFilter()">
+                                    <span>
+                                        <i class="fal fa-filter"></i>
+                                        <span>Apply</span>
+                                    </span>
+                                </button>
+                                &#160;&#160;
+                                <button class="btn btn-secondary btn-secondary-icon" ng-click="resetFilter()">
+                                    <span>
+                                        <span>Clear Filters</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="datatable datatable-default datatable-subtable">
-                        <table class="table table-vertical-center datatable-table" ng-table="tableLoans" template-pagination="statics/partials/customs/pagination.html">
+                        <table
+                            class="table table-vertical-center datatable-table"
+                            ng-table="tableLoans"
+                            template-pagination="statics/partials/customs/pagination.html"
+                        >
                             <tr class="datatable-row" ng-repeat="loan in $data">
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'LOAN NO.'" sortable="'id'">
-                                    {{ loan.id }}
+                                <td
+                                    class="datatable-cell datatable-cell-center text-center"
+                                    header-class="'text-center'"
+                                    data-title="'LOAN NO.'"
+                                    sortable="'id'"
+                                >
+                                    <a href="" ng-click="view(loan.id)">LN{{ loan.id }}</a>
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'" sortable="'borrower_name'">
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'BORROWER'"
+                                    sortable="'borrower_name'"
+                                >
                                     {{ loan.borrower_name }}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'WINDOW'" sortable="'loanProgram_name'">
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'WINDOW'"
+                                    sortable="'loanProgram_name'"
+                                >
                                     {{ loan.loanProgram_name }}
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'TERM'"
+                                    sortable="'term_name'"
+                                >
                                     {{ loan.term_name }}
                                 </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'LOAN AMOUNT'"
+                                    sortable="'amount'"
+                                >
+                                    {{ loan.amount | currency :'₱'}}
+                                </td>
 
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CREDIT LINE AMOUNT'" sortable="'creditLine_amount'">
-                                    {{ loan.creditLine_amount  | currency :'₱'}}
-                                </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'LOAN AMOUNT'" sortable="'amount'">
-                                    {{ loan.amount  | currency :'₱'}}
-                                </td>
-                                
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'INTEREST RATE'" sortable="'interestRate'">
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'INTEREST RATE'"
+                                    sortable="'interestRate'"
+                                >
                                     {{ loan.interestRate_amount }} %
                                 </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'DATE RELEASED'" sortable="'dateReleased'">
-                                    {{ loan.dateReleased | date:'mediumDate'  }}
-                                </td>  
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'status_name'">
-                                        {{ loan.status_name }}
-                                    </td>                       
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
-                                   
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'DATE RELEASED'"
+                                    sortable="'dateReleased'"
+                                >
+                                    {{ loan.dateReleased | date:'mediumDate' }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'STATUS'"
+                                    sortable="'status_name'"
+                                >
+                                    {{ loan.status_name }}
+                                </td>
+                                <!-- <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'ACTIONS'"
+                                >
                                     <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(loan.id)">
                                         <i class="fad fa-eye"></i>
                                     </a>
-                                     
-                                     
-                                </td>
+                                </td> -->
                             </tr>
-                             
                         </table>
                     </div>
                 </div>

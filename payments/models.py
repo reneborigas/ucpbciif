@@ -36,11 +36,9 @@ class PaymentStatus(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
-
     isFinalStatus = models.BooleanField(
         default=False,
     )
-
     isNegativeResult = models.BooleanField(
         default=False,
     )
@@ -48,18 +46,12 @@ class PaymentStatus(models.Model):
     def __str__(self):
         return "%s" % (self.name  )
   
-
-
-
-
 class PaymentType(models.Model):
-
     name = models.CharField(
         max_length=255,
         blank = False,
         null = False, 
-    )    
-      
+    )
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
@@ -79,10 +71,7 @@ class PaymentType(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
-      
-
 class Payment(models.Model):
-
     loan =  models.ForeignKey(
         'loans.Loan',
         on_delete=models.CASCADE,
@@ -98,26 +87,46 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         related_name="payments",
     ) 
-
     days = models.PositiveIntegerField(
         blank=False,
         null=False,
         default=0
     ) 
-
-    principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
-    interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-    totalToPay = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-    principalBalance = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
-    
-    cash = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
-    check = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
-    interestPayment = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
+    principal = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    interest = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    totalToPay = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    principalBalance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    cash = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    check = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    interestPayment = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
     checkNo = models.CharField(
         max_length=255,
         blank = True,
@@ -128,31 +137,37 @@ class Payment(models.Model):
         blank = True,
         null = True, 
     )    
-    total = models.DecimalField( max_digits=24, decimal_places=2,blank=False)
- 
+    total = models.DecimalField(
+        max_digits=24,
+        decimal_places=2,
+        blank=False
+    )
     paymentType =  models.ForeignKey(
-       PaymentType,
+        PaymentType,
         on_delete=models.SET_NULL,
         related_name="loans",
-          null = True,
+        null = True,
     )
-    
-
-    balance = models.DecimalField( max_digits=24, decimal_places=2,blank=False)
-
-    outStandingBalance = models.DecimalField( max_digits=24, decimal_places=2,blank=False)
-
-    overPayment = models.DecimalField( max_digits=24, decimal_places=2,blank=False)
-
-     
-
+    balance = models.DecimalField(
+        max_digits=24,
+        decimal_places=2,
+        blank=False
+    )
+    outStandingBalance = models.DecimalField(
+        max_digits=24,
+        decimal_places=2,
+        blank=False)
+    overPayment = models.DecimalField(
+        max_digits=24,
+        decimal_places=2,
+        blank=False
+    )
     paymentStatus = models.ForeignKey(
         PaymentStatus,
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="paymentStatuses",
     )
-
     description = models.TextField(
         blank = True,
         null = True,
@@ -167,17 +182,13 @@ class Payment(models.Model):
         related_name="paymentCreatedBy",
         null = True,
     )
-    
     dateTendered = models.DateTimeField(
         auto_now_add=True,
-       
     )
     datePayment = models.DateTimeField(
         blank=True,
         null=True
-       
     )
-
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )

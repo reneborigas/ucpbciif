@@ -6,10 +6,14 @@ define(function () {
     app.controller('NavBarController', function NavBarController($scope, appFactory, appLoginService, $state) {
         appFactory.getCurrentUserInfo().then(function (data) {
             $scope.user = data;
+            if (!$scope.user) {
+                $scope.logout();
+            } else {
+                $scope.gotToMetro = function () {
+                    $state.go('main.menu');
+                };
+            }
         });
-        $scope.gotToMetro = function () {
-            $state.go('main.menu');
-        };
         $scope.logout = appLoginService.logout;
         $scope.showHeader = false;
         $scope.showHeader = appLoginService.isLoggedIn();

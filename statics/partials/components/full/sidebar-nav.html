@@ -21,12 +21,12 @@
             <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.documents')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.documents')}">
                     <i class="fas fa-hand-holding-usd"></i>
-                    Files
+                    Credit Management
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a
-                            class="nav-link"
+                            class="nav-link pl-16"
                             ui-sref-active="active"
                             ng-repeat="subProcessSlug in subProcessSlugs"
                             ui-sref="app.documents.list({ subProcessName : subProcessSlug.slug })"
@@ -44,7 +44,7 @@
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.loans.list">
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.loans.list">
                             <i class="fas fa-spinner"></i>
                             Loan List
                         </a>
@@ -58,17 +58,17 @@
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags">
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.flags">
                             <i class="fas fa-spinner"></i>
                             Processing
                             <span class="badge badge-success">NEW</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link" ui-sref-active="active" ui-sref="app.payments.list">
-                                <i class="fas fa-spinner"></i>
-                                Payment List
-                            </a>
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.payments.list">
+                            <i class="fas fa-spinner"></i>
+                            Payment List
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -79,14 +79,14 @@
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags">
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.flags">
                             <i class="far fa-calendar-check"></i>
                             Schedules
                             <span class="badge badge-success">NEW</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.icons.fontawesome">
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
                             <i class="fas fa-coins"></i>
                             Maturing Amortizations
                             <span class="badge badge-secondary">4.7</span>
@@ -94,20 +94,20 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app. icons')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#">
                     <i class="far fa-desktop"></i>
                     Monitoring
                 </a>
-                <ul class="nav-dropdown-items">
+                <ul class="nav-dropdown-items ml-4">
                     <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.icons.flags">
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.flags">
                             <i class="far fa-credit-card"></i>
                             Credit Line
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="app.icons.fontawesome">
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
                             <i class="fas fa-money-check"></i>
                             Postdated Checks
                             <span class="badge badge-secondary">4.7</span>
@@ -122,9 +122,19 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <a
+                    class="nav-link"
+                    ng-class="{active: $state.includes('app.committees')}"
+                    ui-sref="app.committees.offices"
+                >
+                    <i class="icon-people"></i>
+                    Committee
+                </a>
+            </li>
             <li class="divider"></li>
             <li class="nav-title">
-                Settings
+                Utilities
             </li>
             <li class="nav-item">
                 <a
@@ -136,6 +146,7 @@
                     Committee
                 </a>
             </li>
+
             <!-- <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.committee')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.committee')}" href="#">
                     <i ass="icon-star"></i>

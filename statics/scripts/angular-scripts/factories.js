@@ -124,7 +124,7 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve user account types. Please contact System Administrator.'
+                            'Could not retrieve User Account types. Please contact System Administrator.'
                         );
                     }
                 );
@@ -181,7 +181,19 @@ define(function () {
                     }
                 );
             },
-
+            getPaymentStatus: function () {
+                return $http.get('/api/payments/paymentstatus/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Payment Status list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getPaymentType: function () {
                 return $http.get('/api/payments/paymenttypes/').then(
                     function (response) {
@@ -195,7 +207,6 @@ define(function () {
                     }
                 );
             },
-
             getCommitteeName: function (committeeId) {
                 return $http.get('/api/committees/committees/', { params: { committeeId: committeeId } }).then(
                     function (response) {
@@ -217,12 +228,11 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve term list. Please contact System Administrator.'
+                            'Could not retrieve Term list. Please contact System Administrator.'
                         );
                     }
                 );
             },
-
             getInterestRates: function () {
                 return $http.get('/api/loans/interestrates/').then(
                     function (response) {
@@ -231,14 +241,12 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve interst rate list. Please contact System Administrator.'
+                            'Could not retrieve Interest Rate list. Please contact System Administrator.'
                         );
                     }
                 );
             },
-
             getLoanPrograms: function (borrowerId) {
-                console.log(borrowerId);
                 return $http.get('/api/loans/loanprograms/', { params: { borrowerId: borrowerId } }).then(
                     function (response) {
                         return response.data;
@@ -246,7 +254,20 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve loan program list. Please contact System Administrator.'
+                            'Could not retrieve Loan Program list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getLoanStatus: function () {
+                return $http.get('/api/loans/status/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Loan Status list. Please contact System Administrator.'
                         );
                     }
                 );
@@ -260,7 +281,7 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve loan program list. Please contact System Administrator.'
+                            'Could not retrieve Loan Program list. Please contact System Administrator.'
                         );
                     }
                 );
