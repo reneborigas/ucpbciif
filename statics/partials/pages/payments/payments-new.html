@@ -12,7 +12,7 @@
                                 >
                                     Loan No. {{ loan.id }}
                                     <span class="label label-light-info label-inline font-weight-bolder ml-2">
-                                        {{loan.status_name}}
+                                        {{loan.loanStatus_name}}
                                     </span>
                                     <!-- <i class="fas fa-check-circle text-success icon-md ml-2"></i> -->
                                 </a>
@@ -343,6 +343,7 @@
                                         id="paymentType"
                                         name="paymentType"
                                         ng-model="payment.paymentType"
+                                         
                                         ng-options="paymentType.id as (paymentType.name) for paymentType in paymentTypes"
                                         ng-class="{'is-invalid' : newPaymentDetailsForm.paymentType.$invalid &&
                                         newPaymentDetailsForm.paymentType.$touched, 'is-valid' : newPaymentDetailsForm.paymentType.$valid && newPaymentDetailsForm.paymentType.$touched }"
@@ -357,7 +358,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-lg-3" ng-if="payment.paymentType == '1'">
+                                <div class="col-lg-3" ng-if="payment.paymentType != '2' && payment.paymentType">
                                     <label>Principal Payment:</label>
                                     <input
                                         type="text"
@@ -378,7 +379,7 @@
                                         Please enter cash tendered.
                                     </span>
                                 </div>
-                                <div class="col-lg-3" ng-if="payment.paymentType == '2'">
+                                <div class="col-lg-3" ng-if="payment.paymentType == '2'  && payment.paymentType">
                                     <label>Principal Payment:</label>
                                     <input
                                         type="text"

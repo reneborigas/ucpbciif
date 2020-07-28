@@ -32,7 +32,7 @@ class LoanViewSet(ModelViewSet):
             queryset = queryset.filter(borrower__borrowerId=borrowerId)
 
         if status is not None:
-            queryset = queryset.filter(status__name=status)
+            queryset = queryset.filter(loanStatus__name=status)
 
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
@@ -88,7 +88,18 @@ class CreditLineViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = CreditLine.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name'))
         creditLineId = self.request.query_params.get('creditlineid', None)
-      
+        borrowerId = self.request.query_params.get('borrowerId', None)
+        status = self.request.query_params.get('status', None)
+         
+        if status is not None:
+            queryset = queryset.filter(status__name=status)
+
+        if borrowerId is not None:
+            queryset = queryset.filter(borrower=borrowerId)
+
+        # if status is not None:
+        #     queryset = queryset.filter(loanStatus__name=status)
+
         if creditLineId is not None:
             queryset = queryset.filter(id=creditLineId)
             for creditLine in queryset:

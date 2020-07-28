@@ -73,9 +73,13 @@ define(function () {
                 );
             },
             getSubProcessId: function (subProcessName) {
-                return $http.get('/api/documents/documents/', { params: { subProcessName: subProcessName } }).then(
+                return $http.get('/api/processes/subprocesses/', { params: { subProcessName: subProcessName } }).then(
                     function (response) {
-                        return response.data[0].subProcess.id;
+
+                        return response.data[0].id;
+                       
+                         
+                        
                     },
                     function (error) {
                         toastr.error(
@@ -85,6 +89,26 @@ define(function () {
                     }
                 );
             },
+            getSubProcessByName: function (subProcessName) {
+                return $http.get('/api/processes/subprocesses/', { params: { subProcessName: subProcessName } }).then(
+                    function (response) {
+
+                        return response.data[0];
+                       
+                         
+                        
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Document Sub Process ID. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+
+            
+
             getSubProcess: function (subProcessId) {
                 return $http.get('/api/processes/subprocesses/', { params: { subProcessId: subProcessId } }).then(
                     function (response) {
@@ -246,8 +270,36 @@ define(function () {
                     }
                 );
             },
-            getLoanPrograms: function (borrowerId) {
+            getLoanProgramsByid: function (borrowerId) {
                 return $http.get('/api/loans/loanprograms/', { params: { borrowerId: borrowerId } }).then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Loan Program list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+
+            getDocumenFileName: function (code) {
+                return $http.post('/api/documents/getdocumentfilename/', {   code: code }).then(
+                    function (response) {
+                        return   response.data.fileName  ;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Documents list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+
+            getLoanPrograms: function (borrowerId) {
+                return $http.get('/api/loans/loanprograms/').then(
                     function (response) {
                         return response.data;
                     },

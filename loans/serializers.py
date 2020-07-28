@@ -143,7 +143,7 @@ class CreditLineSerializer(ModelSerializer):
 
 class LoanSerializer(ModelSerializer):
     # termName = serializers.CharField(read_only=True) 
-    status_name = serializers.ReadOnlyField(source='status.name')
+    loanStatus_name = serializers.ReadOnlyField(source='loanStatus.name')
     payments = PaymentSerializer(many=True,read_only=True)
     creditLine_amount= serializers.ReadOnlyField(source='creditLine.amount')
     creditLine_dateApproved = serializers.ReadOnlyField(source='creditLine.dateApproved')

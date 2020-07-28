@@ -13,7 +13,7 @@ from rest_framework import status, views
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
-from loans.models import Status,AmortizationStatus
+from loans.models import Status,AmortizationStatus,LoanStatus
 from django.utils import timezone
 from loans import PMT
 
@@ -103,7 +103,7 @@ class LoanAvailmemtApprovedView(views.APIView):
             loan = document.loan
             loan.dateApproved = timezone.now() 
 
-            loan.status= Status.objects.get(pk=6) #APPROVED
+            loan.loanStatus= LoanStatus.objects.get(pk=1) #APPROVED
             loan.save()
     
 
@@ -183,7 +183,7 @@ class LoanReleasedView(views.APIView):
             loan = document.loan
             loan.dateReleased = timezone.now() 
 
-            loan.status= Status.objects.get(pk=5) #RELEASED
+            loan.loanStatus= LoanStatus.objects.get(pk=2) #CURRENT
             loan.save()
             generateAmortizationSchedule(loan,request)
 
@@ -210,9 +210,14 @@ class SubProcessViewSet(ModelViewSet):
         borrowerId = self.request.query_params.get('borrowerId', None)
         subProcessId = self.request.query_params.get('subProcessId', None)
         
-
+        subProcessName = self.request.query_params.get('subProcessName', None)
+     
         if subProcessId is not None:
             queryset = queryset.filter(id=subProcessId)
+
+            
+        if subProcessName is not None:
+            queryset = queryset.filter(name=subProcessName)
 
         if borrowerId is not None:
 

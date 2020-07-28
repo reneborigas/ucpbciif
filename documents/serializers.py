@@ -79,11 +79,12 @@ class DocumentSerializer(ModelSerializer):
     lastDocumentMovementId = serializers.CharField(read_only=True)
     subProcess = SubProcessSerializer(read_only=True)
     subProcessId = serializers.CharField()
-     
+    committeeId = serializers.CharField()
+    
     def create(self, validated_data): 
         
-        committee = Committee.objects.get(pk=validated_data.get("committee", "1"))
-
+        committee = Committee.objects.get(pk=validated_data.get("committeeId", "1"))
+        print(validated_data)
         status = Statuses.objects.get(pk=1)
         # subProcess = SubProcess.objects.get(pk=validated_data.get("subProcess")[''] )
         # validated_data.set("subProcess",)

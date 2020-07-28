@@ -106,8 +106,8 @@ class SubProcess(models.Model):
                     isAllowedByParent = False
 
                 if lastDocument.loan:
-                    print(lastDocument.loan.status)
-                    if lastDocument.loan.status.name =='RELEASED':
+                    print(lastDocument.loan.loanStatus)
+                    if lastDocument.loan.loanStatus.name =='CURRENT':
                         isAllowedByParent = False
 
         lastDocument = Document.objects.filter(

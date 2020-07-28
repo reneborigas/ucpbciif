@@ -24,7 +24,7 @@ class Status(models.Model):
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
-        related_name="loanStatusesCreatedBy",
+        related_name="statusCreatedBy",
         null = True,
     )
     dateCreated = models.DateTimeField(
@@ -68,7 +68,7 @@ class AmortizationStatus(models.Model):
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
-        related_name="amortizationtatusesCreatedBy",
+        related_name="amortizationStatusesCreatedBy",
         null = True,
     )
     dateCreated = models.DateTimeField(
@@ -85,6 +85,47 @@ class AmortizationStatus(models.Model):
     
     def __str__(self):
         return "%s" % (self.name  )
+
+class LoanStatus(models.Model):  
+    name = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+   
+   
+    isDefault = models.BooleanField(
+        default=False
+    )    
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="loanStatusesCreatedBy",
+        null = True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+     
+    
+    def __str__(self):
+        return "%s" % (self.name  )
+
 
 class PaymentPeriod(models.Model):
     name = models.CharField(
@@ -163,20 +204,23 @@ class Term(models.Model):
 
 
 class LoanProgram(models.Model):
-
+    code = models.CharField(
+        max_length=25,
+        blank = False,
+        null = False, 
+    )    
     name = models.CharField(
         max_length=255,
         blank = False,
         null = False, 
     )    
-    creditLineAmount = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-
-    remarks = models.TextField(
+  
+    description = models.TextField(
         blank = True,
         null = True,
     )
-
-    description = models.TextField(
+    
+    remarks = models.TextField(
         blank = True,
         null = True,
     )
@@ -211,15 +255,15 @@ class LoanProgram(models.Model):
     def getActiveLoan(self,borrower):
        
         if self.programLoans.all().last():
-            return self.programLoans.filter(status__name='RELEASED',borrower=borrower).last()
+            return self.programLoans.filter(loanStatus__name='CURRENT',borrower=borrower).last()
 
         return None
 
     def getTotalAvailments(self,borrower):
          
-        if(not self.programLoans.filter(status__name='RELEASED',borrower=borrower)):
+        if(not self.programLoans.filter(loanStatus__name='CURRENT',borrower=borrower)):
             return 0
-        return self.programLoans.filter(status__name='RELEASED',borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+        return self.programLoans.filter(loanStatus__name='CURRENT',borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
    
 
@@ -261,7 +305,7 @@ class CreditLine(models.Model):
     )
     
 
-    loanProgram =  models.ForeignKey(
+    loanProgram =  models.ForeignKey(   
        LoanProgram,
         on_delete=models.CASCADE,
         related_name="programCreditLines", 
@@ -330,7 +374,7 @@ class CreditLine(models.Model):
         return "%s %s" % (self.borrower,self.amount)
  
     def getRemainingCreditLine(self):
-        totalLoanAvailments=  self.loans.filter(status__name='RELEASED').aggregate(totalLoanAvailments=Sum(F('amount') ))['totalLoanAvailments'] 
+        totalLoanAvailments=  self.loans.filter(loanStatus__name='CURRENT').aggregate(totalLoanAvailments=Sum(F('amount') ))['totalLoanAvailments'] 
         if totalLoanAvailments:
             return self.amount - int(totalLoanAvailments)
         return self.amount
@@ -384,8 +428,8 @@ class Loan(models.Model):
         null = True,
     )
 
-    status = models.ForeignKey(
-        Status,
+    loanStatus = models.ForeignKey(
+        LoanStatus,
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="loanStatuses",

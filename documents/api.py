@@ -7,6 +7,48 @@ from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from committees.models import Note
 from processes.models import Statuses,SubProcess
 
+from rest_framework import status, views
+from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+
+    
+
+class GetDocumentFileName(views.APIView): 
+
+    def post(self,request):
+
+        code = request.data.get("code")  
+         
+        if code is None:
+            code = 'ITM';
+
+        document = Document.objects.all().order_by('-id').first()
+         
+        if not document:
+
+            return Response({
+                'status': 'Accepted',
+                'fileName': code + '-' + '001'
+            },status= status.HTTP_202_ACCEPTED)
+ 
+         
+        itemNumber = ''.join([n for n in document.name if n.isdigit()])
+        
+        itemNumber = int(itemNumber)  + 1
+        itemNumber = str(itemNumber).zfill(3) 
+
+
+        print(itemNumber) 
+        return Response({
+            'status': 'Accepted',
+            'fileName': code + '-' + itemNumber
+        },status= status.HTTP_202_ACCEPTED)
+
+        return Response({'error':'Error on approving generating document filename'},status.HTTP_400_BAD_REQUEST)
+
+
+
 class DocumentViewSet(ModelViewSet):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer 
@@ -33,11 +75,12 @@ class DocumentViewSet(ModelViewSet):
          
         if documentId is not None:
             queryset = queryset.filter(id=documentId)
-
+       
         if subProcessName is not None:
             queryset = queryset.filter(subProcessName=subProcessName)
 
         if subProcessId is not None:
+             
             queryset = queryset.filter(subProcessId=subProcessId)
 
         for document in queryset:

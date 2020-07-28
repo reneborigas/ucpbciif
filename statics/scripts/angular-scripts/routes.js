@@ -330,19 +330,21 @@ define(function () {
                         pageTitle: 'UCPB CIIF | Loan Applications',
                     },
                     ncyBreadcrumb: {
-                        label: 'Files',
+                        label: '{{subProcessName}}',
                     },
                     resolve: {
-                        fetchSubProcessId: function ($stateParams, appFactory) {
+                        fetchSubProcess: function ($stateParams, appFactory) {
                             return appFactory
-                                .getSubProcessId(appFactory.unSlugify($stateParams.subProcessName))
+                                .getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName))
                                 .then(function (data) {
                                     return data;
                                 });
                         },
                     },
-                    controller: function ($scope, fetchSubProcessId) {
-                        $scope.subProcessId = fetchSubProcessId;
+                    controller: function ($scope, fetchSubProcess) {
+                        $scope.subProcessId = fetchSubProcess.id;
+                        $scope.subProcessName = fetchSubProcess.name;
+                        
                     },
                 })
                 .state('app.documents.info', {

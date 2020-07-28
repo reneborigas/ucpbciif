@@ -7,7 +7,7 @@
                         <span class="card-icon">
                             <i class="fad fa-users-class"></i>
                         </span>
-                        <h3 class="card-label">Files List</h3>
+                        <h3 class="card-label">{{ subProcessName }} List</h3>
                     </div>
                     <div class="card-toolbar">
                         <button type="button" class="btn btn-primary float-right" ui-sref="app.documents.add">
@@ -121,16 +121,7 @@
                                     >
                                         <i class="fad fa-eye"></i>
                                     </a>
-                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="edit(document.id)">
-                                        <i class="fad fa-edit"></i>
-                                    </a>
-                                    <a
-                                        href=""
-                                        class="btn btn-sm btn-clean btn-icon mr-2"
-                                        ng-click="delete(document.id)"
-                                    >
-                                        <i class="fad fa-trash"></i>
-                                    </a>
+                                     
                                 </td>
                             </tr>
                             <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center">

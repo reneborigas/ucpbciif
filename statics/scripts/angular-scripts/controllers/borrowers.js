@@ -458,7 +458,7 @@ define(function () {
                 $scope.borrower = response.data[0];
                 $scope.getBorrowerAttachments($scope.borrowerId);
                 $scope.showAccomodations = false;
-                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                     console.log(data);
                     $scope.windows = data;
                     $scope.showAccomodations = true;
@@ -474,7 +474,7 @@ define(function () {
 
                         $http
                             .get('/api/loans/loans/', {
-                                params: { borrowerId: $scope.borrowerId, status: 'RELEASED' },
+                                params: { borrowerId: $scope.borrowerId, status: 'CURRENT' },
                             })
                             .then(
                                 function (response) {
@@ -487,7 +487,21 @@ define(function () {
                                     );
                                 }
                             );
-
+                            $http
+                            .get('/api/loans/creditlines/', {
+                                params: { borrowerId: $scope.borrowerId, status: 'APPROVED' },
+                            })
+                            .then(
+                                function (response) {
+                                    $scope.creditlines = response.data;
+                                },
+                                function (error) {
+                                    toastr.error(
+                                        'Error ' + error.status + ' ' + error.statusText,
+                                        'Could not retrieve Credit Line Information. Please contact System Administrator.'
+                                    );
+                                }
+                            );
                         //     if($scope.borrower.documents.length){
 
                         //     angular.forEach($scope.subprocesses, function (subProcess) {
@@ -1086,6 +1100,14 @@ define(function () {
                     angular.forEach($scope.borrower.cooperative.grants, function (grant) {
                         grant.amount = parseFloat(grant.amount);
                     });
+                    appFactory.getDocumenFileName($scope.subProcess.code).then(function (data) {
+                         
+                        $scope.document.name =   data;
+                        
+                    });
+
+                   
+                    $scope.document.description = $scope.subProcess.name + ' for ' +  $scope.borrower.cooperative.name;
                 },
                 function (error) {
                     toastr.error(
@@ -1104,7 +1126,7 @@ define(function () {
                     $scope.subProcess = response.data[0];
 
                     $scope.document = {
-                        name: '',
+                        name: '' ,
                         description: '',
                         remarks: '',
                         borrower: $scope.borrowerId,
@@ -1158,7 +1180,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',
-                            status: 1,
+                            loanStatus: 1,
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
@@ -1190,7 +1212,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentLoan.loanProgram,
                             purpose: $scope.subProcess.parentLastDocumentLoan.purpose,
                             security: $scope.subProcess.parentLastDocumentLoan.security,
-                            status: 1,
+                            loanStatus: 1,
                             borrower: $scope.borrowerId,
                             term_name: $scope.subProcess.parentLastDocumentLoan.term_name,
                             loanProgram_name: $scope.subProcess.parentLastDocumentLoan.loanProgram_name,
@@ -1198,7 +1220,7 @@ define(function () {
                         };
                     }
                     $scope.loadBorrower();
-
+                    
                     // $scope.checkLoanDetails = function () {
                     //     if ($scope.subProcess.parentLastDocumentLoan) {
                     //         return true;
@@ -1223,6 +1245,7 @@ define(function () {
                     // };
 
                     $scope.createDocument = function () {
+                        $scope.document.committeeId = $scope.document.committee;
                         $http
                             .post('/api/documents/documents/', $scope.document)
 
@@ -1274,22 +1297,45 @@ define(function () {
                                 },
                             }).then((isConfirm) => {
                                 if (isConfirm) {
-                                    if ($scope.creditLine.creditlineid) {
-                                        console.log('Credit Line Exists');
-                                        $scope.document.creditlineid = $scope.creditLine.creditlineid;
-
-                                        if ($scope.loan.loanid) {
-                                            console.log('Loan Exists');
-                                            $scope.document.loanid = $scope.loan.loanid;
-                                            console.log($scope.document);
-                                            $scope.createDocument();
+                                    appFactory.getDocumenFileName($scope.subProcess.code).then(function (data) {
+                         
+                                        $scope.document.name =   data;
+                                        if ($scope.creditLine.creditlineid) {
+                                            console.log('Credit Line Exists');
+                                            $scope.document.creditlineid = $scope.creditLine.creditlineid;
+    
+                                            if ($scope.loan.loanid) {
+                                                console.log('Loan Exists');
+                                                $scope.document.loanid = $scope.loan.loanid;
+                                                console.log($scope.document);
+    
+                                                
+                                                $scope.createDocument();
+                                            } else {
+                                                $http
+                                                    .post('/api/loans/loans/', $scope.loan)
+    
+                                                    .then(
+                                                        function (loanResponse) {
+                                                            $scope.document.loanid = loanResponse.data.id;
+                                                            console.log($scope.document);
+                                                            $scope.createDocument();
+                                                        },
+                                                        function (error) {
+                                                            toastr.error(
+                                                                'Error ' + error.status + ' ' + error.statusText,
+                                                                'Could not create new loan details record. Please contact System Administrator.'
+                                                            );
+                                                        }
+                                                    );
+                                            }
                                         } else {
                                             $http
-                                                .post('/api/loans/loans/', $scope.loan)
-
+                                                .post('/api/loans/creditlines/', $scope.creditLine)
+    
                                                 .then(
                                                     function (loanResponse) {
-                                                        $scope.document.loanid = loanResponse.data.id;
+                                                        $scope.document.creditlineid = loanResponse.data.id;
                                                         console.log($scope.document);
                                                         $scope.createDocument();
                                                     },
@@ -1301,24 +1347,9 @@ define(function () {
                                                     }
                                                 );
                                         }
-                                    } else {
-                                        $http
-                                            .post('/api/loans/creditlines/', $scope.creditLine)
+                                    });
 
-                                            .then(
-                                                function (loanResponse) {
-                                                    $scope.document.creditlineid = loanResponse.data.id;
-                                                    console.log($scope.document);
-                                                    $scope.createDocument();
-                                                },
-                                                function (error) {
-                                                    toastr.error(
-                                                        'Error ' + error.status + ' ' + error.statusText,
-                                                        'Could not create new loan details record. Please contact System Administrator.'
-                                                    );
-                                                }
-                                            );
-                                    }
+                                   
                                 }
                             });
                         }
@@ -1354,7 +1385,7 @@ define(function () {
                 $scope.borrower = response.data[0];
                 $http
                     .get('/api/loans/loans/', {
-                        params: { borrowerId: $scope.borrowerId, status: 'RELEASED' },
+                        params: { borrowerId: $scope.borrowerId, status: 'CURRENT' },
                     })
                     .then(
                         function (response) {

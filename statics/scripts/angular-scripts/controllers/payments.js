@@ -66,6 +66,7 @@ define(function () {
 
         appFactory.getPaymentType().then(function (data) {
             $scope.paymentTypes = data;
+           
         });
 
         $scope.params = {};
@@ -197,9 +198,9 @@ define(function () {
     ) {
         appFactory.getPaymentType().then(function (data) {
             $scope.paymentTypes = data;
-        });
 
-        $http
+
+            $http
             .get('/api/loans/loans/', {
                 params: { loanId: $scope.loanId },
             })
@@ -220,7 +221,7 @@ define(function () {
                         cash: '0',
                         total: '0',
                         balance: '',
-                        paymentType: '',
+                        paymentType: $scope.paymentTypes[1].id,
                         checkNo: '',
                         interestPayment: '0',
                         bankACcount: '',
@@ -231,6 +232,10 @@ define(function () {
                         paymentStatus: '2',
                         createdBy: '1',
                     };
+
+                    console.log($scope.payment.paymentType);
+                   
+            
                     $scope.$watch(
                         'payment.datePayment',
                         function (newTerm, oldTerm) {
@@ -240,7 +245,7 @@ define(function () {
                                 .post('/api/processes/calculatepmt/', {
                                     params: {
                                         datePayment: newTerm.toLocaleDateString(),
-                                        loanId: $scope.payment.loan,
+                                        loanId: $scope.payment.loan,  
                                         dateSchedule: new Date(
                                             $scope.loan.currentAmortizationItem.schedule
                                         ).toLocaleDateString(),
@@ -358,7 +363,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
 
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                 });
@@ -378,6 +383,8 @@ define(function () {
                     );
                 }
             );
+        });
+       
 
         $scope.getBalance = function () {
             if (parseFloat($scope.payment.totalToPay) - parseFloat($scope.payment.total) <= 0) {
@@ -552,7 +559,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
 
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                     $timeout(function () {
@@ -605,7 +612,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
 
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                     $timeout(function () {

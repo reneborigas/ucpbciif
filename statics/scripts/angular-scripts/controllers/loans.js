@@ -178,7 +178,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
                                 $scope.showAccomodations = false;
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                     $scope.showAccomodations = true;
@@ -377,7 +377,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
 
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                     $timeout(function () {
@@ -395,7 +395,7 @@ define(function () {
 
                     $http
                         .get('/api/loans/loans/', {
-                            params: { borrowerId: $scope.loan.borrower, status: 'RELEASED' },
+                            params: { borrowerId: $scope.loan.borrower, status: 'CURRENT' },
                         })
                         .then(
                             function (response) {
@@ -446,7 +446,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
 
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                 });
@@ -461,7 +461,7 @@ define(function () {
 
                     $http
                         .get('/api/loans/loans/', {
-                            params: { borrowerId: $scope.loan.borrower, status: 'RELEASED' },
+                            params: { borrowerId: $scope.loan.borrower, status: 'CURRENT' },
                         })
                         .then(
                             function (response) {
@@ -515,7 +515,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
 
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                 });
@@ -530,7 +530,7 @@ define(function () {
 
                     $http
                         .get('/api/loans/loans/', {
-                            params: { borrowerId: $scope.loan.borrower, status: 'RELEASED' },
+                            params: { borrowerId: $scope.loan.borrower, status: 'CURRENT' },
                         })
                         .then(
                             function (response) {
@@ -603,7 +603,7 @@ define(function () {
                             function (response) {
                                 $scope.borrower = response.data[0];
 
-                                appFactory.getLoanPrograms($scope.borrower.borrowerId).then(function (data) {
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                     console.log(data);
                                     $scope.windows = data;
                                     $timeout(function () {

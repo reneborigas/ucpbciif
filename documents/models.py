@@ -156,7 +156,7 @@ class Document(models.Model):
     
     notes = GenericRelation(Note)
     subProcessId = None
-
+    committeeId = None
     def __str__(self):
         return "%s" % (self.name)
 

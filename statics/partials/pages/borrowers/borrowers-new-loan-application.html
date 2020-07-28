@@ -555,33 +555,20 @@
                         <form class="form mt-0" name="newLoanApplicationForm">
                             <div class="pb-2">
                                 <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label text-right">File Name</label>
+    
+                                        <div class="col-lg-3 col-xl-6">
+                                            <span class="form-control-plaintext font-weight-bold">{{document.name}}</span>
+                                        </div>
+                                        
+                                    </div>
+                                <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Process</label>
                                     <div class="col-lg-3 col-xl-6">
                                         <span class="form-control-plaintext font-weight-bold">{{subProcess.name}}</span>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">File Name</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <input
-                                            type="text"
-                                            min="0"
-                                            class="form-control"
-                                            id="name"
-                                            name="name"
-                                            placeholder="File Name"
-                                            ng-model="document.name"
-                                            ng-class="{'is-invalid' : newLoanApplicationForm.name.$invalid && newLoanApplicationForm.name.$touched, 'is-valid' : newLoanApplicationForm.name.$valid && newLoanApplicationForm.name.$touched }"
-                                            required
-                                        />
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newLoanApplicationForm.name.$touched && newLoanApplicationForm.name.$invalid"
-                                        >
-                                            Please enter File Name.
-                                        </span>
-                                    </div>
-                                </div>
+                                
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Description</label>
                                     <div class="col-lg-9 col-xl-6">
