@@ -57,16 +57,23 @@ class DocumentViewSet(ModelViewSet):
     def get_queryset(self):  
         
         queryset = Document.objects.prefetch_related( 'notes',
-               Prefetch( 'documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated'))
+            Prefetch( 'documentMovements',queryset=DocumentMovement.objects.annotate(
+                documentId=F('document_id'), 
+                outputName=F('output__name'),
+                outputId=F('output_id'), 
+                stepId=F('step_id'),
+                committeeName=Concat(F('committee__firstname'),V(' '),F('committee__middlename'),V(' '),F('committee__lastname')),
+                statusName=F('status__name'), 
+            ).order_by('-dateCreated'))
               ).annotate(
-            termName=F('loan__term__name'),
-            documentCode=Concat(F('subProcess__code'),F('id'), output_field=CharField()),
-            subProcessName=F('subProcess__name'),
-            documentTypeName=F('documentType__name'), 
-            borrowerName=F('borrower__cooperative__name'), 
-            lastDocumentMovementId=Max( 'documentMovements__id'),   
-            subProcessId=F('subProcess__id')
-        ) .exclude(isDeleted=True).order_by('-id')         
+                termName=F('loan__term__name'),
+                documentCode=Concat(F('subProcess__code'),F('id'), output_field=CharField()),
+                subProcessName=F('subProcess__name'),
+                documentTypeName=F('documentType__name'), 
+                borrowerName=F('borrower__cooperative__name'), 
+                lastDocumentMovementId=Max( 'documentMovements__id'),   
+                subProcessId=F('subProcess__id')
+            ) .exclude(isDeleted=True).order_by('-id')         
        
         documentId = self.request.query_params.get('documentId', None)
         subProcessName = self.request.query_params.get('subProcessName', None)
@@ -104,7 +111,6 @@ class DocumentMovementViewSet(ModelViewSet):
 
     def get_queryset(self): 
         queryset = DocumentMovement.objects.annotate(
-          
             documentId=F('document_id'), 
             outputName=F('output__name'),
             outputId=F('output_id'), 

@@ -121,33 +121,48 @@
                                     >
                                         <i class="fad fa-eye"></i>
                                     </a>
-                                     
                                 </td>
                             </tr>
                             <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center">
                                 <td colspan="9">
-                                    <table
-                                        class="table table-vertical-center table-light table-borderless"
-                                        ng-table="tableDocumentMovements"
-                                    >
+                                    <table class="table table-vertical-center table-light table-borderless">
+                                        <thead>
+                                            <th style="width: 28%;">
+                                                Activity
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Committee
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Status
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Description
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Date
+                                            </th>
+                                        </thead>
                                         <tr
-                                            ng-repeat="documentmovement in $data | filter : {  documentId : document.id }"
+                                            ng-repeat="documentmovement in document.documentMovements | orderBy:'-' "
                                             align="center"
                                         >
-                                            <td data-title="'Activity'" style="width: 28%;">
-                                                {{ documentmovement.name }} - {{ documentmovement.outputName }}
+                                            <td style="width: 28%;">
+                                                {{ documentmovement.name }}
+                                                <span ng-if=" documentmovement.outputName">-</span>
+                                                {{ documentmovement.outputName }}
                                             </td>
-                                            <td data-title="'Committee'" style="width: 18%;">
+                                            <td style="width: 18%;">
                                                 {{ documentmovement.committeeName }}
                                             </td>
-                                            <td data-title="'Status'" style="width: 18%;">
+                                            <td style="width: 18%;">
                                                 {{ documentmovement.statusName }}
                                             </td>
-                                            <td data-title="'Description'" style="width: 18%;">
+                                            <td style="width: 18%;">
                                                 {{ documentmovement.description }}
                                             </td>
-                                            <td data-title="'Date'" style="width: 18%;">
-                                                {{ documentmovement.dateCreated }}
+                                            <td style="width: 18%;">
+                                                {{ documentmovement.dateCreated | date: 'medium' }}
                                             </td>
                                         </tr>
                                     </table>

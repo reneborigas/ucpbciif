@@ -51,21 +51,62 @@ class BorrowerViewSet(ModelViewSet):
         ).exclude(isDeleted=True).order_by('borrowerId')
         borrowerId = self.request.query_params.get('borrowerId', None)
         loanProgramId = self.request.query_params.get('loanProgramId', None)
+        totalAvailmentsFrom = self.request.query_params.get('totalAvailmentsFrom', None)
+        totalAvailmentsTo = self.request.query_params.get('totalAvailmentsTo', None)
+        totalOutstandingBalanceFrom = self.request.query_params.get('totalOutstandingBalanceFrom', None)
+        totalOutstandingBalanceTo = self.request.query_params.get('totalOutstandingBalanceTo', None)
+        totalPaymentsFrom = self.request.query_params.get('totalPaymentsFrom', None)
+        totalPaymentsTo = self.request.query_params.get('totalPaymentsTo', None)
+
+        clientSinceFrom = self.request.query_params.get('clientSinceFrom', None)
+        clientSinceTo = self.request.query_params.get('clientSinceTo', None)
+
 
 # .filter(status__name='RELEASED')
         if borrowerId is not None:
             queryset = queryset.filter(borrowerId=borrowerId)
 
-        for borrower in queryset:
-            borrower.totalAvailments = borrower.getTotalAvailments
-            borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance
-            borrower.payments = borrower.getPayments
-            borrower.totalPayments = borrower.getTotalPayments
+        
+        if totalAvailmentsFrom is not None and totalAvailmentsTo is not None:
+            borrowers = []
+            for borrower in queryset: 
+                borrower.totalAvailments = borrower.getTotalAvailments()
+                if (int(borrower.totalAvailments) >= int(totalAvailmentsFrom)) and  (int(borrower.totalAvailments) <= int(totalAvailmentsTo)):
+                    borrowers.append(borrower.pk)
 
-             
+            queryset=queryset.filter(borrowerId__in=borrowers)
+
+        if totalOutstandingBalanceFrom is not None and totalOutstandingBalanceTo is not None:
+            borrowers = []
+            for borrower in queryset: 
+                borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+                if (int(borrower.totalOutstandingBalance) >= int(totalOutstandingBalanceFrom)) and  (int(borrower.totalOutstandingBalance) <= int(totalOutstandingBalanceTo)):
+                    borrowers.append(borrower.pk)
+                    
+            queryset=queryset.filter(borrowerId__in=borrowers)
+        
+        if totalPaymentsFrom is not None and totalPaymentsTo is not None:
+            borrowers = []
+            for borrower in queryset: 
+                borrower.payments = borrower.getPayments()
+                borrower.totalPayments = borrower.getTotalPayments()
+                if (int(borrower.totalPayments) >= int(totalPaymentsFrom)) and  (int(borrower.totalPayments) <= int(totalPaymentsTo)):
+                    borrowers.append(borrower.pk)
+                    
+            queryset=queryset.filter(borrowerId__in=borrowers)
+
+        if clientSinceFrom is not None and clientSinceTo is not None:
+            queryset=queryset.filter(clientSince__gte=clientSinceFrom).filter(clientSince__lte=clientSinceTo)
+        
+        for borrower in queryset:
+            borrower.totalAvailments = borrower.getTotalAvailments()
+            borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+            borrower.payments = borrower.getPayments()
+            borrower.totalPayments = borrower.getTotalPayments()
+
             if loanProgramId is not None: 
                 borrower.totalAvailmentPerProgram = borrower.getTotalAvailmentsPerProgram(loanProgramId)
-                
+
         return queryset
 
 
@@ -94,9 +135,6 @@ class CooperativeViewSet(ModelViewSet):
     serializer_class = CooperativeSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
-
-
-   
 class BorrowerAttachmentViewSet(ModelViewSet):
     queryset = BorrowerAttachment.objects.all()
     serializer_class = BorrowerAttachmentSerializer 
@@ -110,13 +148,9 @@ class BorrowerAttachmentViewSet(ModelViewSet):
         
 
         if borrowerAttachmentId is not None:
-
-           
             queryset = queryset.filter(borrowerAttachment__id=borrowerAttachmentId) 
         
         if borrowerId is not None:
-
-           
             queryset = queryset.filter(borrower=borrowerId) 
 
         return queryset

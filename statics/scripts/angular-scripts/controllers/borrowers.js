@@ -21,47 +21,9 @@ define(function () {
             {
                 counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
-                    return $http.get('/api/borrowers/borrowers/').then(
+                    return $http.get('/api/borrowers/borrowers/', { params: $scope.params }).then(
                         function (response) {
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            params.total(response.data.length);
-
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Borrowers. Please contact System Administrator.'
-                            );
-                        }
-                    );
-                },
-            }
-        );
-
-        $scope.tableBorrowersContactPerson = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [],
-                getData: function (params) {
-                    return $http.get('/api/borrowers/borrowers/').then(
-                        function (response) {
+                            console.log(response.data);
                             var filteredData = params.filter()
                                 ? $filter('filter')(response.data, params.filter())
                                 : response.data;
@@ -99,15 +61,88 @@ define(function () {
             true
         );
 
-        $scope.$watch(
-            'globalPageCount',
-            function (newValue, oldValue) {
-                if (newValue) {
-                    $scope.tableBorrowers._params.count = newValue;
-                }
+        $scope.params = {};
+
+        $scope.filters = [
+            {
+                name: 'Borrower',
+                showFilter: false,
+                params: {
+                    param1: 'borrowerId',
+                },
             },
-            true
-        );
+            {
+                name: 'Total Availments',
+                showFilter: false,
+                params: {
+                    param1: 'totalAvailmentsFrom',
+                    param2: 'totalAvailmentsTo',
+                },
+            },
+            {
+                name: 'Total Outstanding Balance',
+                showFilter: false,
+                params: {
+                    param1: 'totalOutstandingBalanceFrom',
+                    param2: 'totalOutstandingBalanceTo',
+                },
+            },
+            {
+                name: 'Total Paid Amount',
+                showFilter: false,
+                params: {
+                    param1: 'totalPaymentsFrom',
+                    param2: 'totalPaymentsTo',
+                },
+            },
+            {
+                name: 'Client Since',
+                showFilter: false,
+                params: {
+                    param1: 'clientSinceFrom',
+                    param2: 'clientSinceTo',
+                },
+            },
+        ];
+
+        $scope.showFilterButton = false;
+
+        $scope.showFilter = function (filter) {
+            if (filter.showFilter) {
+                filter.showFilter = false;
+            } else {
+                filter.showFilter = true;
+            }
+
+            for (var i = 0; i < $scope.filters.length; i++) {
+                if ($scope.filters[i].showFilter == true) {
+                    $scope.showFilterButton = true;
+                    break;
+                } else {
+                    $scope.showFilterButton = false;
+                }
+            }
+        };
+
+        $scope.applyFilter = function () {
+            angular.forEach($scope.filters, function (filter) {
+                if (!filter.showFilter) {
+                    angular.forEach(filter.params, function (value, key) {
+                        delete $scope.params[value];
+                    });
+                }
+            });
+            $scope.tableBorrowers.reload();
+        };
+
+        $scope.resetFilter = function () {
+            angular.forEach($scope.filters, function (filter) {
+                filter.showFilter = false;
+            });
+            $scope.showFilterButton = false;
+            $scope.params = {};
+            $scope.tableBorrowers.reload();
+        };
 
         $scope.view = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
@@ -1141,9 +1176,9 @@ define(function () {
                         createdBy: appFactory.getCurrentUser(),
                         committee: '',
                         loan: '',
-                    }; 
+                    };
                     console.log($scope.creditLine);
-                    if ($scope.creditLine){
+                    if ($scope.creditLine) {
                         $scope.creditLine = {
                             creditlineid: $scope.creditLine.id,
                             amount: $scope.creditLine.amount,
@@ -1191,13 +1226,12 @@ define(function () {
                             },
                             true
                         );
-                        
-                    }else{
+                    } else {
                         $scope.creditLine = {
                             creditlineid: null,
                             amount: '',
                             interestRate: '',
-                            totalAvailment:'',
+                            totalAvailment: '',
                             term: '',
                             loanProgram: '',
                             purpose: '',
@@ -1206,9 +1240,8 @@ define(function () {
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
-
                     }
-                   
+
                     if ($scope.subProcess.parentLastDocumentCreditLine && !$scope.creditLine.creditlineid) {
                         $scope.creditLine = {
                             creditlineid: $scope.subProcess.parentLastDocumentCreditLine.id,
@@ -1463,22 +1496,19 @@ define(function () {
         );
 
         $http
-        .get('/api/loans/creditlines/', {
-            params: { borrowerId: $scope.borrowerId, status: 'APPROVED' },
-        })
-        .then(
-            function (response) {
-                $scope.creditlines = response.data;
-            },
-            function (error) {
-                toastr.error(
-                    'Error ' + error.status + ' ' + error.statusText,
-                    'Could not retrieve Credit Line Information. Please contact System Administrator.'
-                );
-            }
-        );
-
-
-
+            .get('/api/loans/creditlines/', {
+                params: { borrowerId: $scope.borrowerId, status: 'APPROVED' },
+            })
+            .then(
+                function (response) {
+                    $scope.creditlines = response.data;
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Credit Line Information. Please contact System Administrator.'
+                    );
+                }
+            );
     });
 });

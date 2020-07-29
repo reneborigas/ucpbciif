@@ -137,7 +137,7 @@
                                             </a>
                                         </div>
                                     </td>
-                                    <td class="p-0" ng-repeat="window in windows">
+                                    <td class="p-0" ng-repeat="window in windows"  >
                                         <div class="text-center py-3 bg-secondary">
                                             <span class="text-dark-75 font-weight-normal font-size-lg">
                                                 {{ window.name}}
@@ -379,6 +379,8 @@
                 </a>
             </div>
         </div>
+
+
         <div class="card card-custom gutter-b" ng-init="showCredit = true">
                 <div class="card-header align-items-center border-0">
                     <h3 class="card-title align-items-start flex-column">
@@ -428,7 +430,13 @@
                                                 </span>
                                             </div>
                                         </th>
-                                         
+                                        <th>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 text-uppercase font-size-lg">
+                                                        TOTAL AVAILMENT
+                                                    </span>
+                                                </div>
+                                            </th>
                                         <th>
                                             <div class="text-right px-2">
                                                 <span class="text-dark-75 text-uppercase font-size-lg">
@@ -443,6 +451,13 @@
                                                 </span>
                                             </div>
                                         </th>
+                                        <th>
+                                                <div class="text-center px-2">
+                                                    <span class="text-dark-75 text-uppercase font-size-lg">
+                                                        EXPIRY DATE
+                                                    </span>
+                                                </div>
+                                            </th>
                                         <th>
                                             <div class="text-center px-2">
                                                 <span class="text-dark-75 text-uppercase font-size-lg">
@@ -484,6 +499,13 @@
                                                 </span>
                                             </div>
                                         </td>
+                                        <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        {{ creditline.totalAvailment | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                        </td>
                                         
                                         <td>
                                             <div class="text-right px-2">
@@ -501,12 +523,19 @@
                                         </td>
                                         <td>
                                             <div class="text-center px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ creditline.dateExpired | date:'mediumDate' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center px-2">
                                                     <a
                                                         href=""
                                                         class="btn btn-sm btn-clean btn-icon mr-2"
                                                         ng-click="newLoanAvailment(borrower.borrowerId,creditline.id )"
                                                     >
-                                                        <i class="fad fa-file-plus"></i> New Loan Availment  
+                                                        <i class="fad fa-file-plus"></i> New Loan Availment 
                                                     </a>
                                             </div>
                                         </td>
@@ -572,16 +601,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-footer d-flex justify-content-center p-0">
+                    <a class="btn btn-icon" ng-click="showLoans = !showLoans">
+                        <i class="wide text-warning" ng-class=" showLoans ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
+                    </a>
+                </div>
             </div>
-            <div class="card-footer d-flex justify-content-center p-0">
-                <a class="btn btn-icon" ng-click="showCreditLine = !showCreditLine">
-                    <i
-                        class="wide text-warning"
-                        ng-class=" showCreditLine ? 'fal fa-angle-up' : 'fal fa-angle-down' "
-                    ></i>
-                </a>
-            </div>
-        </div>
 
         <div class="card card-custom gutter-b" ng-init="showLoans = true">
             <div class="card-header align-items-center border-0">

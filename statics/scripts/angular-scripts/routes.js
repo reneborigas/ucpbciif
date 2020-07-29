@@ -511,6 +511,37 @@ define(function () {
                     },
                 })
 
+                .state('app.creditline', {
+                    url: '/credit-line',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Credit Line',
+                        skip: true,
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/creditline.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.creditline.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/creditline/creditline-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Credit Line List',
+                        stateTitle: 'Credit Line',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Credit Line',
+                    },
+                })
+
                 .state('app.committees', {
                     url: '/committees',
                     template: '<ui-view></ui-view>',

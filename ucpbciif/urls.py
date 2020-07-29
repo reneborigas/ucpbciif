@@ -51,6 +51,9 @@ urlpatterns = [
     #processes
     path('processes', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
+    #credit-line
+    path('credit-line', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+
     #committes
     path('committees', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('committees/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),

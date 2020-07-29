@@ -369,6 +369,7 @@ class CreditLine(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
+    totalAvailment = 0
 
     def __str__(self):
         return "%s %s" % (self.borrower,self.amount)
