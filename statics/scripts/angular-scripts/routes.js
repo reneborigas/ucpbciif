@@ -160,6 +160,11 @@ define(function () {
                                     },
                                     {
                                         serie: true,
+                                        name: 'Scheduler Styles',
+                                        files: ['/statics/libs/fullcalendar/fullcalendar.min.css'],
+                                    },
+                                    {
+                                        serie: true,
                                         name: 'App Styles',
                                         files: ['/statics/assets/css/style.css'],
                                     },
@@ -179,17 +184,6 @@ define(function () {
                                 });
                             },
                         ],
-                        // loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        // 	// you can lazy load files for an existing module
-                        // 	return $ocLazyLoad.load([{
-                        // 		serie: true,
-                        // 		name: 'chart.js',
-                        // 		files: [
-                        // 			'node_modules/chart.js/dist/Chart.min.js',
-                        // 			'node_modules/angular-chart.js/dist/angular-chart.min.js'
-                        // 		]
-                        // 	}]);
-                        // }],
                     },
                 })
                 .state('app.dashboard', {
@@ -202,8 +196,15 @@ define(function () {
                     ncyBreadcrumb: {
                         label: 'Home',
                     },
-                    controller: function (appLoginService) {
-                        appLoginService.setTitle = 'test';
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/dashboard.js'],
+                                });
+                            },
+                        ],
                     },
                 })
                 .state('app.borrowers', {
