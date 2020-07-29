@@ -272,7 +272,7 @@ define(function () {
                 })
 
                 .state('app.borrowers.create_loan_availment', {
-                    url: '/:borrowerId/new-file/',
+                    url: '/:borrowerId/new-loan-availment/:creditLineId',
                     templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
                     data: {
                         pageTitle: 'UCPB CIIF | New Loan Availment',
@@ -283,20 +283,16 @@ define(function () {
                     },
                     resolve: {
                         fetchSubProcess: function ($stateParams, appFactory) {
-                            return appFactory
-                                .getSubProcessByName('Loan Availment')
-                                .then(function (data) {
-                                    
-                                    return data;
-                                    
-                                });
+                            return appFactory.getSubProcessByName('Loan Availment').then(function (data) {
+                                return data;
+                            });
                         },
                     },
-                 
-                    controller: function ($scope,fetchSubProcess,appFactory,$stateParams) {
+
+                    controller: function ($scope, fetchSubProcess, appFactory, $stateParams) {
                         console.log(fetchSubProcess);
                         $scope.borrowerId = $stateParams.borrowerId;
-                        $scope.subProcessId = $stateParams.fetchSubProcess.id;
+                        $scope.subProcessId = fetchSubProcess.id;
                         $scope.creditLineId = $stateParams.creditLineId;
                         console.log($scope.subProcessId);
 
@@ -307,7 +303,11 @@ define(function () {
                         appFactory.getSubProcess($scope.subProcessId).then(function (data) {
                             $scope.subProcess = data;
                         });
-
+                        console.log($stateParams.borrowerId);
+                        console.log($stateParams);
+                        appFactory.getCreditLine($scope.creditLineId).then(function (data) {
+                            $scope.creditLine = data;
+                        });
                     },
                 })
                 .state('app.borrowers.info', {
@@ -384,7 +384,6 @@ define(function () {
                     controller: function ($scope, fetchSubProcess) {
                         $scope.subProcessId = fetchSubProcess.id;
                         $scope.subProcessName = fetchSubProcess.name;
-                        
                     },
                 })
                 .state('app.documents.info', {

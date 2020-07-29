@@ -122,6 +122,20 @@ define(function () {
                     }
                 );
             },
+
+            getCreditLine: function (creditLineId) {
+                return $http.get('/api/loans/creditlines/', { params: { creditLineId: creditLineId } }).then(
+                    function (response) {
+                        return response.data[0];
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Credit Line. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getCurrentUser: function () {
                 var values = JSON.parse(localStorage.getItem('currentUser'));
                 return values['id'];

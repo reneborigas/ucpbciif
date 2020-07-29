@@ -378,6 +378,11 @@ class CreditLine(models.Model):
         if totalLoanAvailments:
             return self.amount - int(totalLoanAvailments)
         return self.amount
+    def getTotalAvailment(self):
+        totalLoanAvailments=  self.loans.filter(loanStatus__name='CURRENT').aggregate(totalLoanAvailments=Sum(F('amount') ))['totalLoanAvailments'] 
+        if totalLoanAvailments:
+            return   int(totalLoanAvailments)
+        return 0
 
 
 class Loan(models.Model):

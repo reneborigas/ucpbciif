@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="text-center">
                     <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
-                    <h2 class="text-uppercase">LOAN LIST AS OF {{ dateToday | date :'mediumDate' }}</h2>
+                    <h2 class="text-uppercase">CREDIT LINE LIST AS OF {{ dateToday | date :'mediumDate' }}</h2>
                 </div>
             </div>
             <div class="col-md-12">
@@ -30,7 +30,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> 
                 </div>
             </div>
         </div>
@@ -73,13 +73,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Loan Amount
-                                        </span>
-                                    </div>
-                                </td>
+                                
 
                                 <td class="">
                                     <div class="">
@@ -91,7 +85,7 @@
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Date Released
+                                            Date APPROVED
                                         </span>
                                     </div>
                                 </td>
@@ -103,39 +97,33 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr ng-repeat="loan in borrower.loans">
+                            <tr ng-repeat="creditline in creditlines">
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ loan.id }}
+                                            {{ creditline.id }}
                                         </span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ loan.loanProgram_name }}
+                                            {{ creditline.loanProgram_name }}
                                         </span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ loan.term_name }}
+                                            {{ creditline.term_name }}
                                         </span>
                                     </div>
                                 </td>
+                              
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ loan.creditLine_amount | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.amount | currency :'₱'}}
+                                            {{ creditline.amount | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
@@ -143,21 +131,21 @@
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ loan.interestRate_amount }} %
+                                            {{ creditline.interestRate_amount }} %
                                         </span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ loan.dateReleased | date:'mediumDate' }}
+                                            {{ creditline.dateApproved | date:'mediumDate' }}
                                         </span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75">
-                                            {{ loan.loanStatus_name }}
+                                            {{ creditline.status_name }}
                                         </span>
                                     </div>
                                 </td>
