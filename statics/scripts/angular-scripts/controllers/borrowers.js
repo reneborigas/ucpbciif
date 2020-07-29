@@ -487,7 +487,7 @@ define(function () {
                                     );
                                 }
                             );
-                            $http
+                        $http
                             .get('/api/loans/creditlines/', {
                                 params: { borrowerId: $scope.borrowerId, status: 'APPROVED' },
                             })
@@ -689,12 +689,14 @@ define(function () {
             paymentHistory: 0,
             loans: 0,
             attachments: 0,
+            creditLines: 0,
         };
 
         $scope.pageSize = {
             paymentHistory: 5,
             loans: 5,
             attachments: 5,
+            creditLines: 5,
         };
         // -- End Simple Pagination
 
@@ -1101,13 +1103,10 @@ define(function () {
                         grant.amount = parseFloat(grant.amount);
                     });
                     appFactory.getDocumenFileName($scope.subProcess.code).then(function (data) {
-                         
-                        $scope.document.name =   data;
-                        
+                        $scope.document.name = data;
                     });
 
-                   
-                    $scope.document.description = $scope.subProcess.name + ' for ' +  $scope.borrower.cooperative.name;
+                    $scope.document.description = $scope.subProcess.name + ' for ' + $scope.borrower.cooperative.name;
                 },
                 function (error) {
                     toastr.error(
@@ -1126,7 +1125,7 @@ define(function () {
                     $scope.subProcess = response.data[0];
 
                     $scope.document = {
-                        name: '' ,
+                        name: '',
                         description: '',
                         remarks: '',
                         borrower: $scope.borrowerId,
@@ -1220,7 +1219,7 @@ define(function () {
                         };
                     }
                     $scope.loadBorrower();
-                    
+
                     // $scope.checkLoanDetails = function () {
                     //     if ($scope.subProcess.parentLastDocumentLoan) {
                     //         return true;
@@ -1298,23 +1297,21 @@ define(function () {
                             }).then((isConfirm) => {
                                 if (isConfirm) {
                                     appFactory.getDocumenFileName($scope.subProcess.code).then(function (data) {
-                         
-                                        $scope.document.name =   data;
+                                        $scope.document.name = data;
                                         if ($scope.creditLine.creditlineid) {
                                             console.log('Credit Line Exists');
                                             $scope.document.creditlineid = $scope.creditLine.creditlineid;
-    
+
                                             if ($scope.loan.loanid) {
                                                 console.log('Loan Exists');
                                                 $scope.document.loanid = $scope.loan.loanid;
                                                 console.log($scope.document);
-    
-                                                
+
                                                 $scope.createDocument();
                                             } else {
                                                 $http
                                                     .post('/api/loans/loans/', $scope.loan)
-    
+
                                                     .then(
                                                         function (loanResponse) {
                                                             $scope.document.loanid = loanResponse.data.id;
@@ -1332,7 +1329,7 @@ define(function () {
                                         } else {
                                             $http
                                                 .post('/api/loans/creditlines/', $scope.creditLine)
-    
+
                                                 .then(
                                                     function (loanResponse) {
                                                         $scope.document.creditlineid = loanResponse.data.id;
@@ -1348,8 +1345,6 @@ define(function () {
                                                 );
                                         }
                                     });
-
-                                   
                                 }
                             });
                         }

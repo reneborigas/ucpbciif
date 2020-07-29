@@ -270,6 +270,46 @@ define(function () {
                         });
                     },
                 })
+
+                .state('app.borrowers.create_loan_availment', {
+                    url: '/:borrowerId/new-file/',
+                    templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | New Loan Availment',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'New {{subProcess.name}} File',
+                        parent: 'app.borrowers.info',
+                    },
+                    resolve: {
+                        fetchSubProcess: function ($stateParams, appFactory) {
+                            return appFactory
+                                .getSubProcessByName('Loan Availment')
+                                .then(function (data) {
+                                    
+                                    return data;
+                                    
+                                });
+                        },
+                    },
+                 
+                    controller: function ($scope,fetchSubProcess,appFactory,$stateParams) {
+                        console.log(fetchSubProcess);
+                        $scope.borrowerId = $stateParams.borrowerId;
+                        $scope.subProcessId = $stateParams.fetchSubProcess.id;
+                        $scope.creditLineId = $stateParams.creditLineId;
+                        console.log($scope.subProcessId);
+
+                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
+                            $scope.borrowerName = data;
+                        });
+
+                        appFactory.getSubProcess($scope.subProcessId).then(function (data) {
+                            $scope.subProcess = data;
+                        });
+
+                    },
+                })
                 .state('app.borrowers.info', {
                     url: '/:borrowerId',
                     templateUrl: '/statics/partials/pages/borrowers/borrowers-info.html',
@@ -724,6 +764,26 @@ define(function () {
                     templateUrl: '/statics/partials/pages/borrowers/print/borrowers-existing-loans.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Borrower Loans Print',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/borrowers.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('print.documents.borrower_credit_lines', {
+                    url: '/borrowers/creditlines/:borrowerId',
+                    templateUrl: '/statics/partials/pages/borrowers/print/borrowers-existing-credit-lines.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Credit Lines Print',
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.borrowerId = $stateParams.borrowerId;
