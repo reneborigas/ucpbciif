@@ -1,13 +1,13 @@
 <div class="animated fadeIn">
     <div class="row">
         <div class="col">
-            <div class="card card-custom" ng-controller="PaymentListController">
+            <div class="card card-custom" ng-controller="CreditLineListController">
                 <div class="card-header">
                     <div class="card-title">
                         <span class="card-icon">
                             <i class="fad fa-users-class"></i>
                         </span>
-                        <h3 class="card-label">Payment List</h3>
+                        <h3 class="card-label">Credit Line List</h3>
                     </div>
                 </div>
                 <div class="card-body">
@@ -65,29 +65,17 @@
                                 </select>
                             </div> -->
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
-                                <label>Principal Range:</label>
-                                <div class="input-group">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        ng-model="params[$parent.filters[1].params.param1]"
-                                        price
-                                    />
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        ng-model="params[$parent.filters[1].params.param2]"
-                                        price
-                                    />
-                                </div>
+                                <label>Term:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[1].params.param1]"
+                                    ng-options="loanProgram.id as loanProgram.name for loanProgram in loanPrograms"
+                                >
+                                    <option value="" disabled selected>Select Borrower</option>
+                                </select>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
-                                <label>Interest Range:</label>
+                                <label>Credit Line Amount Range:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -109,13 +97,13 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
-                                <label>Payment Date:</label>
+                                <label>Total Availment Range:</label>
                                 <div class="input-group">
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
                                         ng-model="params[$parent.filters[3].params.param1]"
-                                        datepicker-localdate
+                                        price
                                     />
                                     <div class="input-group-append">
                                         <span class="input-group-text">
@@ -123,15 +111,15 @@
                                         </span>
                                     </div>
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
                                         ng-model="params[$parent.filters[3].params.param2]"
-                                        datepicker-localdate
+                                        price
                                     />
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[4].showFilter">
-                                <label>Total Payment Range:</label>
+                                <label>Interest Range:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -153,24 +141,48 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
-                                <label>Payment Type:</label>
-                                <select
-                                    class="form-control"
-                                    ng-model="params[$parent.filters[5].params.param1]"
-                                    ng-options="paymentType.name as paymentType.name for paymentType in paymentTypes"
-                                >
-                                    <option value="" disabled selected>Select Payment Type</option>
-                                </select>
+                                <label>Date Approved Range:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[5].params.param1]"
+                                        datepicker-localdate
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[5].params.param2]"
+                                        datepicker-localdate
+                                    />
+                                </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[6].showFilter">
-                                <label>Status:</label>
-                                <select
-                                    class="form-control"
-                                    ng-model="params[$parent.filters[6].params.param1]"
-                                    ng-options="paymentStatus.name as paymentStatus.name for paymentStatus in paymentStatuses"
-                                >
-                                    <option value="" disabled selected>Select Status</option>
-                                </select>
+                                <label>Expiry Date Range:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[6].params.param1]"
+                                        datepicker-localdate
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[6].params.param2]"
+                                        datepicker-localdate
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div class="row my-4" ng-if="showFilterButton">
@@ -193,116 +205,87 @@
                     <div class="datatable datatable-default datatable-subtable">
                         <table
                             class="table table-vertical-center datatable-table"
-                            ng-table="tablePayments"
+                            ng-table="tableCreditLine"
                             template-pagination="statics/partials/customs/pagination.html"
                         >
-                            <tr class="datatable-row" ng-repeat="payment in $data">
+                            <tr class="datatable-row" ng-repeat="creditline in $data">
                                 <td
-                                    class="datatable-cell datatable-cell-left text-center"
-                                    header-class="'text-center'"
-                                    data-title="'LOAN NO.'"
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'NO'"
                                     sortable="'id'"
                                 >
-                                    <a href="#" ng-click="viewLoan(payment.loan)">LN{{ payment.loan }}</a>
+                                    {{ creditline.id }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
                                     data-title="'BORROWER'"
-                                    sortable="'borrower_name'"
+                                    sortable="'borrowerName'"
                                 >
-                                    <a href="#" ng-click="viewBorrower(payment.borrower_id)">
-                                        {{ payment.borrower_name }}
-                                    </a>
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'PAYMENT FOR'"
-                                    sortable="'amortizationItem_schedule'"
-                                >
-                                    {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'PRINCIPAL'"
-                                    sortable="'amortizationItem_principal'"
-                                >
-                                    {{ payment.principal | currency :'₱'}}
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'INTEREST'"
-                                    sortable="'amortizationItem_interest'"
-                                >
-                                    {{ payment.interest | currency :'₱'}}
-                                </td>
-
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'TOTAL PAYABLE'"
-                                    sortable="'amortizationItem_total'"
-                                >
-                                    {{ payment.totalToPay | currency :'₱'}}
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'PAYMENT DATE'"
-                                    sortable="'datePayment'"
-                                >
-                                    {{ payment.datePayment | date: 'mediumDate' }}
-                                </td>
-
-                                <td
-                                    class="datatable-cell datatable-cell-left text-center"
-                                    header-class="'text-center'"
-                                    data-title="'PAYMENT TYPE'"
-                                    sortable="'paymentType_name'"
-                                >
-                                    {{ payment.paymentType_name }}
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'TOTAL PAYMENT'"
-                                    sortable="'total'"
-                                >
-                                    {{ payment.total | currency :'₱'}}
-                                </td>
-                                <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CHECK NO'" sortable="'checkNo'">
-                                        {{ payment.checkNo}}
-                                </td>   
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BANK ACCOUNY'" sortable="'bankAccount'">
-                                        {{ payment.bankAccount }}
-                                </td>                  -->
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'BALANCE'"
-                                    sortable="'balance'"
-                                >
-                                    {{ payment.balance | currency :'₱'}}
-                                </td>
-
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'OVER PAYMENT'"
-                                    sortable="'overPayment'"
-                                >
-                                    {{ payment.overPayment | currency :'₱'}}
+                                    {{ creditline.borrowerName }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
-                                    data-title="'STATUS'"
-                                    sortable="'paymentStatus_name'"
+                                    data-title="'TERM'"
+                                    sortable="'term_name'"
                                 >
-                                    {{ payment.paymentStatus_name }}
+                                    {{ creditline.term_name }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'CREDIT LINE AMOUNT'"
+                                    sortable="'phoneNo'"
+                                >
+                                    {{ creditline.amount | currency :'₱'}}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL AVAILMENT'"
+                                    sortable="'totalAvailment'"
+                                >
+                                    {{ creditline.totalAvailment | currency :'₱'}}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-center"
+                                    header-class="'text-center'"
+                                    data-title="'INTEREST RATE'"
+                                    sortable="'interestRate_amount'"
+                                >
+                                    {{ creditline.interestRate_amount }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'DATE APPROVED'"
+                                    sortable="'dateApproved'"
+                                >
+                                    {{ creditline.dateApproved | date : 'medium' }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'EXPIRY DATE'"
+                                    sortable="'dateExpired'"
+                                >
+                                    {{ creditline.dateExpired | date : 'medium' }}
+                                </td>
+
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'ACTIONS'"
+                                >
+                                    <a
+                                        href=""
+                                        class="btn btn-sm btn-clean btn-icon mr-2"
+                                        ng-click="view(borrower.borrowerId)"
+                                    >
+                                        <i class="fad fa-eye"></i>
+                                    </a>
                                 </td>
                             </tr>
                         </table>

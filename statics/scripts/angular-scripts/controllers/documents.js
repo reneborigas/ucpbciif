@@ -55,45 +55,6 @@ define(function () {
             }
         );
 
-        $scope.tableDocumentMovements = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/documents/documentmovements/').then(
-                        function (response) {
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            params.total(response.data.length);
-
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Document Movements. Please contact System Administrator.'
-                            );
-                        }
-                    );
-                },
-            }
-        );
-
         $scope.$watch(
             'searchTermAuto',
             function (newTerm, oldTerm) {

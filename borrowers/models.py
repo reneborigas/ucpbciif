@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import date
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum
+from django.db.models.functions import Coalesce
 from payments.models import Payment
 
 class ContactPerson(models.Model):
@@ -429,8 +430,7 @@ class Borrower(models.Model):
 
     
     def getTotalPayments(self): 
-
-        return Payment.objects.filter(loan__borrower=self,paymentStatus__name='TENDERED').exclude(isDeleted=True).aggregate(totalPayments=Sum(F('total') ))['totalPayments'] 
+        return Payment.objects.filter(loan__borrower=self,paymentStatus__name='TENDERED').exclude(isDeleted=True).aggregate(totalPayments=Coalesce(Sum(F('total')),0))['totalPayments']
 
 def attachment_directory_path(instance, filename):
     # ext = filename.split('.')[-1]

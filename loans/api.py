@@ -113,30 +113,59 @@ class CreditLineViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = CreditLine.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name'))
+        queryset = CreditLine.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name'),borrowerName=F('borrower__cooperative__name'))
         # print(self.request.query_params)
         creditLineId = self.request.query_params.get('creditLineId', None)
-
-
         borrowerId = self.request.query_params.get('borrowerId', None)
         status = self.request.query_params.get('status', None)
-         
+        term = self.request.query_params.get('term', None)
+        creditLineAmountFrom = self.request.query_params.get('creditLineAmountFrom', None)
+        creditLineAmountTo = self.request.query_params.get('creditLineAmountTo', None)
+        totalAvailmentFrom = self.request.query_params.get('totalAvailmentFrom', None)
+        totalAvailmentTo = self.request.query_params.get('totalAvailmentTo', None)
+        interestFrom = self.request.query_params.get('interestFrom', None)
+        interestTo = self.request.query_params.get('interestTo', None)
+        dateApprovedFrom = self.request.query_params.get('dateApprovedFrom', None)
+        dateApprovedTo = self.request.query_params.get('dateApprovedTo', None)
+        expiryDateFrom = self.request.query_params.get('expiryDateFrom', None)
+        expiryDateTo = self.request.query_params.get('expiryDateTo', None)
+
         if status is not None:
             queryset = queryset.filter(status__name=status)
 
         if borrowerId is not None:
             queryset = queryset.filter(borrower=borrowerId)
 
-        # if status is not None:
-        #     queryset = queryset.filter(loanStatus__name=status)
-
         if creditLineId is not None:
             queryset = queryset.filter(id=creditLineId)
 
-            
         for creditLine in queryset:
             creditLine.remainingCreditLine = creditLine.getRemainingCreditLine()
-            creditLine.totalAvailment = creditLine.getTotalAvailment()
+            creditLine.totalAvailment = creditLine.getTotalAvailment() 
+
+        if term is not None:
+            queryset = queryset.filter(term=term)
+
+        if creditLineAmountFrom is not None and creditLineAmountTo is not None:
+            queryset=queryset.filter(amount__gte=creditLineAmountFrom).filter(amount__lte=creditLineAmountTo)
+
+        if totalAvailmentFrom is not None and totalAvailmentTo is not None:
+            creditLines = []
+            for creditLine in queryset: 
+                if (int(creditLine.totalAvailment) >= int(totalAvailmentFrom)) and  (int(creditLine.totalAvailment) <= int(totalAvailmentTo)):
+                    creditLines.append(creditLine.pk)
+
+            queryset=queryset.filter(id__in=creditLines)
+
+        if interestFrom is not None and interestTo is not None:
+            queryset=queryset.filter(interestRate__interestRate__gte=interestFrom).filter(interestRate__interestRate__lte=interestTo)
+
+        if dateApprovedFrom is not None and dateApprovedTo is not None:
+            queryset=queryset.filter(dateApproved__date__gte=dateApprovedFrom).filter(dateApproved__date__lte=dateApprovedTo)
+
+        if expiryDateFrom is not None and expiryDateTo is not None:
+            queryset=queryset.filter(dateExpired__date__gte=expiryDateFrom).filter(dateExpired__date__lte=expiryDateTo)
+
         return queryset
 
  

@@ -18,21 +18,161 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 col-xl-8">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Search..."
-                                                ng-model="searchTermAuto"
-                                            />
-                                            <span><i class="far fa-search"></i></span>
-                                        </div>
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div class="d-flex flex-wrap py-2 mr-3">
+                                <div class="input-icon">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Search..."
+                                        ng-model="searchTermAuto"
+                                    />
+                                    <span><i class="far fa-search"></i></span>
+                                </div>
+                                <div class="dropdown dropdown-inline ml-4">
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-success"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
+                                        <i class="fal fa-plus mr-1"></i>
+                                        Add Filter
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a
+                                            href=""
+                                            ng-click="showFilter(filter)"
+                                            class="dropdown-item"
+                                            ng-repeat="filter in filters"
+                                        >
+                                            <i
+                                                class="mr-2"
+                                                ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
+                                            ></i>
+                                            {{ filter.name }}
+                                        </a>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="row">
+                            <!-- <div class="col-lg-6 mb-2 mb-6" ng-if="filters[0].showFilter">
+                                <label>Borrower:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[0].params.param1]"
+                                    ng-options="loanProgram.id as loanProgram.name for loanProgram in loanPrograms"
+                                >
+                                    <option value="" disabled selected>Select Borrower</option>
+                                </select>
+                            </div> -->
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
+                                <label>Total Availments:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
+                                <label>Total Outstanding Balance:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[2].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[2].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
+                                <label>Total Paid Amount:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[3].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[3].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[4].showFilter">
+                                <label>Client Since:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[4].params.param1]"
+                                        datepicker-localdate
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[4].params.param2]"
+                                        datepicker-localdate
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row my-4" ng-if="showFilterButton">
+                            <div class="col-lg-12">
+                                <button class="btn btn-primary btn-primary-icon" ng-click="applyFilter()">
+                                    <span>
+                                        <i class="fal fa-filter"></i>
+                                        <span>Apply</span>
+                                    </span>
+                                </button>
+                                &#160;&#160;
+                                <button class="btn btn-secondary btn-secondary-icon" ng-click="resetFilter()">
+                                    <span>
+                                        <span>Clear Filters</span>
+                                    </span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -46,12 +186,12 @@
                                 <td class="datatable-cell-sorted datatable-cell datatable-cell-center">
                                     <a
                                         href=""
-                                        ng-click="contactPerson.$hideRows = !contactPerson.$hideRows"
+                                        ng-click="contact.$hideRows = !contact.$hideRows"
                                         ng-init="group.$hideRows = false"
                                     >
                                         <i
                                             class="fas fa-chevron-right m-r-10"
-                                            ng-class="{ ' fa-chevron-right': !contactPerson.$hideRows, ' fa-chevron-down': contactPerson.$hideRows }"
+                                            ng-class="{ ' fa-chevron-right': !contact.$hideRows, ' fa-chevron-down': contact.$hideRows }"
                                         ></i>
                                     </a>
                                 </td>
@@ -64,29 +204,38 @@
                                     {{ borrower.cooperativeName }}
                                 </td>
                                 <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'TIN #'"
-                                    sortable="'tin'"
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL AVAILMENTS'"
+                                    sortable="'totalAvailments'"
                                 >
-                                    {{ borrower.tin }}
+                                    {{ borrower.totalAvailments | currency :'₱' }}
                                 </td>
                                 <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'ADDRESS'"
-                                    sortable="'address'"
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL OUTSTANDING BALANCE'"
+                                    sortable="'totalOutstandingBalance'"
                                 >
-                                    {{ borrower.address }}
+                                    {{ borrower.totalOutstandingBalance | currency :'₱' }}
                                 </td>
                                 <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'PHONE #'"
-                                    sortable="'phoneNo'"
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL PAID AMOUNT'"
+                                    sortable="'totalPayments'"
                                 >
-                                    {{ borrower.phoneNo }}
+                                    {{ borrower.totalPayments | currency :'₱' }}
                                 </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-center"
+                                    header-class="'text-center'"
+                                    data-title="'CLIENT SINCE'"
+                                    sortable="'clientSince'"
+                                >
+                                    {{ borrower.clientSince | date : 'longDate'}}
+                                </td>
+
                                 <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
@@ -115,31 +264,42 @@
                                     </a> -->
                                 </td>
                             </tr>
-                            <tr ng-hide="!contactPerson.$hideRows" ng-repeat-end align="center">
-                                <td colspan="6">
-                                    <table
-                                        class="table table-vertical-center table-light table-borderless"
-                                        ng-table="tableBorrowersContactPerson"
-                                    >
-                                        <tr
-                                            ng-repeat="borrower in $data | filter : {  borrowerId : borrower.borrowerId }"
-                                            align="center"
-                                        >
-                                            <td data-title="'Full Name'" style="width: 28%;">
+                            <tr ng-hide="!contact.$hideRows" ng-repeat-end align="center">
+                                <td colspan="7">
+                                    <table class="table table-vertical-center table-light table-borderless">
+                                        <thead>
+                                            <th style="width: 28%;">
+                                                Full Name
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Address
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Phone Number
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Telephone Number
+                                            </th>
+                                            <th style="width: 18%;">
+                                                Email Address
+                                            </th>
+                                        </thead>
+                                        <tr align="center">
+                                            <td style="width: 28%;">
                                                 {{ borrower.contactPerson.firstname }} {{
                                                 borrower.contactPerson.middlename }} {{ borrower.contactPerson.lastname
                                                 }}
                                             </td>
-                                            <td data-title="'Address'" style="width: 18%;">
+                                            <td style="width: 18%;">
                                                 {{ borrower.contactPerson.address }}
                                             </td>
-                                            <td data-title="'Phone Number'" style="width: 18%;">
+                                            <td style="width: 18%;">
                                                 {{ borrower.contactPerson.phoneNo }}
                                             </td>
-                                            <td data-title="'Telephone Number'" style="width: 18%;">
+                                            <td style="width: 18%;">
                                                 {{ borrower.contactPerson.telNo }}
                                             </td>
-                                            <td data-title="'Email Address'" style="width: 18%;">
+                                            <td style="width: 18%;">
                                                 {{ borrower.contactPerson.emailAddress }}
                                             </td>
                                         </tr>
