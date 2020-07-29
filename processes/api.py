@@ -233,7 +233,7 @@ class SubProcessViewSet(ModelViewSet):
  
                     if parentLastDocument.creditLine:
                         subProcess.parentLastDocumentCreditLine = parentLastDocument.creditLine
-                         
+                        subProcess.parentLastDocumentCreditLine.totalAvailment = subProcess.parentLastDocumentCreditLine.getTotalAvailment()
                         subProcess.parentLastDocumentCreditLine.remainingCreditLine = subProcess.parentLastDocumentCreditLine.getRemainingCreditLine()
  
 

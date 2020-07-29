@@ -419,7 +419,7 @@ class Borrower(models.Model):
 
     def getTotalAvailmentsPerProgram(self,loanProgramId):
          
-        if(not self.loans.filter(loanStatus__name='CURRENT')):
+        if(not self.loans.filter(loanStatus__name='CURRENT',loanProgram_id=loanProgramId)):
             return 0
         return self.loans.filter(loanStatus__name='CURRENT',loanProgram_id=loanProgramId).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 

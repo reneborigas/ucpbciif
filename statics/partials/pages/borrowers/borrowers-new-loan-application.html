@@ -120,7 +120,7 @@
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Total Availment</span>
                                     <span class="font-weight-bolder font-size-h5">
-                                        {{ borrower.totalAvailmentPerProgram | currency :'₱'}}
+                                        {{ creditLine.totalAvailment | currency :'₱'}}
                                     </span>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Remaining Credit Line Amount</span>
                                     <span class="font-weight-bolder font-size-h5">
-                                        {{ subProcess.parentLastDocumentCreditLine.remainingCreditLine | currency :'₱'}}
+                                        {{ creditLine.remainingCreditLine | currency :'₱'}}
                                     </span>
                                 </div>
                             </div>

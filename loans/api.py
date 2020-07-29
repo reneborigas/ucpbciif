@@ -87,7 +87,10 @@ class CreditLineViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = CreditLine.objects.order_by('id').annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name'))
-        creditLineId = self.request.query_params.get('creditlineid', None)
+        # print(self.request.query_params)
+        creditLineId = self.request.query_params.get('creditLineId', None)
+
+
         borrowerId = self.request.query_params.get('borrowerId', None)
         status = self.request.query_params.get('status', None)
          
@@ -102,9 +105,11 @@ class CreditLineViewSet(ModelViewSet):
 
         if creditLineId is not None:
             queryset = queryset.filter(id=creditLineId)
-            for creditLine in queryset:
-                creditLine.remainingCreditLine = creditLine.getRemainingCreditLine()
- 
+
+            
+        for creditLine in queryset:
+            creditLine.remainingCreditLine = creditLine.getRemainingCreditLine()
+            creditLine.totalAvailment = creditLine.getTotalAvailment()
         return queryset
 
  

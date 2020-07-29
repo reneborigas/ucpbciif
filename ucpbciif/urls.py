@@ -45,6 +45,7 @@ urlpatterns = [
     path('borrowers/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/new-file/<int:subProcessId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('borrowers/<int:id>/new-loan-availment/<int:creditLineId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/edit', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     #processes
@@ -65,6 +66,7 @@ urlpatterns = [
 
     #print
     path('print/borrowers/loans/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('print/borrowers/creditlines/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('print/borrowers/payment-history/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('print/borrowers/outstanding-obligations/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 

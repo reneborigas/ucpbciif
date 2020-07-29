@@ -603,6 +603,10 @@ define(function () {
             $state.go('app.borrowers.create_loan_application', { borrowerId: borrowerId, subProcessId: subProcessId });
         };
 
+        $scope.newLoanAvailment = function (borrowerId, creditLineId) {
+            $state.go('app.borrowers.create_loan_availment', { borrowerId: borrowerId, creditLineId: creditLineId });
+        };
+
         $scope.templates = [
             {
                 templateNumber: 1,
@@ -679,7 +683,9 @@ define(function () {
         $scope.previewBorrowerLoans = function (id) {
             $window.open('/print/borrowers/loans/' + id, '_blank', 'width=800,height=800');
         };
-
+        $scope.previewBorrowerCreditLines = function (id) {
+            $window.open('/print/borrowers/creditlines/' + id, '_blank', 'width=800,height=800');
+        };
         $scope.previewBorrowerPaymentHistory = function (id) {
             $window.open('/print/borrowers/payment-history/' + id, '_blank', 'width=800,height=800');
         };
@@ -1136,23 +1142,75 @@ define(function () {
                         createdBy: appFactory.getCurrentUser(),
                         committee: '',
                         loan: '',
-                    };
+                    }; 
+                    console.log($scope.creditLine);
+                    if ($scope.creditLine){
+                        $scope.creditLine = {
+                            creditlineid: $scope.creditLine.id,
+                            amount: $scope.creditLine.amount,
+                            interestRate: $scope.creditLine.interestRate,
+                            totalAvailment: $scope.creditLine.totalAvailment,
+                            remainingCreditLine: $scope.creditLine.remainingCreditLine,
+                            term: $scope.creditLine.term,
+                            loanProgram: $scope.creditLine.loanProgram,
+                            purpose: $scope.creditLine.purpose,
+                            security: $scope.creditLine.security,
+                            term_name: $scope.creditLine.term_name,
+                            loanProgram_name: $scope.creditLine.loanProgram_name,
+                            interestRate_amount: $scope.creditLine.interestRate_amount,
+                            status: 1,
+                            borrower: $scope.borrowerId,
+                            createdBy: appFactory.getCurrentUser(),
+                        };
+                        $scope.loan = {
+                            loanid: null,
+                            amount: '',
+                            creditLine: $scope.subProcess.parentLastDocumentCreditLine.id,
+                            interestRate: $scope.subProcess.parentLastDocumentCreditLine.interestRate,
+                            term: $scope.subProcess.parentLastDocumentCreditLine.term,
+                            termid: $scope.subProcess.parentLastDocumentCreditLine.term.id,
 
-                    $scope.creditLine = {
-                        creditlineid: null,
-                        amount: '',
-                        interestRate: '',
+                            loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
+                            purpose: '',
+                            security: '',
+                            loanStatus: 1,
+                            borrower: $scope.borrowerId,
+                            createdBy: appFactory.getCurrentUser(),
+                        };
 
-                        term: '',
-                        loanProgram: '',
-                        purpose: '',
-                        security: '',
-                        status: 1,
-                        borrower: $scope.borrowerId,
-                        createdBy: appFactory.getCurrentUser(),
-                    };
+                        $scope.$watch(
+                            'loan.amount',
+                            function (newTerm, oldTerm) {
+                                if (newTerm > $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine) {
+                                    //Error
+                                    console.log('invalid');
 
-                    if ($scope.subProcess.parentLastDocumentCreditLine) {
+                                    $scope.exceeded = true;
+                                } else {
+                                    $scope.exceeded = false;
+                                }
+                            },
+                            true
+                        );
+                        
+                    }else{
+                        $scope.creditLine = {
+                            creditlineid: null,
+                            amount: '',
+                            interestRate: '',
+                            totalAvailment:'',
+                            term: '',
+                            loanProgram: '',
+                            purpose: '',
+                            security: '',
+                            status: 1,
+                            borrower: $scope.borrowerId,
+                            createdBy: appFactory.getCurrentUser(),
+                        };
+
+                    }
+                   
+                    if ($scope.subProcess.parentLastDocumentCreditLine && !$scope.creditLine.creditlineid) {
                         $scope.creditLine = {
                             creditlineid: $scope.subProcess.parentLastDocumentCreditLine.id,
                             amount: parseFloat($scope.subProcess.parentLastDocumentCreditLine.amount),
@@ -1163,6 +1221,8 @@ define(function () {
                             purpose: $scope.subProcess.parentLastDocumentCreditLine.purpose,
                             security: $scope.subProcess.parentLastDocumentCreditLine.security,
                             status: 1,
+                            totalAvailment: $scope.subProcess.parentLastDocumentCreditLine.totalAvailment,
+                            remainingCreditLine: $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine,
                             borrower: $scope.borrowerId,
                             term_name: $scope.subProcess.parentLastDocumentCreditLine.term_name,
                             loanProgram_name: $scope.subProcess.parentLastDocumentCreditLine.loanProgram_name,
@@ -1406,5 +1466,24 @@ define(function () {
                 );
             }
         );
+
+        $http
+        .get('/api/loans/creditlines/', {
+            params: { borrowerId: $scope.borrowerId, status: 'APPROVED' },
+        })
+        .then(
+            function (response) {
+                $scope.creditlines = response.data;
+            },
+            function (error) {
+                toastr.error(
+                    'Error ' + error.status + ' ' + error.statusText,
+                    'Could not retrieve Credit Line Information. Please contact System Administrator.'
+                );
+            }
+        );
+
+
+
     });
 });

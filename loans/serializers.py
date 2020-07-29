@@ -123,10 +123,11 @@ class CreditLineSerializer(ModelSerializer):
 
     term_name = serializers.ReadOnlyField(source='term.name')
     interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
-
+    status_name = serializers.ReadOnlyField(source='status.name')
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
     remainingCreditLine = serializers.CharField(read_only=True)
- 
+    totalAvailment = serializers.CharField(read_only=True)
+    
     def create(self, validated_data):
         creditLine = CreditLine.objects.create(**validated_data) 
         return creditLine
