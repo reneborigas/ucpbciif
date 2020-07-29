@@ -5,6 +5,8 @@ require.config({
     paths: {
         jquery: 'libs/jquery/jquery.min',
         popper: 'libs/popper/popper.min',
+        moment: 'libs/moment/moment',
+        fullcalendar: 'libs/fullcalendar/fullcalendar.min',
         bootstrap: 'libs/bootstrap/js/bootstrap.bundle.min',
 
         angular: 'libs/angular/angular.min',
@@ -114,7 +116,7 @@ require.config({
     },
 });
 
-require(['jquery', 'popper', 'bootstrap'], function () {});
+require(['jquery', 'popper', 'moment', 'fullcalendar', 'bootstrap'], function () {});
 
 require(['app', 'routes', 'directives', 'factories', 'services', 'filters', 'animations'], function () {
     angular.bootstrap(document, ['app']);
