@@ -64,7 +64,8 @@ class InterestRateSerializer(ModelSerializer):
 class AmortizationItemSerializer(ModelSerializer):
     # termName = serializers.CharField(read_only=True) 
 
-
+    # isItemPaid = serializers.CharField(read_only=True)
+    amortizationStatus_name = serializers.ReadOnlyField(source='amortizationStatus.name')
     def create(self, validated_data):
         amortizationitem = AmortizationItem.objects.create(**validated_data) 
         return amortizationitem

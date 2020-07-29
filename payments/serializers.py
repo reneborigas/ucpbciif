@@ -149,6 +149,9 @@ class PaymentSerializer(ModelSerializer):
 
         payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2)
         payment.amortization.save()
+
+        payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
+        
         # payment.loan.getCurrentAmortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=2)
         # payment.loan.getCurrentAmortizationItem.save()
 

@@ -100,17 +100,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Credit Line Amount</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.creditLine_amount | currency :'₱'}}
-                            </span>
-                        </div>
-                    </div>
+                    
 
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
@@ -123,7 +113,18 @@
                             </span>
                         </div>
                     </div>
-
+                    
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                            <span class="mr-4">
+                                <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                            </span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Outstanding Balance</span>
+                                <span class="font-weight-bolder font-size-h5">
+                                        {{loan.outStandingBalance | currency :'₱'}}
+                                </span>
+                            </div>
+                        </div>
                     <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
@@ -259,11 +260,18 @@
                                             </span>
                                         </div>
                                     </th>
-                                    <th>
+                                    <td style="width:15%">
                                         <div class="text-right pl-16">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                            <span class="text-dark-75 text-uppercase font-size-lg" ng-if="payment.daysExceed > 0" >
+                                              Days Late
+                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg" ng-if="payment.daysAdvanced > 0" >
+                                               Days Advance
+                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg" ng-if="payment.daysAdvanced == 0 && payment.daysExceed == 0 " >
                                                 Days
                                             </span>
+                                            
                                         </div>
                                     </th>
                                     <th>
@@ -297,11 +305,19 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>
+                                <td style="width:15%">
                                     <div class="text-right pl-16">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{payment.days }}
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="payment.daysExceed > 0" >
+                                            {{payment.daysExceed }}
                                         </span>
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="payment.daysAdvanced > 0" >
+                                          {{payment.daysAdvanced }}
+                                      </span>
+                                      <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="payment.daysAdvanced == 0 && payment.daysExceed == 0 " >
+                                          {{payment.days }}
+                                      </span>
+                                         
+                                          
                                     </div>
                                 </td>
                                 <td>
@@ -358,7 +374,72 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-lg-3" ng-if="payment.paymentType != '2' && payment.paymentType">
+
+                                <div class="col-lg-3">
+                                        <label>Payment Date:</label>
+                                        <input
+                                            type="date"
+                                            min="0"
+                                            class="form-control"
+                                            id="datePayment"
+                                            name="datePayment"
+                                            ng-model="payment.datePayment"
+                                            ng-class="{'is-invalid' : newPaymentDetailsForm.datePayment.$invalid && newPaymentDetailsForm.datePayment.$touched   }"
+                                            required
+                                        />
+                                        <span
+                                            class="form-text text-muted"
+                                            ng-show="newPaymentDetailsForm.datePayment.$touched && newPaymentDetailsForm.datePayment.$invalid"
+                                        >
+                                            Please enter payment date.
+                                        </span>
+                                </div>
+                                <div class="col-lg-3" ng-if="payment.paymentType">
+                                        <label>Penalty Payment:</label>
+                                        <input
+                                            type="text"
+                                            min="0"
+                                            step="0.01"
+                                            class="form-control"
+                                            id="penaltyPayment"
+                                            name="penaltyPayment"
+                                            ng-model="payment.penaltyPayment"
+                                            ng-class="{'is-invalid' : newPaymentDetailsForm.penaltyPayment.$invalid && newPaymentDetailsForm.penaltyPayment.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.penaltyPayment.$valid && newPaymentDetailsForm.penaltyPayment.$touched && !exceeded }"
+                                            required
+                                            price
+                                        />
+                                        <span
+                                            class="form-text text-muted"
+                                            ng-show="newPaymentDetailsForm.penaltyPayment.$touched && newPaymentDetailsForm.penaltyPayment.$invalid"
+                                        >
+                                            Please enter payment for penalty.
+                                        </span>
+                                </div>   
+
+                                <div class="col-lg-3" ng-if="payment.paymentType" >
+                                        <label>Interest Payment:</label>
+                                        <input
+                                            type="text"
+                                            min="0"
+                                            step="0.01"
+                                            class="form-control"
+                                            id="interestPayment"
+                                            name="interestPayment"
+                                            ng-model="payment.interestPayment"
+                                            ng-class="{'is-invalid' : newPaymentDetailsForm.interestPayment.$invalid && newPaymentDetailsForm.interestPayment.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.interestPayment.$valid && newPaymentDetailsForm.interestPayment.$touched && !exceeded }"
+                                            required
+                                            price
+                                            ng-disabled="payment.penaltyBalance >= 1"
+                                        />
+                                        <span
+                                            class="form-text text-muted"
+                                            ng-show="newPaymentDetailsForm.interestPayment.$touched && newPaymentDetailsForm.interestPayment.$invalid"
+                                        >
+                                            Please enter payment for interest.
+                                        </span>
+                                </div>
+                                
+                                <div class="col-lg-3" ng-if="payment.paymentType != '2' && payment.paymentType" >
                                     <label>Principal Payment:</label>
                                     <input
                                         type="text"
@@ -371,6 +452,7 @@
                                         ng-class="{'is-invalid' : newPaymentDetailsForm.cash.$invalid && newPaymentDetailsForm.cash.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.cash.$valid && newPaymentDetailsForm.cash.$touched && !exceeded }"
                                         required
                                         price
+                                        ng-disabled="payment.interestBalance >= 1"
                                     />
                                     <span
                                         class="form-text text-muted"
@@ -379,8 +461,10 @@
                                         Please enter cash tendered.
                                     </span>
                                 </div>
+
+                                
                                 <div class="col-lg-3" ng-if="payment.paymentType == '2'  && payment.paymentType">
-                                    <label>Principal Payment:</label>
+                                    <label>Principal Payment:</label>  
                                     <input
                                         type="text"
                                         min="0"
@@ -392,7 +476,9 @@
                                         ng-class="{'is-invalid' : newPaymentDetailsForm.check.$invalid && newPaymentDetailsForm.check.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.check.$valid && newPaymentDetailsForm.check.$touched && !exceeded }"
                                         required
                                         price
+                                        ng-disabled="payment.interestBalance >= 1"
                                     />
+                                  
                                     <span
                                         class="form-text text-muted"
                                         ng-show="newPaymentDetailsForm.check.$touched && newPaymentDetailsForm.check.$invalid"
@@ -401,46 +487,8 @@
                                     </span>
                                 </div>
 
-                                <div class="col-lg-3" ng-if="payment.paymentType">
-                                    <label>Interest Payment:</label>
-                                    <input
-                                        type="text"
-                                        min="0"
-                                        step="0.01"
-                                        class="form-control"
-                                        id="interestPayment"
-                                        name="interestPayment"
-                                        ng-model="payment.interestPayment"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.interestPayment.$invalid && newPaymentDetailsForm.interestPayment.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.interestPayment.$valid && newPaymentDetailsForm.interestPayment.$touched && !exceeded }"
-                                        required
-                                        price
-                                    />
-                                    <span
-                                        class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.interestPayment.$touched && newPaymentDetailsForm.interestPayment.$invalid"
-                                    >
-                                        Please enter payment for interest.
-                                    </span>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label>Payment Date:</label>
-                                    <input
-                                        type="date"
-                                        min="0"
-                                        class="form-control"
-                                        id="datePayment"
-                                        name="datePayment"
-                                        ng-model="payment.datePayment"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.datePayment.$invalid && newPaymentDetailsForm.datePayment.$touched   }"
-                                        required
-                                    />
-                                    <span
-                                        class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.datePayment.$touched && newPaymentDetailsForm.datePayment.$invalid"
-                                    >
-                                        Please enter payment date.
-                                    </span>
-                                </div>
+                              
+
                             </div>
                             <div class="form-group row" ng-if="payment.paymentType == '2'">
                                 <div class="col-lg-6">
@@ -580,7 +628,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <td>
                                             <div class="pl-4">
                                                 <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -595,7 +643,123 @@
                                                 </span>
                                             </div>
                                         </td>
+                                    </tr> -->
+                                    <tr>
+                                            <td>
+                                                <div class="pl-4">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        Principal
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-size-lg">
+                                                        {{payment.principal | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    <tr>
+                                            <td>
+                                                <div class="pl-4">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        Interest
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-size-lg">
+                                                        {{payment.interest | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                    </tr>        
+                                    
+                                    <tr>
+                                            <td>
+                                                <div class="pl-4">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        Total Amortization
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-size-lg">
+                                                        {{payment.totalToPay | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="pl-4">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    Additional Interest
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-size-lg">
+                                                    {{payment.additionalInterest | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="pl-4">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    Total Interest
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-size-lg">
+                                                    {{payment.totalInterest | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                            <td>
+                                                <div class="pl-4">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                       Penalty
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-size-lg">
+                                                        {{payment.penalty | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                    </tr>
+
+
+                                    <tr>
+                                            <td>
+                                                <div class="pl-4">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        Total to Pay
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-size-lg">
+                                                        {{payment.totalToPayWithPenalty | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     <tr>
                                         <td>
                                             <div class="pl-4">
@@ -613,6 +777,38 @@
                                         </td>
                                     </tr>
                                     <tr>
+
+                                        <td>
+                                            <div class="pl-4">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        Penalty Balance
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-size-lg">
+                                                        {{payment.penaltyBalance | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <td>
+                                            <div class="pl-4">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        Interest Balance
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-size-lg">
+                                                        {{payment.interestBalance | currency :'₱'}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+
                                         <td>
                                             <div class="pl-4">
                                                 <span class="text-dark-75 font-weight-bolder font-size-lg">

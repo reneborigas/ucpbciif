@@ -92,6 +92,16 @@ class Payment(models.Model):
         null=False,
         default=0
     ) 
+    daysExceed = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+    daysAdvanced = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
     principal = models.DecimalField(
         max_digits=12,
         decimal_places=2,
@@ -107,6 +117,26 @@ class Payment(models.Model):
         decimal_places=2,
         blank=False
     )
+   
+    additionalInterest = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+
+    penalty = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    totalToPayWithPenalty = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+
+    
+
     principalBalance = models.DecimalField(
         max_digits=12,
         decimal_places=2,
@@ -123,6 +153,11 @@ class Payment(models.Model):
         blank=False
     )
     interestPayment = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    penaltyPayment = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         blank=False

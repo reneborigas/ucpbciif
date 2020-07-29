@@ -37,13 +37,16 @@ class LoanViewSet(ModelViewSet):
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
             loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
-            loan.latestAmortization = loan.getLatestAmortization 
+            loan.latestAmortization = loan.getLatestAmortization  
             loan.outStandingBalance = loan.getOutstandingBalance
             loan.currentAmortizationItem = loan.getCurrentAmortizationItem
             loan.totalObligations = loan.getTotalObligations
             loan.latestPayment = loan.getLatestPayment
             loan.totalPayment = loan.getTotalPayment
             loan.interestBalance = loan.getInterestBalance
+
+            # for amortizationItem in loan.latestAmortization.amortizationItems:
+            #     amortizationItem.isItemPaid = amortizationItem.isPaid()
 
             for amortization in loan.amortizations.all() : 
 
@@ -76,8 +79,32 @@ class AmortizationViewSet(ModelViewSet):
         for amortization in queryset:
             amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
             amortization.totalObligations = amortization.getTotalObligations
+          
+            # for amortizationItem in amortization.amortizationItems:
+            #     amortizationItem.isItemPaid = amortizationItem.isPaid()
+
+
+        return queryset
+
+
+class AmortizationItemViewSet(ModelViewSet):
+    queryset = AmortizationItem.objects.all()
+    serializer_class = AmortizationItemSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = AmortizationItem.objects.order_by('-id')
+        amortizationItemId = self.request.query_params.get('amortizationItemId', None)
+
+        if amortizationItemId is not None:
+            queryset = queryset.filter(id=amortizationItemId)
+
+        # for amortizationItem in queryset:
+        #     amortizationItem.isItemPaid = amortizationItem.isPaid()
             
         return queryset
+
+            
 
 class CreditLineViewSet(ModelViewSet):
     
@@ -124,7 +151,7 @@ class LoanProgramViewSet(ModelViewSet):
 
         if loanProgramId is not None:
             queryset = queryset.filter(id=loanProgramId)
-
+ 
 
         borrowerId = self.request.query_params.get('borrowerId', None)
         print(borrowerId)

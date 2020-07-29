@@ -2,6 +2,7 @@ from rest_framework.routers import DefaultRouter
 from .api import *
 
 router = DefaultRouter()
+router.register(r'amortizationitems',AmortizationItemViewSet) 
 router.register(r'amortizations',AmortizationViewSet) 
 router.register(r'creditlines',CreditLineViewSet) 
 router.register(r'loans',LoanViewSet) 

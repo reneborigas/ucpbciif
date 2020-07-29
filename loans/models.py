@@ -667,7 +667,9 @@ class AmortizationItem(models.Model):
 
 
     def __str__(self):
-        return "%s %s" % (self.amortization.loan,self.schedule)
+        return "%s %s" % (self.amortization.loan,self.schedule) 
 
-
- 
+    # def isPaid(self):
+    #     if  (self.payments.filter(isDeleted=False).count() > 0):
+    #         return 'PAID'
+    #     return 'UNPAID'

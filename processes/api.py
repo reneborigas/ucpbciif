@@ -18,6 +18,7 @@ from django.utils import timezone
 from loans import PMT
 
 from datetime import datetime
+from decimal import Decimal
 
 
 def generateAmortizationSchedule(loan,request):
@@ -139,20 +140,48 @@ class CalculatePMTView(views.APIView):
         # loanAmount = loan.amount
         print(loanAmount)
         delta = dateSchedule - datePayment
-        days =  loan.term.paymentPeriod.paymentCycle - delta.days
-
+        # days =  loan.term.paymentPeriod.paymentCycle - delta.days
+        days =  loan.term.paymentPeriod.paymentCycle  
         noOfPaymentSchedules = loan.term.days / days
         print(noOfPaymentSchedules  )
         pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
          
+        days =  loan.term.paymentPeriod.paymentCycle - delta.days
+        daysExceed = days - loan.term.paymentPeriod.paymentCycle
+        
+        
+        daysAdvanced = loan.term.paymentPeriod.paymentCycle - days 
+        
 
+        if daysAdvanced < 0:
+            daysAdvanced = 0
+
+        additionalInterest = 0
+        
+        if daysExceed < 0:
+            daysExceed = 0
+
+        if daysExceed > 0:
+            additionalInterest = (pmt.payment )  *  (loan.interestRate.interestRate/100) * daysExceed/360
+        penalty = 0
+        if additionalInterest>0:
+            penalty =  (pmt.payment + additionalInterest)  *  (loan.interestRate.interestRate/100) * daysExceed/360
+
+        totalToPayWithPenalty= pmt.payment + additionalInterest + penalty
+        totalInterest = pmt.interest + additionalInterest
         return Response({
             'datePayment':datePayment,
-            'dateSchedule':dateSchedule, 
+            'dateSchedule':dateSchedule,  
             'days': days,
             'principal':pmt.principal,
             'interest':pmt.interest,
+            'totalInterest':totalInterest,
+            'additionalInterest':additionalInterest, 
+            'daysExceed':daysExceed,
+            'daysAdvanced':daysAdvanced,
+            'penalty':penalty, 
             'totalToPay':pmt.payment,
+            'totalToPayWithPenalty':totalToPayWithPenalty,
             'status': 'Accepted',
             'principalBalance':pmt.nextStartingValue,
             'message': 'PMT Calculated'
