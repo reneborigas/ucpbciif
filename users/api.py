@@ -26,6 +26,7 @@ class UserViewSet(ModelViewSet):
             fullName=F('profile__name'),
             account_type_text=F('account_type__account_type'),
             committeePosition=F('committees__position__name'),
+            committeeId=F('committees__id'),
             positionId=F('committees__position__id'),
         ).exclude(is_active=False)
         id = self.request.query_params.get('id', None)

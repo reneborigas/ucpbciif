@@ -606,12 +606,12 @@
                                 {{ documentMovement.description }}
                             </p>
                             <p class="p-0">
-                                <i class="font-size-sm">Commitee: {{ documentMovement.committeeName }}</i>
+                                <i class="font-size-sm">{{ documentMovement.committeeName }} - {{ documentMovement.positionName }}</i>
                             </p>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
     
@@ -731,6 +731,9 @@
                                                         ng-if="stepRequirementAttachment.description"
                                                         ng-bind="stepRequirementAttachment.description"
                                                     ></span>
+                                                    <br/>
+                                                    <span> {{ stepRequirementAttachment.committeeName  }} - {{ stepRequirementAttachment.positionName  }}</span>
+                                                
                                                 </a>
                                             </li>
                                         </ul>
@@ -928,6 +931,7 @@
                                             <textarea
                                                 ng-model="remarks"
                                                 name="remarks"
+                                                id="remarks"
                                                 type="text"
                                                 rows="4"
                                                 cols="50"

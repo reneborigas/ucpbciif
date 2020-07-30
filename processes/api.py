@@ -514,6 +514,7 @@ class ProcessRequirementAttachmentViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = ProcessRequirementAttachment.objects.annotate(
             processRequirementName=F('processRequirement__name'), 
+            committeeName=Concat(F('committee__firstname'),V(' '),F('committee__middlename'),V(' '),F('committee__lastname')),
         ).order_by('id')
 
         processRequirementId = self.request.query_params.get('processRequirementId', None)

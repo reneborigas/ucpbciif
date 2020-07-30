@@ -14,6 +14,7 @@ from loans.models import Loan ,CreditLine,LoanStatus
 
 class DocumentMovementSerializer(ModelSerializer): 
     committeeName = serializers.CharField(read_only=True)
+    positionName = serializers.ReadOnlyField(source='committee.position.name')
     statusName = serializers.CharField(read_only=True) 
     documentId = serializers.CharField(read_only=True)
     stepId = serializers.CharField(read_only=True)

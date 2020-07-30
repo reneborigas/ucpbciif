@@ -115,6 +115,10 @@ class StepRequirementSerializer(ModelSerializer):
 
  
 class ProcessRequirementAttachmentSerializer(ModelSerializer):
+
+    committeeName = serializers.CharField(read_only=True)
+    positionName = serializers.ReadOnlyField(source='committee.position.name')
+    
     def create(self, validated_data):
         processRequirementAttachment = ProcessRequirementAttachment.objects.create(**validated_data) 
         

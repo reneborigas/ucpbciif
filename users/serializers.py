@@ -54,6 +54,8 @@ class UserSerializer(ModelSerializer):
     account_type_text = serializers.CharField(read_only=True)
     committeePosition = serializers.CharField(read_only=True)
     # position  = PositionSerializer(read_only=True)   
+    
+    committeeId = serializers.CharField(read_only=True)
     positionId = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
@@ -105,4 +107,4 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id','fullName','username','email_address','password','account_type','account_type_text','is_active','date_joined','profile','committees','positionId', 'committeePosition']
+        fields = ['id','fullName','username','email_address','password','account_type','account_type_text','is_active','date_joined','profile','committees', 'committeeId', 'positionId', 'committeePosition']

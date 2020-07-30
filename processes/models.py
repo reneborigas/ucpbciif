@@ -504,6 +504,11 @@ class ProcessRequirementAttachment(models.Model):
         on_delete=models.CASCADE,
         related_name="documentProcessRequirementAttachments",
     )
+    committee = models.ForeignKey(
+        'committees.Committee',
+        on_delete=models.CASCADE,
+        related_name="processRequirementAttachments",
+    )
     description = models.TextField(
         blank = True,
         null = True,

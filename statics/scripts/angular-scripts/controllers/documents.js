@@ -421,7 +421,7 @@ define(function () {
                 document: documentId,
                 name: step.name,
                 step: step.id,
-                committee: '1',
+                committee:$scope.currentUser.committeeId, 
                 status: step.status,
             };
 
@@ -523,6 +523,7 @@ define(function () {
                     description: $scope.newAttachment.attachmentDescription,
                     processRequirement: processRequirement.id,
                     document: $scope.documentId,
+                    committee: $scope.currentUser.committeeId,
                 };
                 var formData = new FormData();
                 angular.forEach(newAttachment, function (value, key) {
@@ -593,7 +594,7 @@ define(function () {
         $scope.addNote = function (document) {
             noteBlockUI.start('Adding Note...');
             $scope.note = {
-                committee: 1, //default commiitee to be replaced with
+                committee: $scope.currentUser.committeeId,
                 object_type: 'Document',
                 object_id: document.id,
                 content_type: '',
