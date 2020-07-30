@@ -197,14 +197,17 @@ define(function () {
                         label: 'Unauthorized Access',
                     },
                     resolve: {
-                        loadController: [
-                            '$ocLazyLoad',
-                            function ($ocLazyLoad) {
-                                return $ocLazyLoad.load({
-                                    files: ['/statics/scripts/angular-scripts/controllers/dashboard.js'],
-                                });
-                            },
-                        ],
+                        previousState: function ($state) {
+                            var currentStateData = {
+                                name: $state.current.name,
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params),
+                            };
+                            return currentStateData;
+                        },
+                    },
+                    controller: function (previousState, $scope) {
+                        $scope.previousState = previousState;
                     },
                 })
                 .state('app.404', {
@@ -479,7 +482,6 @@ define(function () {
                         label: '{{ fileName }}',
                         parent: 'app.documents.list',
                     },
-
                     resolve: {
                         fetchSubProcess: function ($stateParams, appFactory) {
                             return appFactory
@@ -488,21 +490,18 @@ define(function () {
                                     return data;
                                 });
                         },
+                        fetchPermission: function (fetchSubProcess, appFactory, $q, $state) {
+                            return appFactory.checkPermissions(fetchSubProcess.id).then(function (data) {
+                                if (!data.permission) {
+                                    return $q.reject('Unauthorized');
+                                }
+                            });
+                        },
                     },
-
-                    controller: function ($scope, $stateParams, appFactory, fetchSubProcess) {
+                    controller: function ($scope, $stateParams, appFactory, fetchSubProcess, fetchPermission, $state) {
                         $scope.documentId = $stateParams.documentId;
                         appFactory.getDocumentName($scope.documentId).then(function (data) {
                             $scope.fileName = data;
-                        });
-                        console.log(fetchSubProcess);
-
-                        appFactory.checkPermissions(fetchSubProcess.id).then(function (data) {
-                            $scope.permissions = data;
-
-                            console.log($scope.permissions);
-
-                            console.log($scope.permissions.permission);
                         });
                     },
                 })

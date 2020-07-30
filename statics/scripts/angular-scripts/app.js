@@ -48,6 +48,12 @@ define(function () {
                 }
             });
 
+            $transitions.onError({}, function (transition) {
+                if (transition.error().detail === 'Unauthorized') {
+                    $state.go('app.unauthorized');
+                }
+            });
+
             $rootScope.$state = $state;
             return ($rootScope.$stateParams = $stateParams);
         },

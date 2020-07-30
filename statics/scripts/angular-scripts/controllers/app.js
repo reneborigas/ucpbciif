@@ -56,4 +56,14 @@ define(function () {
             $state.go('app.dashboard');
         };
     });
+
+    app.controller('RerouteController', function RerouteController($scope, $state, $location) {
+        $scope.goToPreviousState = function () {
+            if ($scope.previousState) {
+                $location.path($scope.previousState.url);
+            } else {
+                $state.go('app.dashboard');
+            }
+        };
+    });
 });
