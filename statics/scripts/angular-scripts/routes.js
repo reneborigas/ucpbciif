@@ -186,6 +186,51 @@ define(function () {
                         ],
                     },
                 })
+                .state('app.unauthorized', {
+                    url: '/unauthorized',
+                    templateUrl: '/statics/partials/pages/dashboard/unauthorized.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Unauthorized Access',
+                        stateTitle: 'Unauthorized',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Unauthorized Access',
+                    },
+                    resolve: {
+                        previousState: function ($state) {
+                            var currentStateData = {
+                                name: $state.current.name,
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params),
+                            };
+                            return currentStateData;
+                        },
+                    },
+                    controller: function (previousState, $scope) {
+                        $scope.previousState = previousState;
+                    },
+                })
+                .state('app.404', {
+                    url: '/404',
+                    templateUrl: '/statics/partials/pages/dashboard/404.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | 404 Not Found',
+                        stateTitle: '404 Not Found',
+                    },
+                    ncyBreadcrumb: {
+                        label: '404 Not Found',
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/dashboard.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
                 .state('app.dashboard', {
                     url: '/dashboard',
                     templateUrl: '/statics/partials/pages/dashboard/dashboard.html',
@@ -311,6 +356,46 @@ define(function () {
                         });
                     },
                 })
+
+                .state('app.borrowers.create_loan_release', {
+                    url: '/:borrowerId/new-loan-release/:loanId',
+                    templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | New Loan Release',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'New {{subProcess.name}} File',
+                        parent: 'app.borrowers.info',
+                    },
+                    resolve: {
+                        fetchSubProcess: function ($stateParams, appFactory) {
+                            return appFactory.getSubProcessByName('Loan Release').then(function (data) {
+                                return data;
+                            });
+                        },
+                    },
+
+                    controller: function ($scope, fetchSubProcess, appFactory, $stateParams) {
+                        console.log(fetchSubProcess);
+                        $scope.borrowerId = $stateParams.borrowerId;
+                        $scope.subProcessId = fetchSubProcess.id;
+                        $scope.loanId = $stateParams.loanId;
+                        console.log($scope.subProcessId);
+
+                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
+                            $scope.borrowerName = data;
+                        });
+
+                        appFactory.getSubProcess($scope.subProcessId).then(function (data) {
+                            $scope.subProcess = data;
+                        });
+                        console.log($stateParams.borrowerId);
+                        console.log($stateParams);
+                        appFactory.getLoan($scope.loanId).then(function (data) {
+                            $scope.loan = data;
+                        });
+                    },
+                })
                 .state('app.borrowers.info', {
                     url: '/:borrowerId',
                     templateUrl: '/statics/partials/pages/borrowers/borrowers-info.html',
@@ -397,7 +482,6 @@ define(function () {
                         label: '{{ fileName }}',
                         parent: 'app.documents.list',
                     },
-
                     resolve: {
                         fetchSubProcess: function ($stateParams, appFactory) {
                             return appFactory
@@ -406,21 +490,18 @@ define(function () {
                                     return data;
                                 });
                         },
+                        fetchPermission: function (fetchSubProcess, appFactory, $q, $state) {
+                            return appFactory.checkPermissions(fetchSubProcess.id).then(function (data) {
+                                if (!data.permission) {
+                                    return $q.reject('Unauthorized');
+                                }
+                            });
+                        },
                     },
-
-                    controller: function ($scope, $stateParams, appFactory, fetchSubProcess) {
+                    controller: function ($scope, $stateParams, appFactory, fetchSubProcess, fetchPermission, $state) {
                         $scope.documentId = $stateParams.documentId;
                         appFactory.getDocumentName($scope.documentId).then(function (data) {
                             $scope.fileName = data;
-                        });
-                        console.log(fetchSubProcess);
-
-                        appFactory.checkPermissions(fetchSubProcess.id).then(function (data) {
-                            $scope.permissions = data;
-
-                            console.log($scope.permissions);
-
-                            console.log($scope.permissions.permission);
                         });
                     },
                 })
@@ -727,14 +808,14 @@ define(function () {
                         ],
                     },
                 })
-                .state('simple.register', {
-                    url: '/register',
-                    templateUrl: '/statics/html/views/pages/register.html',
-                })
-                .state('simple.404', {
-                    url: '/404',
-                    templateUrl: '/statics/html/views/pages/404.html',
-                })
+                // .state('simple.register', {
+                //     url: '/register',
+                //     templateUrl: '/statics/html/views/pages/register.html',
+                // })
+                // .state('simple.404', {
+                //     url: '/404',
+                //     templateUrl: '/statics/html/views/pages/404.html',
+                // })
                 .state('simple.500', {
                     url: '/500',
                     templateUrl: '/statics/html/views/pages/500.html',

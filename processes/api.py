@@ -269,13 +269,13 @@ class CheckPermissionView(views.APIView):
             if  position in allPositions:  
                 return Response({
                     'status': 'Accepted', 
-                    'permission':'TRUE'
+                    'permission':True
                 },status= status.HTTP_202_ACCEPTED)
 
 
             return Response({
             'status': 'Accepted', 
-            'permission':'FALSE'
+            'permission':False
         },status= status.HTTP_202_ACCEPTED)
         return Response({'error':'Error on checking permissions'},status.HTTP_400_BAD_REQUEST)
 
