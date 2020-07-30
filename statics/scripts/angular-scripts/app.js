@@ -12,6 +12,8 @@ define(function () {
         'blockUI',
         'ngTagsInput',
         'ngAnimate',
+        'ngTouch',
+        'ui.bootstrap',
     ]);
 
     app.config([

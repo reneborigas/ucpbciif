@@ -15,7 +15,8 @@ angular
     .directive('selectNgFiles', selectNgFiles)
     .directive('price', price)
     .directive('pagination', pagination)
-    .directive('datepickerLocaldate', datepickerLocaldate);
+    .directive('datepickerLocaldate', datepickerLocaldate)
+    .directive('ngEnter', ngEnter);
 
 function includeReplace() {
     var directive = {
@@ -444,4 +445,18 @@ function datepickerLocaldate($parse) {
             return dt;
         });
     }
+}
+
+function ngEnter() {
+    return function (scope, element, attrs) {
+        element.bind('keydown keypress', function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter, { event: event });
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
 }

@@ -126,7 +126,7 @@ class CreditLineSerializer(ModelSerializer):
     interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
     status_name = serializers.ReadOnlyField(source='status.name')
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
-    borrowerName = serializers.CharField(read_only=True)
+    borrower_name = serializers.ReadOnlyField(source='borrower.cooperative.name')
     remainingCreditLine = serializers.CharField(read_only=True)
     totalAvailment = serializers.CharField(read_only=True)
     
