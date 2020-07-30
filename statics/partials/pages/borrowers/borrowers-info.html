@@ -742,9 +742,18 @@
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="loan.loanStatus_name != 'APPROVED'">
                                                 {{ loan.loanStatus_name }}
                                             </span>
+                                            <a
+                                                        href=""
+                                                        class="btn btn-sm btn-clean btn-icon mr-2"
+                                                        ng-click="newLoanRelease(borrower.borrowerId,loan.id )"
+                                                        ng-if="loan.loanStatus_name == 'APPROVED'"
+                                                    >
+                                                        <i class="fad fa-file-plus"></i> New Loan Release 
+                                                    </a>
+                                            
                                         </div>
                                     </td>
                                 </tr>

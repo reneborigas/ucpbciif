@@ -18,7 +18,7 @@
                                 </a>
                             </div>
 
-                            <div class="my-lg-0 my-1" ng-if="document.loan">
+                            <div class="my-lg-0 my-1" ng-if="document.loan && document.loan.loanStatus == 8">
                                 <a
                                     href="#"
                                     class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
@@ -53,13 +53,24 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center flex-wrap justify-content-between">
-                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                <br />
-                                Donec rhoncus dapibus dolor, sollicitudin porttitor felis sollicitudin ut.
-                                <br />
-                                Etiam elementum neque non tempor dapibus.
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5" ng-if="document.loan">
+                                    <span class="text-muted font-weight-bold mr-2">Purpose :</span> 
+                                      {{ document.loan.purpose }}
                             </div>
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5" ng-if="document.loan"> 
+                                 <span class="text-muted font-weight-bold mr-2">Security :</span>
+                                  {{ document.loan.security }}
+                            </div>
+
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5" ng-if="document.creditLine && ! document.loan">
+                                    <span class="text-muted font-weight-bold mr-2">Purpose :</span> 
+                                      {{ document.creditLine.purpose }}
+                            </div>
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5" ng-if="document.creditLine && ! document.loan">
+                                 <span class="text-muted font-weight-bold mr-2">Security :</span>
+                                  {{ document.creditLine.security }}
+                            </div>
+
                             <div class="d-flex flex-wrap align-items-center py-2">
                                 <div class="d-flex align-items-center mr-10" ng-show="document.loan.dateReleased">
                                     <div class="mr-6">
@@ -603,7 +614,27 @@
             </div>
         </div>
     </div>
+    
     <div class="col-xl-7">
+            <div class="card card-custom card-stretch-half gutter-b" ng-if="!currentStep">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="fad fa-users-class"></i>
+                            </span>
+                            <h3 class="card-label">Summary</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <h4 class="mb-0">This file is now only available for viewing references.</h4>
+                                
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
         <div class="card card-custom card-stretch-half gutter-b" ng-if="currentStep">
             <div class="card-header">
                 <div class="card-title">
@@ -616,14 +647,22 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-xl-6">
-                        <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
+                        <h4 class="mb-0">Item no. {{ currentStep.order }}. {{ currentStep.name }}</h4>
                         <p>Current Step</p>
                         <h4 class="mb-0">
                             <span ng-repeat="position in currentStep.positions">
                                 {{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}
                             </span>
                         </h4>
+
+                        <h6 class="mb-0" ng-if="currentStep.positions.length == 0" >No committee assigned to this procedure. Please check process settings.</h6>
+
                         <p>Assigned Committee</p>
+
+
+                            
+                       
+
                         <h6 class="mb-0">{{ currentStep.description}}</h6>
                     </div>
                 </div>
@@ -704,7 +743,7 @@
                                         ></pagination>
                                     </div>
                                 </div>
-                                <div class="pb-5">
+                                <div class="pb-5" ng-if="currentStep">
                                     <div class="form-group">
                                         <label>File Attachment</label>
                                         <input
@@ -767,7 +806,7 @@
                                         <span class="form-text text-muted">Please enter attachment description.</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end border-top mt-5 pt-10">
+                                <div class="d-flex justify-content-end border-top mt-5 pt-10" ng-if="currentStep">
                                     <button
                                         class="btn btn-outline-primary ont-weight-bold text-uppercase"
                                         type="button"
@@ -797,7 +836,7 @@
             </div>
             <div class="card-body" block-ui="noteBlockUI">
                 <div class="container">
-                    <form class="form">
+                    <form class="form" ng-if="currentStep">
                         <div class="form-group">
                             <textarea
                                 class="form-control form-control-lg form-control-solid"
@@ -852,7 +891,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-7">
+    <div class="col-xl-7" ng-if="isUserAssigned && currentStep.outputs">
         <div class="card card-custom card-stretch gutter-b">
             <div class="card-header">
                 <div class="card-title">
@@ -862,18 +901,25 @@
                     <h3 class="card-label">Actions</h3>
                 </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0"  >
                 <div class="vertical-wizard">
                     <div class="wizard-nav border-right py-8 px-8 py-lg-12 px-lg-8">
                         <ul class="text-dark list-unstyled">
-                            <li class="font-size-h6">Summary</li>
+                            <li class="font-size-h6">Important:</li>
                             <ul class="font-size-h7">
-                                <li>Added attachment file to requirement 1.</li>
+                                <li>You are assigned to this file.</li>
+
+                                <li>You are expected to view and review all the requirements on this file.</li>
+
+                                <li>You can add notes.</li>
+                                <li>You can attach required files.</li>
+                                <li>You may check all the details before submitting the file.</li>
+                                
                             </ul>
                         </ul>
                     </div>
                     <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8">
-                        <div class="row">
+                        <div class="row" >
                             <div class="offset-xxl-2 col-xxl-10">
                                 <form class="form" id="kt_form">
                                     <div class="pb-5">

@@ -3,7 +3,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
 from payments.serializers import PaymentSerializer
-
+# from documents.serializers import DocumentSerializer
 # from borrowers.serializers import BorrowerSerializer
 
 
@@ -168,7 +168,7 @@ class LoanSerializer(ModelSerializer):
 
     totalPayment = serializers.CharField(read_only=True)
     currentAmortizationItem =   AmortizationItemSerializer(read_only=True)
-
+    # loanDocuments = DocumentSerializer(read_only=True,nany=True)
     
     # status=StatusSerializer(read_only=True)
     term = TermSerializer(read_only=True)

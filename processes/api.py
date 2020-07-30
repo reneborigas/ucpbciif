@@ -263,7 +263,7 @@ class CheckPermissionView(views.APIView):
             if position == 'ADMIN':
                 return Response({
                     'status': 'Accepted', 
-                    'permission':'TRUE'
+                    'permission':True
                 },status= status.HTTP_202_ACCEPTED)
 
             if  position in allPositions:  
