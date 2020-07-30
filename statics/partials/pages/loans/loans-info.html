@@ -22,12 +22,22 @@
                                     href="#"
                                     class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
                                     ng-click="previewCheckRelease(loan.id)"
+                                    ng-if="loan.dateReleased"
                                 >
                                     Print Check
                                 </a>
+                                <a
+                                href="#"
+                                class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                                ng-click=" newLoanRelease(borrower.borrowerId,loan.id)"
+                                ng-if="!loan.dateReleased && loan.loanStatus !=8 && loan.loanStatus !=9" 
+                            >
+                                New Loan Release
+                            </a>
                                
                             </div>
                         </div>
+                        
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
                             <div class="mr-3">
                                 <div class="d-flex flex-wrap my-2">
@@ -68,6 +78,18 @@
                                         {{ loan.term_name }}
                                     </span>
                                 </div>
+                                <div class="d-flex align-items-center mb-2">
+                                        <span class="font-weight-bolder mr-2">Purpose:</span>
+                                        <span class="font-weight-bolder text-dark">
+                                            {{ loan.purpose }}
+                                        </span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                        <span class="font-weight-bolder mr-2">Security:</span>
+                                        <span class="font-weight-bolder text-dark">
+                                            {{ loan.security }}
+                                        </span>
+                                    </div>
                             </div>
                             <div class="d-flex flex-wrap align-items-center py-2">
                                 <div class="d-flex align-items-center" ng-show="loan.dateReleased">
@@ -100,67 +122,81 @@
                         </div>
                     </div>
                 </div>
+
+                <br/>
+                <div class="d-flex align-items-left flex-wrap">
+
+
+                        <div class="d-flex align-items-left flex-lg-fill mr-5 my-1" ng-repeat="document in documents">
+                            <span class="mr-4">
+                                <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                            </span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">{{document.subProcessName}}</span>
+                                <span class="font-weight-bolder font-size-h5">
+                                    <a href=""
+                                    ng-click="goToFile(document.subProcessName,document.id)"
+                                    > {{document.name}}</a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1" ng-if="loan">
+                                <span class="mr-4">
+                                    <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                                </span>
+                                <div class="d-flex flex-column text-dark-75">
+                                    <span class="font-weight-bolder font-size-sm">Loan Release Sheet</span>
+                                    <span class="font-weight-bolder font-size-h5">
+                                            <a
+                                            href="#" 
+                                            ng-click="previewLoanRelease(loan.id)"
+                                        >
+                                           Preview
+                                        </a>
+                                           
+                                    </span>
+                                </div>
+                            </div>
+                      
+    
+                        <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                            <span class="mr-4">
+                                <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                            </span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Loan Amount</span>
+                                <span class="font-weight-bolder font-size-h5">
+                                    {{ loan.amount | currency :'₱'}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                            <span class="mr-4">
+                                <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
+                            </span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Interest Rate</span>
+                                <span class="font-weight-bolder font-size-h5">
+                                    {{ loan.interestRate_amount }}
+                                    <span>%</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                            <span class="mr-4">
+                                <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                            </span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Term</span>
+                                <span class="font-weight-bolder font-size-h5">
+                                    {{ loan.term_name }}
+                                </span>
+                            </div>
+                        </div> -->
+                    </div>
+                    
                 <div class="separator separator-solid my-7"></div>
-                <div class="d-flex align-items-center flex-wrap">
-                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Program</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.loanProgram_name }}
-                            </span>
-                        </div>
-                    </div> -->
-                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Credit Line Amount</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.creditLine_amount | currency :'₱'}}
-                            </span>
-                        </div>
-                    </div> -->
-
-                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Loan Amount</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.amount | currency :'₱'}}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-percentage icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Interest Rate</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.interestRate_amount }}
-                                <span>%</span>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                        <span class="mr-4">
-                            <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
-                        </span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Term</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.term_name }}
-                            </span>
-                        </div>
-                    </div> -->
-                </div>
-
+                
                 <div class="d-flex align-items-center flex-wrap" ng-if="loan.dateReleased">
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
@@ -1440,7 +1476,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-5">
+    <div class="col-xl-5" ng-if="loan.dateReleased">
         <div class="card card-custom card-stretch gutter-b">
             <div class="card-header">
                 <div class="card-title">

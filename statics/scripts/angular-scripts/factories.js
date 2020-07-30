@@ -151,6 +151,20 @@ define(function () {
                     }
                 );
             },
+
+            getLoan: function (loanId) {
+                return $http.get('/api/loans/loans/', { params: { loanId: loanId } }).then(
+                    function (response) {
+                        return response.data[0];
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Loan. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getCurrentUser: function () {
                 var values = JSON.parse(localStorage.getItem('currentUser'));
                 return values['id'];

@@ -28,6 +28,8 @@ urlpatterns = [
     path('', lambda request: redirect('/login', permanent=False)),
     path('login', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('dashboard', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('unauthorized', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('404', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('menu', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     
     
@@ -46,6 +48,7 @@ urlpatterns = [
     path('borrowers/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/new-file/<int:subProcessId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/new-loan-availment/<int:creditLineId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('borrowers/<int:id>/new-loan-release/<int:loanId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/edit', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     #processes
@@ -57,7 +60,7 @@ urlpatterns = [
     #committes
     path('committees', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('committees/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    path('committees/<str:officeName>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('committees/<str:officeName>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))), 
     path('committees/<str:officeName>/<int:committee>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     
     #processes

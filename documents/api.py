@@ -78,11 +78,15 @@ class DocumentViewSet(ModelViewSet):
         documentId = self.request.query_params.get('documentId', None)
         subProcessName = self.request.query_params.get('subProcessName', None)
         subProcessId = self.request.query_params.get('subProcessId', None)
-         
+        loanId = self.request.query_params.get('loanId', None)
+        
          
         if documentId is not None:
             queryset = queryset.filter(id=documentId)
-       
+
+        if loanId is not None:
+            queryset = queryset.filter(loan__id=loanId)
+        
         if subProcessName is not None:
             queryset = queryset.filter(subProcessName=subProcessName)
 

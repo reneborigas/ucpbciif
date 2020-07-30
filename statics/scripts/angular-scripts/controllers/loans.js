@@ -184,6 +184,23 @@ define(function () {
                                     $scope.showAccomodations = true;
                                 });
 
+                                $http
+                                .get('/api/documents/documents/', {
+                                    params: { loanId: $scope.loan.id },
+                                })
+                                .then(
+                                    function (response) {
+                                        $scope.documents = response.data;
+                                         
+                                    },
+                                    function (error) {
+                                        toastr.error(
+                                            'Error ' + error.status + ' ' + error.statusText,
+                                            'Could not retrieve Documents. Please contact System Administrator.'
+                                        );
+                                    }
+                                );
+
                                 $scope.loadNotes();
                             },
                             function (error) {
@@ -229,6 +246,16 @@ define(function () {
                 });
             });
         };
+
+
+        $scope.newLoanRelease = function (borrowerId, loanId) {
+            $state.go('app.borrowers.create_loan_release', { borrowerId: borrowerId, loanId: loanId });
+        };
+        $scope.goToFile = function (subProcessName,documentId) {
+            var subProcessNameSlug = appFactory.slugify(subProcessName);
+            $state.go('app.documents.info', { subProcessName: subProcessNameSlug, documentId: documentId });
+        };
+
         $scope.newPayment = function (id) {
             $state.go('app.payments.new', { loanId: id });
         };

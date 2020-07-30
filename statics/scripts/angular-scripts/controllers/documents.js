@@ -83,8 +83,10 @@ define(function () {
         $window
     ) {
 
-        
 
+        
+        
+       
 
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
@@ -103,7 +105,7 @@ define(function () {
                     .then(
                         function (response) {
                             $scope.currentStep = response.data[0];
-
+                            $scope.loadCurrentUser(); 
                             // $http
                             //     .get('/api/processes/steprequirements/', { params: { stepId: $scope.currentStep.id } })
                             //     .then(
@@ -141,6 +143,7 @@ define(function () {
                         .then(
                             function (response) {
                                 $scope.currentStep = response.data[0];
+                                $scope.loadCurrentUser(); 
                                 // $http
                                 //     .get('/api/processes/steprequirements/', {
                                 //         params: { stepId: $scope.currentStep.id },
@@ -189,6 +192,7 @@ define(function () {
 
                     $scope.loadProcessRequirements();
                     $scope.loadNotes();
+                   
 
                     $http
                         .get('/api/borrowers/borrowers/', {
@@ -228,6 +232,26 @@ define(function () {
             });
         };
 
+        $scope.loadCurrentUser = function () {
+            return appFactory.getCurrentUserInfo().then(function (data) { 
+                    $scope.currentUser = data;
+ 
+                    if ($scope.currentStep.positions.length == 0){ 
+                        $scope.isUserAssigned=false;
+                    }
+                    angular.forEach($scope.currentStep.positions, function (position, index) {
+                         if (position.id == $scope.currentUser.positionId){
+                            $scope.isUserAssigned = true
+                            
+                        }
+                    });
+
+                    console.log($scope.isUserAssigned);
+                      console.log($scope.currentUser);
+            });
+        };
+         
+
         $scope.loadProcessRequirements = function () {
             $http
                 .get('/api/processes/processrequirements/', { params: { subProcessId: $scope.document.subProcess.id } })
@@ -241,6 +265,8 @@ define(function () {
                         }
                         // $scope.currentRequirement.attachments =
                         // 	$scope.currentRequirement.stepRequirementAttachments;
+
+
                     },
                     function (error) {
                         toastr.error(
@@ -419,6 +445,10 @@ define(function () {
 
                                 $http.post(output.callBackLink, param).then(function (response) {
                                     console.log(response);
+                                    if ($scope.document.loan){
+                                        $state.go('app.loans.info', { loanId: $scope.document.loan.id }); 
+                                    }
+
                                 });
                                 toastr.success('Success', 'File successfully moved to the next phase.');
                                 swal('Success!', 'File successfully moved to the next phase', 'success');

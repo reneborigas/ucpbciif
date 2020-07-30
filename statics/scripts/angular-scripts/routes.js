@@ -186,6 +186,48 @@ define(function () {
                         ],
                     },
                 })
+                .state('app.unauthorized', {
+                    url: '/unauthorized',
+                    templateUrl: '/statics/partials/pages/dashboard/unauthorized.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Unauthorized Access',
+                        stateTitle: 'Unauthorized',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Unauthorized Access',
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/dashboard.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.404', {
+                    url: '/404',
+                    templateUrl: '/statics/partials/pages/dashboard/404.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | 404 Not Found',
+                        stateTitle: '404 Not Found',
+                    },
+                    ncyBreadcrumb: {
+                        label: '404 Not Found',
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/dashboard.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
                 .state('app.dashboard', {
                     url: '/dashboard',
                     templateUrl: '/statics/partials/pages/dashboard/dashboard.html',
@@ -308,6 +350,46 @@ define(function () {
                         console.log($stateParams);
                         appFactory.getCreditLine($scope.creditLineId).then(function (data) {
                             $scope.creditLine = data;
+                        });
+                    },
+                })
+
+                .state('app.borrowers.create_loan_release', {
+                    url: '/:borrowerId/new-loan-release/:loanId',
+                    templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | New Loan Release',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'New {{subProcess.name}} File',
+                        parent: 'app.borrowers.info',
+                    },
+                    resolve: {
+                        fetchSubProcess: function ($stateParams, appFactory) {
+                            return appFactory.getSubProcessByName('Loan Release').then(function (data) {
+                                return data;
+                            });
+                        },
+                    },
+
+                    controller: function ($scope, fetchSubProcess, appFactory, $stateParams) {
+                        console.log(fetchSubProcess);
+                        $scope.borrowerId = $stateParams.borrowerId;
+                        $scope.subProcessId = fetchSubProcess.id;
+                        $scope.loanId = $stateParams.loanId;
+                        console.log($scope.subProcessId);
+
+                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
+                            $scope.borrowerName = data;
+                        });
+
+                        appFactory.getSubProcess($scope.subProcessId).then(function (data) {
+                            $scope.subProcess = data;
+                        });
+                        console.log($stateParams.borrowerId);
+                        console.log($stateParams);
+                        appFactory.getLoan($scope.loanId).then(function (data) {
+                            $scope.loan = data;
                         });
                     },
                 })
@@ -727,14 +809,14 @@ define(function () {
                         ],
                     },
                 })
-                .state('simple.register', {
-                    url: '/register',
-                    templateUrl: '/statics/html/views/pages/register.html',
-                })
-                .state('simple.404', {
-                    url: '/404',
-                    templateUrl: '/statics/html/views/pages/404.html',
-                })
+                // .state('simple.register', {
+                //     url: '/register',
+                //     templateUrl: '/statics/html/views/pages/register.html',
+                // })
+                // .state('simple.404', {
+                //     url: '/404',
+                //     templateUrl: '/statics/html/views/pages/404.html',
+                // })
                 .state('simple.500', {
                     url: '/500',
                     templateUrl: '/statics/html/views/pages/500.html',

@@ -641,6 +641,9 @@ define(function () {
         $scope.newLoanAvailment = function (borrowerId, creditLineId) {
             $state.go('app.borrowers.create_loan_availment', { borrowerId: borrowerId, creditLineId: creditLineId });
         };
+        $scope.newLoanRelease = function (borrowerId, loanId) {
+            $state.go('app.borrowers.create_loan_release', { borrowerId: borrowerId, loanId: loanId });
+        };
 
         $scope.templates = [
             {
@@ -1207,7 +1210,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',
-                            loanStatus: 1,
+                            loanStatus: 8,//loan availment,
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
@@ -1272,7 +1275,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',
-                            loanStatus: 1,
+                            loanStatus: 8,//loan availment
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
@@ -1304,7 +1307,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentLoan.loanProgram,
                             purpose: $scope.subProcess.parentLastDocumentLoan.purpose,
                             security: $scope.subProcess.parentLastDocumentLoan.security,
-                            loanStatus: 1,
+                            loanStatus: 8,//loan availment
                             borrower: $scope.borrowerId,
                             term_name: $scope.subProcess.parentLastDocumentLoan.term_name,
                             loanProgram_name: $scope.subProcess.parentLastDocumentLoan.loanProgram_name,

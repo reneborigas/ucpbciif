@@ -9,7 +9,7 @@ from processes.models import Statuses,Step,Output,SubProcess
 from processes.serializers import OutputSerializer,StatusSerializer,SubProcessSerializer
 from committees.serializers import NoteSerializer
 from loans.serializers import LoanSerializer,CreditLineSerializer
-from loans.models import Loan ,CreditLine
+from loans.models import Loan ,CreditLine,LoanStatus
 
 
 class DocumentMovementSerializer(ModelSerializer): 
@@ -126,8 +126,14 @@ class DocumentSerializer(ModelSerializer):
         loanid = validated_data.get("loanid" )
         if loanid is not None: 
             loan = Loan.objects.get(pk=loanid)
+
+            
             if loan:
-               document.loan = loan
+                document.loan = loan
+                if subProcess.id == 3:
+                    loan.loanStatus= LoanStatus.objects.get(pk=9) #APPROVED
+                    loan.save()
+               
 
        
          
