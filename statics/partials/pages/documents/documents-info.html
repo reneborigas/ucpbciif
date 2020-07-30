@@ -218,7 +218,7 @@
                                             </a>
                                         </div>
                                     </td>
-                                    <td class="p-0" ng-repeat="window in windows" style="width: 20%;">
+                                    <td class="p-0" ng-repeat="window in windows"  >
                                         <div class="text-center py-3 bg-secondary">
                                             <span class="text-dark-75 font-weight-normal font-size-lg">
                                                 {{ window.name}}
@@ -619,7 +619,7 @@
                         <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
                         <p>Current Step</p>
                         <h4 class="mb-0">
-                            <span ng-repeat="position in currentStep.position">
+                            <span ng-repeat="position in currentStep.positions">
                                 {{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}
                             </span>
                         </h4>

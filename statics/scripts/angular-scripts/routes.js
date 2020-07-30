@@ -368,7 +368,7 @@ define(function () {
                     url: '/:subProcessName',
                     templateUrl: '/statics/partials/pages/documents/documents-list.html',
                     data: {
-                        pageTitle: 'UCPB CIIF | Loan Applications',
+                        pageTitle: 'UCPB CIIF | Credit Management',
                     },
                     ncyBreadcrumb: {
                         label: '{{subProcessName}}',
@@ -397,10 +397,30 @@ define(function () {
                         label: '{{ fileName }}',
                         parent: 'app.documents.list',
                     },
-                    controller: function ($scope, $stateParams, appFactory) {
+
+                    resolve: {
+                        fetchSubProcess: function ($stateParams, appFactory) {
+                            return appFactory
+                                .getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName))
+                                .then(function (data) {
+                                    return data;
+                                });
+                        },
+                    },
+
+                    controller: function ($scope, $stateParams, appFactory, fetchSubProcess) {
                         $scope.documentId = $stateParams.documentId;
                         appFactory.getDocumentName($scope.documentId).then(function (data) {
                             $scope.fileName = data;
+                        });
+                        console.log(fetchSubProcess);
+
+                        appFactory.checkPermissions(fetchSubProcess.id).then(function (data) {
+                            $scope.permissions = data;
+
+                            console.log($scope.permissions);
+
+                            console.log($scope.permissions.permission);
                         });
                     },
                 })
@@ -505,6 +525,20 @@ define(function () {
                     ncyBreadcrumb: {
                         label: 'New Payment',
                         parent: 'app.loans.info',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
+                .state('app.payments.add', {
+                    url: '/new',
+                    templateUrl: '/statics/partials/pages/payments/payments-add.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | New Payment',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Add Payment',
+                        parent: 'app.payments.list',
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.loanId = $stateParams.loanId;

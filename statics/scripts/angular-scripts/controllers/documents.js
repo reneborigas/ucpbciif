@@ -82,6 +82,10 @@ define(function () {
         $q,
         $window
     ) {
+
+        
+
+
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
 
@@ -269,6 +273,8 @@ define(function () {
                 );
             }
         );
+
+
 
         $scope.getRequirement = function () {
             for (var i = 0; i < $scope.stepRequirements.length; i++) {

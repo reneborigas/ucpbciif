@@ -284,7 +284,7 @@ class Step(models.Model):
         on_delete=models.CASCADE,
         related_name="committeeSteps",
     )
-    position = models.ManyToManyField('committees.Position',blank=True)
+    positions = models.ManyToManyField('committees.Position',blank=True)
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,

@@ -583,6 +583,20 @@
                                             </span>
                                         </div>
                                     </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Add. Interest
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 text-uppercase font-size-lg">
+                                                    Penalty
+                                                </span>
+                                            </div>
+                                    </th>
                                     <!-- <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -700,6 +714,24 @@
                                             </span>
                                         </div>
                                     </td>
+                                    <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.additionalInterest | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                    </td>
+                                    <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.penalty | currency :'₱'}}
+                                                </span>
+
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="amortization.penalty > 0">
+                                                        (+{{ amortization.daysExceed }} days)
+                                                </span>
+                                            </div>
+                                        </td>
                                     <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -781,6 +813,16 @@
                                                 <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                             </div>
                                         </td>
+                                    <td>
+                                            <div class="text-right">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                    <td>
+                                            <div class="text-right">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -842,19 +884,19 @@
                                         </div>
                                     </th>
                                     <th>
-                                            <div class="text-right px-2">
+                                        <div class="text-right px-2">
                                                 <span class="text-dark-75 text-uppercase font-size-lg">
                                                     Additional Interest
                                                 </span>
                                             </div>
-                                        </th>
-                                        <th>
+                                    </th>
+                                    <th>
                                             <div class="text-right px-2">
                                                 <span class="text-dark-75 text-uppercase font-size-lg">
                                                  Penalty
                                                 </span>
                                             </div>
-                                        </th>
+                                    </th>
                                     <th>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">

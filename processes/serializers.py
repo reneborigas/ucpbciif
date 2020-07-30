@@ -11,30 +11,6 @@ class RelatedProcessSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubProcess
         fields = '__all__'
-
-class SubProcessSerializer(ModelSerializer): 
-    canCreateNewFile = serializers.CharField(read_only=True)
-    parentLastDocumentLoan = LoanSerializer(read_only=True)
-    parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
-
-
-    relatedProcesses = RelatedProcessSerializer(many=True,read_only=True)
-    def create(self, validated_data):
-        loan = SubProcess.objects.create(**validated_data) 
-        return loan
-
-    def update(self, instance, validated_data):
-        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
-        # instance.loanName = validated_data.get("loanName", instance.loanName)
-        # instance.borrower =  validated_data.get("borrower", instance.borrower)
-        instance.save()
-
-        return instance
-    
-    class Meta:
-        model = SubProcess          
-        fields = '__all__'
-
 class OutputSerializer(ModelSerializer):
     stepName = serializers.CharField(read_only=True)
     stepStatus = serializers.CharField(read_only=True)
@@ -53,11 +29,11 @@ class OutputSerializer(ModelSerializer):
     
     class Meta:
         model = Output          
-        fields = '__all__'       
-        
+        fields = '__all__'   
 class StepSerializer(ModelSerializer):
+
     outputs = OutputSerializer(many=True,required=False)
-    position = PositionSerializer(many=True,required=False)
+    positions = PositionSerializer(many=True,required=False)
     def create(self, validated_data):
         step = Step.objects.create(**validated_data) 
         return step
@@ -73,6 +49,33 @@ class StepSerializer(ModelSerializer):
     class Meta:
         model = Step          
         fields = '__all__'   
+
+class SubProcessSerializer(ModelSerializer): 
+    canCreateNewFile = serializers.CharField(read_only=True)
+    parentLastDocumentLoan = LoanSerializer(read_only=True)
+    parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
+    # steps = StepSerializer(many=True,read_only=True)
+    positions = PositionSerializer(many=True,required=False)
+    relatedProcesses = RelatedProcessSerializer(many=True,read_only=True)
+    def create(self, validated_data):
+        loan = SubProcess.objects.create(**validated_data) 
+        return loan
+
+    def update(self, instance, validated_data):
+        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+        # instance.loanName = validated_data.get("loanName", instance.loanName)
+        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.save()
+
+        return instance
+    
+    class Meta:
+        model = SubProcess          
+        fields = '__all__'
+
+    
+        
+
         
 class StepRequirementAttachmentSerializer(ModelSerializer):
     def create(self, validated_data):

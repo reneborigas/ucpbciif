@@ -365,8 +365,8 @@ define(function () {
                         'payment.total',
                         function (newTerm, oldTerm) {
                             console.log(newTerm);
-                            $scope.payment.balance = $scope.getBalance();
-                            $scope.payment.overPayment = $scope.getOverPayment();
+                            $scope.payment.balance = $scope.getBalance().toFixed(2);
+                            $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);
                             $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
                             $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
                             $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
@@ -489,33 +489,35 @@ define(function () {
         };
         // + parseFloat($scope.loan.currentAmortizationItem.interest)
         $scope.save = function () {
-            $scope.payment.total =
-            parseFloat($scope.payment.cash) +
-            parseFloat($scope.payment.check) +
-            parseFloat($scope.payment.interestPayment)+
-            parseFloat($scope.payment.penaltyPayment);
+            // $scope.payment.total =
+            // parseFloat($scope.payment.cash) +
+            // parseFloat($scope.payment.check) +
+            // parseFloat($scope.payment.interestPayment)+
+            // parseFloat($scope.payment.penaltyPayment);
             $scope.payment.total = parseFloat($scope.payment.total).toFixed(2);
-            $scope.payment.balance = parseFloat($scope.getBalance()).toFixed(2);
-            $scope.payment.overPayment = parseFloat($scope.getOverPayment()).toFixed(2);
-            $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
+            // $scope.payment.outStandingBalance = parseFloat( $scope.payment.outStandingBalance).toFixed(2);
             $scope.payment.interest = parseFloat($scope.payment.interest).toFixed(2);
             $scope.payment.principalBalance = parseFloat($scope.payment.principalBalance).toFixed(2);
             $scope.payment.principal = parseFloat($scope.payment.principal).toFixed(2);
             $scope.payment.totalToPay = parseFloat($scope.payment.totalToPay).toFixed(2);
             $scope.payment.additionalInterest = parseFloat($scope.payment.additionalInterest).toFixed(2);
             $scope.payment.totalToPayWithPenalty = parseFloat($scope.payment.totalToPayWithPenalty).toFixed(2);
-            $scope.payment.interestBalance = parseFloat($scope.payment.interestBalance).toFixed(2);
+            // $scope.payment.interestBalance = parseFloat($scope.payment.interestBalance).toFixed(2);
             $scope.payment.penalty = parseFloat($scope.payment.penalty).toFixed(2);
             $scope.payment.penaltyBalance = parseFloat($scope.payment.penaltyBalance).toFixed(2);
             $scope.payment.cash = parseFloat($scope.payment.cash).toFixed(2);
             $scope.payment.check = parseFloat($scope.payment.check).toFixed(2);
             $scope.payment.interestPayment = parseFloat($scope.payment.interestPayment).toFixed(2);
             $scope.payment.penaltyPayment = parseFloat($scope.payment.penaltyPayment).toFixed(2);
+            // $scope.payment.balance = parseFloat( $scope.payment.balance).toFixed(2);
+            // $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
            
-            console.log($scope.payment.balance);
-            console.log($scope.payment.overPayment);
-            console.log($scope.payment.outStandingBalance);
-            console.log($scope.payment);
+            
+          
+            // console.log($scope.payment.balance);
+            // console.log($scope.payment.overPayment);
+            // console.log($scope.payment.outStandingBalance);
+            // console.log($scope.payment);
 
             if ($scope.newPaymentDetailsForm.$valid) {
                 swal({

@@ -631,6 +631,17 @@ class AmortizationItem(models.Model):
         default=0
     ) 
 
+    daysExceed = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+    daysAdvanced = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+
     schedule = models.DateTimeField(
         blank=True,
         null=True
@@ -639,7 +650,17 @@ class AmortizationItem(models.Model):
     principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     
     interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-    
+    additionalInterest = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+
+    penalty = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
     vat = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
 
     total = models.DecimalField( max_digits=12, decimal_places=2,blank=False)

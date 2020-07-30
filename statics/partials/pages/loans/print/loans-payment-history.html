@@ -129,12 +129,33 @@
                                     </div>
                                 </td>
                                 <td class="">
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                                Add. Interest
+                                            </span>
+                                        </div>
+                                </td>
+                                <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-size-sm font-weight-bolder text-uppercase">
-                                            Total Payable
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Penalty
                                         </span>
                                     </div>
                                 </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                            Amortization
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm text-uppercase font-weight-bolder">
+                                                Total Payable
+                                            </span>
+                                        </div>
+                                    </td>
 
                                 <td class="">
                                     <div class="">
@@ -164,13 +185,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75 font-size-sm font-weight-bolder text-uppercase">
-                                            Bank Account
-                                        </span>
-                                    </div>
-                                </td>
+                                 
                                 <td class="">
                                     <div class="">
                                         <span class="text-dark-75 font-size-sm font-weight-bolder text-uppercase">
@@ -223,20 +238,40 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="">
-                                        <span class="text-dark-75 font-size-sm">
-                                            {{ payment.totalToPay | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm">
+                                                {{ payment.additionalInterest | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                            <div class="">
+                                                <span class="text-dark-75 font-size-sm">
+                                                    {{ payment.penalty | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    <td>
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm">
+                                                {{ payment.totalToPay | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm">
+                                                {{ payment.totalToPayWithPenalty | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
                                 <td>
-                                    <div class="">
-                                        <span class="text-dark-75 font-size-sm">
-                                            {{ payment.datePayment | date: 'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm">
+                                                {{ payment.datePayment | date: 'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75 font-size-sm">
@@ -258,13 +293,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="">
-                                        <span class="text-dark-75 font-size-sm">
-                                            {{ payment.bankAccount }}
-                                        </span>
-                                    </div>
-                                </td>
+                              
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75 font-size-sm">
@@ -300,7 +329,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="" colspan="6">
+                                <td class="" colspan="9">
                                     <div class="">
                                         <span class="text-dark-75 font-size-sm"></span>
                                     </div>
@@ -312,7 +341,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="" colspan="5">
+                                <td class="" colspan="4">
                                     <div class="">
                                         <span class="text-dark-75 font-size-sm"></span>
                                     </div>

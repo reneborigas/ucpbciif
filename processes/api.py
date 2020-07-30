@@ -19,6 +19,7 @@ from loans import PMT
 
 from datetime import datetime
 from decimal import Decimal
+from users.models import CustomUser
 
 
 def generateAmortizationSchedule(loan,request):
@@ -52,6 +53,8 @@ def generateAmortizationSchedule(loan,request):
             days= loan.term.paymentPeriod.paymentCycle,
             principal = pmt.principal,
             interest = pmt.interest,
+            additionalInterest = 0,
+            penalty = 0,
             vat = 0,
             total = pmt.payment,
             principalBalance = pmt.nextStartingValue,
@@ -224,6 +227,60 @@ class LoanReleasedView(views.APIView):
         return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
 
 
+class CheckPermissionView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+    def post(self,request):
+        
+
+        subProcessId = request.data.get("subProcessId") 
+
+
+        # subProcessId = request.data.get("subProcessId") 
+         
+        if subProcessId:  
+            subProcess = SubProcess.objects.get(pk=subProcessId)
+            
+            allPositions = []
+                 
+            for step in subProcess.steps.all():
+                for position in step.positions.all():
+
+                    allPositions.append(position.id)
+                    
+                # subProcess.positions
+            
+            # subProcess.positions = allPositions
+          
+             
+            currentUser = CustomUser.objects.get(username=request.user)
+
+            # currentUser = Custo
+
+            subProcess.positions = Position.objects.filter(id__in=allPositions)
+            
+            position = currentUser.getPosition()
+            if position == 'ADMIN':
+                return Response({
+                    'status': 'Accepted', 
+                    'permission':'TRUE'
+                },status= status.HTTP_202_ACCEPTED)
+
+            if  position in allPositions:  
+                return Response({
+                    'status': 'Accepted', 
+                    'permission':'TRUE'
+                },status= status.HTTP_202_ACCEPTED)
+
+
+            return Response({
+            'status': 'Accepted', 
+            'permission':'FALSE'
+        },status= status.HTTP_202_ACCEPTED)
+        return Response({'error':'Error on checking permissions'},status.HTTP_400_BAD_REQUEST)
+
+
+    
     
 
 class SubProcessViewSet(ModelViewSet):
@@ -255,7 +312,9 @@ class SubProcessViewSet(ModelViewSet):
             for subProcess in queryset:
                 subProcess.canCreateNewFile = subProcess.isCanCreateNewFile(borrower)
                 parentLastDocument = subProcess.getParentLastDocument(borrower)
-               
+                
+                 
+
                 if parentLastDocument:
                     if parentLastDocument.loan:
                         subProcess.parentLastDocumentLoan = parentLastDocument.loan
@@ -266,7 +325,24 @@ class SubProcessViewSet(ModelViewSet):
                         subProcess.parentLastDocumentCreditLine.remainingCreditLine = subProcess.parentLastDocumentCreditLine.getRemainingCreditLine()
  
 
-      
+
+        for subProcess in queryset:
+                
+                allPositions = []
+                 
+                for step in subProcess.steps.all():
+                    for position in step.positions.all():
+
+                        allPositions.append(position.id)
+                        
+                    # subProcess.positions
+                
+                # subProcess.positions = allPositions
+                subProcess.positions = Position.objects.filter(id__in=allPositions)
+                 
+
+          
+
         return queryset
 
 
@@ -303,7 +379,7 @@ class StepViewSet(ModelViewSet):
             else: 
                 queryset = queryset.filter(id=stepId)
         
-        return queryset.prefetch_related('outputs','position')
+        return queryset.prefetch_related('outputs','positions')
 
 class OutputViewSet(ModelViewSet):
     queryset = Output.objects.all()

@@ -91,7 +91,9 @@ class DocumentSerializer(ModelSerializer):
         # print(validated_data)
 
         subProcess = SubProcess.objects.get(pk=validated_data.get("subProcessId","1" ))
-         
+        description = validated_data.get("description", "1")
+        remarks = validated_data.get("remarks", "1")
+        
         parentDocument = None
         if(subProcess.relatedProcesses.last()):
             lastDocument = Document.objects.filter(
@@ -110,7 +112,9 @@ class DocumentSerializer(ModelSerializer):
             code=subProcess.code, 
             documentType=validated_data.get("documentType" ), 
             borrower=validated_data.get("borrower" ),
-            parentDocument=parentDocument
+            parentDocument=parentDocument,
+            description=description,
+            remarks=remarks
             )
 
         creditlineid = validated_data.get("creditlineid" )

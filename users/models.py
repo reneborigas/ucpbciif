@@ -86,6 +86,20 @@ class CustomUser(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
        return True
+    
+    
+    def getPosition(self):
+         
+        committees = self.committees.filter(isDeleted=False)
+
+        if committees.first():
+            return committees.first().position.id
+
+        elif self.account_type.id == 1:
+            return 'ADMIN'
+        return ''
+
+
 
     @property
     def is_staff(self):

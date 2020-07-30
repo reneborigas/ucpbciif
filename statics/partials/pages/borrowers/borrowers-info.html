@@ -384,7 +384,7 @@
         <div class="card card-custom gutter-b" ng-init="showCredit = true">
                 <div class="card-header align-items-center border-0">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="font-weight-bolder text-dark">Credit Line</span>
+                        <span class="font-weight-bolder text-dark">Credit Lines</span>
                     </h3>
                     <div class="card-toolbar"> 
                             <a
@@ -469,7 +469,7 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                        ng-repeat="creditline in creditlines"
+                                        ng-repeat="creditline in creditLines"
                                     >
                                         <td>
                                             <div class="text-center px-2">
@@ -583,7 +583,7 @@
                                         </td>
                                     </tr> -->
                                 </tbody>
-                                <tbody ng-if="borrower.loans.length == 0">
+                                <tbody ng-if="creditLines.length == 0">
                                     <tr>
                                         <td class="py-8" colspan="8" align="center">
                                             No records Found
@@ -591,19 +591,19 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div ng-if="borrower.loan">
+                            <div ng-if="creditLines">
                                 <pagination
-                                    data="borrower.loans"
-                                    page-size="pageSize.loans"
-                                    currentpage="currentPage.loans"
+                                    data="creditLines"
+                                    page-size="pageSize.creditLines"
+                                    currentpage="currentPage.creditLines"
                                 ></pagination>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-center p-0">
-                    <a class="btn btn-icon" ng-click="showLoans = !showLoans">
-                        <i class="wide text-warning" ng-class=" showLoans ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
+                    <a class="btn btn-icon" ng-click="showCredit = !showCredit">
+                        <i class="wide text-warning" ng-class=" showCredit ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
                     </a>
                 </div>
             </div>
@@ -799,7 +799,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div ng-if="borrower.loan">
+                        <div ng-if="borrower.loans">
                             <pagination
                                 data="borrower.loans"
                                 page-size="pageSize.loans"
@@ -867,7 +867,27 @@
                                             </span>
                                         </div>
                                     </th>
-
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Additional Interest
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Penalty
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                            <div class="text-center px-2">
+                                                <span class="text-dark-75 text-uppercase font-size-lg">
+                                                    Amortization
+                                                </span>
+                                            </div>
+                                    </th>
                                     <th>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -883,13 +903,7 @@
                                             </span>
                                         </div>
                                     </th>
-                                    <th>
-                                        <div class="px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Payment Type
-                                            </span>
-                                        </div>
-                                    </th>
+                                   
                                     <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -897,20 +911,7 @@
                                             </span>
                                         </div>
                                     </th>
-                                    <th>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Check No.
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Bank Account
-                                            </span>
-                                        </div>
-                                    </th>
+                                   
                                     <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -956,24 +957,45 @@
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_principal | currency :'₱'}}
+                                                {{ payment.principal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_interest | currency :'₱'}}
+                                                {{ payment.interest | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.amortizationItem_total | currency :'₱'}}
+                                                {{ payment.additionalInterest | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.penalty | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.totalToPay | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                    <div class="text-center px-2">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{ payment.totalToPayWithPenalty | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
 
                                     <td>
                                         <div class="text-center px-2">
@@ -982,13 +1004,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.paymentType_name }}
-                                            </span>
-                                        </div>
-                                    </td>
+                                    
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -996,20 +1012,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.checkNo}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.bankAccount }}
-                                            </span>
-                                        </div>
-                                    </td>
+                                    
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1056,10 +1059,20 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                        </div>
+                                            <div class="px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
                                     </td>
+                                    <td>
+                                            <div class="px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                    </td>
+                                    <td>
+                                            <div class="px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
                                     <td>
                                         <div class="px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -1070,6 +1083,7 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
+                                   
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1077,16 +1091,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                        </div>
-                                    </td>
+                                   
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>

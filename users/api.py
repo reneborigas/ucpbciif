@@ -25,7 +25,8 @@ class UserViewSet(ModelViewSet):
         queryset = CustomUser.objects.annotate(
             fullName=F('profile__name'),
             account_type_text=F('account_type__account_type'),
-            committeePosition=F('committeeUserAccount__position__name'),
+            committeePosition=F('committees__position__name'),
+            positionId=F('committees__position__id'),
         ).exclude(is_active=False)
         id = self.request.query_params.get('id', None)
         

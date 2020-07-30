@@ -52,21 +52,17 @@
                                         ></i>
                                     </a>
                                 </td>
+                               
                                 <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
-                                    data-title="'CODE'"
-                                    sortable="'documentCode'"
-                                >
-                                    {{ document.documentCode }}
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'NAME'"
+                                    data-title="'FILE NAME'"
                                     sortable="'name'"
                                 >
-                                    {{ document.name }}
+                                    <a href=""
+                                    ng-click="view(document.subProcessName,document.id)">
+                                        {{ document.name }}
+                                    </a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -76,14 +72,7 @@
                                 >
                                     {{ document.borrowerName }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'PROCESS'"
-                                    sortable="'subProcessName'"
-                                >
-                                    {{ document.subProcessName }}
-                                </td>
+                                 
 
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -109,7 +98,7 @@
                                 >
                                     {{ document.currentStatus.name }}
                                 </td>
-                                <td
+                                <!-- <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
                                     data-title="'ACTIONS'"
@@ -121,7 +110,7 @@
                                     >
                                         <i class="fad fa-eye"></i>
                                     </a>
-                                </td>
+                                </td> -->
                             </tr>
                             <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center">
                                 <td colspan="9">

@@ -127,7 +127,7 @@ class Committee(models.Model):
     user = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,
-        related_name="committeeUserAccount",
+        related_name="committees",
         null = True,
         blank=True,
     )

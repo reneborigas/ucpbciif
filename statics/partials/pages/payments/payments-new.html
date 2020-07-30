@@ -407,6 +407,7 @@
                                             ng-class="{'is-invalid' : newPaymentDetailsForm.penaltyPayment.$invalid && newPaymentDetailsForm.penaltyPayment.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.penaltyPayment.$valid && newPaymentDetailsForm.penaltyPayment.$touched && !exceeded }"
                                             required
                                             price
+                                            ng-disabled="payment.penalty <= 0"
                                         />
                                         <span
                                             class="form-text text-muted"

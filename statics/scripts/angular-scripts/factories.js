@@ -33,6 +33,21 @@ define(function () {
                     }
                 );
             },
+
+            checkPermissions: function (subProcessId) {
+                return $http.post('/api/processes/checkpermission/',{subProcessId:subProcessId}).then(
+                    function (response) {
+                        return response.data;
+                        
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not checking permissions Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getLoanNumber: function (documentId) {
                 return $http.get('/api/documents/documents/', { params: { documentId: documentId } }).then(
                     function (response) {

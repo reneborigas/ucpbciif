@@ -4,7 +4,7 @@ from rest_framework import serializers
 from .models import *
 from documents.serializers import DocumentSerializer
 from processes.serializers import SubProcessSerializer
-from loans.serializers import LoanSerializer
+from loans.serializers import LoanSerializer,CreditLineSerializer
 from payments.serializers import PaymentSerializer
 
 class ContactPersonSerializer(ModelSerializer):
@@ -233,6 +233,7 @@ class BorrowerSerializer(ModelSerializer):
     totalAvailmentPerProgram = serializers.CharField(read_only=True)
     totalOutstandingBalance = serializers.CharField(read_only=True)
     loans = LoanSerializer(many=True,read_only=True)
+    creditLines = CreditLineSerializer(many=True,read_only=True)
     payments = PaymentSerializer(many=True,read_only=True)
     totalPayments =  serializers.CharField(read_only=True)
 

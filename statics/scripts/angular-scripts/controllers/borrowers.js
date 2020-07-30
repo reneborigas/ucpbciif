@@ -528,7 +528,7 @@ define(function () {
                             })
                             .then(
                                 function (response) {
-                                    $scope.creditlines = response.data;
+                                    $scope.creditLines = response.data;
                                 },
                                 function (error) {
                                     toastr.error(
@@ -728,7 +728,7 @@ define(function () {
         // -- Start Simple Pagination
         $scope.currentPage = {
             paymentHistory: 0,
-            loans: 0,
+            loans: 0, 
             attachments: 0,
             creditLines: 0,
         };
@@ -1377,7 +1377,7 @@ define(function () {
                     };
 
                     $scope.save = function () {
-                        console.log($scope.loan);
+                        console.log($scope.document);
                         if ($scope.newLoanApplicationForm.$valid && $scope.checkDetails()) {
                             swal({
                                 title: 'Create New Loan Application',
