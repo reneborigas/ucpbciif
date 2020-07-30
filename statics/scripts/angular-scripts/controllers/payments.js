@@ -358,7 +358,13 @@ define(function () {
                             },
                             true
                         );
-
+                        $scope.$watch(
+                            'payment.interestPayment',
+                            function (newTerm, oldTerm) {
+                                $scope.getTotalPayment();
+                            },
+                            true
+                        );
                         $scope.$watch(
                             'payment.total',
                             function (newTerm, oldTerm) {
