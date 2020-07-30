@@ -37,8 +37,8 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.components')}">
-                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.components')}">
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.loans')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.loans')}">
                     <i class="fas fa-hand-holding-usd"></i>
                     Loans
                 </a>
@@ -51,17 +51,16 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#">
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.payments')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.payments')}" href="#">
                     <i class="fal fa-money-bill"></i>
                     Payments
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.flags">
+                        <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.payments.add">
                             <i class="fas fa-spinner"></i>
                             Processing
-                            <span class="badge badge-success">NEW</span>
                         </a>
                     </li>
                     <li class="nav-item">

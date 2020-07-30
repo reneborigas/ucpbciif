@@ -2653,3 +2653,28 @@ ul.lower-alpha {
 
 .fal.wide { transform: scale(5,1); }
 
+.hide-scrollbar{
+	overflow-x: hidden;
+}
+
+.fade.ng-hide {
+    opacity: 0;
+}
+.ng-hide {
+    opacity: 0;
+    transition: none 0;
+}
+
+.datatable-row.ng-enter {
+    -webkit-transition: 1s;
+    transition: 1s;
+    opacity: 0;
+}
+.datatable-row.ng-enter-active {
+    opacity: 1;
+}
+
+.datatable.datatable-selectable tr:hover {
+	cursor: pointer;
+	background-color: #f3f6f9;
+}

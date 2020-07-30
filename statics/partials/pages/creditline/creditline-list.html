@@ -223,7 +223,7 @@
                                     data-title="'BORROWER'"
                                     sortable="'borrowerName'"
                                 >
-                                    {{ creditline.borrowerName }}
+                                    {{ creditline.borrower_name }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -263,7 +263,7 @@
                                     data-title="'DATE APPROVED'"
                                     sortable="'dateApproved'"
                                 >
-                                    {{ creditline.dateApproved | date : 'medium' }}
+                                    {{ creditline.dateApproved | date : 'shortDate' }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -271,7 +271,7 @@
                                     data-title="'EXPIRY DATE'"
                                     sortable="'dateExpired'"
                                 >
-                                    {{ creditline.dateExpired | date : 'medium' }}
+                                    {{ creditline.dateExpired | date : 'shortDate' }}
                                 </td>
 
                                 <td
