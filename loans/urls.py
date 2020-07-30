@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from .api import *
+from django.urls import path
 
 router = DefaultRouter()
 router.register(r'amortizationitems',AmortizationItemViewSet) 
@@ -13,4 +14,10 @@ router.register(r'interestrates',InterestRateViewSet)
 router.register(r'status',StatusViewSet) 
 
 
-urlpatterns = router.urls
+
+
+urlpatterns =  [ path('updatecreditline/', UpdateCreditLineView.as_view()),
+        ]
+
+
+urlpatterns += router.urls

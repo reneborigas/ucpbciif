@@ -35,10 +35,9 @@ define(function () {
             },
 
             checkPermissions: function (subProcessId) {
-                return $http.post('/api/processes/checkpermission/',{subProcessId:subProcessId}).then(
+                return $http.post('/api/processes/checkpermission/', { subProcessId: subProcessId }).then(
                     function (response) {
                         return response.data;
-                        
                     },
                     function (error) {
                         toastr.error(
@@ -90,11 +89,7 @@ define(function () {
             getSubProcessId: function (subProcessName) {
                 return $http.get('/api/processes/subprocesses/', { params: { subProcessName: subProcessName } }).then(
                     function (response) {
-
                         return response.data[0].id;
-                       
-                         
-                        
                     },
                     function (error) {
                         toastr.error(
@@ -107,11 +102,7 @@ define(function () {
             getSubProcessByName: function (subProcessName) {
                 return $http.get('/api/processes/subprocesses/', { params: { subProcessName: subProcessName } }).then(
                     function (response) {
-
                         return response.data[0];
-                       
-                         
-                        
                     },
                     function (error) {
                         toastr.error(
@@ -121,9 +112,6 @@ define(function () {
                     }
                 );
             },
-
-            
-
             getSubProcess: function (subProcessId) {
                 return $http.get('/api/processes/subprocesses/', { params: { subProcessId: subProcessId } }).then(
                     function (response) {
@@ -137,7 +125,6 @@ define(function () {
                     }
                 );
             },
-
             getCreditLine: function (creditLineId) {
                 return $http.get('/api/loans/creditlines/', { params: { creditLineId: creditLineId } }).then(
                     function (response) {
@@ -328,9 +315,9 @@ define(function () {
             },
 
             getDocumenFileName: function (code) {
-                return $http.post('/api/documents/getdocumentfilename/', {   code: code }).then(
+                return $http.post('/api/documents/getdocumentfilename/', { code: code }).then(
                     function (response) {
-                        return   response.data.fileName  ;
+                        return response.data.fileName;
                     },
                     function (error) {
                         toastr.error(

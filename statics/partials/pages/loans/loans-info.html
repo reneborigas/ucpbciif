@@ -27,17 +27,16 @@
                                     Print Check
                                 </a>
                                 <a
-                                href="#"
-                                class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                                ng-click=" newLoanRelease(borrower.borrowerId,loan.id)"
-                                ng-if="!loan.dateReleased && loan.loanStatus !=8 && loan.loanStatus !=9" 
-                            >
-                                New Loan Release
-                            </a>
-                               
+                                    href="#"
+                                    class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                                    ng-click=" newLoanRelease(borrower.borrowerId,loan.id)"
+                                    ng-if="!loan.dateReleased && loan.loanStatus !=8 && loan.loanStatus !=9"
+                                >
+                                    New Loan Release
+                                </a>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
                             <div class="mr-3">
                                 <div class="d-flex flex-wrap my-2">
@@ -79,17 +78,17 @@
                                     </span>
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
-                                        <span class="font-weight-bolder mr-2">Purpose:</span>
-                                        <span class="font-weight-bolder text-dark">
-                                            {{ loan.purpose }}
-                                        </span>
+                                    <span class="font-weight-bolder mr-2">Purpose:</span>
+                                    <span class="font-weight-bolder text-dark">
+                                        {{ loan.purpose }}
+                                    </span>
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
-                                        <span class="font-weight-bolder mr-2">Security:</span>
-                                        <span class="font-weight-bolder text-dark">
-                                            {{ loan.security }}
-                                        </span>
-                                    </div>
+                                    <span class="font-weight-bolder mr-2">Security:</span>
+                                    <span class="font-weight-bolder text-dark">
+                                        {{ loan.security }}
+                                    </span>
+                                </div>
                             </div>
                             <div class="d-flex flex-wrap align-items-center py-2">
                                 <div class="d-flex align-items-center" ng-show="loan.dateReleased">
@@ -123,43 +122,36 @@
                     </div>
                 </div>
 
-                <br/>
-                <div class="d-flex align-items-left flex-wrap">
-
-
-                        <div class="d-flex align-items-left flex-lg-fill mr-5 my-1" ng-repeat="document in documents">
-                            <span class="mr-4">
-                                <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                <br />
+                <div class="d-flex align-items-center flex-wrap">
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1" ng-repeat="document in documents">
+                        <span class="mr-4">
+                            <i class="fad fa-file-alt icon-2x text-muted font-weight-bold"></i>
+                        </span>
+                        <div class="d-flex flex-column text-dark-75">
+                            <span class="font-weight-bolder font-size-sm">{{document.subProcessName}}</span>
+                            <span class="font-weight-bolder font-size-h5">
+                                <a href="" ng-click="goToFile(document.subProcessName,document.id)">
+                                    {{document.name}}
+                                </a>
                             </span>
-                            <div class="d-flex flex-column text-dark-75">
-                                <span class="font-weight-bolder font-size-sm">{{document.subProcessName}}</span>
-                                <span class="font-weight-bolder font-size-h5">
-                                    <a href=""
-                                    ng-click="goToFile(document.subProcessName,document.id)"
-                                    > {{document.name}}</a>
-                                </span>
-                            </div>
                         </div>
-                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1" ng-if="loan">
-                                <span class="mr-4">
-                                    <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
-                                </span>
-                                <div class="d-flex flex-column text-dark-75">
-                                    <span class="font-weight-bolder font-size-sm">Loan Release Sheet</span>
-                                    <span class="font-weight-bolder font-size-h5">
-                                            <a
-                                            href="#" 
-                                            ng-click="previewLoanRelease(loan.id)"
-                                        >
-                                           Preview
-                                        </a>
-                                           
-                                    </span>
-                                </div>
-                            </div>
-                      
-    
-                        <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                    </div>
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1" ng-if="loan">
+                        <span class="mr-4">
+                            <i class="fad fa-file-search icon-2x text-muted font-weight-bold"></i>
+                        </span>
+                        <div class="d-flex flex-column text-dark-75">
+                            <span class="font-weight-bolder font-size-sm">Loan Release Sheet</span>
+                            <span class="font-weight-bolder font-size-h5">
+                                <a href="#" ng-click="previewLoanRelease(loan.id)">
+                                    Preview
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                             <span class="mr-4">
                                 <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
                             </span>
@@ -193,10 +185,10 @@
                                 </span>
                             </div>
                         </div> -->
-                    </div>
-                    
+                </div>
+
                 <div class="separator separator-solid my-7"></div>
-                
+
                 <div class="d-flex align-items-center flex-wrap" ng-if="loan.dateReleased">
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
@@ -564,18 +556,17 @@
                         class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
                         ng-click="previewAmortizationSchedule(loan.id)"
                     >
-                    Print
+                        Print
                     </a>
 
-
                     <button
-                    class="btn btn-sm btn-info font-weight-bolder text-uppercase"
-                    ng-click="newPayment(loan.id)"
-                    ng-if="loan.dateReleased"
-                    ng-disabled="loan.outStandingBalance <= 0"
-                >
-                    New Payment
-                </button>
+                        class="btn btn-sm btn-info font-weight-bolder text-uppercase"
+                        ng-click="newPayment(loan.id)"
+                        ng-if="loan.dateReleased"
+                        ng-disabled="loan.outStandingBalance <= 0"
+                    >
+                        New Payment
+                    </button>
                 </div>
             </div>
             <div class="card-body p-0">
@@ -627,11 +618,11 @@
                                         </div>
                                     </th>
                                     <th>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 text-uppercase font-size-lg">
-                                                    Penalty
-                                                </span>
-                                            </div>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Penalty
+                                            </span>
+                                        </div>
                                     </th>
                                     <!-- <th>
                                         <div class="text-right px-2">
@@ -711,8 +702,6 @@
                                             </span>
                                         </div>
                                     </td>
-
-                                    
                                 </tr>
                                 <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems">
                                     <td>
@@ -751,23 +740,26 @@
                                         </div>
                                     </td>
                                     <td>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ amortization.additionalInterest | currency :'₱'}}
-                                                </span>
-                                            </div>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ amortization.additionalInterest | currency :'₱'}}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ amortization.penalty | currency :'₱'}}
-                                                </span>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ amortization.penalty | currency :'₱'}}
+                                            </span>
 
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="amortization.penalty > 0">
-                                                        (+{{ amortization.daysExceed }} days)
-                                                </span>
-                                            </div>
-                                        </td>
+                                            <span
+                                                class="text-dark-75 font-weight-bolder font-size-lg"
+                                                ng-if="amortization.penalty > 0"
+                                            >
+                                                (+{{ amortization.daysExceed }} days)
+                                            </span>
+                                        </div>
+                                    </td>
                                     <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -790,12 +782,12 @@
                                         </div>
                                     </td>
                                     <td>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ amortization.amortizationStatus_name}}
-                                                </span>
-                                            </div>
-                                        </td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ amortization.amortizationStatus_name}}
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr class="table-success">
                                     <td>
@@ -845,19 +837,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                            <div class="text-right">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                            </div>
-                                        </td>
+                                        <div class="text-right">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
                                     <td>
-                                            <div class="text-right">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                            </div>
-                                        </td>
+                                        <div class="text-right">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
                                     <td>
-                                            <div class="text-right">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                            </div>
+                                        <div class="text-right">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -921,17 +913,17 @@
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                                <span class="text-dark-75 text-uppercase font-size-lg">
-                                                    Additional Interest
-                                                </span>
-                                            </div>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Additional Interest
+                                            </span>
+                                        </div>
                                     </th>
                                     <th>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 text-uppercase font-size-lg">
-                                                 Penalty
-                                                </span>
-                                            </div>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Penalty
+                                            </span>
+                                        </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
@@ -968,7 +960,7 @@
                                             </span>
                                         </div>
                                     </th>
-                                   
+
                                     <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -1018,19 +1010,19 @@
                                     </td>
 
                                     <td>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ payment.additionalInterest | currency :'₱'}}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                        {{ payment.penalty | currency :'₱'}}
-                                                </span>
-                                            </div>
-                                        </td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.additionalInterest | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.penalty | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1039,12 +1031,12 @@
                                         </div>
                                     </td>
                                     <td>
-                                            <div class="text-center px-2">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ payment.totalToPayWithPenalty | currency :'₱'}}
-                                                </span>
-                                            </div>
-                                        </td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ payment.totalToPayWithPenalty | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1066,7 +1058,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                   
+
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1124,9 +1116,7 @@
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                          
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
                                     <td>
@@ -1135,14 +1125,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                            <div class="text-right px-2">
-                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                            </div>
-                                        </td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ loan.totalPayment | currency :'₱'}}
+                                                {{ loan.totalPayment | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -1220,7 +1210,7 @@
                         class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
                         ng-click="previewAmortizationHistory(loan.id)"
                     >
-                    Print
+                        Print
                     </a>
                 </div>
             </div>

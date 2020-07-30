@@ -52,6 +52,9 @@ define(function () {
                 if (transition.error().detail === 'Unauthorized') {
                     $state.go('app.unauthorized');
                 }
+                if (transition.error().detail === 'Not Found') {
+                    $state.go('app.404');
+                }
             });
 
             $rootScope.$state = $state;

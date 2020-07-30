@@ -70,6 +70,7 @@
                                     <input
                                         type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[1].params.param1]"
                                         price
                                     />
@@ -81,6 +82,7 @@
                                     <input
                                         type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[1].params.param2]"
                                         price
                                     />
@@ -92,6 +94,7 @@
                                     <input
                                         type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[2].params.param1]"
                                         price
                                     />
@@ -103,6 +106,7 @@
                                     <input
                                         type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[2].params.param2]"
                                         price
                                     />
@@ -136,6 +140,7 @@
                                     <input
                                         type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[4].params.param1]"
                                         price
                                     />
@@ -147,6 +152,7 @@
                                     <input
                                         type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[4].params.param2]"
                                         price
                                     />
@@ -197,7 +203,7 @@
                             template-pagination="statics/partials/customs/pagination.html"
                         >
                             <tr class="datatable-row" ng-repeat="payment in $data">
-                                    <td
+                                <td
                                     class="datatable-cell datatable-cell-left text-right"
                                     header-class="'text-left'"
                                     data-title="'PAYMENT DATE'"
@@ -266,13 +272,13 @@
                                     {{ payment.additionalInterest | currency :'₱'}}
                                 </td>
                                 <td
-                                class="datatable-cell datatable-cell-left text-right"
-                                header-class="'text-right'"
-                                data-title="'PENALTY'"
-                                sortable="'penalty'"
-                            >
-                                {{ payment.penalty | currency :'₱'}}
-                            </td>
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'PENALTY'"
+                                    sortable="'penalty'"
+                                >
+                                    {{ payment.penalty | currency :'₱'}}
+                                </td>
 
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"
@@ -283,14 +289,14 @@
                                     {{ payment.totalToPay | currency :'₱'}}
                                 </td>
                                 <td
-                                class="datatable-cell datatable-cell-left text-right"
-                                header-class="'text-right'"
-                                data-title="'TOTAL PAYABLE'"
-                                sortable="'totalToPayWithPenalty'"
-                            >
-                                {{ payment.totalToPayWithPenalty | currency :'₱'}}
-                            </td>
-                             
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL PAYABLE'"
+                                    sortable="'totalToPayWithPenalty'"
+                                >
+                                    {{ payment.totalToPayWithPenalty | currency :'₱'}}
+                                </td>
+
                                 <td
                                     class="datatable-cell datatable-cell-left text-center"
                                     header-class="'text-center'"

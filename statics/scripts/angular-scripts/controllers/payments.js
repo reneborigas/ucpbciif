@@ -337,19 +337,21 @@ define(function () {
                             true
                         );
 
-                    $scope.$watch(
-                        'payment.total',
-                        function (newTerm, oldTerm) {
-                            console.log(newTerm);
-                            $scope.payment.balance = $scope.getBalance().toFixed(2);
-                            $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);
-                            $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
-                            $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
-                            $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
-                            console.log($scope.payment.outStandingBalance);
-                        },
-                        true
-                    );
+                        $scope.$watch(
+                            'payment.total',
+                            function (newTerm, oldTerm) {
+                                console.log(newTerm);
+                                $scope.payment.balance = $scope.getBalance().toFixed(2);
+                                $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);
+                                $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(
+                                    2
+                                );
+                                $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
+                                $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
+                                console.log($scope.payment.outStandingBalance);
+                            },
+                            true
+                        );
 
                         $scope.$watch(
                             'payment.penaltyPayment',
@@ -512,9 +514,7 @@ define(function () {
             $scope.payment.penaltyPayment = parseFloat($scope.payment.penaltyPayment).toFixed(2);
             // $scope.payment.balance = parseFloat( $scope.payment.balance).toFixed(2);
             // $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
-           
-            
-          
+
             // console.log($scope.payment.balance);
             // console.log($scope.payment.overPayment);
             // console.log($scope.payment.outStandingBalance);
@@ -644,7 +644,7 @@ define(function () {
                 text: 'Process Payment for LN' + id + '?',
                 icon: 'info',
                 buttons: {
-                    cancel: true,
+                    cancel: false,
                     confirm: 'Add Payment',
                 },
             }).then((isConfirm) => {

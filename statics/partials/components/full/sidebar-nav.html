@@ -14,13 +14,13 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" ng-class="{active: $state.includes('app.borrowers')}" ui-sref="app.borrowers.list">
-                    <i class="icon-people"></i>
+                    <i class="fad fa-users"></i>
                     Borrowers
                 </a>
             </li>
             <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.documents')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.documents')}">
-                    <i class="fas fa-hand-holding-usd"></i>
+                    <i class="fad fa-landmark"></i>
                     Credit Management
                 </a>
                 <ul class="nav-dropdown-items">
@@ -31,7 +31,7 @@
                             ng-repeat="subProcessSlug in subProcessSlugs"
                             ui-sref="app.documents.list({ subProcessName : subProcessSlug.slug })"
                         >
-                            <i class="fas fa-spinner"></i>
+                            <i class="fad fa-file-invoice"></i>
                             {{ subProcessSlug.name }}
                         </a>
                     </li>
@@ -39,13 +39,13 @@
             </li>
             <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.loans')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.loans')}">
-                    <i class="fas fa-hand-holding-usd"></i>
+                    <i class="fad fa-hand-holding-usd"></i>
                     Loans
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.loans.list">
-                            <i class="fas fa-spinner"></i>
+                            <i class="fad fa-list-ul"></i>
                             Loan List
                         </a>
                     </li>
@@ -53,19 +53,19 @@
             </li>
             <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.payments')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.payments')}" href="#">
-                    <i class="fal fa-money-bill"></i>
+                    <i class="fad fa-money-bill"></i>
                     Payments
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.payments.add">
-                            <i class="fas fa-spinner"></i>
+                            <i class="fad fa-spinner"></i>
                             Processing
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.payments.list">
-                            <i class="fas fa-spinner"></i>
+                            <i class="fad fa-list-ul"></i>
                             Payment List
                         </a>
                     </li>
@@ -79,14 +79,14 @@
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.flags">
-                            <i class="far fa-calendar-check"></i>
+                            <i class="fad fa-calendar-alt"></i>
                             Schedules
                             <span class="badge badge-success">NEW</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
-                            <i class="fas fa-coins"></i>
+                            <i class="fad fa-calendar-check"></i>
                             Maturing Amortizations
                         </a>
                     </li>
@@ -94,25 +94,25 @@
             </li>
             <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app. icons')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#">
-                    <i class="far fa-desktop"></i>
+                    <i class="fad fa-desktop"></i>
                     Monitoring
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.creditline.list">
-                            <i class="far fa-credit-card"></i>
+                            <i class="fad fa-credit-card"></i>
                             Credit Line
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
-                            <i class="fas fa-money-check"></i>
+                            <i class="fad fa-money-check"></i>
                             Postdated Checks
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
-                            <i class="far fa-handshake"></i>
+                            <i class="fad fa-handshake"></i>
                             Collaterals
                         </a>
                     </li>
@@ -124,11 +124,11 @@
                     ng-class="{active: $state.includes('app.committees')}"
                     ui-sref="app.committees.offices"
                 >
-                    <i class="icon-people"></i>
+                    <i class="fad fa-users-class"></i>
                     Committee
                 </a>
             </li>
-            <li class="divider"></li>
+            <!-- <li class="divider"></li>
             <li class="nav-title">
                 Utilities
             </li>
@@ -141,7 +141,7 @@
                     <i class="icon-people"></i>
                     Committee
                 </a>
-            </li>
+            </li> -->
 
             <!-- <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.committee')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.committee')}" href="#">

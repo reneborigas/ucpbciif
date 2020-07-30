@@ -731,7 +731,7 @@ define(function () {
         // -- Start Simple Pagination
         $scope.currentPage = {
             paymentHistory: 0,
-            loans: 0, 
+            loans: 0,
             attachments: 0,
             creditLines: 0,
         };
@@ -1210,7 +1210,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',
-                            loanStatus: 8,//loan availment,
+                            loanStatus: 8, //loan availment,
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
@@ -1275,7 +1275,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                             purpose: '',
                             security: '',
-                            loanStatus: 8,//loan availment
+                            loanStatus: 8, //loan availment
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
@@ -1307,7 +1307,7 @@ define(function () {
                             loanProgram: $scope.subProcess.parentLastDocumentLoan.loanProgram,
                             purpose: $scope.subProcess.parentLastDocumentLoan.purpose,
                             security: $scope.subProcess.parentLastDocumentLoan.security,
-                            loanStatus: 8,//loan availment
+                            loanStatus: 8, //loan availment
                             borrower: $scope.borrowerId,
                             term_name: $scope.subProcess.parentLastDocumentLoan.term_name,
                             loanProgram_name: $scope.subProcess.parentLastDocumentLoan.loanProgram_name,
@@ -1453,6 +1453,24 @@ define(function () {
                     );
                 }
             );
+
+        $scope.checkForm = function (subProcessName) {
+            var valid;
+            if (subProcessName == 'Credit Line Approval') {
+                if ($scope.form.newLoanApplicationForm.$valid && $scope.form.newCreditLineDetailsForm.$valid) {
+                    valid = false;
+                } else {
+                    valid = true;
+                }
+            } else if (subProcessName == 'Loan Availment') {
+                if ($scope.form.newLoanApplicationForm.$valid && $scope.form.newLoanDetailsForm.$valid) {
+                    valid = false;
+                } else {
+                    valid = true;
+                }
+            }
+            return valid;
+        };
 
         $scope.cancel = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });

@@ -82,12 +82,6 @@ define(function () {
         $q,
         $window
     ) {
-
-
-        
-        
-       
-
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
 
@@ -105,7 +99,7 @@ define(function () {
                     .then(
                         function (response) {
                             $scope.currentStep = response.data[0];
-                            $scope.loadCurrentUser(); 
+                            $scope.loadCurrentUser();
                             // $http
                             //     .get('/api/processes/steprequirements/', { params: { stepId: $scope.currentStep.id } })
                             //     .then(
@@ -143,7 +137,7 @@ define(function () {
                         .then(
                             function (response) {
                                 $scope.currentStep = response.data[0];
-                                $scope.loadCurrentUser(); 
+                                $scope.loadCurrentUser();
                                 // $http
                                 //     .get('/api/processes/steprequirements/', {
                                 //         params: { stepId: $scope.currentStep.id },
@@ -192,7 +186,6 @@ define(function () {
 
                     $scope.loadProcessRequirements();
                     $scope.loadNotes();
-                   
 
                     $http
                         .get('/api/borrowers/borrowers/', {
@@ -233,24 +226,22 @@ define(function () {
         };
 
         $scope.loadCurrentUser = function () {
-            return appFactory.getCurrentUserInfo().then(function (data) { 
-                    $scope.currentUser = data;
- 
-                    if ($scope.currentStep.positions.length == 0){ 
-                        $scope.isUserAssigned=false;
-                    }
-                    angular.forEach($scope.currentStep.positions, function (position, index) {
-                         if (position.id == $scope.currentUser.positionId){
-                            $scope.isUserAssigned = true
-                            
-                        }
-                    });
+            return appFactory.getCurrentUserInfo().then(function (data) {
+                $scope.currentUser = data;
 
-                    console.log($scope.isUserAssigned);
-                      console.log($scope.currentUser);
+                if ($scope.currentStep.positions.length == 0) {
+                    $scope.isUserAssigned = false;
+                }
+                angular.forEach($scope.currentStep.positions, function (position, index) {
+                    if (position.id == $scope.currentUser.positionId) {
+                        $scope.isUserAssigned = true;
+                    }
+                });
+
+                console.log($scope.isUserAssigned);
+                console.log($scope.currentUser);
             });
         };
-         
 
         $scope.loadProcessRequirements = function () {
             $http
@@ -265,8 +256,6 @@ define(function () {
                         }
                         // $scope.currentRequirement.attachments =
                         // 	$scope.currentRequirement.stepRequirementAttachments;
-
-
                     },
                     function (error) {
                         toastr.error(
@@ -299,8 +288,6 @@ define(function () {
                 );
             }
         );
-
-
 
         $scope.getRequirement = function () {
             for (var i = 0; i < $scope.stepRequirements.length; i++) {
@@ -336,83 +323,6 @@ define(function () {
             }
         };
 
-        // $scope.activityTemplates = [
-        //     {
-        //         templateNumber: 1,
-        //         name: "Activities",
-        //         icon: "fad fa-info-square",
-        //         templateUrl: '/statics/partials/pages/documents/info/activities.html',
-        //     },]
-
-        // $scope.templates = [
-        //     {
-        //         templateNumber: 1,
-        //         name: "Basic Information",
-        //         icon: "fad fa-info-square",
-        //         templateUrl: '/statics/partials/pages/documents/info/basic.html',
-        //     },
-        //     {
-        //         templateNumber: 2,
-        //         name: "Contact Details",
-        //         icon: "fad fa-address-book",
-        //         templateUrl: '/statics/partials/pages/documents/info/contact.html',
-        //     },
-        //     {
-        //         templateNumber: 3,
-        //         name: "Background",
-        //         icon: "fad fa-user-friends",
-        //         templateUrl: '/statics/partials/pages/documents/info/directorCommittee.html',
-        //     },
-        //     {
-        //         templateNumber: 4,
-        //         name: "Grants",
-        //         icon: "fad fa-coin",
-        //         templateUrl: '/statics/partials/pages/documents/info/grants.html',
-        //     },
-        //     {
-        //         templateNumber: 5,
-        //         name: "History",
-        //         icon: "fad fa-history",
-        //         templateUrl: '/statics/partials/pages/documents/info/history.html',
-        //     }
-        // ]
-
-        // $scope.currentTemplate = $scope.templates[0];
-        // $scope.currentActivityTemplate = $scope.activityTemplates[0];
-
-        // $scope.getTemplate = function(){
-        //     for (var i = 0; i < $scope.templates.length; i++) {
-        //         if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
-        //             return $scope.templates[i].templateUrl;
-        //         }
-        //     }
-        // }
-        // $scope.getActiviyTemplate = function(){
-        //     for (var i = 0; i < $scope.activityTemplates.length; i++) {
-        //         if ($scope.currentActivityTemplate.templateNumber == $scope.activityTemplates[i].templateNumber) {
-        //             return $scope.activityTemplates[i].templateUrl;
-        //         }
-        //     }
-        // }
-        // $scope.goToTemplate = function(templateNumber){
-        //     for (var i = 0; i < $scope.templates.length; i++) {
-        //         if ($scope.templates[i].templateNumber == templateNumber) {
-        //             $scope.currentTemplate = $scope.templates[i]
-        //         }
-        //     }
-        // }
-        // $scope.goToActivityTemplate = function(templateNumber){
-        //     for (var i = 0; i < $scope.activityTemplates.length; i++) {
-        //         if ($scope.activityTemplates[i].templateNumber == templateNumber) {
-        //             $scope.currentActivityTemplate = $scope.activityTemplates[i]
-        //         }
-        //     }
-        // }
-
-        // $scope.getCurrentProcessStepTemplate = function(){
-
-        // }
-
         $scope.takeActions = function (documentId, output, step) {
             $scope.documentMovement = {
                 remarks: $scope.remarks,
@@ -421,7 +331,7 @@ define(function () {
                 document: documentId,
                 name: step.name,
                 step: step.id,
-                committee:$scope.currentUser.committeeId, 
+                committee: $scope.currentUser.committeeId,
                 status: step.status,
             };
 
@@ -445,10 +355,9 @@ define(function () {
 
                                 $http.post(output.callBackLink, param).then(function (response) {
                                     console.log(response);
-                                    if ($scope.document.loan){
-                                        $state.go('app.loans.info', { loanId: $scope.document.loan.id }); 
+                                    if ($scope.document.loan) {
+                                        $state.go('app.loans.info', { loanId: $scope.document.loan.id });
                                     }
-
                                 });
                                 toastr.success('Success', 'File successfully moved to the next phase.');
                                 swal('Success!', 'File successfully moved to the next phase', 'success');
@@ -620,6 +529,60 @@ define(function () {
                     }
                 );
             });
+        };
+
+        $scope.update = function () {
+            if ($scope.modalTitle == 'Security') {
+                $http
+                    .post('/api/loans/updatecreditline/', {
+                        creditLineId: $scope.update.id,
+                        security: $scope.update.note,
+                    })
+                    .then(
+                        function () {
+                            angular.element('#edit-purpose-security').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $timeout(function () {
+                                $state.reload();
+                            }, 0);
+                            toastr.success('Success', 'Document Security updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update document. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            } else {
+                $http
+                    .post('/api/loans/updatecreditline/', {
+                        creditLineId: $scope.update.id,
+                        purpose: $scope.update.note,
+                    })
+                    .then(
+                        function () {
+                            angular.element('#edit-purpose-security').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $state.reload();
+                            toastr.success('Success', 'Document Purpose updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update document. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            }
+        };
+
+        $scope.edit = function (id, value, title) {
+            $scope.update.id = id;
+            $scope.modalTitle = title;
+            $scope.update.note = value;
         };
 
         $scope.viewBorrower = function (id) {

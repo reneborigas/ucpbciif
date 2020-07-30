@@ -16,7 +16,8 @@ angular
     .directive('price', price)
     .directive('pagination', pagination)
     .directive('datepickerLocaldate', datepickerLocaldate)
-    .directive('ngEnter', ngEnter);
+    .directive('ngEnter', ngEnter)
+    .directive('tooltip', tooltip);
 
 function includeReplace() {
     var directive = {
@@ -459,4 +460,23 @@ function ngEnter() {
             }
         });
     };
+}
+
+function tooltip() {
+    var directive = {
+        restrict: 'A',
+        link: link,
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        element.hover(
+            function () {
+                element.tooltip('show');
+            },
+            function () {
+                element.tooltip('hide');
+            }
+        );
+    }
 }

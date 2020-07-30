@@ -293,6 +293,62 @@ define(function () {
                         parent: 'app.borrowers.list',
                     },
                 })
+                .state('app.borrowers.info', {
+                    url: '/:borrowerId',
+                    templateUrl: '/statics/partials/pages/borrowers/borrowers-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Info',
+                    },
+                    ncyBreadcrumb: {
+                        label: '{{ borrowerName }}',
+                        parent: 'app.borrowers.list',
+                    },
+                    resolve: {
+                        fetchBorrower: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
+                            $scope.borrowerName = data;
+                        });
+                    },
+                })
+                .state('app.borrowers.edit', {
+                    url: '/:borrowerId/edit',
+                    templateUrl: '/statics/partials/pages/borrowers/borrowers-edit.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Edit',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Edit',
+                        parent: 'app.borrowers.info',
+                    },
+                    resolve: {
+                        fetchBorrower: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
+                            $scope.borrowerName = data;
+                        });
+                    },
+                })
                 .state('app.borrowers.create_loan_application', {
                     url: '/:borrowerId/new-file/:subProcessId',
                     templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
@@ -302,6 +358,28 @@ define(function () {
                     ncyBreadcrumb: {
                         label: 'New {{subProcess.name}} File',
                         parent: 'app.borrowers.info',
+                    },
+                    resolve: {
+                        fetchBorrower: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                        fetchSubProcess: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/processes/subprocesses/', {
+                                    params: { subProcessId: $stateParams.subProcessId },
+                                })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.borrowerId = $stateParams.borrowerId;
@@ -316,7 +394,6 @@ define(function () {
                         });
                     },
                 })
-
                 .state('app.borrowers.create_loan_availment', {
                     url: '/:borrowerId/new-loan-availment/:creditLineId',
                     templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
@@ -328,13 +405,32 @@ define(function () {
                         parent: 'app.borrowers.info',
                     },
                     resolve: {
+                        fetchBorrower: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                        fetchCreditLine: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/loans/creditlines/', {
+                                    params: { creditLineId: $stateParams.creditLineId },
+                                })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
                         fetchSubProcess: function ($stateParams, appFactory) {
                             return appFactory.getSubProcessByName('Loan Availment').then(function (data) {
                                 return data;
                             });
                         },
                     },
-
                     controller: function ($scope, fetchSubProcess, appFactory, $stateParams) {
                         console.log(fetchSubProcess);
                         $scope.borrowerId = $stateParams.borrowerId;
@@ -356,7 +452,6 @@ define(function () {
                         });
                     },
                 })
-
                 .state('app.borrowers.create_loan_release', {
                     url: '/:borrowerId/new-loan-release/:loanId',
                     templateUrl: '/statics/partials/pages/borrowers/borrowers-new-loan-application.html',
@@ -368,13 +463,30 @@ define(function () {
                         parent: 'app.borrowers.info',
                     },
                     resolve: {
+                        fetchBorrower: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                        fetchLoan: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
                         fetchSubProcess: function ($stateParams, appFactory) {
                             return appFactory.getSubProcessByName('Loan Release').then(function (data) {
                                 return data;
                             });
                         },
                     },
-
                     controller: function ($scope, fetchSubProcess, appFactory, $stateParams) {
                         console.log(fetchSubProcess);
                         $scope.borrowerId = $stateParams.borrowerId;
@@ -393,40 +505,6 @@ define(function () {
                         console.log($stateParams);
                         appFactory.getLoan($scope.loanId).then(function (data) {
                             $scope.loan = data;
-                        });
-                    },
-                })
-                .state('app.borrowers.info', {
-                    url: '/:borrowerId',
-                    templateUrl: '/statics/partials/pages/borrowers/borrowers-info.html',
-                    data: {
-                        pageTitle: 'UCPB CIIF | Borrower Info',
-                    },
-                    ncyBreadcrumb: {
-                        label: '{{ borrowerName }}',
-                        parent: 'app.borrowers.list',
-                    },
-                    controller: function ($scope, $stateParams, appFactory) {
-                        $scope.borrowerId = $stateParams.borrowerId;
-                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
-                            $scope.borrowerName = data;
-                        });
-                    },
-                })
-                .state('app.borrowers.edit', {
-                    url: '/:borrowerId/edit',
-                    templateUrl: '/statics/partials/pages/borrowers/borrowers-edit.html',
-                    data: {
-                        pageTitle: 'UCPB CIIF | Borrower Edit',
-                    },
-                    ncyBreadcrumb: {
-                        label: 'Edit',
-                        parent: 'app.borrowers.info',
-                    },
-                    controller: function ($scope, $stateParams, appFactory) {
-                        $scope.borrowerId = $stateParams.borrowerId;
-                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
-                            $scope.borrowerName = data;
                         });
                     },
                 })
@@ -459,10 +537,13 @@ define(function () {
                         label: '{{subProcessName}}',
                     },
                     resolve: {
-                        fetchSubProcess: function ($stateParams, appFactory) {
+                        fetchSubProcess: function ($q, $stateParams, appFactory) {
                             return appFactory
                                 .getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName))
                                 .then(function (data) {
+                                    if (!data) {
+                                        return $q.reject('Not Found');
+                                    }
                                     return data;
                                 });
                         },
@@ -483,10 +564,22 @@ define(function () {
                         parent: 'app.documents.list',
                     },
                     resolve: {
-                        fetchSubProcess: function ($stateParams, appFactory) {
+                        fetchDocumentFound: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/documents/documents/', { params: { documentId: $stateParams.documentId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                        fetchSubProcess: function ($q, $stateParams, appFactory) {
                             return appFactory
                                 .getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName))
                                 .then(function (data) {
+                                    if (!data) {
+                                        return $q.reject('Not Found');
+                                    }
                                     return data;
                                 });
                         },
@@ -499,6 +592,7 @@ define(function () {
                         },
                     },
                     controller: function ($scope, $stateParams, appFactory, fetchSubProcess, fetchPermission, $state) {
+                        $scope.subProcessName = fetchSubProcess.name;
                         $scope.documentId = $stateParams.documentId;
                         appFactory.getDocumentName($scope.documentId).then(function (data) {
                             $scope.fileName = data;
@@ -555,6 +649,17 @@ define(function () {
                         label: 'Loan No. {{loanId}}',
                         parent: 'app.loans.list',
                     },
+                    resolve: {
+                        fetchLoan: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.loanId = $stateParams.loanId;
                     },
@@ -607,6 +712,17 @@ define(function () {
                         label: 'New Payment',
                         parent: 'app.loans.info',
                     },
+                    resolve: {
+                        fetchLoan: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.loanId = $stateParams.loanId;
                     },
@@ -625,7 +741,6 @@ define(function () {
                         $scope.loanId = $stateParams.loanId;
                     },
                 })
-
                 .state('app.creditline', {
                     url: '/credit-line',
                     template: '<ui-view></ui-view>',
@@ -709,6 +824,19 @@ define(function () {
                         label: '{{ officeName }}',
                         parent: 'app.committees.offices',
                     },
+                    resolve: {
+                        fetchOfficeName: function ($http, $q, $stateParams, appFactory) {
+                            return $http
+                                .get('/api/committees/offices/', {
+                                    params: { officeName: appFactory.unSlugify($stateParams.officeName) },
+                                })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.officeName = appFactory.unSlugify($stateParams.officeName);
                     },
@@ -722,6 +850,30 @@ define(function () {
                     ncyBreadcrumb: {
                         label: '{{ committeeName }}',
                         parent: 'app.committees.info',
+                    },
+                    resolve: {
+                        fetchOfficeName: function ($http, $q, $stateParams, appFactory) {
+                            return $http
+                                .get('/api/committees/offices/', {
+                                    params: { officeName: appFactory.unSlugify($stateParams.officeName) },
+                                })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                        fetchCommitteeId: function ($http, $q, $stateParams, appFactory) {
+                            return $http
+                                .get('/api/committees/committees/', {
+                                    params: { committeeId: $stateParams.committeeId },
+                                })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.committeeId = $stateParams.committeeId;

@@ -2678,3 +2678,11 @@ ul.lower-alpha {
 	cursor: pointer;
 	background-color: #f3f6f9;
 }
+
+.swal-footer {
+	text-align: center;
+}
+
+.swal-modal {
+	width: 400px;
+}

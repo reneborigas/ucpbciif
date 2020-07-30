@@ -8,6 +8,49 @@ from datetime import datetime
 from borrowers.models import Borrower
 
 
+from rest_framework import status, views
+from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+
+
+class UpdateCreditLineView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+    def post(self,request):
+        
+
+        creditLineId = request.data.get("creditLineId") 
+            
+
+
+        # subProcessId = request.data.get("subProcessId") 
+         
+        if creditLineId:  
+          
+            creditLine = CreditLine.objects.get(pk=creditLineId)
+           
+            purpose = request.data.get("purpose")  
+            if purpose: 
+                creditLine.purpose = purpose
+
+            security = request.data.get("security")  
+            if security: 
+                creditLine.security = security
+
+            creditLine.save()
+
+            return Response({
+                'message': 'Credit Line Updated', 
+                'creditLine': creditLine.id
+            },status= status.HTTP_202_ACCEPTED) 
+
+
+        return Response({'error':'Error on updateing creditline'},status.HTTP_400_BAD_REQUEST)
+
+
+
+
 class LoanViewSet(ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer 
