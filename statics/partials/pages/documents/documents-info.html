@@ -57,7 +57,7 @@
                                     </span>
                                     <span
                                         class="text-dark ml-2"
-                                        ng-click="edit(document.loan.id,document.loan.purpose,'Purpose')"
+                                        ng-click="edit(document.loan.id,document.loan.purpose,'Purpose','Loan')"
                                         data-toggle="modal"
                                         data-target="#edit-purpose-security"
                                     >
@@ -71,7 +71,7 @@
                                     </span>
                                     <span
                                         class="text-dark ml-2"
-                                        ng-click="edit(document.loan.id,document.loan.security,'Security')"
+                                        ng-click="edit(document.loan.id,document.loan.security,'Security','Loan')"
                                         data-toggle="modal"
                                         data-target="#edit-purpose-security"
                                     >
@@ -88,7 +88,7 @@
                                     </span>
                                     <span
                                         class="text-dark ml-2"
-                                        ng-click="edit(document.creditLine.id,document.creditLine.purpose,'Purpose')"
+                                        ng-click="edit(document.creditLine.id,document.creditLine.purpose,'Purpose','Credit Line')"
                                         data-toggle="modal"
                                         data-target="#edit-purpose-security"
                                     >
@@ -105,7 +105,7 @@
                                     </span>
                                     <span
                                         class="text-dark ml-2"
-                                        ng-click="edit(document.creditLine.id,document.creditLine.security,'Security')"
+                                        ng-click="edit(document.creditLine.id,document.creditLine.security,'Security','Credit Line')"
                                         data-toggle="modal"
                                         data-target="#edit-purpose-security"
                                     >
@@ -663,7 +663,7 @@
                     <h3 class="card-label">Summary</h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body text-center">
                 <div class="row">
                     <div class="col-xl-12">
                         <h4 class="mb-0">This file is now only available for viewing references.</h4>
@@ -897,8 +897,8 @@
                             </button>
                         </div>
                     </form>
-                    <div class="separator separator-dashed my-10"></div>
-                    <div class="timeline timeline-3 pb-5">
+                    <div class="separator separator-dashed my-10" ng-if="notes.length > 0"></div>
+                    <div class="timeline timeline-3 pb-5" ng-if="notes.length > 0">
                         <div class="timeline-items">
                             <div
                                 class="timeline-item"
@@ -918,6 +918,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="text-center" ng-if="notes.length == 0">
+                        <h6 class="font-size-sm">No records found</h6>
                     </div>
                     <div ng-if="notes">
                         <pagination
@@ -998,6 +1001,7 @@
             </div>
         </div>
     </div>
+    <!-- Start Modal Purpose Security -->
     <div
         id="edit-purpose-security"
         class="modal fade"
@@ -1044,4 +1048,5 @@
             </div>
         </div>
     </div>
+    <!-- End Modal Purpose Security -->
 </div>

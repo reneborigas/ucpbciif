@@ -14,17 +14,24 @@ define(function () {
         'ngAnimate',
         'ngTouch',
         'ui.bootstrap',
+        'ngIdle',
     ]);
 
     app.config([
         'cfpLoadingBarProvider',
         'blockUIConfig',
-        function (cfpLoadingBarProvider, blockUIConfig) {
+        'IdleProvider',
+        'KeepaliveProvider',
+        function (cfpLoadingBarProvider, blockUIConfig, IdleProvider, KeepaliveProvider) {
             cfpLoadingBarProvider.includeSpinner = false;
             cfpLoadingBarProvider.latencyThreshold = 1;
 
             blockUIConfig.autoBlock = false;
             blockUIConfig.templateUrl = 'statics/partials/customs/blockui.html';
+
+            IdleProvider.idle(90000);
+            IdleProvider.timeout(10);
+            // KeepaliveProvider.interval(10);
         },
     ]);
 
@@ -35,7 +42,9 @@ define(function () {
         '$http',
         'appLoginService',
         '$transitions',
-        function ($rootScope, $state, $stateParams, $http, appLoginService, $transitions) {
+        '$uibModal',
+        'Idle',
+        function ($rootScope, $state, $stateParams, $http, appLoginService, $transitions, $uibModal, Idle) {
             $http.defaults.xsrfHeaderName = 'X-CSRFToken';
             $http.defaults.xsrfCookieName = 'csrftoken';
 
@@ -55,6 +64,42 @@ define(function () {
                 if (transition.error().detail === 'Not Found') {
                     $state.go('app.404');
                 }
+            });
+
+            Idle.watch();
+            var warningInstance;
+            $rootScope.$on('IdleStart', function (e, countdown) {
+                warningInstance = $uibModal
+                    .open({
+                        animation: true,
+                        backdrop: 'static',
+                        templateUrl: '/statics/partials/customs/warning-dialog.html',
+                        size: 'md',
+                        windowClass: 'uib-modal',
+                        controller: function ($scope) {
+                            $scope.name = 'bottom';
+                        },
+                    })
+                    .closed.then(function () {
+                        window.alert('Modal closed');
+                    });
+            });
+
+            $rootScope.$on('IdleWarn', function (e, countdown) {
+                $rootScope.startValue = countdown;
+                $rootScope.$apply(function () {
+                    $rootScope.idleTimeRemaining = countdown;
+                });
+
+                console.log($rootScope.idleTimeRemaining);
+            });
+
+            $rootScope.$on('IdleEnd', function () {
+                warningInstance.dismiss();
+            });
+
+            $rootScope.$on('IdleTimeout', function () {
+                /* Logout user */
             });
 
             $rootScope.$state = $state;

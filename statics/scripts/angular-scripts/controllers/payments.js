@@ -645,7 +645,7 @@ define(function () {
                 icon: 'info',
                 buttons: {
                     cancel: false,
-                    confirm: 'Add Payment',
+                    confirm: 'Proceed',
                 },
             }).then((isConfirm) => {
                 if (isConfirm) {

@@ -10,6 +10,7 @@ require.config({
         bootstrap: 'libs/bootstrap/js/bootstrap.bundle.min',
 
         angular: 'libs/angular/angular.min',
+        ngIdle: 'libs/angular/angular-idle',
         ngAnimate: 'libs/angular/angular-animate.min',
         ngSanitize: 'libs/angular/angular-sanitize.min',
         ngRoute: 'libs/angular/angular-ui-router',
@@ -81,6 +82,9 @@ require.config({
         ngBootstrap: {
             deps: ['angular', 'ngAnimate', 'ngTouch'],
         },
+        ngIdle: {
+            deps: ['angular'],
+        },
         app: {
             deps: [
                 'jquery',
@@ -98,6 +102,7 @@ require.config({
                 'ngTags',
                 'ngTouch',
                 'ngBootstrap',
+                'ngIdle',
             ],
         },
         routes: {

@@ -16,7 +16,9 @@ router.register(r'status',StatusViewSet)
 
 
 
-urlpatterns =  [ path('updatecreditline/', UpdateCreditLineView.as_view()),
+urlpatterns =  [ 
+        path('updatecreditline/', UpdateCreditLineView.as_view()),
+        path('updateloanview/', UpdateLoanView.as_view()),
         ]
 
 

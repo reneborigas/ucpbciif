@@ -532,57 +532,103 @@ define(function () {
         };
 
         $scope.update = function () {
-            if ($scope.modalTitle == 'Security') {
-                $http
-                    .post('/api/loans/updatecreditline/', {
-                        creditLineId: $scope.update.id,
-                        security: $scope.update.note,
-                    })
-                    .then(
-                        function () {
-                            angular.element('#edit-purpose-security').modal('hide');
-                            $('body').removeClass('modal-open');
-                            $('.modal-backdrop').remove();
-                            $timeout(function () {
-                                $state.reload();
-                            }, 0);
-                            toastr.success('Success', 'Document Security updated.');
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not update document. Please contact System Administrator.'
-                            );
-                        }
-                    );
-            } else {
-                $http
-                    .post('/api/loans/updatecreditline/', {
-                        creditLineId: $scope.update.id,
-                        purpose: $scope.update.note,
-                    })
-                    .then(
-                        function () {
-                            angular.element('#edit-purpose-security').modal('hide');
-                            $('body').removeClass('modal-open');
-                            $('.modal-backdrop').remove();
-                            $state.reload();
-                            toastr.success('Success', 'Document Purpose updated.');
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not update document. Please contact System Administrator.'
-                            );
-                        }
-                    );
+            if ($scope.model == 'Credit Line') {
+                if ($scope.modalTitle == 'Security') {
+                    $http
+                        .post('/api/loans/updatecreditline/', {
+                            creditLineId: $scope.update.id,
+                            security: $scope.update.note,
+                        })
+                        .then(
+                            function (response) {
+                                angular.element('#edit-purpose-security').modal('hide');
+                                $('body').removeClass('modal-open');
+                                $('.modal-backdrop').remove();
+                                $scope.document.creditLine.security = response.data.new_value;
+
+                                toastr.success('Success', 'Document Security updated.');
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not update document. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                } else {
+                    $http
+                        .post('/api/loans/updatecreditline/', {
+                            creditLineId: $scope.update.id,
+                            purpose: $scope.update.note,
+                        })
+                        .then(
+                            function (response) {
+                                angular.element('#edit-purpose-security').modal('hide');
+                                $('body').removeClass('modal-open');
+                                $('.modal-backdrop').remove();
+                                $scope.document.creditLine.purpose = response.data.new_value;
+                                toastr.success('Success', 'Document Purpose updated.');
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not update document. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                }
+            } else if ($scope.model == 'Loan') {
+                if ($scope.modalTitle == 'Security') {
+                    $http
+                        .post('/api/loans/updateloanview/', {
+                            loanId: $scope.update.id,
+                            security: $scope.update.note,
+                        })
+                        .then(
+                            function (response) {
+                                angular.element('#edit-purpose-security').modal('hide');
+                                $('body').removeClass('modal-open');
+                                $('.modal-backdrop').remove();
+                                $scope.document.loan.security = response.data.new_value;
+                                toastr.success('Success', 'Document Security updated.');
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not update document. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                } else {
+                    $http
+                        .post('/api/loans/updateloanview/', {
+                            loanId: $scope.update.id,
+                            purpose: $scope.update.note,
+                        })
+                        .then(
+                            function (response) {
+                                angular.element('#edit-purpose-security').modal('hide');
+                                $('body').removeClass('modal-open');
+                                $('.modal-backdrop').remove();
+                                $scope.document.loan.purpose = response.data.new_value;
+                                toastr.success('Success', 'Document Purpose updated.');
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not update document. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                }
             }
         };
 
-        $scope.edit = function (id, value, title) {
+        $scope.edit = function (id, value, title, model) {
             $scope.update.id = id;
             $scope.modalTitle = title;
             $scope.update.note = value;
+            $scope.model = model;
         };
 
         $scope.viewBorrower = function (id) {

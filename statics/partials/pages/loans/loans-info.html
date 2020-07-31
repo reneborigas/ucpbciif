@@ -36,7 +36,6 @@
                                 </a>
                             </div>
                         </div>
-
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
                             <div class="mr-3">
                                 <div class="d-flex flex-wrap my-2">
@@ -82,11 +81,27 @@
                                     <span class="font-weight-bolder text-dark">
                                         {{ loan.purpose }}
                                     </span>
+                                    <span
+                                        class="text-dark ml-2"
+                                        ng-click="edit(loan.id,loan.purpose,'Purpose')"
+                                        data-toggle="modal"
+                                        data-target="#edit-purpose-security"
+                                    >
+                                        <i class="fad fa-edit"></i>
+                                    </span>
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="font-weight-bolder mr-2">Security:</span>
                                     <span class="font-weight-bolder text-dark">
                                         {{ loan.security }}
+                                    </span>
+                                    <span
+                                        class="text-dark ml-2"
+                                        ng-click="edit(loan.id,loan.security,'Security')"
+                                        data-toggle="modal"
+                                        data-target="#edit-purpose-security"
+                                    >
+                                        <i class="fad fa-edit"></i>
                                     </span>
                                 </div>
                             </div>
@@ -1534,596 +1549,52 @@
             </div>
         </div>
     </div>
-
-    <div class="col-xl-3">
-        <!-- <div class="row">
-            <div class="col-xl-12">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <span class="card-icon">
-                                <i class="fad fa-users-class"></i>
-                            </span>
-                            <h3 class="card-label">Overview</h3>
-                        </div>
-                        <div class="card-toolbar">
-                            <div class="dropdown dropdown-inline">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary float-right"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <i class="fal fa-cogs"></i>
-                                    Actions
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="" ng-click="edit(borrower.borrowerId)">
-                                        <i class="fal fa-edit mr-2"></i>
-                                        Update
-                                    </a>
-                                    <a class="dropdown-item" href="" ng-click="delete(borrower.borrowerId)">
-                                        <i class="fal fa-trash-alt mr-2"></i>
-                                        Delete
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Code:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ document.documentCode }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Name:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ document.name }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Process:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">
-                                    {{document.subProcessName }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Borrower:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">
-                                    <a href="" ng-click="viewBorrower(document.borrower)">
-                                        {{ document.borrowerName }}
-                                    </a>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Date Created:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">
-                                    {{ document.dateCreated | date : 'medium' }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Description:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ document.description }}</span>
-                            </div>
-                        </div>
-                        <div class="form-group form-group-xs row">
-                            <label class="col-4 col-form-label">Remarks:</label>
-                            <div class="col-8">
-                                <span class="form-control-plaintext font-weight-bold">{{ document.remarks }}</span>
-                            </div>
+    <!-- Start Modal Purpose Security -->
+    <div
+        id="edit-purpose-security"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit {{modalTitle}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="pb-1">
+                        <div class="form-group">
+                            <label>{{modalTitle}}</label>
+                            <textarea
+                                ng-model="update.note"
+                                name="purpose"
+                                type="text"
+                                rows="3"
+                                cols="50"
+                                class="form-control form-control-solid textarea"
+                            ></textarea>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-12">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <span class="card-icon">
-                                <i class="fad fa-users-class"></i>
-                            </span>
-                            <h3 class="card-label">Status</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group form-group-xs row">
-                            <label class="col-8 col-form-label">{{document.documentMovements[0].status.name}}</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-12">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <span class="card-icon">
-                                <i class="fad fa-users-class"></i>
-                            </span>
-                            <h3 class="card-label">Notes</h3>
-                        </div>
-                    </div>
-                    <div class="card-body" block-ui="noteBlockUI">
-                        <div class="container">
-                            <form class="form">
-                                <div class="form-group">
-                                    <textarea
-                                        class="form-control form-control-lg form-control-solid"
-                                        ng-model="newNote.noteDescription"
-                                        name="noteDescription"
-                                        rows="3"
-                                        placeholder="Type notes"
-                                    ></textarea>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <a
-                                        href="#"
-                                        class="btn btn-light-primary font-weight-bold"
-                                        ng-disabled="!newNote.noteDescription"
-                                        ng-click="addNote(document)"
-                                    >
-                                        <i class="fal fa-plus mr-2"></i>
-                                        Add Notes
-                                    </a>
-                                </div>
-                            </form>
-                            <div class="separator separator-dashed my-10"></div>
-                            <div class="timeline timeline-3 pb-5">
-                                <div class="timeline-items">
-                                    <div
-                                        class="timeline-item"
-                                        ng-repeat="note in notes | orderBy:'-' | startFrom:currentPageNote*pageSizeNote | limitTo: pageSizeNote "
-                                    >
-                                        <div class="timeline-media">
-                                            <i class="fad fa-sticky-note text-primary"></i>
-                                        </div>
-                                        <div class="timeline-content">
-                                            <p class="p-0">
-                                                {{ note.note}}
-                                            </p>
-                                            <small class="text-dark-75 font-weight-bold">
-                                                {{ note.committeeName }}
-                                            </small>
-                                            <br />
-                                            <small class="text-muted">{{ note.action_time | date : 'medium' }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="d-flex justify-content-center align-items-center flex-wrap"
-                                ng-if="pageRangeNote(notes.length).length > 1"
-                            >
-                                <div class="d-flex flex-wrap py-2 mr-3">
-                                    <button
-                                        href="#"
-                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                        ng-disabled="currentPageNote == 0"
-                                        ng-click="gotoPrevNote()"
-                                    >
-                                        <i class="fas fa-chevron-left icon-sm"></i>
-                                    </button>
-                                    <button
-                                        href="#"
-                                        class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                        ng-class="{ 'active' : n == currentPageNote + 1 }"
-                                        ng-repeat="n in pageRangeNote(notes.length)"
-                                        ng-click="jumpToPageNote(n)"
-                                    >
-                                        <small>{{n}}</small>
-                                    </button>
-                                    <button
-                                        href="#"
-                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                        ng-disabled="currentPageNote >=notes.length/pageSizeNote - 1"
-                                        ng-click="gotoNextNote()"
-                                    >
-                                        <i class="fas fa-chevron-right icon-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-    </div>
-
-    <div class="col-xl-9">
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Loan</h3>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <h4 class="mb-0">{{ document.loan.amount }}</h4>
-                        <p>Loan Amount</p>
-                        <h4 class="mb-0">{{ document.loan.interestRate }}</h4>
-                        <p>Interest Rate</p>
-                        <h4 class="mb-0">{{ document.loan.term_name }}</h4>
-                        <p>Term</p>
-                        <h4 class="mb-0">{{ document.loan.purpose }}</h4>
-                        <p>Purpose</p>
-                        <h4 class="mb-0">{{ document.loan.security }}</h4>
-                        <p>Security</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header align-items-center border-0 mt-4">
-                <h3 class="card-title align-items-start flex-column">
-                    <span class="font-weight-bolder text-dark">Activities</span>
-                </h3>
-            </div>
-            <div class="card-body pt-4">
-                <div class="timeline timeline-6 mt-3">
-                    <div
-                        class="timeline-item align-items-start"
-                        ng-repeat="documentMovement in documentMovements | orderBy:'-'"
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="update(update)"
                     >
-                        <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">
-                            {{ documentMovement.dateCreated | date : 'medium' }}
-                        </div>
-                        <div class="timeline-badge">
-                            <i class="fal fa-genderless text-success icon-xxl"></i>
-                        </div>
-                        <div class="timeline-content text-dark-50">
-                            <div class="d-flex mb-3">
-                                <h6 class="text-dark-75 text-hover-primary font-weight-bold">
-                                    {{ documentMovement.name }}
-                                    <span ng-if="documentMovement.outputName">-</span>
-                                    {{ documentMovement.outputName }}
-                                </h6>
-                                <span class="label label-light-info font-weight-bolder label-inline ml-2">
-                                    {{ documentMovement.statusName }}
-                                </span>
-                            </div>
-                            <p class="p-0 font-size-h6">
-                                {{ documentMovement.description }}
-                            </p>
-                            <p class="p-0">
-                                <i class="font-size-sm">Commitee: {{ documentMovement.committeeName }}</i>
-                            </p>
-                        </div>
-                    </div>
+                        Update
+                    </button>
                 </div>
             </div>
-        </div> -->
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header">
-                <div class="card-toolbar">
-                    <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
-                        <li class="nav-item" ng-repeat="activityTemplate in activityTemplates">
-                            <a class="nav-link" data-toggle="tab" role="tab" ng-class="{ 'active' : activityTemplate.templateNumber == currentActivityTemplate }"  ng-click="goToActivityTemplate(activityTemplate.templateNumber)" >
-                                <span class="nav-icon"><i class="{{ activityTemplate.icon }}"></i></span>
-                                <span class="nav-text">{{ activityTemplate.name }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="tab-content pt-3">
-                    <div class="card card-custom" ng-controller="DocumentListController">
-                        <table class="table table-light table-borderless" ng-table="tableDocumentMovements">
-                            <tr ng-repeat="documentmovement in $data | filter : {  documentId : document.id }" align="center">
-                                <td data-title="'Activity'" style="width: 28%">
-                                    {{ documentmovement.name }} - {{ documentmovement.outputName }}
-                                </td>
-                                <td data-title="'Committee'" style="width: 18%">
-                                    {{ documentmovement.committeeName }}
-                                </td>
-                                <td data-title="'Status'" style="width: 18%">
-                                    {{ documentmovement.statusName }}
-                                </td>
-                                <td data-title="'Description'" style="width: 18%">
-                                    {{ documentmovement.description }}
-                                </td>
-                                <td data-title="'Date'" style="width: 18%">
-                                    {{ documentmovement.dateCreated }}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="card card-custom gutter-b" ng-if="currentStep">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Procedure</h3>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <h4 class="mb-0">{{ currentStep.order }}. {{ currentStep.name }}</h4>
-                        <p>Current Step</p>
-                        <h4 class="mb-0">
-                            <span ng-repeat="position in currentStep.position">
-                                {{$first ? '' : $last ? ' and ' : ', '}}{{ position.name}}
-                            </span>
-                        </h4>
-                        <p>Assigned Committee</p>
-                        <h6 class="mb-0">{{ currentStep.description}}</h6>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Requirements</h3>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="vertical-wizard">
-                    <div class="wizard-nav border-right py-8 px-8 py-lg-12 px-lg-8">
-                        <div class="wizard-steps">
-                            <div
-                                class="wizard-step"
-                                ng-class="{'active':processRequirement.id === currentRequirement.id }"
-                                ng-repeat="processRequirement in processRequirements"
-                                ng-click="goToRequirement(processRequirement.id)"
-                            >
-                                <div class="wizard-wrapper">
-                                    <div class="wizard-icon">
-                                        <i class="fad fa-file-plus"></i>
-                                    </div>
-                                    <div class="wizard-label">
-                                        <h3 class="wizard-title">
-                                            {{ processRequirement.name }}
-                                        </h3>
-                                        <div class="wizard-desc">
-                                            {{ processRequirement.isRequiredText }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8" block-ui="attachmentBlockUI">
-                        <div class="row">
-                            <div class="offset-xxl-2 col-xxl-8">
-                                <div class="pb-5">
-                                    <div class="pb-5">
-                                        <div class="font-size-h6">
-                                            {{ currentRequirement.name }}
-                                            <span class="text-muted pt-2 font-size-sm d-block">
-                                                {{ currentRequirement.description }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ul class="text-dark list-unstyled">
-                                        <li class="font-size-h6">Attachments</li>
-                                        <ul class="font-size-h7">
-                                            <li
-                                                ng-repeat="stepRequirementAttachment in currentRequirement.attachments | startFrom:currentPageAttachment*pageSizeAttachment | limitTo: pageSizeAttachment "
-                                            >
-                                                <a
-                                                    href=""
-                                                    ng-click="downloadFile(stepRequirementAttachment.fileAttachment,stepRequirementAttachment.fileName)"
-                                                >
-                                                    {{ stepRequirementAttachment.fileName | trimStringWithExtension: 20
-                                                    }} -
-                                                    <span
-                                                        ng-if="stepRequirementAttachment.description"
-                                                        ng-bind="stepRequirementAttachment.description"
-                                                    ></span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </ul>
-                                    <div
-                                        class="d-flex justify-content-center align-items-center flex-wrap"
-                                        ng-if="pageRangeAttachment(currentRequirement.attachments.length).length > 1"
-                                    >
-                                        <div class="d-flex flex-wrap py-2 mr-3">
-                                            <button
-                                                href="#"
-                                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                                ng-disabled="currentPageAttachment == 0"
-                                                ng-click="gotoPrevAttachment()"
-                                            >
-                                                <i class="fas fa-chevron-left icon-sm"></i>
-                                            </button>
-                                            <button
-                                                href="#"
-                                                class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                                ng-class="{ 'active' : n == currentPageAttachment + 1 }"
-                                                ng-repeat="n in pageRangeAttachment(currentRequirement.attachments.length)"
-                                                ng-click="jumpToPageAttachment(n)"
-                                            >
-                                                <small>{{n}}</small>
-                                            </button>
-                                            <button
-                                                href="#"
-                                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                                ng-disabled="currentPageAttachment >=currentRequirement.attachments.length/pageSizeAttachment - 1"
-                                                ng-click="gotoNextAttachment()"
-                                            >
-                                                <i class="fas fa-chevron-right icon-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pb-5">
-                                    <div class="form-group">
-                                        <label>File Attachment</label>
-                                        <input
-                                            type="file"
-                                            id="fileAttachment"
-                                            name="fileAttachment"
-                                            multiple
-                                            select-ng-files="fileAttachment"
-                                            ng-model="fileAttachment.attachment"
-                                            hidden
-                                        />
-                                        <div class="dropzone dropzone-multi">
-                                            <div class="dropzone-panel mb-lg-0 mb-2">
-                                                <a
-                                                    class="dropzone-select btn btn-light-primary font-weight-bold btn-sm"
-                                                    ng-click="selectFile()"
-                                                >
-                                                    Select files
-                                                </a>
-                                                <a
-                                                    class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm"
-                                                >
-                                                    Remove All
-                                                </a>
-                                            </div>
-                                            <div class="dropzone-items">
-                                                <div class="dropzone-item" ng-repeat="file in fileList">
-                                                    <div class="dropzone-file">
-                                                        <div class="dropzone-filename">
-                                                            <span>{{ file.name }}</span>
-                                                            <strong>
-                                                                <span>({{ file.size/1000 | number : 2 }} KB)</span>
-                                                            </strong>
-                                                        </div>
-                                                        <div class="dropzone-error" data-dz-errormessage></div>
-                                                    </div>
-                                                    <div class="dropzone-toolbar">
-                                                        <span
-                                                            class="dropzone-delete"
-                                                            data-dz-remove
-                                                            ng-click="removeFile($index)"
-                                                        >
-                                                            <i class="fal fa-times icon-md"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description *</label>
-                                        <textarea
-                                            ng-model="newAttachment.attachmentDescription"
-                                            name="attachmentDescription"
-                                            type="text"
-                                            rows="4"
-                                            cols="50"
-                                            class="form-control form-control-solid form-control-lg textarea"
-                                        ></textarea>
-                                        <span class="form-text text-muted">Please enter attachment description.</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end border-top mt-5 pt-10">
-                                    <button
-                                        class="btn btn-outline-primary ont-weight-bold text-uppercase"
-                                        type="button"
-                                        ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription"
-                                        ng-click="attachFile(currentRequirement)"
-                                    >
-                                        <i class="fal fa-plus mr-2"></i>
-                                        Attach
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Actions</h3>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="vertical-wizard">
-                    <div class="wizard-nav border-right py-8 px-8 py-lg-12 px-lg-8">
-                        <ul class="text-dark list-unstyled">
-                            <li class="font-size-h6">Summary</li>
-                            <ul class="font-size-h7">
-                                <li>Added attachment file to requirement 1.</li>
-                            </ul>
-                        </ul>
-                    </div>
-                    <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8">
-                        <div class="row">
-                            <div class="offset-xxl-2 col-xxl-8">
-                                <form class="form" id="kt_form">
-                                    <div class="pb-5">
-                                        <div class="form-group">
-                                            <label>Final Remarks</label>
-                                            <textarea
-                                                ng-model="remarks"
-                                                name="remarks"
-                                                type="text"
-                                                rows="4"
-                                                cols="50"
-                                                class="form-control form-control-solid form-control-lg textarea"
-                                            ></textarea>
-                                            <span class="form-text text-muted">Please enter your final Remarks.</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-end border-top mt-5 pt-10">
-                                        <div>
-                                            <span ng-repeat="output in currentStep.outputs">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
-                                                    ng-click="takeActions(document.id,output,currentStep)"
-                                                >
-                                                    {{output.name}}
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+        </div>
     </div>
-    <!-- <div class="card card-custom gutter-b">
-            <div class="card-header">
-                <div class="card-toolbar">
-                    <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
-                        <li class="nav-item" ng-repeat="template in templates">
-                            <a class="nav-link" data-toggle="tab" role="tab" ng-class="{ 'active' : template.templateNumber == currentTemplate }" ng-click="goToTemplate(template.templateNumber)">
-                                <span class="nav-icon"><i class="{{ template.icon }}"></i></span>
-                                <span class="nav-text">{{ template.name }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="tab-content pt-3">
-                    <ng-include src="getTemplate()"></ng-include>                    
-                </div>
-            </div>
-        </div> -->
+    <!-- End Modal Purpose Security -->
 </div>

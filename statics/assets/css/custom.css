@@ -2686,3 +2686,18 @@ ul.lower-alpha {
 .swal-modal {
 	width: 400px;
 }
+
+.modal-center-override {
+	top: 50% !important;
+	transform: translateY(-50%) !important;
+	-webkit-transform: translateY(-50%) !important;
+	-moz-transform: translateY(-50%) !important;
+	-o-transform: translateY(-50%) !important;  
+  }
+
+  @media (min-width: 576px) {
+    .modal.uib-modal .modal-dialog {
+        max-width: 500px;
+        margin: 5rem auto !important;
+    }
+}

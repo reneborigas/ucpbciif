@@ -32,7 +32,6 @@ urlpatterns = [
     path('404', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('menu', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     
-    
     #loans
     path('payments', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('payments/new', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),

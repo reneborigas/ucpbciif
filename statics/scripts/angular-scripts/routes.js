@@ -41,6 +41,11 @@ define(function () {
                                 return $ocLazyLoad.load([
                                     {
                                         serie: true,
+                                        name: 'Bootstrap',
+                                        files: ['/statics/libs/bootstrap/js/css/bootstrap.css'],
+                                    },
+                                    {
+                                        serie: true,
                                         name: 'Font Awesome',
                                         files: ['/statics/assets/fonts/font-awesome/css/fontawesome-all.css'],
                                     },

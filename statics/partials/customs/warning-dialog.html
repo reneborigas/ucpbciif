@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Session Timeout Notification</h4>
+</div>
+<div class="modal-body" id="modal-body">
+    <p>Your session is about to expire.</p>
+    <p>
+        Redirecting in
+        <span class="countdown-holder">{{$root.idleTimeRemaining}}s</span>
+        seconds.
+    </p>
+    <!-- <div class="progress"></div> -->
+    <uib-progressbar
+        class="progress-striped progress-bar-animated"
+        max="100"
+        value="($root.idleTimeRemaining * 1000) / 100"
+        type="info"
+    >
+        <span class="countdown-holder" ng-bind="$root.idleTimeRemaining + 's'"></span>
+    </uib-progressbar>
+    <div class="modal-footer">
+        <button id="session-timeout-dialog-logout" type="button" class="btn btn-default">Logout</button>
+        <button id="session-timeout-dialog-keepalive" type="button" class="btn btn-primary" data-dismiss="modal">
+            Stay Connected
+        </button>
+    </div>
+</div>

@@ -185,21 +185,20 @@ define(function () {
                                 });
 
                                 $http
-                                .get('/api/documents/documents/', {
-                                    params: { loanId: $scope.loan.id },
-                                })
-                                .then(
-                                    function (response) {
-                                        $scope.documents = response.data;
-                                         
-                                    },
-                                    function (error) {
-                                        toastr.error(
-                                            'Error ' + error.status + ' ' + error.statusText,
-                                            'Could not retrieve Documents. Please contact System Administrator.'
-                                        );
-                                    }
-                                );
+                                    .get('/api/documents/documents/', {
+                                        params: { loanId: $scope.loan.id },
+                                    })
+                                    .then(
+                                        function (response) {
+                                            $scope.documents = response.data;
+                                        },
+                                        function (error) {
+                                            toastr.error(
+                                                'Error ' + error.status + ' ' + error.statusText,
+                                                'Could not retrieve Documents. Please contact System Administrator.'
+                                            );
+                                        }
+                                    );
 
                                 $scope.loadNotes();
                             },
@@ -247,11 +246,10 @@ define(function () {
             });
         };
 
-
         $scope.newLoanRelease = function (borrowerId, loanId) {
             $state.go('app.borrowers.create_loan_release', { borrowerId: borrowerId, loanId: loanId });
         };
-        $scope.goToFile = function (subProcessName,documentId) {
+        $scope.goToFile = function (subProcessName, documentId) {
             var subProcessNameSlug = appFactory.slugify(subProcessName);
             $state.go('app.documents.info', { subProcessName: subProcessNameSlug, documentId: documentId });
         };
@@ -282,6 +280,58 @@ define(function () {
 
         $scope.previewCheckRelease = function (id) {
             $window.open('/print/loans/check/' + id, '_blank', 'width=800,height=800');
+        };
+
+        $scope.update = function () {
+            if ($scope.modalTitle == 'Security') {
+                $http
+                    .post('/api/loans/updateloanview/', {
+                        loanId: $scope.update.id,
+                        security: $scope.update.note,
+                    })
+                    .then(
+                        function (response) {
+                            angular.element('#edit-purpose-security').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $scope.loan.security = response.data.new_value;
+                            toastr.success('Success', 'Loan Security updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update document. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            } else {
+                $http
+                    .post('/api/loans/updateloanview/', {
+                        loanId: $scope.update.id,
+                        purpose: $scope.update.note,
+                    })
+                    .then(
+                        function (response) {
+                            angular.element('#edit-purpose-security').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $scope.loan.purpose = response.data.new_value;
+                            toastr.success('Success', 'Loan Purpose updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update document. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            }
+        };
+
+        $scope.edit = function (id, value, title) {
+            $scope.update.id = id;
+            $scope.modalTitle = title;
+            $scope.update.note = value;
         };
 
         // -- Start Simple Pagination --

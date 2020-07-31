@@ -21,11 +21,8 @@ class UpdateCreditLineView(views.APIView):
         
 
         creditLineId = request.data.get("creditLineId") 
-            
-
-
         # subProcessId = request.data.get("subProcessId") 
-         
+        new_value =''
         if creditLineId:  
           
             creditLine = CreditLine.objects.get(pk=creditLineId)
@@ -33,23 +30,51 @@ class UpdateCreditLineView(views.APIView):
             purpose = request.data.get("purpose")  
             if purpose: 
                 creditLine.purpose = purpose
-
+                new_value = purpose
             security = request.data.get("security")  
             if security: 
                 creditLine.security = security
-
+                new_value = security
             creditLine.save()
 
             return Response({
                 'message': 'Credit Line Updated', 
-                'creditLine': creditLine.id
+                'creditLine': creditLine.id,
+                'new_value': new_value
             },status= status.HTTP_202_ACCEPTED) 
 
 
-        return Response({'error':'Error on updateing creditline'},status.HTTP_400_BAD_REQUEST)
+        return Response({'error':'Error on updating creditline'},status.HTTP_400_BAD_REQUEST)
 
+class UpdateLoanView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+    def post(self,request):
+        loanId = request.data.get("loanId") 
+        new_value =''
+        if loanId:  
+            loan = Loan.objects.get(pk=loanId)
+           
+            purpose = request.data.get("purpose")  
+            if purpose: 
+                loan.purpose = purpose
+                new_value = purpose
+                
 
+            security = request.data.get("security")  
+            if security: 
+                loan.security = security
+                new_value = security
 
+            loan.save()
+
+            return Response({
+                'message': 'Loan Updated', 
+                'loan': loan.id,
+                'new_value': new_value
+            },status= status.HTTP_202_ACCEPTED) 
+
+        return Response({'error':'Error on updating loan'},status.HTTP_400_BAD_REQUEST)
 
 class LoanViewSet(ModelViewSet):
     queryset = Loan.objects.all()

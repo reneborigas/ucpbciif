@@ -1364,14 +1364,14 @@ define(function () {
                             if ($scope.subProcess.parentLastDocumentCreditLine) {
                                 return true;
                             } else {
-                                if ($scope.newCreditLineDetailsForm.$valid) {
+                                if ($scope.form.newCreditLineDetailsForm.$valid) {
                                     return true;
                                 } else {
                                     return false;
                                 }
                             }
                         } else {
-                            if ($scope.newCreditLineDetailsForm.$valid) {
+                            if ($scope.form.newCreditLineDetailsForm.$valid) {
                                 return true;
                             } else {
                                 return false;
@@ -1381,7 +1381,7 @@ define(function () {
 
                     $scope.save = function () {
                         console.log($scope.document);
-                        if ($scope.newLoanApplicationForm.$valid && $scope.checkDetails()) {
+                        if ($scope.form.newLoanApplicationForm.$valid && $scope.checkDetails()) {
                             swal({
                                 title: 'Create New Loan Application',
                                 text: 'Do you want to save and create this loan application file?',
