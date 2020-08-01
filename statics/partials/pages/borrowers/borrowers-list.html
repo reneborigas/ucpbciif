@@ -10,6 +10,59 @@
                         <h3 class="card-label">Borrowers List</h3>
                     </div>
                     <div class="card-toolbar">
+                        <div class="dropdown dropdown-inline mr-2">
+                            <button
+                                type="button"
+                                class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i class="fad fa-file-export"></i>
+                                Export
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    <li
+                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
+                                    >
+                                        Choose an option:
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" ng-click="printDataTable()">
+                                            <span class="navi-icon">
+                                                <i class="la la-print"></i>
+                                            </span>
+                                            <span class="navi-text">Print</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-excel-o"></i>
+                                            </span>
+                                            <span class="navi-text">Excel</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">CSV</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-pdf-o"></i>
+                                            </span>
+                                            <span class="navi-text">PDF</span>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-primary float-right" ui-sref="app.borrowers.add">
                             <i class="fad fa-user-plus mr-2"></i>
                             New Borrower
@@ -186,6 +239,7 @@
                         <table
                             class="table table-vertical-center datatable-table"
                             ng-table="tableBorrowers"
+                            id="tableBorrowers"
                             template-pagination="statics/partials/customs/pagination.html"
                         >
                             <tr class="datatable-row" ng-repeat-start="borrower in $data">
@@ -270,7 +324,7 @@
                                     </a> -->
                                 </td>
                             </tr>
-                            <tr ng-hide="!contact.$hideRows" ng-repeat-end align="center">
+                            <tr ng-hide="!contact.$hideRows" ng-repeat-end align="center" print-exclude="true">
                                 <td colspan="7">
                                     <table class="table table-vertical-center table-light table-borderless">
                                         <thead>

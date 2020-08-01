@@ -1177,6 +1177,28 @@ define(function () {
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.loanId = $stateParams.loanId;
                     },
+                })
+                .state('print.documents.datatable', {
+                    url: '/:state',
+                    templateUrl: '/statics/partials/pages/print/datatable-dynamic-print.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Print',
+                    },
+                    params: {
+                        headers: '',
+                        cellValues: '',
+                    },
+                    controller: function ($scope, $stateParams, appFactory, $state) {},
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/print.js'],
+                                });
+                            },
+                        ],
+                    },
                 });
 
             $urlRouterProvider.otherwise('/');

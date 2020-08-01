@@ -9,6 +9,67 @@
                         </span>
                         <h3 class="card-label">Payment List</h3>
                     </div>
+                    <!-- <div class="card-toolbar">
+                        <button type="button" class="btn btn-primary float-right" ui-sref="app.borrowers.add">
+                            <i class="fad fa-user-plus mr-2"></i>
+                            New Borrower
+                        </button>
+                    </div> -->
+                    <div class="card-toolbar">
+                        <div class="dropdown dropdown-inline mr-2">
+                            <button
+                                type="button"
+                                class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i class="fad fa-file-export"></i>
+                                Export
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    <li
+                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
+                                    >
+                                        Choose an option:
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" ng-click="printDataTable()">
+                                            <span class="navi-icon">
+                                                <i class="la la-print"></i>
+                                            </span>
+                                            <span class="navi-text">Print</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-excel-o"></i>
+                                            </span>
+                                            <span class="navi-text">Excel</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">CSV</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-pdf-o"></i>
+                                            </span>
+                                            <span class="navi-text">PDF</span>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
@@ -200,17 +261,18 @@
                         <table
                             class="table table-vertical-center datatable-table"
                             ng-table="tablePayments"
+                            id="tablePayments"
                             template-pagination="statics/partials/customs/pagination.html"
                         >
                             <tr class="datatable-row" ng-repeat="payment in $data">
-                                <td
+                                <!-- <td
                                     class="datatable-cell datatable-cell-left text-right"
                                     header-class="'text-left'"
                                     data-title="'PAYMENT DATE'"
                                     sortable="'datePayment'"
                                 >
                                     {{ payment.datePayment | date: 'mediumDate' }}
-                                </td>
+                                </td> -->
 
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"
@@ -266,7 +328,7 @@
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"
                                     header-class="'text-right'"
-                                    data-title="'ADD> INTEREST'"
+                                    data-title="'ADD. INTEREST'"
                                     sortable="'additionalInterest'"
                                 >
                                     {{ payment.additionalInterest | currency :'₱'}}

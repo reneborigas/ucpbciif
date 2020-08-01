@@ -92,6 +92,7 @@ class LoanViewSet(ModelViewSet):
         loanTo = self.request.query_params.get('loanTo', None)
         loanTo = self.request.query_params.get('loanTo', None)
         loanProgram = self.request.query_params.get('loanProgram', None)
+        loanProgramName = self.request.query_params.get('loanProgramName', None)
         
         if loanId is not None:
             queryset = queryset.filter(id=loanId)
@@ -130,6 +131,9 @@ class LoanViewSet(ModelViewSet):
 
         if loanProgram is not None:
             queryset=queryset.filter(loanProgram=loanProgram)
+
+        if loanProgramName is not None:
+            queryset=queryset.filter(loanProgram__name=loanProgramName)
 
         return queryset
 
@@ -208,10 +212,6 @@ class CreditLineViewSet(ModelViewSet):
         if creditLineId is not None:
             queryset = queryset.filter(id=creditLineId)
 
-        for creditLine in queryset:
-            creditLine.remainingCreditLine = creditLine.getRemainingCreditLine()
-            creditLine.totalAvailment = creditLine.getTotalAvailment() 
-
         if term is not None:
             queryset = queryset.filter(term=term)
 
@@ -221,6 +221,7 @@ class CreditLineViewSet(ModelViewSet):
         if totalAvailmentFrom is not None and totalAvailmentTo is not None:
             creditLines = []
             for creditLine in queryset: 
+                creditLine.totalAvailment = creditLine.getTotalAvailment() 
                 if (int(creditLine.totalAvailment) >= int(totalAvailmentFrom)) and  (int(creditLine.totalAvailment) <= int(totalAvailmentTo)):
                     creditLines.append(creditLine.pk)
 
@@ -234,6 +235,10 @@ class CreditLineViewSet(ModelViewSet):
 
         if expiryDateFrom is not None and expiryDateTo is not None:
             queryset=queryset.filter(dateExpired__date__gte=expiryDateFrom).filter(dateExpired__date__lte=expiryDateTo)
+
+        for creditLine in queryset:
+            creditLine.remainingCreditLine = creditLine.getRemainingCreditLine()
+            creditLine.totalAvailment = creditLine.getTotalAvailment() 
 
         return queryset
 

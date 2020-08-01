@@ -11,7 +11,8 @@ define(function () {
         NgTableParams,
         $state,
         $timeout,
-        appFactory
+        appFactory,
+        $window
     ) {
         $scope.tablePayments = new NgTableParams(
             {
@@ -74,6 +75,7 @@ define(function () {
             {
                 name: 'Borrower',
                 showFilter: false,
+                filterFormat: 'uppercase',
                 params: {
                     param1: 'borrowerId',
                 },
@@ -81,6 +83,7 @@ define(function () {
             {
                 name: 'Principal Range',
                 showFilter: false,
+                filterFormat: "currency :'₱'",
                 params: {
                     param1: 'principalFrom',
                     param2: 'principalTo',
@@ -89,6 +92,7 @@ define(function () {
             {
                 name: 'Interest Range',
                 showFilter: false,
+                filterFormat: "currency :'₱'",
                 params: {
                     param1: 'interestFrom',
                     param2: 'interestTo',
@@ -97,6 +101,7 @@ define(function () {
             {
                 name: 'Payment Date Range',
                 showFilter: false,
+                filterFormat: "date : 'mediumDate'",
                 params: {
                     param1: 'paymentDateFrom',
                     param2: 'paymentDateTo',
@@ -105,6 +110,7 @@ define(function () {
             {
                 name: 'Total Payment Range',
                 showFilter: false,
+                filterFormat: "currency :'₱'",
                 params: {
                     param1: 'totalPaymentFrom',
                     param2: 'totalPaymentTo',
@@ -113,6 +119,7 @@ define(function () {
             {
                 name: 'Payment Type',
                 showFilter: false,
+                filterFormat: 'uppercase',
                 params: {
                     param1: 'paymentType',
                 },
@@ -120,6 +127,7 @@ define(function () {
             {
                 name: 'Status',
                 showFilter: false,
+                filterFormat: 'uppercase',
                 params: {
                     param1: 'status',
                 },
@@ -180,6 +188,84 @@ define(function () {
             },
             true
         );
+
+        $scope.retrieveHeaders = function () {
+            var headers = [];
+            var ngTable = document.getElementById('tablePayments');
+            var rowLength = ngTable.rows.length;
+
+            for (var i = 0; i < rowLength; i++) {
+                var ngCells = ngTable.rows.item(i).cells;
+                var cellLength = ngCells.length;
+
+                for (var j = 0; j < cellLength; j++) {
+                    var cellTitle = ngCells.item(j).getAttribute('data-title');
+                    if (cellTitle) {
+                        cellTitle = cellTitle.slice(1, -1);
+                        if (!headers.includes(cellTitle)) {
+                            headers.push(cellTitle);
+                        }
+                    }
+                }
+            }
+            return headers;
+        };
+
+        $scope.retrieveCellValues = function () {
+            var values = [];
+            var ngTable = document.getElementById('tablePayments');
+            var rowLength = ngTable.rows.length;
+
+            for (var i = 2; i < rowLength; i++) {
+                var ngCells = ngTable.rows.item(i).cells;
+                var cellLength = ngCells.length;
+                var cells = [];
+                for (var j = 0; j < cellLength; j++) {
+                    cells.push(ngCells.item(j).innerText);
+                }
+                values.push(cells);
+            }
+            return values;
+        };
+
+        $scope.loadCurrentUserInfo = function () {
+            var user = {};
+            appFactory.getCurrentUserInfo().then(function (data) {
+                user['name'] = data.fullName;
+                user['position'] = data.committeePosition;
+            });
+            return user;
+        };
+
+        $scope.printDataTable = function () {
+            var filters = [];
+            angular.forEach($scope.filters, function (filter) {
+                if (filter.showFilter) {
+                    var parameters = {};
+                    angular.forEach(filter.params, function (param) {
+                        parameters[param] = $scope.params[param];
+                    });
+                    filters.push({
+                        name: filter.name,
+                        filterFormat: filter.filterFormat,
+                        params: parameters,
+                    });
+                }
+            });
+            if ($scope.searchTermAuto) {
+                filters.push({
+                    name: 'Search',
+                    filterFormat: 'uppercase',
+                    params: { input: $scope.searchTermAuto },
+                });
+            }
+            var $popup = $window.open('/print/payments', '_blank', 'directories=0,width=800,height=800');
+            $popup.title = 'Payment List';
+            $popup.user = $scope.loadCurrentUserInfo();
+            $popup.filters = filters;
+            $popup.headers = $scope.retrieveHeaders();
+            $popup.cellValues = $scope.retrieveCellValues();
+        };
     });
 
     app.controller('NewPaymentController', function NewPaymentController(
@@ -477,7 +563,7 @@ define(function () {
                     parseFloat($scope.payment.principal) -
                     parseFloat($scope.payment.total) +
                     parseFloat($scope.payment.totalInterest) +
-                    parseFloat($scope.payment.penalty) 
+                    parseFloat($scope.payment.penalty)
                     // (parseFloat($scope.loan.interestBalance) - parseFloat($scope.payment.interest))
                 );
             } else {
@@ -512,7 +598,7 @@ define(function () {
             $scope.payment.check = parseFloat($scope.payment.check).toFixed(2);
             $scope.payment.interestPayment = parseFloat($scope.payment.interestPayment).toFixed(2);
             $scope.payment.penaltyPayment = parseFloat($scope.payment.penaltyPayment).toFixed(2);
-            $scope.payment.balance = parseFloat( $scope.payment.balance).toFixed(2);
+            $scope.payment.balance = parseFloat($scope.payment.balance).toFixed(2);
             $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
 
             // console.log($scope.payment.balance);
