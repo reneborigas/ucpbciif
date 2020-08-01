@@ -155,9 +155,14 @@ class CalculatePMTView(views.APIView):
         
         daysAdvanced = loan.term.paymentPeriod.paymentCycle - days 
         
-
+        interest = 0
         if daysAdvanced < 0:
             daysAdvanced = 0
+            interest = pmt.interest
+        else:
+            print(days)
+            interest =loanAmount * (loan.interestRate.interestRate/100) * days/360
+            # pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
 
         additionalInterest = 0
         
@@ -165,7 +170,8 @@ class CalculatePMTView(views.APIView):
             daysExceed = 0
 
         if daysExceed > 0:
-            additionalInterest = (pmt.payment )  *  (loan.interestRate.interestRate/100) * daysExceed/360
+            additionalInterest = (loanAmount )  *  (loan.interestRate.interestRate/100) * daysExceed/360
+
         penalty = 0
         if additionalInterest>0:
             penalty =  (pmt.payment + additionalInterest)  *  (loan.interestRate.interestRate/100) * daysExceed/360
@@ -177,7 +183,7 @@ class CalculatePMTView(views.APIView):
             'dateSchedule':dateSchedule,  
             'days': days,
             'principal':pmt.principal,
-            'interest':pmt.interest,
+            'interest':interest,
             'totalInterest':totalInterest,
             'additionalInterest':additionalInterest, 
             'daysExceed':daysExceed,

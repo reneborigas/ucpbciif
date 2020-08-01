@@ -168,6 +168,7 @@ class LoanSerializer(ModelSerializer):
 
     totalPayment = serializers.CharField(read_only=True)
     currentAmortizationItem =   AmortizationItemSerializer(read_only=True)
+    lastAmortizationItem =   AmortizationItemSerializer(read_only=True)
     # loanDocuments = DocumentSerializer(read_only=True,nany=True)
     
     # status=StatusSerializer(read_only=True)

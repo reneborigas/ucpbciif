@@ -108,6 +108,7 @@ class LoanViewSet(ModelViewSet):
             loan.latestAmortization = loan.getLatestAmortization  
             loan.outStandingBalance = loan.getOutstandingBalance
             loan.currentAmortizationItem = loan.getCurrentAmortizationItem
+            loan.lastAmortizationItem = loan.getLastAmortizationItem
             loan.totalObligations = loan.getTotalObligations
             loan.latestPayment = loan.getLatestPayment
             loan.totalPayment = loan.getTotalPayment

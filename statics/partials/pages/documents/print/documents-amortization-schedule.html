@@ -40,13 +40,13 @@
                                 </td>
                                 <td class="p-0">Granted:</td>
                                 <td class="p-0"colspan="2">
-                                    {{ loan.creditLine_dateApproved | date: 'mediumDate' }}
+                                    {{ loan.dateReleased | date: 'mediumDate' }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="p-0">Maturity:</td>
                                 <td class="p-0" colspan="2">
-                                    {{ loan.creditLine_dateExpired | date: 'mediumDate' }}
+                                    {{ loan.lastAmortizationItem.schedule | date: 'mediumDate' }}
                                 </td>
                             </tr>
                             <tr>
@@ -80,7 +80,7 @@
                             <tr>
                                 <td class="p-0" width="10%">Interest Amount:</td>
                                 <td class="p-0" >
-                                    0.00
+                                    {{ loan.totalAmortizationInterest | currency :'₱'}}
                                 </td>
                                 <td class="p-0" width="10%">Adv Interest:</td>
                                 <td class="p-0" >

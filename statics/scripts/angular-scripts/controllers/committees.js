@@ -226,7 +226,7 @@ define(function () {
                             function (error) {
                                 toastr.error(
                                     'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not load Commitee Members for ' +
+                                    'Could not load Commitee Personnel for ' +
                                         $scope.officeName +
                                         '. Please contact System Administrator.'
                                 );

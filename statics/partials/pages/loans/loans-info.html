@@ -107,14 +107,7 @@
                             </div>
                             <div class="d-flex flex-wrap align-items-center py-2">
                                 <div class="d-flex align-items-center" ng-show="loan.dateReleased">
-                                    <div class="mr-6">
-                                        <div class="font-weight-bold mb-2">Release Date</div>
-                                        <span
-                                            class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold"
-                                        >
-                                            {{ loan.dateReleased | date: 'mediumDate' }}
-                                        </span>
-                                    </div>
+                                    
                                     <div class="mr-6">
                                         <div class="font-weight-bold mb-2">Approval Date</div>
                                         <span
@@ -123,7 +116,7 @@
                                             {{ loan.creditLine_dateApproved | date: 'mediumDate' }}
                                         </span>
                                     </div>
-                                    <div class="">
+                                    <div class="mr-6">
                                         <div class="font-weight-bold mb-2">Expiry Date</div>
                                         <span
                                             class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold"
@@ -131,6 +124,22 @@
                                             {{ loan.creditLine_dateExpired | date: 'mediumDate' }}
                                         </span>
                                     </div>
+                                    <div class="mr-6">
+                                            <div class="font-weight-bold mb-2">Released Date</div>
+                                            <span
+                                                class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold"
+                                            >
+                                                {{ loan.dateReleased | date: 'mediumDate' }}
+                                            </span>
+                                        </div>
+                                        <div class="mr-6">
+                                                <div class="font-weight-bold mb-2">Maturity Date</div>
+                                                <span
+                                                   class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold"
+                                                >
+                                                   {{ loan.lastAmortizationItem.schedule | date: 'mediumDate' }}
+                                                </span>
+                                            </div>
                                 </div>
                             </div>
                         </div>
@@ -227,6 +236,17 @@
                             </span>
                         </div>
                     </div>
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                            <span class="mr-4">
+                                <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
+                            </span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Total Payment</span>
+                                <span class="font-weight-bolder font-size-h5">
+                                        {{ loan.totalPayment | currency :'₱'}}
+                                </span>
+                            </div>
+                        </div>
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
@@ -661,7 +681,7 @@
                                         </div>
                                     </th>
                                     <th>
-                                        <div class="text-right px-2">
+                                        <div class="text-center px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
                                                 Status
                                             </span>
@@ -705,6 +725,16 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
+                                    <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                                </div>
+                                            </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -797,7 +827,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.amortizationStatus_name}}
                                             </span>
@@ -1288,6 +1318,20 @@
                                             </span>
                                         </div>
                                     </th>
+                                    <th>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 text-uppercase font-size-lg">
+                                                    Add. Interest
+                                                </span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 text-uppercase font-size-lg">
+                                                    Penalty
+                                                </span>
+                                            </div>
+                                        </th>
                                     <!-- <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -1353,6 +1397,16 @@
                                         </div>
                                     </td>
                                     <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                                <div class="text-right px-2">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                                </div>
+                                            </td>
+                                    <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ loan.amount | currency :'₱'}}
@@ -1403,6 +1457,27 @@
                                             </span>
                                         </div>
                                     </td> -->
+                                    <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortizationItem.additionalInterest | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortizationItem.penalty | currency :'₱'}}
+                                                </span>
+    
+                                                <span
+                                                    class="text-dark-75 font-weight-bolder font-size-lg"
+                                                    ng-if="amortization.penalty > 0"
+                                                >
+                                                    (+{{ amortizationItem.daysExceed }} days)
+                                                </span>
+                                            </div>
+                                        </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1460,6 +1535,16 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
+                                      <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
                                     <td>
                                         <div class="text-right">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>

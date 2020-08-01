@@ -477,8 +477,8 @@ define(function () {
                     parseFloat($scope.payment.principal) -
                     parseFloat($scope.payment.total) +
                     parseFloat($scope.payment.totalInterest) +
-                    parseFloat($scope.payment.penalty) +
-                    (parseFloat($scope.loan.interestBalance) - parseFloat($scope.payment.interest))
+                    parseFloat($scope.payment.penalty) 
+                    // (parseFloat($scope.loan.interestBalance) - parseFloat($scope.payment.interest))
                 );
             } else {
                 return (
@@ -512,8 +512,8 @@ define(function () {
             $scope.payment.check = parseFloat($scope.payment.check).toFixed(2);
             $scope.payment.interestPayment = parseFloat($scope.payment.interestPayment).toFixed(2);
             $scope.payment.penaltyPayment = parseFloat($scope.payment.penaltyPayment).toFixed(2);
-            // $scope.payment.balance = parseFloat( $scope.payment.balance).toFixed(2);
-            // $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
+            $scope.payment.balance = parseFloat( $scope.payment.balance).toFixed(2);
+            $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
 
             // console.log($scope.payment.balance);
             // console.log($scope.payment.overPayment);
@@ -538,10 +538,10 @@ define(function () {
                                 $state.go('app.loans.info', { loanId: $scope.payment.loan });
                             },
                             function (error) {
-                                toastr.error(
-                                    'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not create payment. Please contact System Administrator.'
-                                );
+                                // toastr.error(
+                                //     'Error ' + error.status + ' ' + error.statusText,
+                                //     'Could not create payment. Please contact System Administrator.'
+                                // );
                             }
                         );
                     }

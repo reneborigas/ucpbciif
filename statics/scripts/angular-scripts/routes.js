@@ -800,19 +800,19 @@ define(function () {
                     url: '',
                     templateUrl: '/statics/partials/pages/committees/committees-offices.html',
                     data: {
-                        pageTitle: 'UCPB CIIF | Committee Offices List',
-                        stateTitle: 'Committee Offices',
+                        pageTitle: 'UCPB CIIF | Offices List',
+                        stateTitle: 'Offices',
                     },
                     ncyBreadcrumb: {
-                        label: 'Committee Offices',
+                        label: 'Offices',
                     },
                 })
                 .state('app.committees.add_office', {
                     url: '/add',
                     templateUrl: '/statics/partials/pages/committees/committees-offices-add.html',
                     data: {
-                        pageTitle: 'UCPB CIIF | Committee Offices Add',
-                        stateTitle: 'Committee Offices Add',
+                        pageTitle: 'UCPB CIIF | Offices Add',
+                        stateTitle: 'Offices Add',
                     },
                     ncyBreadcrumb: {
                         label: 'Add',
@@ -823,7 +823,7 @@ define(function () {
                     url: '/:officeName',
                     templateUrl: '/statics/partials/pages/committees/committees-info.html',
                     data: {
-                        pageTitle: 'UCPB CIIF | Committee Offices Info',
+                        pageTitle: 'UCPB CIIF | Offices Info',
                     },
                     ncyBreadcrumb: {
                         label: '{{ officeName }}',

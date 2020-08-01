@@ -561,7 +561,17 @@ class Loan(models.Model):
                 if (i==amortizations.count()): 
                     return item
                 i = i + 1 
-  
+
+
+    def getLastAmortizationItem(self):
+        
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        amortizations = self.amortizations.filter(amortizationStatus__name='PAID')
+
+
+        if latestAmortization: 
+             return latestAmortization.amortizationItems.order_by('-id').first()
+                 
 
 class Amortization(models.Model): 
     
