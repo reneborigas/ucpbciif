@@ -59,6 +59,17 @@ class CalendarAmortizationItemSerializer(ModelSerializer):
         model = AmortizationItem        
         fields =  ['title','start','className','description','url','backgroundColor']
 
+
+    # class DashboardDataSerialiazer(ModelSerializer): 
+    #     borrowerCount   = serializers.CharField(read_only=True) 
+    #     totalPayments = serializers.CharField(read_only=True)
+    #     totalLoans = serializers.CharField(read_only=True)
+    #     totalBalance = serializers.CharField(read_only=True)
+    
+    #     class Meta:
+    #         model = Loan        
+    #         fields =  ['borrowerCount','totalPayments','totalLoans','totalBalance']
+
 class PaymentPeriodSerializer(ModelSerializer):
      
     def create(self, validated_data):
@@ -251,10 +262,35 @@ class LoanSerializer(ModelSerializer):
 
 
         
+
+class LoanProgramDistributionSerializer(ModelSerializer): 
+    
+    
+    values = serializers.ListField(read_only=True)
+    text = serializers.CharField(read_only=True)
+
+    def create(self, validated_data):
+        loanProgram = LoanProgram.objects.create(**validated_data) 
+        return loanProgram
+
+    def update(self, instance, validated_data):
+         
+
+        return instance
+    
+    class Meta:
+        model = LoanProgram        
+        fields = ['text','values']
+
+
 class LoanProgramSerializer(ModelSerializer): 
     activeLoan = LoanSerializer(read_only=True)
     activeCreditLine = CreditLineSerializer(read_only=True)
     totalAvailments = serializers.CharField(read_only=True)
+
+    overallLoan = serializers.CharField(read_only=True)
+
+    overallLoanPercentage = serializers.CharField(read_only=True)
     def create(self, validated_data):
         loanProgram = LoanProgram.objects.create(**validated_data) 
         return loanProgram

@@ -51,17 +51,13 @@ class GetDashboardDataView(views.APIView):
           
       
             if latestAmortization: 
-                totalLoans =  latestAmortization.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations']  
-                totalBalance = latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
+                totalLoans = totalLoans + latestAmortization.amortizationItems.aggregate(totalObligations=Sum(F('principal') ))['totalObligations'] 
+
+                totalBalance = totalBalance + latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
             else:
-                totalLoans =  0
-                totalBalance = 0
-
-       
-
-        
-
-        
+                totalLoans = totalLoans +  0
+                totalBalance = totalBalance +  0 
+ 
          
 
         return Response({
@@ -203,6 +199,9 @@ class UpdateLoanView(views.APIView):
             },status= status.HTTP_202_ACCEPTED) 
 
         return Response({'error':'Error on updating loan'},status.HTTP_400_BAD_REQUEST)
+
+
+
 
 class LoanViewSet(ModelViewSet):
     queryset = Loan.objects.all()
@@ -396,7 +395,7 @@ class LoanProgramViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = LoanProgram.objects.order_by('id') 
         loanProgramId = self.request.query_params.get('loanProgramId', None)
-
+        totalLoan = self.request.query_params.get('totalLoan', None)
         if loanProgramId is not None:
             queryset = queryset.filter(id=loanProgramId)
  
@@ -412,7 +411,56 @@ class LoanProgramViewSet(ModelViewSet):
                 window.activeCreditLine = window.getActiveCreditline(borrower)
                 window.totalAvailments = window.getTotalAvailments(borrower)
 
+
+        print(totalLoan)
+        
+        for window in queryset:
+            window.overallLoan = window.getOverallLoan() 
+            if totalLoan is not None: 
+                window.overallLoanPercentage = window.getOverallLoanPercentage(totalLoan)
+
+
         return queryset
+
+
+class LoanProgramDistributionViewSet(ModelViewSet):
+    queryset = LoanProgram.objects.all()
+    serializer_class = LoanProgramDistributionSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = LoanProgram.objects.order_by('id') 
+        loanProgramId = self.request.query_params.get('loanProgramId', None)
+        totalLoan = self.request.query_params.get('totalLoan', None)
+        if loanProgramId is not None:
+            queryset = queryset.filter(id=loanProgramId)
+ 
+
+        borrowerId = self.request.query_params.get('borrowerId', None)
+        print(borrowerId)
+        if borrowerId is not None: 
+
+            borrower = Borrower.objects.get(pk=borrowerId)
+            
+            for window in queryset:
+                window.activeLoan = window.getActiveLoan(borrower)
+                window.activeCreditLine = window.getActiveCreditline(borrower)
+                window.totalAvailments = window.getTotalAvailments(borrower)
+
+ 
+        
+        for window in queryset:
+            window.overallLoan = window.getOverallLoan() 
+            window.text = window.name
+            if totalLoan is not None: 
+                window.overallLoanPercentage = window.getOverallLoanPercentage(totalLoan)
+                # values = []
+                # values.append()
+                window.values = [int(window.overallLoanPercentage)]
+
+
+        return queryset
+
 
 class TermViewSet(ModelViewSet):
     queryset = Loan.objects.all()

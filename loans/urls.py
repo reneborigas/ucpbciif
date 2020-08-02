@@ -12,7 +12,7 @@ router.register(r'paymentperiods',PaymentPeriodViewSet)
 router.register(r'loanprograms',LoanProgramViewSet) 
 router.register(r'interestrates',InterestRateViewSet) 
 router.register(r'status',StatusViewSet) 
-
+router.register(r'loanprogramdistribution',LoanProgramDistributionViewSet) 
 
 
 

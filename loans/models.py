@@ -259,6 +259,21 @@ class LoanProgram(models.Model):
 
         return None
 
+    def getOverallLoan(self):
+       
+        if(not self.programLoans.filter(loanStatus__name='CURRENT')):
+            return 0
+        return self.programLoans.filter(loanStatus__name='CURRENT').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+
+
+    def getOverallLoanPercentage(self,totalLoans):
+        
+        from decimal import Decimal
+
+        if(not self.programLoans.filter(loanStatus__name='CURRENT')):
+            return 0
+        return  (self.programLoans.filter(loanStatus__name='CURRENT').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] / Decimal(totalLoans)) * 100
+
     def getTotalAvailments(self,borrower):
          
         if(not self.programLoans.filter(loanStatus__name='CURRENT',borrower=borrower)):
