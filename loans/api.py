@@ -6,7 +6,7 @@ from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, Expres
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from datetime import datetime
 from borrowers.models import Borrower
-
+from payments.models import Payment
 
 from rest_framework import status, views
 from rest_framework.response import Response
@@ -25,16 +25,50 @@ class GetDashboardDataView(views.APIView):
 
 
         borrower = Borrower.objects.exclude(isDeleted=True).all()
+        
 
 
 
+        #totalpaymentreceived
+        totalPayments = 0
+        payments = Payment.objects.all()
+
+        if payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']
 
          
 
-             
+        totalLoans = 0
+        totalBalance = 0
+        loans = Loan.objects.filter(loanStatus__id=2).all()
+        
+        if payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']
+
+        for loan in loans:
+            latestAmortization = loan.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+
+          
+      
+            if latestAmortization: 
+                totalLoans =  latestAmortization.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations']  
+                totalBalance = latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
+            else:
+                totalLoans =  0
+                totalBalance = 0
+
+       
+
+        
+
+        
+         
 
         return Response({
                 'borrowerCount': borrower.count(), 
+                'totalPayments':totalPayments,
+                'totalLoans':totalLoans,
+                'totalBalance':totalBalance
                  
             },status= status.HTTP_202_ACCEPTED) 
             

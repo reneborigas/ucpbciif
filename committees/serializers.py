@@ -2,6 +2,11 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
+from notifications.models import Notification
+from documents.models import Document 
+
+from slugify import slugify
+
 
 class CommitteeSerializer(ModelSerializer):
     committeeName = serializers.CharField(read_only=True)
@@ -38,6 +43,33 @@ class NoteSerializer(ModelSerializer):
     positionName = serializers.ReadOnlyField(source='committee.position.name')
     def create(self, validated_data):
         note = Note.objects.create(**validated_data) 
+
+
+
+
+        action_type = 'NOTE ADDED'
+
+
+
+        # contentType =  ContentType.objects.get(pk=note.content_type.id)
+
+         
+        if note.object_type == 'Document':
+            document = Document.objects.get(pk = note.object_id) 
+            noteFor =  note.object_type + ' ' + document.name
+
+            slug = slugify(document.subProcess.name) 
+            link =   slug
+
+            message = 'Added note for '  + noteFor 
+
+            contentType = ContentType.objects.get(model='document')
+
+    
+            notification = Notification(message=message,content_type=contentType,object_id=note.object_id,link=link,committee=note.committee,action_type=action_type)
+        
+            notification.save()
+
         return note
 
     def update(self, instance, validated_data):
