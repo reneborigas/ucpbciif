@@ -294,7 +294,7 @@
                                 required
                             />
                             <span
-                                class="form-text text-muted"
+                                class="form-text text-danger"
                                 ng-show="newCommitteeForm.firstname.$touched && newCommitteeForm.firstname.$invalid"
                             >
                                 Please enter First Name.
@@ -314,7 +314,7 @@
                                 required
                             />
                             <span
-                                class="form-text text-muted"
+                                class="form-text text-danger"
                                 ng-show="newCommitteeForm.middlename.$touched && newCommitteeForm.middlename.$invalid"
                             >
                                 Please enter Middle Name.
@@ -334,7 +334,7 @@
                                 required
                             />
                             <span
-                                class="form-text text-muted"
+                                class="form-text text-danger"
                                 ng-show="newCommitteeForm.lastname.$touched && newCommitteeForm.lastname.$invalid"
                             >
                                 Please enter Last Name.
@@ -356,7 +356,7 @@
                                 required
                             ></textarea>
                             <span
-                                class="form-text text-muted"
+                                class="form-text text-danger"
                                 ng-show="newCommitteeForm.address.$touched && newCommitteeForm.address.$invalid"
                             >
                                 Please enter Address.
@@ -371,15 +371,22 @@
                                 placeholder="Enter email address"
                                 id="emailAddress"
                                 name="emailAddress"
+                                ng-blur="checkEmailAddress(newCommittee.emailAddress)"
                                 ng-model="newCommittee.emailAddress"
-                                ng-class="{'is-invalid' : newCommitteeForm.emailAddress.$invalid && newCommitteeForm.emailAddress.$touched, 'is-valid' : newCommitteeForm.emailAddress.$valid && newCommitteeForm.emailAddress.$touched }"
+                                ng-class="{'is-invalid' : (newCommitteeForm.emailAddress.$invalid && newCommitteeForm.emailAddress.$touched) || (!isValidEmail && newCommitteeForm.emailAddress.$touched), 'is-valid' : newCommitteeForm.emailAddress.$valid && newCommitteeForm.emailAddress.$touched && isValidEmail }"
                                 required
                             />
                             <span
-                                class="form-text text-muted"
+                                class="form-text text-danger"
                                 ng-show="newCommitteeForm.emailAddress.$touched && newCommitteeForm.emailAddress.$invalid"
                             >
-                                Please enter Phone Number.
+                                Please enter Email Address.
+                            </span>
+                            <span
+                                class="form-text text-danger"
+                                ng-show="newCommitteeForm.emailAddress.$touched && !isValidEmail && newCommittee.emailAddress"
+                            >
+                                Email Address already exists.
                             </span>
                         </div>
                         <div class="form-group">
@@ -396,7 +403,7 @@
                                 required
                             />
                             <span
-                                class="form-text text-muted"
+                                class="form-text text-danger"
                                 ng-show="newCommitteeForm.phoneNo.$touched && newCommitteeForm.phoneNo.$invalid"
                             >
                                 Please enter Phone Number.

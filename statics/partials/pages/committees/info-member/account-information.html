@@ -2,7 +2,12 @@
     <div class="card-header py-3">
         <div class="card-title align-items-start flex-column">
             <h3 class="card-label font-weight-bolder text-dark">Account Information</h3>
-            <span class="text-muted font-weight-bold font-size-sm mt-1">Change your account settings</span>
+            <span class="text-muted font-weight-bold font-size-sm mt-1" ng-if="!committee.user">
+                Create your login account information
+            </span>
+            <span class="text-muted font-weight-bold font-size-sm mt-1" ng-if="committee.user">
+                Change your login account information
+            </span>
         </div>
         <div class="card-toolbar">
             <button
@@ -10,13 +15,23 @@
                 class="btn btn-success mr-2"
                 ng-click="saveAccount()"
                 ng-disabled="userCreationForm.$invalid"
+                ng-if="!committee.user"
             >
                 Create Account
             </button>
+            <!-- <button
+                type="reset"
+                class="btn btn-success mr-2"
+                ng-click="changePassword()"
+                ng-disabled="userCreationForm.$invalid"
+                ng-if="committee.user"
+            >
+                Change Password
+            </button> -->
             <button type="reset" class="btn btn-secondary">Cancel</button>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body" ng-if="!committee.user">
         <form name="userCreationForm">
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Username</label>
@@ -74,6 +89,62 @@
                         ng-model="newUser.verifyPassword"
                         ng-class="{'is-invalid' : newUser.verifyPassword != newUser.password && userCreationForm.verifyPassword.$touched, 'is-valid' : newUser.verifyPassword == newUser.password}"
                         required
+                    />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body" ng-if="committee.user">
+        <form name="userCreationForm">
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Username</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        class="form-control form-control-lg"
+                        type="text"
+                        ng-model="committeeUserAccount.username"
+                        ng-disabled="true"
+                        style="border: 0 !important; background: #fff !important;"
+                    />
+                    <span class="form-text text-danger">{{creationError.username[0]}}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        ng-model="committeeUserAccount.email_address"
+                        ng-disabled="true"
+                        style="border: 0 !important; background: #fff !important;"
+                    />
+                    <span class="form-text text-danger">{{creationError.email_address[0]}}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Password</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        type="password"
+                        class="form-control form-control-lg"
+                        ng-model="committeeUserAccount.password"
+                        minlength="10"
+                        style="border: 0 !important; background: #fff !important;"
+                        ng-disabled="true"
+                    />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Verify Password</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input
+                        type="password"
+                        class="form-control form-control-lg"
+                        ng-model="committeeUserAccount.password"
+                        minlength="10"
+                        style="border: 0 !important; background: #fff !important;"
+                        ng-disabled="true"
                     />
                 </div>
             </div>

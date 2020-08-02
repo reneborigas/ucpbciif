@@ -15,6 +15,7 @@ define(function () {
         'ngTouch',
         'ui.bootstrap',
         'ngIdle',
+        'zingchart-angularjs',
     ]);
 
     app.config([

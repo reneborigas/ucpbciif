@@ -50,12 +50,16 @@ class CommitteeViewSet(ModelViewSet):
        
         committeeId = self.request.query_params.get('committeeId', None)
         positionId = self.request.query_params.get('positionId', None)
+        emailAddress = self.request.query_params.get('emailAddress', None)
       
         if committeeId is not None:
             queryset = queryset.filter(id=committeeId)
 
         if positionId is not None:
             queryset = queryset.filter(position=positionId)
+
+        if emailAddress is not None:
+            queryset = queryset.filter(emailAddress=emailAddress)
 
         return queryset
 

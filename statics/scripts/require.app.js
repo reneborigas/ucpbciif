@@ -31,7 +31,8 @@ require.config({
         ngBootstrap: 'libs/angular/angular-ui-bootstrap-tpls.min',
 
         ngTags: 'libs/ngTags/ng-tags-input.min',
-
+        zingchart: 'libs/charts/zingchart.min',
+        ngCharts: 'libs/charts/zingchart-angular',
         ngToastr: 'libs/toastr/dist/js/angular-toastr.tpls.min',
         ngTable: 'libs/ngTable/ng-table',
         sweetalert: 'libs/sweetalert/sweetalert.min',
@@ -79,6 +80,9 @@ require.config({
         ngTouch: {
             deps: ['angular'],
         },
+        ngCharts: {
+            deps: ['angular', 'zingchart'],
+        },
         ngBootstrap: {
             deps: ['angular', 'ngAnimate', 'ngTouch'],
         },
@@ -103,6 +107,7 @@ require.config({
                 'ngTouch',
                 'ngBootstrap',
                 'ngIdle',
+                'ngCharts',
             ],
         },
         routes: {

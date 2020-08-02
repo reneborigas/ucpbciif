@@ -2679,6 +2679,11 @@ ul.lower-alpha {
 	background-color: #f3f6f9;
 }
 
+.swal-text {
+	text-align: center;
+}
+
+
 .swal-footer {
 	text-align: center;
 }
@@ -2701,3 +2706,7 @@ ul.lower-alpha {
         margin: 5rem auto !important;
     }
 }
+
+div[id*="license-text"] {
+	display: none !important;
+  }
