@@ -10,38 +10,37 @@
                         <h3 class="card-label">Borrowers List</h3>
                     </div>
                     <div class="card-toolbar">
-                      
                         <button type="button" class="btn btn-primary float-right" ui-sref="app.borrowers.add">
                             <i class="fad fa-user-plus mr-2"></i>
                             New Borrower
                         </button>
                         <div class="dropdown dropdown-inline mr-2">
-                                <button
-                                    type="button"
-                                    class="btn btn-light-primary font-weight-bolder dropdown-toggle"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <i class="fad fa-file-export"></i>
-                                    Export
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                    <ul class="navi flex-column navi-hover py-2">
-                                        <li
-                                            class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-                                        >
-                                            Choose an option:
-                                        </li>
-                                        <li class="navi-item">
-                                            <a href="#" class="navi-link" ng-click="printDataTable()">
-                                                <span class="navi-icon">
-                                                    <i class="la la-print"></i>
-                                                </span>
-                                                <span class="navi-text">Print</span>
-                                            </a>
-                                        </li>
-                                        <!-- <li class="navi-item">
+                            <button
+                                type="button"
+                                class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i class="fad fa-file-export"></i>
+                                Export
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    <li
+                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
+                                    >
+                                        Choose an option:
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" ng-click="printDataTable()">
+                                            <span class="navi-icon">
+                                                <i class="la la-print"></i>
+                                            </span>
+                                            <span class="navi-text">Print</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="la la-file-excel-o"></i>
@@ -65,9 +64,9 @@
                                                 <span class="navi-text">PDF</span>
                                             </a>
                                         </li> -->
-                                    </ul>
-                                </div>
+                                </ul>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -115,7 +114,7 @@
                     <div class="mb-4">
                         <div class="row">
                             <!-- <div class="col-lg-6 mb-2 mb-6" ng-if="filters[0].showFilter">
-                                <label>Borrower:</label>
+                                <label>{{$parent.filters[0].name}}:</label>
                                 <select
                                     class="form-control"
                                     ng-model="params[$parent.filters[0].params.param1]"
@@ -125,7 +124,7 @@
                                 </select>
                             </div> -->
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
-                                <label>Total Availments:</label>
+                                <label>{{$parent.filters[1].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -149,7 +148,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
-                                <label>Total Outstanding Balance:</label>
+                                <label>{{$parent.filters[2].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -173,7 +172,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
-                                <label>Total Paid Amount:</label>
+                                <label>{{$parent.filters[3].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -197,7 +196,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[4].showFilter">
-                                <label>Client Since:</label>
+                                <label>{{$parent.filters[4].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="date"
@@ -221,13 +220,12 @@
                         </div>
                         <div class="row my-4" ng-if="showFilterButton">
                             <div class="col-lg-12">
-                                <button class="btn btn-primary btn-primary-icon" ng-click="applyFilter()">
+                                <button class="btn btn-primary btn-primary-icon mr-2" ng-click="applyFilter()">
                                     <span>
                                         <i class="fal fa-filter"></i>
                                         <span>Apply</span>
                                     </span>
                                 </button>
-                                &#160;&#160;
                                 <button class="btn btn-secondary btn-secondary-icon" ng-click="resetFilter()">
                                     <span>
                                         <span>Clear Filters</span>

@@ -110,7 +110,7 @@
                     <div class="mb-4">
                         <div class="row">
                             <!-- <div class="col-lg-6 mb-2 mb-6" ng-if="filters[0].showFilter">
-                                <label>Borrower:</label>
+                                <label>{{$parent.filters[0].name}}:</label>
                                 <select
                                     class="form-control"
                                     ng-model="params[$parent.filters[0].params.param1]"
@@ -118,9 +118,9 @@
                                 >
                                     <option value="" disabled selected>Select Borrower</option>
                                 </select>
-                            </div> -->
-                            <!-- <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
-                                <label>Term:</label>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
+                                <label>{{$parent.filters[1].name}}:</label>
                                 <select
                                     class="form-control"
                                     ng-model="params[$parent.filters[1].params.param1]"
@@ -130,7 +130,7 @@
                                 </select>
                             </div> -->
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
-                                <label>Credit Line Amount Range:</label>
+                                <label>{{$parent.filters[2].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -154,7 +154,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
-                                <label>Total Availment Range:</label>
+                                <label>{{$parent.filters[3].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -178,7 +178,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[4].showFilter">
-                                <label>Interest Range:</label>
+                                <label>{{$parent.filters[4].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -202,7 +202,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
-                                <label>Date Approved Range:</label>
+                                <label{{$parent.filters[5].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="date"
@@ -224,7 +224,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[6].showFilter">
-                                <label>Expiry Date Range:</label>
+                                <label>{{$parent.filters[6].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="date"
@@ -248,13 +248,12 @@
                         </div>
                         <div class="row my-4" ng-if="showFilterButton">
                             <div class="col-lg-12">
-                                <button class="btn btn-primary btn-primary-icon" ng-click="applyFilter()">
+                                <button class="btn btn-primary btn-primary-icon mr-2" ng-click="applyFilter()">
                                     <span>
                                         <i class="fal fa-filter"></i>
                                         <span>Apply</span>
                                     </span>
                                 </button>
-                                &#160;&#160;
                                 <button class="btn btn-secondary btn-secondary-icon" ng-click="resetFilter()">
                                     <span>
                                         <span>Clear Filters</span>

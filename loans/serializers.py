@@ -48,6 +48,13 @@ from payments.serializers import PaymentSerializer
 #     class Meta:
 #         model = Loan        
 #         fields = '__all__'
+
+class AmortizationStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = AmortizationStatus
+        fields = '__all__'
+
 class CalendarAmortizationItemSerializer(ModelSerializer): 
     title   = serializers.CharField(read_only=True) 
     start = serializers.CharField(read_only=True)

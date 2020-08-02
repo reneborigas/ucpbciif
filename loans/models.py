@@ -52,8 +52,6 @@ class AmortizationStatus(models.Model):
         blank = False,
         null = False, 
     )
-   
-   
     isDefault = models.BooleanField(
         default=False
     )    

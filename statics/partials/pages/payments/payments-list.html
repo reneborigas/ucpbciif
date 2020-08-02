@@ -126,7 +126,7 @@
                                 </select>
                             </div> -->
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
-                                <label>Principal Range:</label>
+                                <label>{{$parent.filters[1].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
-                                <label>Interest Range:</label>
+                                <label>{{$parent.filters[2].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -174,7 +174,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
-                                <label>Payment Date:</label>
+                                <label>{{$parent.filters[3].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="date"
@@ -196,7 +196,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[4].showFilter">
-                                <label>Total Payment Range:</label>
+                                <label>{{$parent.filters[4].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
-                                <label>Payment Type:</label>
+                                <label>{{$parent.filters[5].name}}:</label>
                                 <select
                                     class="form-control"
                                     ng-model="params[$parent.filters[5].params.param1]"
@@ -230,7 +230,7 @@
                                 </select>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[6].showFilter">
-                                <label>Status:</label>
+                                <label>{{$parent.filters[6].name}}:</label>
                                 <select
                                     class="form-control"
                                     ng-model="params[$parent.filters[6].params.param1]"
@@ -242,13 +242,12 @@
                         </div>
                         <div class="row my-4" ng-if="showFilterButton">
                             <div class="col-lg-12">
-                                <button class="btn btn-primary btn-primary-icon" ng-click="applyFilter()">
+                                <button class="btn btn-primary btn-primary-icon mr-2" ng-click="applyFilter()">
                                     <span>
                                         <i class="fal fa-filter"></i>
                                         <span>Apply</span>
                                     </span>
                                 </button>
-                                &#160;&#160;
                                 <button class="btn btn-secondary btn-secondary-icon" ng-click="resetFilter()">
                                     <span>
                                         <span>Clear Filters</span>

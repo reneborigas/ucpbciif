@@ -5,9 +5,9 @@ define(function () {
 
     app.factory('appFactory', function ($http, toastr, $filter) {
         return {
-            getNotifications: function (userId,committeeId) {
+            getNotifications: function (userId, committeeId) {
                 return $http
-                    .get('/api/notifications/notifications/', { params: { userId: userId,committeeId: committeeId } })
+                    .get('/api/notifications/notifications/', { params: { userId: userId, committeeId: committeeId } })
                     .then(
                         function (response) {
                             return response.data;
@@ -272,6 +272,19 @@ define(function () {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
                             'Could not retrieve Payment Type list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getAmortizationStatus: function () {
+                return $http.get('/api/loans/amortizationstatus/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Amortization Status list. Please contact System Administrator.'
                         );
                     }
                 );
