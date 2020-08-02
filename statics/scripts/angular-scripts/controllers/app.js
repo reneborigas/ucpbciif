@@ -176,8 +176,11 @@ define(function () {
             if(content_type == 33){//documents
                 // $state.go('app.loans.info', { loanId: loanId }); 
                  
+                    return appFactory.getNotifications($scope.user.id,$scope.user.committeeId).then(function (response) {
+                        $scope.notifications = response;
                         $state.go('app.documents.info', { subProcessName: slug, documentId: object_id });
-                      
+                        console.log($scope.notifications);
+                    });
                  
               
         

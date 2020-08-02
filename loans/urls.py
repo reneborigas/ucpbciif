@@ -20,6 +20,7 @@ urlpatterns =  [
         path('updatecreditline/', UpdateCreditLineView.as_view()),
         path('updateloanview/', UpdateLoanView.as_view()),
         path('amortizationitemscalendar/', GetAmortizationItemsCalendarView.as_view()),
+        path('getdashboarddata/', GetDashboardDataView.as_view()),
         ]
 
 

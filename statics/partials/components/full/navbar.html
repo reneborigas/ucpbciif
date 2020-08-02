@@ -18,7 +18,9 @@
                 <div class="topbar-item" data-toggle="dropdown" data-offset="20px,0px" aria-expanded="false" ng-click="loadNotifications(user)">
                     <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 pulse pulse-primary">
                         <i class="fad fa-bells"></i>
-                        <span class="pulse-ring"></span>
+                        <span class="pulse-ring"> {{ notifications.length }}</span>
+                        <span class="badge badge-pill badge-danger" ng-if="notifications.length > 0"> {{ notifications.length }}</span>
+                        
                     </div>
                 </div>
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-lg dropdown-menu-right">
@@ -53,7 +55,7 @@
                                 <div class="navi-text">
                                     <div class="font-weight-bold">{{ notification.message }} <span ng-if="notification.action_type"> {{ notification.action_type }} </span> </div>
                                    
-                                    <div class="text-muted">{{ notification.committeeName  }}</div>
+                                    <div class="text-muted">{{ notification.committeeName  }} - {{ notification.positionName  }}</div>
                                     <div class="text-muted">{{ notification.action_time | date:'medium'   }}</div>
                                 </div>
                             </div>

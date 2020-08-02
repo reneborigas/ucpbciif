@@ -12,14 +12,41 @@ from rest_framework import status, views
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.utils import timezone
+
+class GetDashboardDataView(views.APIView):
+    
+   
+
+    def get(self,request): 
+
+        # queryset = AmortizationItem.objects.order_by('-id')
+        # maturing = self.request.query_params.get('maturing', None)
+
+
+        borrower = Borrower.objects.exclude(isDeleted=True).all()
+
+
+
+
+         
+
+             
+
+        return Response({
+                'borrowerCount': borrower.count(), 
+                 
+            },status= status.HTTP_202_ACCEPTED) 
+            
+
+
+        # return Response({'error':'Error on retrieving dashboard information'},status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class GetAmortizationItemsCalendarView(views.APIView):
-    
-    # @method_decorator(csrf_protect) 
-    # def get_queryset(self):
-    #     queryset = AmortizationItem.objects.all()
-    #     serializer_class = LoanSerializer
+   
 
 
     def get(self,request): 
@@ -47,7 +74,7 @@ class GetAmortizationItemsCalendarView(views.APIView):
 
 
         for amortizationItem in queryset:
-            amortizationItem.start =  amortizationItem.schedule.date()
+            amortizationItem.start =  amortizationItem.schedule.date() + timezone.timedelta(days=1)
          
             # amortizationItem.className =  'fc-event-solid-danger fc-event-light'
             amortizationItem.description  = 'Due for LN' + str(amortizationItem.amortization.loan.id)
@@ -79,15 +106,8 @@ class GetAmortizationItemsCalendarView(views.APIView):
 
         serializer = CalendarAmortizationItemSerializer(queryset, many=True)
         return Response(serializer.data)
-            # return Response({
-            #     'message': 'Credit Line Updated', 
-            #     'creditLine': creditLine.id,
-            #     'new_value': new_value
-            # },status= status.HTTP_202_ACCEPTED) 
+          
 
-
-        # return Response({'error':'Error on retrieving amortization items for calendar.'},status.HTTP_400_BAD_REQUEST)
-        
 class UpdateCreditLineView(views.APIView):
     
     # @method_decorator(csrf_protect) 

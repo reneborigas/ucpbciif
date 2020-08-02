@@ -639,6 +639,9 @@ define(function () {
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };
+        $scope.viewLoan = function (id) {
+            $state.go('app.loans.info', { loanId: id });
+        };
 
         $scope.previewLoanRelease = function (id) {
             $window.open('/print/files/' + id, '_blank', 'width=800,height=800');

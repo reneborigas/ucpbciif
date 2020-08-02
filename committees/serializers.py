@@ -35,7 +35,7 @@ class CommitteeSerializer(ModelSerializer):
 
 class NoteSerializer(ModelSerializer):
     committeeName = serializers.CharField(read_only=True)
-
+    positionName = serializers.ReadOnlyField(source='committee.position.name')
     def create(self, validated_data):
         note = Note.objects.create(**validated_data) 
         return note

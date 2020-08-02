@@ -48,7 +48,7 @@ class ViewNotification(views.APIView):
         
 class NotificationViewSet(ModelViewSet):
     queryset = Notification.objects.all()
-    serializer_class = NoteSerializer 
+    serializer_class = NotificationSerializer 
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self): 

@@ -28,6 +28,17 @@
                                 </a>
                                 <!-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> -->
                             </div>
+
+                            <div class="my-lg-0 my-1" ng-if="document.loan && (document.loan.loanStatus == 1 || document.loan.loanStatus == 2)">
+                                    <a
+                                        href="#"
+                                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                                        ng-click="viewLoan(document.loan.id)"
+                                    >
+                                        view Loan Record
+                                    </a>
+                                    <!-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> -->
+                            </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
                             <div class="mr-3">
@@ -608,7 +619,10 @@
             </div>
         </div>
     </div>
+    
     <div class="col-xl-5">
+
+            
         <div class="card card-custom card-stretch gutter-b">
             <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
@@ -654,23 +668,43 @@
     </div>
 
     <div class="col-xl-7">
-        <div class="card card-custom card-stretch-half gutter-b" ng-if="!currentStep">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Summary</h3>
+       
+
+        <div class="card card-custom card-stretch-half gutter-b"  ng-if="!isUserAssigned">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="fad fa-users-class"></i>
+                        </span>
+                        <h3 class="card-label">File Access</h3>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body text-center">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <h4 class="mb-0">This file is now only available for viewing references.</h4>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <h4 class="mb-0">This file procedure is not assigned to this account and can only be access for viewing references.</h4>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="card card-custom card-stretch-half gutter-b" ng-if="!currentStep">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="fad fa-users-class"></i>
+                            </span>
+                            <h3 class="card-label">Summary</h3>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <h4 class="mb-0">This file is now only available for viewing references.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
         <div class="card card-custom card-stretch-half gutter-b" ng-if="currentStep">
             <div class="card-header">
                 <div class="card-title">
@@ -917,7 +951,7 @@
                                         {{ note.note}}
                                     </p>
                                     <small class="text-dark-75 font-weight-bold">
-                                        {{ note.committeeName }}
+                                        {{ note.committeeName }} - {{ note.positionName }}
                                         <small class="text-muted">- {{ note.action_time | date : 'medium' }}</small>
                                     </small>
                                 </div>
@@ -990,7 +1024,7 @@
                                             <span ng-repeat="output in currentStep.outputs">
                                                 <button
                                                     type="button"
-                                                    class="btn btn-success font-weight-bold text-uppercase px-9 py-4"
+                                                    class="btn btn-success font-weight-bold text-uppercase px-4 py-3"
                                                     ng-click="takeActions(document.id,output,currentStep)"
                                                 >
                                                     {{output.name}}

@@ -5,9 +5,12 @@ from .models import *
  
 
 
-class NoteSerializer(ModelSerializer):
-    committeeName = serializers.CharField(read_only=True)
+class NotificationSerializer(ModelSerializer):
+    committeeName = serializers.CharField(read_only=True) 
 
+    positionName = serializers.ReadOnlyField(source='committee.position.name')
+
+    
     def create(self, validated_data):
         notification = Notification.objects.create(**validated_data) 
         return notification
