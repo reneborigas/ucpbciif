@@ -238,6 +238,9 @@ class Payment(models.Model):
     def __str__(self):
         return "%s %s" % (self.loan,self.total)
 
+ 
+
+
     # def getLatestAmortization(self):
       
     #     return  self.amortizations.order_by('-id').first()

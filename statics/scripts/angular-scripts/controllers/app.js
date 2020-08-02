@@ -3,97 +3,97 @@ define(function () {
 
     var app = angular.module('app');
 
-    app.controller('NavBarController', function NavBarController( $http,toastr,$scope, appFactory, appLoginService, $state) {
-        appFactory.getCurrentUserInfo().then(function (data) {
-            $scope.user = data;
+    // app.controller('NavBarController', function NavBarController( $http,toastr,$scope, appFactory, appLoginService, $state) {
+    //     appFactory.getCurrentUserInfo().then(function (data) {
+    //         $scope.user = data;
 
-            $scope.loadNotifications($scope.user);
+    //         $scope.loadNotifications($scope.user);
 
-            if (!$scope.user) {
-                $scope.logout();
-            } else {
-                $scope.gotToMetro = function () {
-                    $state.go('main.menu');
-                };
-            }
-        });
-        $scope.logout = appLoginService.logout;
-        $scope.showHeader = false;
-        $scope.showHeader = appLoginService.isLoggedIn();
+    //         if (!$scope.user) {
+    //             $scope.logout();
+    //         } else {
+    //             $scope.gotToMetro = function () {
+    //                 $state.go('main.menu');
+    //             };
+    //         }
+    //     });
+    //     $scope.logout = appLoginService.logout;
+    //     $scope.showHeader = false;
+    //     $scope.showHeader = appLoginService.isLoggedIn();
 
 
 
-        $scope.loadNotifications = function (user) {
-                console.log(user.committeeId);
-                console.log(user.committeeId);
+    //     $scope.loadNotifications = function (user) {
+    //             console.log(user.committeeId);
+    //             console.log(user.committeeId);
                  
-                    return appFactory.getNotifications(user.id,user.committeeId).then(function (response) {
-                        $scope.notifications = response;
+    //                 return appFactory.getNotifications(user.id,user.committeeId).then(function (response) {
+    //                     $scope.notifications = response;
     
-                        console.log($scope.notifications);
-                    });
+    //                     console.log($scope.notifications);
+    //                 });
                  
 
                 
             
-        };
+    //     };
 
-        $scope.notifView = function (notificationId, object_id,content_type,slug ) {
-            console.log($scope.user.id);
-            if($scope.user.committeeId){
-                $http.post('/api/notifications/viewnotifications/', {
-                    notificationId: notificationId ,  userId:$scope.user.id ,committeeId:$scope.user.committeeId ,
-               })
-               .then(
-                   function (response) {
-                       console.log(response);
+    //     $scope.notifView = function (notificationId, object_id,content_type,slug ) {
+    //         console.log($scope.user.id);
+    //         if($scope.user.committeeId){
+    //             $http.post('/api/notifications/viewnotifications/', {
+    //                 notificationId: notificationId ,  userId:$scope.user.id ,committeeId:$scope.user.committeeId ,
+    //            })
+    //            .then(
+    //                function (response) {
+    //                    console.log(response);
                        
-                   },
-                   function (error) {
-                       toastr.error(
-                           'Error ' + error.status + ' ' + error.statusText,
-                           'Could not retrieve view notification. Please contact System Administrator.'
-                       );
-                   }
-               );
+    //                },
+    //                function (error) {
+    //                    toastr.error(
+    //                        'Error ' + error.status + ' ' + error.statusText,
+    //                        'Could not retrieve view notification. Please contact System Administrator.'
+    //                    );
+    //                }
+    //            );
 
 
-            }else{
-                $http.post('/api/notifications/viewnotifications/', {
-                    notificationId: notificationId , userId:$scope.user.id ,committeeId:$scope.user.committeeId ,
-               })
-               .then(
-                   function (response) {
-                       console.log(response);
+    //         }else{
+    //             $http.post('/api/notifications/viewnotifications/', {
+    //                 notificationId: notificationId , userId:$scope.user.id ,committeeId:$scope.user.committeeId ,
+    //            })
+    //            .then(
+    //                function (response) {
+    //                    console.log(response);
                        
-                   },
-                   function (error) {
-                       toastr.error(
-                           'Error ' + error.status + ' ' + error.statusText,
-                           'Could not retrieve view notification. Please contact System Administrator.'
-                       );
-                   }
-               );
+    //                },
+    //                function (error) {
+    //                    toastr.error(
+    //                        'Error ' + error.status + ' ' + error.statusText,
+    //                        'Could not retrieve view notification. Please contact System Administrator.'
+    //                    );
+    //                }
+    //            );
 
-            }
+    //         }
             
-            if(content_type == 33){//documents
-                // $state.go('app.loans.info', { loanId: loanId }); 
+    //         if(content_type == 33){//documents
+    //             // $state.go('app.loans.info', { loanId: loanId }); 
                  
-                    return appFactory.getNotifications($scope.user.id,$scope.user.committeeId).then(function (response) {
-                        $scope.notifications = response;
-                        $state.go('app.documents.info', { subProcessName: slug, documentId: object_id });
-                        console.log($scope.notifications);
-                    });
+    //                 return appFactory.getNotifications($scope.user.id,$scope.user.committeeId).then(function (response) {
+    //                     $scope.notifications = response;
+    //                     $state.go('app.documents.info', { subProcessName: slug, documentId: object_id });
+    //                     console.log($scope.notifications);
+    //                 });
                  
               
         
-            }
+    //         }
 
-        };
+    //     };
 
 
-    });
+    // });
 
 
      app.controller('NavBarController', function NavBarController( $http,toastr,$scope, appFactory, appLoginService, $state) {
@@ -118,8 +118,7 @@ define(function () {
 
         $scope.loadNotifications = function (user) {
             $scope.notifClick = true;
-                console.log(user.committeeId);
-                console.log(user.committeeId);
+                
                  
                     return appFactory.getNotifications(user.id,user.committeeId).then(function (response) {
                         $scope.notifications = response;
