@@ -13,6 +13,7 @@ define(function () {
         $timeout,
         appFactory
     ) {
+
         $scope.tableDocuments = new NgTableParams(
             {
                 page: 1,
@@ -82,6 +83,10 @@ define(function () {
         $q,
         $window
     ) {
+
+
+       
+       
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
 
@@ -239,7 +244,7 @@ define(function () {
                 });
 
                 console.log($scope.isUserAssigned);
-                console.log($scope.currentUser);
+               
             });
         };
 

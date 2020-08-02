@@ -3,11 +3,61 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
 from payments.serializers import PaymentSerializer
+ 
 # from documents.serializers import DocumentSerializer
 # from borrowers.serializers import BorrowerSerializer
+# class LoanAmortizationSerializer(ModelSerializer):
+#     # termName = serializers.CharField(read_only=True) 
+#     loanStatus_name = serializers.ReadOnlyField(source='loanStatus.name')
+#     payments = PaymentSerializer(many=True,read_only=True)
+#     creditLine_amount= serializers.ReadOnlyField(source='creditLine.amount')
+#     creditLine_dateApproved = serializers.ReadOnlyField(source='creditLine.dateApproved')
+#     creditLine_dateExpired = serializers.ReadOnlyField(source='creditLine.dateExpired')
+#     borrower_name = serializers.ReadOnlyField(source='borrower.cooperative.name')
+#     borrower_id = serializers.ReadOnlyField(source='borrower.borrowerId')
+#     term_name = serializers.ReadOnlyField(source='term.name')
+#     interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
+#     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
+#     totalAmortizationInterest = serializers.CharField(read_only=True)
+#     totalObligations = serializers.CharField(read_only=True) 
 
+#     latestPayment =  PaymentSerializer(read_only=True)
 
+#     outStandingBalance = serializers.CharField(read_only=True)
+#     interestBalance= serializers.CharField(read_only=True)
 
+#     totalPayment = serializers.CharField(read_only=True) 
+#     # loanDocuments = DocumentSerializer(read_only=True,nany=True)
+      
+#     # borrower = BorrowerSerializer(read_only=True)
+#     def create(self, validated_data):
+
+#         loan = Loan.objects.create(**validated_data) 
+#         loan.term = loan.creditLine.term
+#         loan.save()
+#         return loan
+
+#     def update(self, instance, validated_data):
+#         # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
+#         # instance.loanName = validated_data.get("loanName", instance.loanName)
+#         # instance.borrower =  validated_data.get("borrower", instance.borrower)
+#         instance.save()
+
+#         return instance
+    
+#     class Meta:
+#         model = Loan        
+#         fields = '__all__'
+class CalendarAmortizationItemSerializer(ModelSerializer): 
+    title   = serializers.CharField(read_only=True) 
+    start = serializers.CharField(read_only=True)
+    className = serializers.CharField(read_only=True)
+    description = serializers.CharField(read_only=True)
+    url = serializers.CharField(read_only=True)
+    backgroundColor = serializers.CharField(read_only=True)
+    class Meta:
+        model = AmortizationItem        
+        fields =  ['title','start','className','description','url','backgroundColor']
 
 class PaymentPeriodSerializer(ModelSerializer):
      
@@ -66,6 +116,8 @@ class AmortizationItemSerializer(ModelSerializer):
 
     # isItemPaid = serializers.CharField(read_only=True)
     amortizationStatus_name = serializers.ReadOnlyField(source='amortizationStatus.name')
+    loan_id = serializers.ReadOnlyField(source='amortization.loan.id')
+
     def create(self, validated_data):
         amortizationitem = AmortizationItem.objects.create(**validated_data) 
         return amortizationitem
@@ -87,6 +139,8 @@ class AmortizationSerializer(ModelSerializer):
     amortizationItems = AmortizationItemSerializer(many=True,read_only=True)
     totalAmortizationInterest = serializers.CharField(read_only=True)
     totalObligations = serializers.CharField(read_only=True)
+     
+    
     def create(self, validated_data):
         amortization = Amortization.objects.create(**validated_data) 
         return amortization

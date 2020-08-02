@@ -1206,7 +1206,7 @@
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                {{ document.dateCreated | date: 'medium' }}
+                                                {{ document.dateCreated | date: 'mediumDate' }}
                                             </span>
                                         </td>
                                         <td>
@@ -1214,7 +1214,7 @@
                                                 class="text-dark-75 font-weight-bolder d-block font-size-lg"
                                                 ng-if="document.dateApproved"
                                             >
-                                                {{ document.dateApproved | date: 'medium' }}
+                                                {{ document.dateApproved | date: 'mediumDate' }}
                                             </span>
                                         </td>
                                         <td>
@@ -1333,7 +1333,7 @@
                                             {{ borrowerAttachment.fileName | trimStringWithExtension: 20 }}
                                         </span>
                                         <span class="text-muted font-weight-bold">
-                                            {{ borrowerAttachment.dateCreated | date : 'medium' }}
+                                            {{ borrowerAttachment.dateCreated | date : 'mediumDate' }}
                                         </span>
                                     </div>
                                 </div>

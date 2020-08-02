@@ -622,7 +622,7 @@
                         ng-repeat="documentMovement in documentMovements | orderBy:'-'"
                     >
                         <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">
-                            {{ documentMovement.dateCreated | date : 'medium' }}
+                            {{ documentMovement.dateCreated | date : 'mediumDate' }}
                         </div>
                         <div class="timeline-badge">
                             <i class="fal fa-genderless text-success icon-xxl"></i>
@@ -749,7 +749,9 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <ul class="text-dark list-unstyled">
+
+                                   
+                                    <ul class="text-dark list-unstyled" ng-if="currentRequirement.attachments && currentRequirement.attachments.length > 0">
                                         <li class="font-size-h6">Attachments</li>
                                         <ul class="font-size-h7">
                                             <li
@@ -774,6 +776,9 @@
                                             </li>
                                         </ul>
                                     </ul>
+                                    <div class="text-center" ng-if="!currentRequirement.attachments || currentRequirement.attachments.length ==0">
+                                            <h6 class="font-size-sm">No attachments found</h6>
+                                        </div>
                                     <div ng-if="currentRequirement.attachments">
                                         <pagination
                                             data="currentRequirement.attachments"

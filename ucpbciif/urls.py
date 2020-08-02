@@ -55,7 +55,10 @@ urlpatterns = [
 
     #credit-line
     path('credit-line', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-
+    path('amortizations', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('amortizations/maturing', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    #notifications
+    
     #committes
     path('committees', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('committees/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
@@ -89,6 +92,7 @@ urlpatterns = [
     path('api/payments/',include('payments.urls'),name='payments'),
     path('api/processes/',include('processes.urls'),name='processes'),
     path('api/committees/',include('committees.urls'),name='committees'),
+    path('api/notifications/',include('notifications.urls'),name='notifications'),
     path('api/users/',include('users.urls'),name='users'),
     path('api/settings/',include('settings.urls'),name='settings'), 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

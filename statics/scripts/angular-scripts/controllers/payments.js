@@ -442,6 +442,7 @@ define(function () {
                         $scope.$watch(
                             'payment.penaltyPayment',
                             function (newTerm, oldTerm) {
+                                 
                                 $scope.getTotalPayment();
                             },
                             true
@@ -449,7 +450,9 @@ define(function () {
                         $scope.$watch(
                             'payment.interestPayment',
                             function (newTerm, oldTerm) {
+                                
                                 $scope.getTotalPayment();
+
                             },
                             true
                         );
@@ -465,6 +468,29 @@ define(function () {
                                 $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
                                 $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
                                 console.log($scope.payment.outStandingBalance);
+                            },
+                            true
+                        );
+                        $scope.$watch(
+                            'payment.penaltyBalance',
+                            function (newTerm, oldTerm) {
+                                console.log(newTerm);
+                                if (newTerm > 0){
+                                    $scope.payment.interestPayment = 0;
+                                }
+                                
+                            },
+                            true
+                        );
+                        $scope.$watch(
+                            'payment.interestBalance',
+                            function (newTerm, oldTerm) {
+                                console.log(newTerm);
+                                if (newTerm > 0){
+                                    $scope.payment.cash = 0;
+                                    $scope.payment.check = 0;
+                                }
+                                
                             },
                             true
                         );

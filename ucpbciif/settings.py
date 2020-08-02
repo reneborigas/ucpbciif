@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'payments',
     'processes',
     'committees',
-    'documents'
+    'documents',
+    'notifications'
 ]
 
 MIDDLEWARE = [

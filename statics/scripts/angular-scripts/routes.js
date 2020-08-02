@@ -776,7 +776,49 @@ define(function () {
                         label: 'Credit Line',
                     },
                 })
+                .state('app.amortizations', {
+                    url: '/amortizations',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Amortizations',
+                        skip: true,
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/amortizations.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
 
+                .state('app.amortizations.maturing', {
+                    url: '/maturing',
+                    templateUrl: '/statics/partials/pages/amortizations/amortizations-maturing-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Maturing Amortization List',
+                        stateTitle: 'Amortization',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Maturing Amortizations',
+                    },
+                })
+
+                .state('app.amortizations.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/amortizations/amortizations-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Amortization Schedule',
+                        stateTitle: 'Amortization',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Amortizations',
+                    },
+                })
                 .state('app.committees', {
                     url: '/committees',
                     template: '<ui-view></ui-view>',

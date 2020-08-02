@@ -14,6 +14,80 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 
 
+class GetAmortizationItemsCalendarView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+    # def get_queryset(self):
+    #     queryset = AmortizationItem.objects.all()
+    #     serializer_class = LoanSerializer
+
+
+    def get(self,request): 
+
+        queryset = AmortizationItem.objects.order_by('-id')
+        maturing = self.request.query_params.get('maturing', None)
+
+
+
+        
+        amortizationItems = []
+        for amortizationItem in queryset:
+            if(amortizationItem.isOnCurrentAmortization()):
+                amortizationItems.append(amortizationItem.id)
+        queryset = queryset.filter(id__in=amortizationItems) 
+        if maturing is not None:
+            amortizationItems = []
+            for amortizationItem in queryset:
+                if(amortizationItem.isMaturingAmortizationItem()):
+                    amortizationItems.append(amortizationItem.id)
+            
+
+            queryset = queryset.filter(id__in=amortizationItems)
+
+
+
+        for amortizationItem in queryset:
+            amortizationItem.start =  amortizationItem.schedule.date()
+         
+            # amortizationItem.className =  'fc-event-solid-danger fc-event-light'
+            amortizationItem.description  = 'Due for LN' + str(amortizationItem.amortization.loan.id)
+            amortizationItem.url = '/loans/' + str(amortizationItem.amortization.loan.id)
+            amortizationItem.backgroundColor = '#0073e9'
+            amortizationItem.title = 'Amortization: LN' + str(amortizationItem.amortization.loan.id)
+            
+            if amortizationItem.amortizationStatus.id == 1:
+                amortizationItem.backgroundColor = '#ff0000'
+                amortizationItem.title = 'Unpaid Amortization: LN' + str(amortizationItem.amortization.loan.id)
+                amortizationItem.url = '/payments/' + str(amortizationItem.amortization.loan.id)
+
+
+
+
+            
+
+        # return Response({
+        #         'start': 'Credit Line Updated', 
+        #         'end': creditLine.id,
+        #         'className': new_value
+        #     },status= status.HTTP_202_ACCEPTED) 
+        #  title: 'Conference',
+        #     //         start: '2020-06-11',
+        #     //         end: '2020-06-13',
+        #     //         className: 'fc-event-solid-danger fc-event-light',
+        #     //         description: 'Lorem ipsum dolor sit ctetur adipi scing',
+
+
+        serializer = CalendarAmortizationItemSerializer(queryset, many=True)
+        return Response(serializer.data)
+            # return Response({
+            #     'message': 'Credit Line Updated', 
+            #     'creditLine': creditLine.id,
+            #     'new_value': new_value
+            # },status= status.HTTP_202_ACCEPTED) 
+
+
+        # return Response({'error':'Error on retrieving amortization items for calendar.'},status.HTTP_400_BAD_REQUEST)
+        
 class UpdateCreditLineView(views.APIView):
     
     # @method_decorator(csrf_protect) 
@@ -168,13 +242,30 @@ class AmortizationItemViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = AmortizationItem.objects.order_by('-id')
         amortizationItemId = self.request.query_params.get('amortizationItemId', None)
+        maturing = self.request.query_params.get('maturing', None)
 
+        amortizationItems = []
         if amortizationItemId is not None:
             queryset = queryset.filter(id=amortizationItemId)
 
+        for amortizationItem in queryset:
+            if(amortizationItem.isOnCurrentAmortization()):
+                amortizationItems.append(amortizationItem.id)
+            
+
+        queryset = queryset.filter(id__in=amortizationItems)    
+         
+        if maturing:
+            amortizationItems=[]
+            for amortizationItem in queryset:
+                if(amortizationItem.isMaturingAmortizationItem()):
+                    amortizationItems.append(amortizationItem.id)
+             
+            queryset = queryset.filter(id__in=amortizationItems)
         # for amortizationItem in queryset:
         #     amortizationItem.isItemPaid = amortizationItem.isPaid()
-            
+        
+        # fo
         return queryset
 
             

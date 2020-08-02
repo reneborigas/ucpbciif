@@ -571,8 +571,12 @@ class Loan(models.Model):
 
         if latestAmortization: 
              return latestAmortization.amortizationItems.order_by('-id').first()
-                 
 
+    def getCurrentAmortization(self):
+        
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+
+        return latestAmortization
 class Amortization(models.Model): 
     
     loan = models.ForeignKey(
@@ -622,6 +626,13 @@ class Amortization(models.Model):
     
     def getTotalObligations(self):
         return self.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations'] 
+
+
+# class IsCurrentAmortizaionItem(models.Manager):
+#     def get_queryset(self):
+#         now = timezone.now()
+#         start = now - datetime.timedelta(days=7)
+#         return super(PublishedLastWeekManager, self).get_queryset().filter(published_date__range=[start, now])
 
 class AmortizationItem(models.Model): 
     
@@ -700,6 +711,15 @@ class AmortizationItem(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.amortization.loan,self.schedule) 
+
+    def isMaturingAmortizationItem(self):
+
+
+
+        return  (self ==  self.amortization.loan.getCurrentAmortizationItem())
+
+    def isOnCurrentAmortization(self):  
+        return  (self.amortization ==  self.amortization.loan.getCurrentAmortization())
 
     # def isPaid(self):
     #     if  (self.payments.filter(isDeleted=False).count() > 0):

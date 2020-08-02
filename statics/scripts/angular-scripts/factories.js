@@ -5,6 +5,21 @@ define(function () {
 
     app.factory('appFactory', function ($http, toastr, $filter) {
         return {
+            getNotifications: function (userId,committeeId) {
+                return $http
+                    .get('/api/notifications/notifications/', { params: { userId: userId,committeeId: committeeId } })
+                    .then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + error.statusText,
+                                'Could not retrieve Notifications. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            },
             getNotes: function (object_id, content_type) {
                 return $http
                     .get('/api/committees/notes/', { params: { object_id: object_id, content_type: content_type } })

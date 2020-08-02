@@ -3,6 +3,8 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
 
+
+
 from documents.models import * 
 from committees.models import Committee
 from processes.models import Statuses,Step,Output,SubProcess
@@ -10,8 +12,10 @@ from processes.serializers import OutputSerializer,StatusSerializer,SubProcessSe
 from committees.serializers import NoteSerializer
 from loans.serializers import LoanSerializer,CreditLineSerializer
 from loans.models import Loan ,CreditLine,LoanStatus
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
 
-
+from slugify import slugify
 class DocumentMovementSerializer(ModelSerializer): 
     committeeName = serializers.CharField(read_only=True)
     positionName = serializers.ReadOnlyField(source='committee.position.name')
@@ -27,12 +31,9 @@ class DocumentMovementSerializer(ModelSerializer):
 
 
     def create(self, validated_data): 
- 
-
-         
+  
         document = Document.objects.get(pk=validated_data.get("document").id)
-        outputId =  validated_data.get("outputId")
-        print(outputId)
+        outputId =  validated_data.get("outputId") 
         output = Output.objects.get(id=outputId) 
         
         committee = Committee.objects.get(pk=validated_data.get("committee", "1").id)
@@ -42,7 +43,22 @@ class DocumentMovementSerializer(ModelSerializer):
 
         documentMovement.save()
 
+        action_type = output.step.status.name
+        message = document.name + ': ' +  output.step.name 
+
+        slug = slugify(document.subProcess.name)
+         
+ 
         
+        link =   slug
+
+        contentType = ContentType.objects.get(model='document')
+
+ 
+        notification = Notification(message=message,content_type=contentType,object_id=document.id,link=link,committee=committee,action_type=action_type)
+       
+        notification.save()
+
         return documentMovement
  
     
@@ -166,6 +182,22 @@ class DocumentSerializer(ModelSerializer):
         documentMovement = DocumentMovement(
         document = document ,name = step.name, committee= committee , status=status,step=step)
         documentMovement.save()
+
+
+        message = document.name + ': ' +  step.name
+
+        slug = slugify(document.subProcess.name)
+       
+
+
+        link =   slug
+
+        contentType = ContentType.objects.get(model='document')
+
+ 
+        notification = Notification(message=message,content_type=contentType,object_id=document.id,link=link,committee=committee)
+         
+        notification.save()
 
         return document
  
