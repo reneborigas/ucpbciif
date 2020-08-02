@@ -429,6 +429,11 @@ class PaymentPeriodViewSet(ModelViewSet):
 
         return queryset
 
+# class AmortizationStatusViewSet(ModelViewSet):
+#     queryset =  AmortizationStatus.objects.all()
+#     serializer_class = AmortizationStatusSerializer
+#     permission_classes = (permissions.IsAuthenticated, )
+
 class StatusViewSet(ModelViewSet):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer 

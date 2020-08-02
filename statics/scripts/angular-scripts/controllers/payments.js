@@ -442,7 +442,6 @@ define(function () {
                         $scope.$watch(
                             'payment.penaltyPayment',
                             function (newTerm, oldTerm) {
-                                 
                                 $scope.getTotalPayment();
                             },
                             true
@@ -450,9 +449,7 @@ define(function () {
                         $scope.$watch(
                             'payment.interestPayment',
                             function (newTerm, oldTerm) {
-                                
                                 $scope.getTotalPayment();
-
                             },
                             true
                         );
@@ -475,10 +472,9 @@ define(function () {
                             'payment.penaltyBalance',
                             function (newTerm, oldTerm) {
                                 console.log(newTerm);
-                                if (newTerm > 0){
+                                if (newTerm > 0) {
                                     $scope.payment.interestPayment = 0;
                                 }
-                                
                             },
                             true
                         );
@@ -486,11 +482,10 @@ define(function () {
                             'payment.interestBalance',
                             function (newTerm, oldTerm) {
                                 console.log(newTerm);
-                                if (newTerm > 0){
+                                if (newTerm > 0) {
                                     $scope.payment.cash = 0;
                                     $scope.payment.check = 0;
                                 }
-                                
                             },
                             true
                         );

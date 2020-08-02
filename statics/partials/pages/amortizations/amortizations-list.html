@@ -17,7 +17,7 @@
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false"
-                            > 
+                            >
                                 <i class="fad fa-file-export"></i>
                                 Export
                             </button>
@@ -119,18 +119,52 @@
                                     <option value="" disabled selected>Select Borrower</option>
                                 </select>
                             </div> -->
-                            <!-- <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
-                                <label>Term:</label>
-                                <select
-                                    class="form-control"
-                                    ng-model="params[$parent.filters[1].params.param1]"
-                                    ng-options="loanProgram.id as loanProgram.name for loanProgram in loanPrograms"
-                                >
-                                    <option value="" disabled selected>Select Borrower</option>
-                                </select>
-                            </div> -->
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[0].showFilter">
+                                <label>{{$parent.filters[0].name}}:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[0].params.param1]"
+                                        datepicker-localdate
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[0].params.param2]"
+                                        datepicker-localdate
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
+                                <label>{{$parent.filters[1].name}}:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        step="1"
+                                        ng-model="params[$parent.filters[1].params.param1]"
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        step="1"
+                                        ng-model="params[$parent.filters[1].params.param2]"
+                                    />
+                                </div>
+                            </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
-                                <label>Amortization Amount Range:</label>
+                                <label>{{$parent.filters[2].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -154,7 +188,31 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
-                                <label>Total Availment Range:</label>
+                                <label>{{$parent.filters[3].name}}:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[3].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            to
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[3].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[3].showFilter">
+                                <label>{{$parent.filters[3].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -178,7 +236,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[4].showFilter">
-                                <label>Interest Range:</label>
+                                <label>{{$parent.filters[4].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="text"
@@ -202,13 +260,14 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
-                                <label>Date Approved Range:</label>
+                                <label>{{$parent.filters[5].name}}:</label>
                                 <div class="input-group">
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[5].params.param1]"
-                                        datepicker-localdate
+                                        price
                                     />
                                     <div class="input-group-append">
                                         <span class="input-group-text">
@@ -216,21 +275,23 @@
                                         </span>
                                     </div>
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[5].params.param2]"
-                                        datepicker-localdate
+                                        price
                                     />
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[6].showFilter">
-                                <label>Expiry Date Range:</label>
+                                <label>{{$parent.filters[6].name}}:</label>
                                 <div class="input-group">
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[6].params.param1]"
-                                        datepicker-localdate
+                                        price
                                     />
                                     <div class="input-group-append">
                                         <span class="input-group-text">
@@ -238,12 +299,23 @@
                                         </span>
                                     </div>
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[6].params.param2]"
-                                        datepicker-localdate
+                                        price
                                     />
                                 </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[7].showFilter">
+                                <label>Status:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[6].params.param1]"
+                                    ng-options="amortizationStatus.name as amortizationStatus.name for amortizationStatus in amortizationStatuses"
+                                >
+                                    <option value="" disabled selected>Select Status</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row my-4" ng-if="showFilterButton">
@@ -280,21 +352,23 @@
                                     {{ amortizationitem.id }}
                                 </td> -->
 
-                            <td
-                                class="datatable-cell datatable-cell-right text-right"
-                                header-class="'text-right'"
-                                data-title="'LOAN'"
-                                sortable="'loan_id'"
+                                <td
+                                    class="datatable-cell datatable-cell-right text-right"
+                                    header-class="'text-right'"
+                                    data-title="'LOAN'"
+                                    sortable="'loan_id'"
                                 >
-                                <a href="" ng-click="view(amortizationitem.loan_id)"> LN{{ amortizationitem.loan_id  }}</a>
-                            </td>
+                                    <a href="" ng-click="view(amortizationitem.loan_id)">
+                                        LN{{ amortizationitem.loan_id }}
+                                    </a>
+                                </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
                                     data-title="'SCHEDULE'"
                                     sortable="'schedule'"
                                 >
-                                    {{ amortizationitem.schedule  | date : 'mediumDate' }}
+                                    {{ amortizationitem.schedule | date : 'mediumDate' }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-right text-right"
@@ -334,7 +408,8 @@
                                     data-title="'PENALTY'"
                                     sortable="'penalty'"
                                 >
-                                    {{ amortizationitem.penalty | currency :'₱'}}  (+{{ amortizationitem.daysExceed }} days)
+                                    {{ amortizationitem.penalty | currency :'₱'}} (+{{ amortizationitem.daysExceed }}
+                                    days)
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"
@@ -353,15 +428,13 @@
                                     {{ amortizationitem.principalBalance | currency :'₱'}}
                                 </td>
                                 <td
-                                class="datatable-cell datatable-cell-left text-left"
-                                header-class="'text-left'"
-                                data-title="'STATUS'"
-                                sortable="'amortizationStatus_name'"
-                            >
-                                {{ amortizationitem.amortizationStatus_name }}
-                            </td>
-
-                                
+                                    class="datatable-cell datatable-cell-left text-left"
+                                    header-class="'text-left'"
+                                    data-title="'STATUS'"
+                                    sortable="'amortizationStatus_name'"
+                                >
+                                    {{ amortizationitem.amortizationStatus_name }}
+                                </td>
                             </tr>
                         </table>
                     </div>

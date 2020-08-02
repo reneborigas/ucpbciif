@@ -66,64 +66,74 @@ define(function () {
 
         $scope.filters = [
             {
-                name: 'Borrower',
+                name: 'Schedule Date Range',
+                showFilter: false,
+                filterFormat: "date : 'mediumDate'",
+                params: {
+                    param1: 'scheduleDateFrom',
+                    param2: 'scheduleDateTo',
+                },
+            },
+            {
+                name: 'Number of Days Range',
                 showFilter: false,
                 filterFormat: 'uppercase',
                 params: {
-                    param1: 'borrowerId',
+                    param1: 'numberofDaysFrom',
+                    param2: 'numberofDaysTo',
                 },
             },
             {
-                name: 'Term',
-                showFilter: false,
-                filterFormat: 'uppercase',
-                params: {
-                    param1: 'term',
-                },
-            },
-            {
-                name: 'Amortization Amount Range',
+                name: 'Principal Range',
                 showFilter: false,
                 filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'creditLineAmountFrom',
-                    param2: 'creditLineAmountTo',
-                },
-            },
-            {
-                name: 'Total Availment Range',
-                showFilter: false,
-                filterFormat: "currency :'₱'",
-                params: {
-                    param1: 'totalAvailmentFrom',
-                    param2: 'totalAvailmentTo',
+                    param1: 'principalFrom',
+                    param2: 'principalTo',
                 },
             },
             {
                 name: 'Interest Range',
                 showFilter: false,
-                filterFormat: 'staticPercentage',
+                filterFormat: "currency :'₱'",
                 params: {
                     param1: 'interestFrom',
                     param2: 'interestTo',
                 },
             },
             {
-                name: 'Date Approved Range',
+                name: 'Penalty Amount Range',
                 showFilter: false,
-                filterFormat: "date : 'mediumDate'",
+                filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'dateApprovedFrom',
-                    param2: 'dateApprovedTo',
+                    param1: 'penaltyFrom',
+                    param2: 'penaltyTo',
                 },
             },
             {
-                name: 'Expiry Date Range',
+                name: 'Amortization Range',
                 showFilter: false,
-                filterFormat: "date : 'mediumDate'",
+                filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'expiryDateFrom',
-                    param2: 'expiryDateTo',
+                    param1: 'amortizationFrom',
+                    param2: 'amortizationTo',
+                },
+            },
+            {
+                name: 'Principal Balance Range',
+                showFilter: false,
+                filterFormat: "currency :'₱'",
+                params: {
+                    param1: 'amortizationFrom',
+                    param2: 'amortizationTo',
+                },
+            },
+            {
+                name: 'Status',
+                showFilter: false,
+                filterFormat: 'uppercase',
+                params: {
+                    param1: 'status',
                 },
             },
         ];
@@ -168,7 +178,6 @@ define(function () {
         };
 
         $scope.view = function (loanId) {
-             
             $state.go('app.loans.info', { loanId: loanId });
         };
 
@@ -256,8 +265,6 @@ define(function () {
         };
     });
 
-
-
     app.controller('MaturingAmortizationListController', function MaturingAmortizationListController(
         $http,
         $filter,
@@ -277,7 +284,7 @@ define(function () {
             {
                 counts: [10, 20, 30, 50, 100],
                 getData: function (params) {
-                    return $http.get('/api/loans/amortizationitems/',  { params: { maturing: 'TRUE' } }).then(
+                    return $http.get('/api/loans/amortizationitems/', { params: $scope.params }).then(
                         function (response) {
                             console.log(response.data);
                             var filteredData = params.filter()
@@ -317,68 +324,84 @@ define(function () {
             true
         );
 
-        $scope.params = {};
+        // appFactory.getAmortizationStatus().then(function (data) {
+        //     $scope.amortizationStatuses = data;
+        // });
+
+        $scope.params = {
+            maturing: 'TRUE',
+        };
 
         $scope.filters = [
             {
-                name: 'Borrower',
+                name: 'Schedule Date Range',
+                showFilter: false,
+                filterFormat: "date : 'mediumDate'",
+                params: {
+                    param1: 'scheduleDateFrom',
+                    param2: 'scheduleDateTo',
+                },
+            },
+            {
+                name: 'Number of Days Range',
                 showFilter: false,
                 filterFormat: 'uppercase',
                 params: {
-                    param1: 'borrowerId',
+                    param1: 'numberofDaysFrom',
+                    param2: 'numberofDaysTo',
                 },
             },
             {
-                name: 'Term',
-                showFilter: false,
-                filterFormat: 'uppercase',
-                params: {
-                    param1: 'term',
-                },
-            },
-            {
-                name: 'Amortization Amount Range',
+                name: 'Principal Range',
                 showFilter: false,
                 filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'creditLineAmountFrom',
-                    param2: 'creditLineAmountTo',
-                },
-            },
-            {
-                name: 'Total Availment Range',
-                showFilter: false,
-                filterFormat: "currency :'₱'",
-                params: {
-                    param1: 'totalAvailmentFrom',
-                    param2: 'totalAvailmentTo',
+                    param1: 'principalFrom',
+                    param2: 'principalTo',
                 },
             },
             {
                 name: 'Interest Range',
                 showFilter: false,
-                filterFormat: 'staticPercentage',
+                filterFormat: "currency :'₱'",
                 params: {
                     param1: 'interestFrom',
                     param2: 'interestTo',
                 },
             },
             {
-                name: 'Date Approved Range',
+                name: 'Penalty Amount Range',
                 showFilter: false,
-                filterFormat: "date : 'mediumDate'",
+                filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'dateApprovedFrom',
-                    param2: 'dateApprovedTo',
+                    param1: 'penaltyFrom',
+                    param2: 'penaltyTo',
                 },
             },
             {
-                name: 'Expiry Date Range',
+                name: 'Amortization Range',
                 showFilter: false,
-                filterFormat: "date : 'mediumDate'",
+                filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'expiryDateFrom',
-                    param2: 'expiryDateTo',
+                    param1: 'amortizationFrom',
+                    param2: 'amortizationTo',
+                },
+            },
+            {
+                name: 'Principal Balance Range',
+                showFilter: false,
+                filterFormat: "currency :'₱'",
+                params: {
+                    param1: 'amortizationFrom',
+                    param2: 'amortizationTo',
+                },
+            },
+            {
+                name: 'Status',
+                showFilter: false,
+                filterFormat: 'uppercase',
+                params: {
+                    param1: 'status',
                 },
             },
         ];
@@ -423,7 +446,6 @@ define(function () {
         };
 
         $scope.view = function (loanId) {
-             
             $state.go('app.payments.new', { loanId: loanId });
         };
 
