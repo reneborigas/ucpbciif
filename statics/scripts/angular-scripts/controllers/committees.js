@@ -372,6 +372,30 @@ define(function () {
             var officeNameSlug = appFactory.slugify(officeName);
             $state.go('app.committees.member', { officeName: officeNameSlug, committeeId: committeeId });
         };
+
+        $scope.checkEmailAddress = function (emailAddress) {
+            if (emailAddress) {
+                $http
+                    .get('/api/committees/committees/', {
+                        params: { emailAddress: emailAddress },
+                    })
+                    .then(
+                        function (response) {
+                            if (response.data.length > 0) {
+                                $scope.isValidEmail = false;
+                            } else {
+                                $scope.isValidEmail = true;
+                            }
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve Committee Email Addresses. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            }
+        };
     });
 
     app.controller('CommitteeOfficeInfoMemberController', function CommitteeOfficeInfoMemberController(
@@ -446,7 +470,23 @@ define(function () {
                     appFactory.getUserAccountTypeID('Committee').then(function (data) {
                         $scope.newUser.account_type = data;
                     });
-                    console.log($scope.newUser);
+                    if ($scope.committee.user) {
+                        $http
+                            .get('/api/users/users/', {
+                                params: { id: $scope.committee.user },
+                            })
+                            .then(
+                                function (response) {
+                                    $scope.committeeUserAccount = response.data[0];
+                                },
+                                function (error) {
+                                    toastr.error(
+                                        'Error ' + error.status + ' ' + error.statusText,
+                                        'Could not retrieve Committee Member User Information. Please contact System Administrator.'
+                                    );
+                                }
+                            );
+                    }
                 },
                 function (error) {
                     toastr.error(
@@ -457,7 +497,6 @@ define(function () {
             );
 
         $scope.saveAccount = function () {
-            console.log($scope.newUser);
             swal({
                 title: 'Create User',
                 text: 'Do you want to save the information and create this user?',
@@ -496,6 +535,7 @@ define(function () {
                                             function () {
                                                 swal('Success!', 'Committee User Created.', 'success');
                                                 toastr.success('Success', 'Committee User Created.');
+                                                $state.reload();
                                             },
                                             function (error) {
                                                 toastr.error(
@@ -524,6 +564,20 @@ define(function () {
                     );
                 }
             });
+        };
+
+        $scope.changePassword = function () {
+            console.log($scope.committeeUserAccount);
+            $http
+                .get('/api/auth/validatepassword/', {
+                    params: {
+                        username: $scope.committeeUserAccount.username,
+                        password: $scope.committeeUserAccount.password,
+                    },
+                })
+                .then(function (response) {
+                    console.log(response.data);
+                });
         };
     });
 });
