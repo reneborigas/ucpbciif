@@ -183,14 +183,33 @@ class UpdateLoanView(views.APIView):
             if purpose: 
                 loan.purpose = purpose
                 new_value = purpose
-                
+                loan.save()
 
             security = request.data.get("security")  
             if security: 
                 loan.security = security
                 new_value = security
 
-            loan.save()
+                loan.save()
+            dateReleased = request.data.get("dateReleased")  
+            if dateReleased: 
+                loan.dateReleased = dateReleased
+                new_value = dateReleased
+                loan.save()
+                
+
+                loan = Loan.objects.get(pk=loanId)
+                schedule = loan.dateReleased +  timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle  + 1 )
+                amortization = loan.getLatestAmortization()
+                amortization.dateReleased = loan.dateReleased   +  timezone.timedelta(days= 1 )
+                amortization.save()
+
+                for amortizationItem in amortization.amortizationItems.all().order_by('id'):
+                    amortizationItem.schedule = schedule
+                    schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+                    amortizationItem.save()
+                        
+           
 
             return Response({
                 'message': 'Loan Updated', 
@@ -456,7 +475,7 @@ class LoanProgramDistributionViewSet(ModelViewSet):
                 window.overallLoanPercentage = window.getOverallLoanPercentage(totalLoan)
                 # values = []
                 # values.append()
-                window.values = [int(window.overallLoanPercentage)]
+                window.values = [int(window.overallLoan)]
 
 
         return queryset
@@ -511,10 +530,15 @@ class PaymentPeriodViewSet(ModelViewSet):
 
         return queryset
 
-# class AmortizationStatusViewSet(ModelViewSet):
-#     queryset =  AmortizationStatus.objects.all()
-#     serializer_class = AmortizationStatusSerializer
-#     permission_classes = (permissions.IsAuthenticated, )
+class AmortizationStatusViewSet(ModelViewSet):
+    queryset =  AmortizationStatus.objects.all()
+    serializer_class = AmortizationStatusSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class LoanStatusViewSet(ModelViewSet):
+    queryset =  LoanStatus.objects.all()
+    serializer_class = LoanStatusSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
 class StatusViewSet(ModelViewSet):
     queryset = Status.objects.all()

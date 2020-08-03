@@ -55,6 +55,13 @@ class AmortizationStatusSerializer(ModelSerializer):
         model = AmortizationStatus
         fields = '__all__'
 
+class LoanStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = LoanStatus
+        fields = '__all__'
+
+
 class CalendarAmortizationItemSerializer(ModelSerializer): 
     title   = serializers.CharField(read_only=True) 
     start = serializers.CharField(read_only=True)

@@ -90,8 +90,6 @@ class LoanStatus(models.Model):
         blank = False,
         null = False, 
     )
-   
-   
     isDefault = models.BooleanField(
         default=False
     )    
@@ -119,8 +117,6 @@ class LoanStatus(models.Model):
         default=False,
     )
 
-     
-    
     def __str__(self):
         return "%s" % (self.name  )
 

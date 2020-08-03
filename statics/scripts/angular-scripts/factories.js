@@ -370,7 +370,7 @@ define(function () {
                 );
             },
             getLoanStatus: function () {
-                return $http.get('/api/loans/status/').then(
+                return $http.get('/api/loans/loanstatus/').then(
                     function (response) {
                         return response.data;
                     },

@@ -422,6 +422,35 @@ define(function () {
             $scope.update.note = value;
         };
 
+        $scope.editReleaseDate = function (id, dateReleased) {
+            $scope.update.id = id;
+            $scope.update.releaseDate = new Date(dateReleased);
+            angular.element('#edit-release-date').modal('show');
+        };
+
+        $scope.updateReleaseDate = function () {
+            $http
+                .post('/api/loans/updateloanview/', {
+                    loanId: $scope.update.id,
+                    dateReleased: $scope.update.releaseDate,
+                })
+                .then(
+                    function (response) {
+                        angular.element('#edit-release-date').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        $state.reload();
+                        toastr.success('Success', 'Date Released updated.');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update date released. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
+
         // -- Start Simple Pagination --
         $scope.currentPage = {
             notes: 0,
@@ -469,7 +498,6 @@ define(function () {
             });
         };
     });
-
     // app.controller('DocumentAddController', function DocumentAddController(
     //     $http,
     //     $filter,

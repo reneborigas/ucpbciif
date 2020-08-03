@@ -11,9 +11,10 @@ define(function () {
         NgTableParams,
         $state,
         $timeout,
-        appFactory
+        appFactory,
+        $window,
+        $stateParams
     ) {
-
         $scope.tableDocuments = new NgTableParams(
             {
                 page: 1,
@@ -64,6 +65,93 @@ define(function () {
             true
         );
 
+        $scope.retrieveHeaders = function () {
+            var headers = [];
+            var ngTable = document.getElementById('tableDocuments');
+            var rowLength = ngTable.rows.length;
+
+            for (var i = 0; i < rowLength; i++) {
+                var ngCells = ngTable.rows.item(i).cells;
+                var cellLength = ngCells.length;
+
+                for (var j = 0; j < cellLength; j++) {
+                    var cellTitle = ngCells.item(j).getAttribute('data-title');
+                    if (cellTitle && cellTitle != "'ACTIONS'") {
+                        cellTitle = cellTitle.slice(1, -1);
+                        if (!headers.includes(cellTitle)) {
+                            headers.push(cellTitle);
+                        }
+                    }
+                }
+            }
+            return headers;
+        };
+
+        $scope.retrieveCellValues = function () {
+            var values = [];
+            var ngTable = document.getElementById('tableDocuments');
+            var rowLength = ngTable.rows.length;
+
+            for (var i = 2; i < rowLength; i++) {
+                var exclude = ngTable.rows.item(i).getAttribute('print-exclude');
+                if (!exclude) {
+                    var ngCells = ngTable.rows.item(i).cells;
+                    var cellLength = ngCells.length;
+                    var cells = [];
+                    for (var j = 0; j < cellLength; j++) {
+                        if (ngCells.item(j).innerText) {
+                            cells.push(ngCells.item(j).innerText);
+                        }
+                    }
+                    values.push(cells);
+                }
+            }
+            return values;
+        };
+
+        $scope.loadCurrentUserInfo = function () {
+            var user = {};
+            appFactory.getCurrentUserInfo().then(function (data) {
+                user['name'] = data.fullName;
+                user['position'] = data.committeePosition;
+            });
+            return user;
+        };
+
+        $scope.printDataTable = function () {
+            var filters = [];
+            angular.forEach($scope.filters, function (filter) {
+                if (filter.showFilter) {
+                    var parameters = {};
+                    angular.forEach(filter.params, function (param) {
+                        parameters[param] = $scope.params[param];
+                    });
+                    filters.push({
+                        name: filter.name,
+                        filterFormat: filter.filterFormat,
+                        params: parameters,
+                    });
+                }
+            });
+            if ($scope.searchTermAuto) {
+                filters.push({
+                    name: 'Search',
+                    filterFormat: 'uppercase',
+                    params: { input: $scope.searchTermAuto },
+                });
+            }
+            var $popup = $window.open(
+                '/print/' + $stateParams.subProcessName,
+                '_blank',
+                'directories=0,width=800,height=800'
+            );
+            $popup.title = 'Loan List';
+            $popup.user = $scope.loadCurrentUserInfo();
+            $popup.filters = filters;
+            $popup.headers = $scope.retrieveHeaders();
+            $popup.cellValues = $scope.retrieveCellValues();
+        };
+
         $scope.view = function (subProcessName, id) {
             var subProcessNameSlug = appFactory.slugify(subProcessName);
             $state.go('app.documents.info', { subProcessName: subProcessNameSlug, documentId: id });
@@ -83,10 +171,6 @@ define(function () {
         $q,
         $window
     ) {
-
-
-       
-       
         appFactory.getLastActivity($scope.documentId).then(function (data) {
             $scope.lastActivity = data[0];
 
@@ -244,7 +328,6 @@ define(function () {
                 });
 
                 console.log($scope.isUserAssigned);
-               
             });
         };
 

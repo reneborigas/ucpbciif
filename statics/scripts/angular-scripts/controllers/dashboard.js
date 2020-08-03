@@ -74,64 +74,63 @@ define(function () {
         );
         $http.get('/api/loans/getdashboarddata/').then(
             function (response) {
-                
+                $scope.dashboarddata = {
+                    borrowerCount: response.data.borrowerCount,
+                    totalPayments: response.data.totalPayments,
+                    totalBalance: response.data.totalBalance,
+                    totalLoans: response.data.totalLoans,
+                };
+                $http
+                    .get('/api/loans/loanprogramdistribution/', {
+                        params: { totalLoan: response.data.totalLoans },
+                    })
+                    .then(
+                        function (response) {
+                            $scope.loanPrograms = response.data;
+                            console.log($scope.loanPrograms);
+                            // $scope.newLoanPrograms = []
 
-                $scope.dashboarddata ={
-                    'borrowerCount':response.data.borrowerCount,
-                    'totalPayments':response.data.totalPayments, 
-                    'totalBalance':response.data.totalBalance, 
-                    'totalLoans':response.data.totalLoans, 
-                }
-                $http.get('/api/loans/loanprogramdistribution/',{
-                    params: { totalLoan: response.data.totalLoans} }).then(
-                    function (response) {
-                        
-        
-                        $scope.loanPrograms = response.data;
-                        console.log($scope.loanPrograms);
-                        // $scope.newLoanPrograms = []
+                            // $scope.loanPrograms=
+                            // [
+                            //         {
+                            //             values: [95],
+                            //             text: 'Total Commits',
+                            //         },
+                            //         {
+                            //             values: [1],
+                            //             text: 'Total Commits',
+                            //         },
+                            //         {
+                            //             values: [1],
+                            //             text: 'Total Commits',
+                            //         },
+                            //         {
+                            //             values: [1],
+                            //             text: 'Total Commits',
+                            //         },
+                            //         {
+                            //             values: [1],
+                            //             text: 'Total Commits',
+                            //         },
+                            //         {
+                            //             values: [1],
+                            //             text: 'Total Commits',
+                            //         },
 
-                        // $scope.loanPrograms=
-                        // [
-                        //         {
-                        //             values: [95],
-                        //             text: 'Total Commits',
-                        //         },
-                        //         {
-                        //             values: [1],
-                        //             text: 'Total Commits',
-                        //         },
-                        //         {
-                        //             values: [1],
-                        //             text: 'Total Commits',
-                        //         },
-                        //         {
-                        //             values: [1],
-                        //             text: 'Total Commits',
-                        //         },
-                        //         {
-                        //             values: [1],
-                        //             text: 'Total Commits',
-                        //         },
-                        //         {
-                        //             values: [1],
-                        //             text: 'Total Commits',
-                        //         },
-                                
-                        //     ]
+                            //     ]
 
-                        //     console.log($scope.loanPrograms);
-                       
-                        $scope.loadCharts();
-                    },
-                    function (error) {
-                        toastr.error(
-                            'Error ' + error.status + ' ' + error.statusText,
-                            'Could not retrieve Loan Programs Percentage Information. Please contact System Administrator.'
-                        );
-                    }
-                );
-                
+                            //     console.log($scope.loanPrograms);
+
+                            $scope.loadCharts();
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve Loan Programs Percentage Information. Please contact System Administrator.'
+                            );
+                        }
+                    );
+
                 // console.log( response.data);
 
                 // console.log( $scope.dashboarddata);
@@ -143,9 +142,6 @@ define(function () {
                 );
             }
         );
-
-      
-
 
         $scope.loadCurrentUser = function () {
             return appFactory.getCurrentUserInfo().then(function (data) {
@@ -214,7 +210,7 @@ define(function () {
             }
         };
 
-        $scope.loadCharts = function(){
+        $scope.loadCharts = function () {
             $scope.chart3 = {
                 type: 'pie',
                 title: {
@@ -225,11 +221,22 @@ define(function () {
                     shadow: false,
                     fontFamily: 'Poppins',
                 },
-                plot: {
-                    slice: 50, //to make a donut
+                legend: {
+                    layout: 'x5',
+                    position: '50%',
+                    borderColor: 'transparent',
+                    marker: {
+                        borderRadius: 10,
+                        borderColor: 'transparent',
+                    },
                 },
+                tooltip: {
+                    text: '₱%v',
+                },
+                // plot: {
+                //     slice: 50, //to make a donut
+                // },
                 series: $scope.loanPrograms,
-    
                 // series: [
                 //     {
                 //         values: [99],
@@ -239,12 +246,10 @@ define(function () {
                 //         values: [1],
                 //         text: 'Total Commits',
                 //     },
-                    
+
                 // ],
             };
         };
-
-
 
         $scope.chart1 = {
             gui: {
@@ -418,8 +423,6 @@ define(function () {
             type: 'line',
             series: [{ values: [54, 23, 34, 23, 43] }, { values: [10, 15, 16, 20, 40] }],
         };
-
-       
 
         $scope.chart4 = {
             globals: {

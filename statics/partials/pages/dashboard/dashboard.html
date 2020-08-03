@@ -72,7 +72,7 @@
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
                                             {{ notification.committeeName }}
                                         </span>
-                                        <span class="text-muted font-weight-bold">{{ notification.positionName  }}</span>
+                                        <span class="text-muted font-weight-bold">{{ notification.positionName }}</span>
                                     </td>
                                     <!-- <td class="text-right">
                                         <span class="text-muted font-weight-500">ReactJs, HTML</span>
@@ -102,29 +102,10 @@
                 "
             >
                 <div class="card-body">
-                    <span class="svg-icon svg-icon-2x svg-icon-info">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="24px"
-                            height="24px"
-                            viewBox="0 0 24 24"
-                            version="1.1"
-                        >
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <path
-                                    d="M6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,12 C19,12.5522847 18.5522847,13 18,13 L6,13 C5.44771525,13 5,12.5522847 5,12 L5,3 C5,2.44771525 5.44771525,2 6,2 Z M7.5,5 C7.22385763,5 7,5.22385763 7,5.5 C7,5.77614237 7.22385763,6 7.5,6 L13.5,6 C13.7761424,6 14,5.77614237 14,5.5 C14,5.22385763 13.7761424,5 13.5,5 L7.5,5 Z M7.5,7 C7.22385763,7 7,7.22385763 7,7.5 C7,7.77614237 7.22385763,8 7.5,8 L10.5,8 C10.7761424,8 11,7.77614237 11,7.5 C11,7.22385763 10.7761424,7 10.5,7 L7.5,7 Z"
-                                    fill="#000000"
-                                    opacity="0.3"
-                                />
-                                <path
-                                    d="M3.79274528,6.57253826 L12,12.5 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 Z"
-                                    fill="#000000"
-                                />
-                            </g>
-                        </svg>
-                    </span>
+                    <i
+                        class="fad fa-users icon-xl"
+                        style="--fa-primary-color: #3699ff; --fa-secondary-color: #3694ffd3;"
+                    ></i>
                     <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
                         {{ dashboarddata.borrowerCount}}
                     </span>
@@ -137,25 +118,27 @@
                 <div class="card-body">
                     <span class="svg-icon svg-icon-2x svg-icon-white">
                         <span class="svg-icon svg-icon-2x svg-icon-white">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    width="24px"
-                                    height="24px"
-                                    viewBox="0 0 24 24"
-                                    version="1.1"
-                                >
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24" />
-                                        <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
-                                        <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
-                                        <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
-                                        <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
-                                    </g>
-                                </svg>
-                            </span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px"
+                                height="24px"
+                                viewBox="0 0 24 24"
+                                version="1.1"
+                            >
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5" />
+                                    <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5" />
+                                    <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5" />
+                                    <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
+                                </g>
+                            </svg>
+                        </span>
                     </span>
-                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block"> {{ dashboarddata.totalLoans | currency :'₱'}}</span>
+                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">
+                        {{ dashboarddata.totalLoans | currency :'₱'}}
+                    </span>
                     <span class="font-weight-bold text-white font-size-sm">Overall Distributed Loans</span>
                 </div>
             </div>
@@ -181,7 +164,9 @@
                             </g>
                         </svg>
                     </span>
-                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ dashboarddata.totalPayments | currency :'₱'}}</span>
+                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">
+                        {{ dashboarddata.totalPayments | currency :'₱'}}
+                    </span>
                     <span class="font-weight-bold text-white font-size-sm">Overall Collections</span>
                 </div>
             </div>
@@ -215,7 +200,7 @@
                     <span
                         class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block"
                     >
-                    {{ dashboarddata.totalBalance | currency :'₱'}}
+                        {{ dashboarddata.totalBalance | currency :'₱'}}
                     </span>
                     <span class="font-weight-bold text-white font-size-sm">Overall Collectibles</span>
                 </div>
