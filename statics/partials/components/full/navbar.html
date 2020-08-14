@@ -15,12 +15,19 @@
     <ul class="nav navbar-nav ml-auto d-md-down-none">
         <li class="nav-item dropdown">
             <div class="dropdown">
-                <div class="topbar-item" data-toggle="dropdown" data-offset="20px,0px" aria-expanded="false" ng-click="loadNotifications(user)">
+                <div
+                    class="topbar-item"
+                    data-toggle="dropdown"
+                    data-offset="20px,0px"
+                    aria-expanded="false"
+                    ng-click="loadNotifications(user)"
+                >
                     <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 pulse pulse-primary">
                         <i class="fad fa-bells"></i>
-                        <span class="pulse-ring"> {{ notifications.length }}</span>
-                        <span class="badge badge-pill badge-danger" ng-if="notifications.length > 0"> {{ notifications.length }}</span>
-                        
+                        <span class="pulse-ring">{{ notifications.length }}</span>
+                        <span class="badge badge-pill badge-danger" ng-if="notifications.length > 0">
+                            {{ notifications.length }}
+                        </span>
                     </div>
                 </div>
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-lg dropdown-menu-right">
@@ -32,35 +39,36 @@
                         style="height: 50px; overflow: hidden;"
                         ng-if="!notifications.length>0"
                     >
-                    
-                         
                         <div class="navi-text text-center pt-4">
                             <div class="font-weight-bold">No Active Notifications</div>
                         </div>
-                    
-                </div>
+                    </div>
                     <div
-                        class="navi navi-hover scroll my-4 ps"
-                        data-scroll="true"
-                        data-height="300"
-                        data-mobile-height="200"
-                      
+                        class="navi navi-hover scroll my-4"
+                        style="max-height: 300px; overflow-y: auto;"
                         ng-if="notifications.length > 0 && !notifClick"
                     >
-                        <a href="#" ng-click = "notifView(notification.id,notification.object_id,notification.content_type,notification.link)" class="navi-item" ng-repeat=" notification in notifications">
+                        <a
+                            href="#"
+                            ng-click="notifView(notification.id,notification.object_id,notification.content_type,notification.link)"
+                            class="navi-item"
+                            ng-repeat=" notification in notifications"
+                        >
                             <div class="navi-link">
                                 <div class="navi-icon mr-2">
                                     <i class="flaticon2-line-chart text-success"></i>
                                 </div>
                                 <div class="navi-text">
-                                    <div class="font-weight-bold">{{ notification.message }}  </div>
-                                   
-                                    <div class="text-muted">{{ notification.committeeName  }} - {{ notification.positionName  }}</div>
-                                    <div class="text-muted">{{ notification.action_time | date:'medium'   }}</div>
+                                    <div class="font-weight-bold">{{ notification.message }}</div>
+
+                                    <div class="text-muted">
+                                        {{ notification.committeeName }} - {{ notification.positionName }}
+                                    </div>
+                                    <div class="text-muted">{{ notification.action_time | date:'medium' }}</div>
                                 </div>
                             </div>
                         </a>
-                       
+
                         <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
                             <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
                         </div>
@@ -142,8 +150,6 @@
         </li> -->
     </ul>
 </header>
-
-
 
 <!-- Notifcations -->
 <!-- 

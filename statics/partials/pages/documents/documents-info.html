@@ -29,15 +29,18 @@
                                 <!-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> -->
                             </div>
 
-                            <div class="my-lg-0 my-1" ng-if="document.loan && (document.loan.loanStatus == 1 || document.loan.loanStatus == 2)">
-                                    <a
-                                        href="#"
-                                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                                        ng-click="viewLoan(document.loan.id)"
-                                    >
-                                        view Loan Record
-                                    </a>
-                                    <!-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> -->
+                            <div
+                                class="my-lg-0 my-1"
+                                ng-if="document.loan && (document.loan.loanStatus == 1 || document.loan.loanStatus == 2)"
+                            >
+                                <a
+                                    href="#"
+                                    class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                                    ng-click="viewLoan(document.loan.id)"
+                                >
+                                    view Loan Record
+                                </a>
+                                <!-- <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">New Task</a> -->
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
@@ -619,10 +622,7 @@
             </div>
         </div>
     </div>
-    
     <div class="col-xl-5">
-
-            
         <div class="card card-custom card-stretch gutter-b">
             <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
@@ -666,45 +666,44 @@
             </div>
         </div>
     </div>
-
     <div class="col-xl-7">
-       
-
-        <div class="card card-custom card-stretch-half gutter-b"  ng-if="!isUserAssigned">
-                <div class="card-header">
-                    <div class="card-title">
-                        <span class="card-icon">
-                            <i class="fad fa-users-class"></i>
-                        </span>
-                        <h3 class="card-label">File Access</h3>
-                    </div>
+        <div class="card card-custom card-stretch-half gutter-b" ng-if="!isUserAssigned">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-icon">
+                        <i class="fad fa-users-class"></i>
+                    </span>
+                    <h3 class="card-label">File Access</h3>
                 </div>
-                <div class="card-body text-center">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <h4 class="mb-0">This file procedure is not assigned to this account and can only be access for viewing references.</h4>
-                        </div>
+            </div>
+            <div class="card-body text-center">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h4 class="mb-0">
+                            This file procedure is not assigned to this account and can only be access for viewing
+                            references.
+                        </h4>
                     </div>
                 </div>
             </div>
-            <div class="card card-custom card-stretch-half gutter-b" ng-if="!currentStep">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <span class="card-icon">
-                                <i class="fad fa-users-class"></i>
-                            </span>
-                            <h3 class="card-label">Summary</h3>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <h4 class="mb-0">This file is now only available for viewing references.</h4>
-                            </div>
-                        </div>
+        </div>
+        <div class="card card-custom card-stretch-half gutter-b" ng-if="!currentStep">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="card-icon">
+                        <i class="fad fa-users-class"></i>
+                    </span>
+                    <h3 class="card-label">Summary</h3>
+                </div>
+            </div>
+            <div class="card-body text-center">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h4 class="mb-0">This file is now only available for viewing references.</h4>
                     </div>
                 </div>
-
+            </div>
+        </div>
         <div class="card card-custom card-stretch-half gutter-b" ng-if="currentStep">
             <div class="card-header">
                 <div class="card-title">
@@ -773,7 +772,7 @@
                     </div>
                     <div class="wizard-body py-8 px-8 py-lg-12 px-lg-8" block-ui="attachmentBlockUI">
                         <div class="row">
-                            <div class="offset-xxl-2 col-xxl-8">
+                            <div class="col-xxl-12">
                                 <div class="pb-5">
                                     <div class="pb-5">
                                         <div class="font-size-h6">
@@ -783,9 +782,10 @@
                                             </span>
                                         </div>
                                     </div>
-
-                                   
-                                    <ul class="text-dark list-unstyled" ng-if="currentRequirement.attachments && currentRequirement.attachments.length > 0">
+                                    <!-- <ul
+                                        class="text-dark list-unstyled"
+                                        ng-if="currentRequirement.attachments && currentRequirement.attachments.length > 0"
+                                    >
                                         <li class="font-size-h6">Attachments</li>
                                         <ul class="font-size-h7">
                                             <li
@@ -809,10 +809,70 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    </ul>
-                                    <div class="text-center" ng-if="!currentRequirement.attachments || currentRequirement.attachments.length ==0">
-                                            <h6 class="font-size-sm">No attachments found</h6>
+                                    </ul> -->
+                                    <div
+                                        class="mb-2"
+                                        ng-repeat="stepRequirementAttachment in currentRequirement.attachments | startFrom:currentPage.attachment * pageSize.attachment | limitTo: pageSize.attachment "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center border border-dark-50 bg-light rounded-sm p-2"
+                                        >
+                                            <a
+                                                href=""
+                                                ng-click="downloadFile(stepRequirementAttachment.fileAttachment,stepRequirementAttachment.fileName)"
+                                            >
+                                                <div class="symbol symbol-45 symbol-hover mr-5">
+                                                    <span class="symbol-label btn btn-hover-primary">
+                                                        <i class="fad fa-file-alt icon-xl text-hover-white"></i>
+                                                    </span>
+                                                </div>
+                                            </a>
+                                            <div class="d-flex flex-column flex-grow-1">
+                                                <span
+                                                    class="font-weight-bold"
+                                                    ng-bind="stepRequirementAttachment.fileName | trimStringWithExtension: 20"
+                                                ></span>
+                                                <span
+                                                    ng-if="stepRequirementAttachment.description"
+                                                    ng-bind="stepRequirementAttachment.description"
+                                                ></span>
+                                                <span class="text-muted font-size-xs">
+                                                    {{ stepRequirementAttachment.committeeName }} - {{
+                                                    stepRequirementAttachment.positionName }}
+                                                </span>
+                                            </div>
+                                            <div class="dropdown dropleft">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-clean btn-icon btn-sm"
+                                                    data-toggle="dropdown"
+                                                >
+                                                    <i class="fal fa-angle-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#">Add Note</a>
+                                                    <a class="dropdown-item" href="#">Edit Description</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Remove</a>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <p class="text-dark-50 m-0 pt-3 font-weight-normal">
+                                            {{ borrowerAttachment.description }}
+                                            <span ng-if="borrowerAttachment.createdBy">-</span>
+                                            <span
+                                                class="font-italic text-muted"
+                                                ng-if="borrowerAttachment.createdBy"
+                                                ng-bind="borrowerAttachment.createdBy"
+                                            ></span>
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="text-center"
+                                        ng-if="!currentRequirement.attachments || currentRequirement.attachments.length ==0"
+                                    >
+                                        <h6 class="font-size-sm">No attachments found</h6>
+                                    </div>
                                     <div ng-if="currentRequirement.attachments">
                                         <pagination
                                             data="currentRequirement.attachments"
@@ -821,79 +881,16 @@
                                         ></pagination>
                                     </div>
                                 </div>
-                                <div class="pb-5" ng-if="currentStep">
-                                    <div class="form-group">
-                                        <label>File Attachment</label>
-                                        <input
-                                            type="file"
-                                            id="fileAttachment"
-                                            name="fileAttachment"
-                                            multiple
-                                            select-ng-files="fileAttachment"
-                                            ng-model="fileAttachment.attachment"
-                                            hidden
-                                        />
-                                        <div class="dropzone dropzone-multi">
-                                            <div class="dropzone-panel mb-lg-0 mb-2">
-                                                <a
-                                                    class="dropzone-select btn btn-light-primary font-weight-bold btn-sm"
-                                                    ng-click="selectFile()"
-                                                >
-                                                    Select files
-                                                </a>
-                                                <a
-                                                    class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm"
-                                                >
-                                                    Remove All
-                                                </a>
-                                            </div>
-                                            <div class="dropzone-items">
-                                                <div class="dropzone-item" ng-repeat="file in fileList">
-                                                    <div class="dropzone-file">
-                                                        <div class="dropzone-filename">
-                                                            <span>{{ file.name }}</span>
-                                                            <strong>
-                                                                <span>({{ file.size/1000 | number : 2 }} KB)</span>
-                                                            </strong>
-                                                        </div>
-                                                        <div class="dropzone-error" data-dz-errormessage></div>
-                                                    </div>
-                                                    <div class="dropzone-toolbar">
-                                                        <span
-                                                            class="dropzone-delete"
-                                                            data-dz-remove
-                                                            ng-click="removeFile($index)"
-                                                        >
-                                                            <i class="fal fa-times icon-md"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description *</label>
-                                        <textarea
-                                            ng-model="newAttachment.attachmentDescription"
-                                            name="attachmentDescription"
-                                            type="text"
-                                            rows="4"
-                                            cols="50"
-                                            class="form-control form-control-solid form-control-lg textarea"
-                                        ></textarea>
-                                        <span class="form-text text-muted">Please enter attachment description.</span>
-                                    </div>
-                                </div>
                                 <div class="d-flex justify-content-end border-top mt-5 pt-10" ng-if="currentStep">
-                                    <button
-                                        class="btn btn-outline-primary ont-weight-bold text-uppercase"
-                                        type="button"
-                                        ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription"
-                                        ng-click="attachFile(currentRequirement)"
+                                    <a
+                                        href="#"
+                                        class="btn btn-success font-weight-bolder font-size-sm"
+                                        data-toggle="modal"
+                                        data-target="#attach-file"
                                     >
-                                        <i class="fal fa-plus mr-2"></i>
+                                        <i class="fal fa-paperclip"></i>
                                         Attach
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -1088,4 +1085,101 @@
         </div>
     </div>
     <!-- End Modal Purpose Security -->
+    <!-- Modal Attach File -->
+    <div
+        id="attach-file"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Attach Files</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="pb-1">
+                        <div class="form-group">
+                            <label>Step</label>
+                            <h6>{{ currentRequirement.name }}</h6>
+                        </div>
+                        <div class="form-group">
+                            <label>Attachments</label>
+                            <input
+                                type="file"
+                                id="fileAttachment"
+                                name="fileAttachment"
+                                select-ng-files="fileAttachment"
+                                ng-model="fileAttachment.attachment"
+                                ng-change="fileOnChange()"
+                                hidden
+                            />
+                            <div class="dropzone dropzone-multi">
+                                <div class="dropzone-panel mb-lg-0 mb-2">
+                                    <a
+                                        class="dropzone-select btn btn-light-primary font-weight-bold btn-sm"
+                                        ng-click="selectFile()"
+                                    >
+                                        Select files
+                                    </a>
+                                    <a class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm">
+                                        Remove All
+                                    </a>
+                                </div>
+                                <div class="dropzone-items">
+                                    <div class="dropzone-item" ng-repeat="file in fileList">
+                                        <div class="dropzone-file">
+                                            <div class="dropzone-filename">
+                                                <span>{{ file.name }}</span>
+                                                <strong>
+                                                    <span>({{ file.size/1000 | number : 2 }} KB)</span>
+                                                </strong>
+                                            </div>
+                                            <div class="dropzone-error" data-dz-errormessage></div>
+                                        </div>
+                                        <div class="dropzone-toolbar">
+                                            <span class="dropzone-delete" data-dz-remove ng-click="removeFile($index)">
+                                                <i class="fal fa-times icon-md"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea
+                                ng-model="newAttachment.attachmentDescription"
+                                name="attachmentDescription"
+                                type="text"
+                                rows="3"
+                                cols="50"
+                                class="form-control form-control-solid textarea"
+                            ></textarea>
+                            <span class="form-text text-muted">Please enter attachment description.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        ng-disabled="fileList.length == 0 || !newAttachment.attachmentDescription"
+                        ng-click="attachFile()"
+                    >
+                        <i class="fal fa-plus mr-2"></i>
+                        Attach
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
 </div>

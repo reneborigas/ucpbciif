@@ -10,16 +10,25 @@
     </p>
     <!-- <div class="progress"></div> -->
     <uib-progressbar
-        class="progress-striped progress-bar-animated"
+        type="striped progress-bar-animated bg-danger"
         max="100"
+        ng-style="countdown"
         value="($root.idleTimeRemaining * 1000) / 100"
         type="info"
     >
         <span class="countdown-holder" ng-bind="$root.idleTimeRemaining + 's'"></span>
     </uib-progressbar>
     <div class="modal-footer">
-        <button id="session-timeout-dialog-logout" type="button" class="btn btn-default">Logout</button>
-        <button id="session-timeout-dialog-keepalive" type="button" class="btn btn-primary" data-dismiss="modal">
+        <button id="session-timeout-dialog-logout" type="button" class="btn btn-default" ng-click="logout()">
+            Logout
+        </button>
+        <button
+            id="session-timeout-dialog-keepalive"
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            ng-click="continue()"
+        >
             Stay Connected
         </button>
     </div>

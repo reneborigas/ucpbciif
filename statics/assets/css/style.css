@@ -7529,6 +7529,9 @@ button.bg-dark-75:hover {
 .border-white {
     border-color: #fff !important;
 }
+.border-dark-50 {
+    border-color: #80808f !important;
+}
 .border-dark-75 {
     border-color: #464e5f !important;
 }

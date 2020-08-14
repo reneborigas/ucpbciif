@@ -31,7 +31,8 @@ define(function () {
             blockUIConfig.templateUrl = 'statics/partials/customs/blockui.html';
 
             IdleProvider.idle(90000);
-            IdleProvider.timeout(10);
+            IdleProvider.timeout(30);
+            IdleProvider.autoResume('notIdle');
             // KeepaliveProvider.interval(10);
         },
     ]);
@@ -44,8 +45,19 @@ define(function () {
         'appLoginService',
         '$transitions',
         '$uibModal',
+        '$uibModalStack',
         'Idle',
-        function ($rootScope, $state, $stateParams, $http, appLoginService, $transitions, $uibModal, Idle) {
+        function (
+            $rootScope,
+            $state,
+            $stateParams,
+            $http,
+            appLoginService,
+            $transitions,
+            $uibModal,
+            $uibModalStack,
+            Idle
+        ) {
             $http.defaults.xsrfHeaderName = 'X-CSRFToken';
             $http.defaults.xsrfCookieName = 'csrftoken';
 
@@ -69,38 +81,68 @@ define(function () {
 
             Idle.watch();
             var warningInstance;
-            $rootScope.$on('IdleStart', function (e, countdown) {
+            var timeoutInstance;
+
+            // The user starts to go idle
+            $rootScope.$on('IdleStart', function () {
                 warningInstance = $uibModal
                     .open({
-                        animation: true,
                         backdrop: 'static',
                         templateUrl: '/statics/partials/customs/warning-dialog.html',
                         size: 'md',
-                        windowClass: 'uib-modal',
-                        controller: function ($scope) {
-                            $scope.name = 'bottom';
+                        windowClass: 'uib-modal fade show',
+                        controller: function ($scope, $uibModalInstance) {
+                            $scope.continue = function () {
+                                Idle.watch();
+                                $uibModalInstance.close();
+                            };
+
+                            $scope.logout = function () {
+                                $uibModalInstance.dismiss('Logout');
+                            };
                         },
                     })
-                    .closed.then(function () {
-                        window.alert('Modal closed');
-                    });
+                    .result.then(
+                        function () {
+                            console.log('Success');
+                        },
+                        function (response) {
+                            console.log(response);
+                        }
+                    );
             });
 
+            // Follows after IdleStart event.
             $rootScope.$on('IdleWarn', function (e, countdown) {
                 $rootScope.startValue = countdown;
                 $rootScope.$apply(function () {
                     $rootScope.idleTimeRemaining = countdown;
                 });
-
-                console.log($rootScope.idleTimeRemaining);
             });
 
-            $rootScope.$on('IdleEnd', function () {
-                warningInstance.dismiss();
-            });
-
+            // The user has timed out and needs to be logged out
             $rootScope.$on('IdleTimeout', function () {
-                /* Logout user */
+                $uibModalStack.dismissAll('cancel');
+                timeoutInstance = $uibModal
+                    .open({
+                        backdrop: 'static',
+                        templateUrl: '/statics/partials/customs/timeout-dialog.html',
+                        size: 'md',
+                        windowClass: 'uib-modal fade show',
+                        controller: function ($scope, $uibModalInstance) {
+                            $scope.relogin = function () {
+                                $uibModalInstance.close();
+                            };
+                        },
+                    })
+                    .result.then(
+                        function () {
+                            console.log('Success');
+                        },
+                        function (response) {
+                            console.log(response);
+                        }
+                    );
             });
 
             $rootScope.$state = $state;

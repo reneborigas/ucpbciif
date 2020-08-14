@@ -511,14 +511,14 @@ define(function () {
 
         var promises = [];
 
-        $scope.attachFile = function (processRequirement) {
+        $scope.attachFile = function () {
             attachmentBlockUI.start('Attaching File...');
             angular.forEach($scope.fileList, function (fileList, index) {
                 var newAttachment = {
                     fileName: $scope.fileAttachment.attachment[index].name,
                     fileAttachment: $scope.fileAttachment.attachment[index],
                     description: $scope.newAttachment.attachmentDescription,
-                    processRequirement: processRequirement.id,
+                    processRequirement: $scope.currentRequirement.id,
                     document: $scope.documentId,
                     committee: $scope.currentUser.committeeId,
                 };
@@ -536,6 +536,7 @@ define(function () {
                     $scope.goToRequirement($scope.currentRequirement.id);
                     $scope.fileList.length = 0;
                     $scope.newAttachment.attachmentDescription = '';
+                    angular.element('#attach-file').modal('hide');
                     attachmentBlockUI.stop();
                 },
                 function (error) {
@@ -544,6 +545,7 @@ define(function () {
                         'Error ' + error.status + ' ' + error.statusText,
                         'Could not create upload attachments. Please contact System Administrator.'
                     );
+                    angular.element('#attach-file').modal('hide');
                     attachmentBlockUI.stop();
                 }
             );
