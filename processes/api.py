@@ -182,6 +182,11 @@ class CalculatePMTView(views.APIView):
                 payment = principal
                 principalBalance = latestPayment.principalBalance
 
+            if latestPayment.overPayment >=1:
+                principal =  pmt.principal - latestPayment.overPayment
+                totalToPay = principal + interest
+
+
         additionalInterest = 0
         
         if daysExceed < 0:

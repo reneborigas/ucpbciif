@@ -363,6 +363,20 @@
                                     <div class="text-right pl-16">
                                         <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="payment.daysExceed > 0" >
                                             {{payment.daysExceed }}
+                                        <span
+                                        class="btn btn-success text-uppercase p-2 pl-3 pr-3"
+                                        ng-click="paymentExtension('true')" 
+                                        ng-if="!payment.isPaymentExtension"
+                                    >
+                                        Apply Payment Extension
+                                    </span>
+                                    <span
+                                        class="btn btn-success text-uppercase p-2 pl-3 pr-3"
+                                        ng-click="paymentExtension('false')" 
+                                        ng-if="payment.isPaymentExtension"
+                                    >
+                                        Remove Payment Extension
+                                    </span>
                                         </span>
                                         <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="payment.daysAdvanced > 0" >
                                           {{payment.daysAdvanced }}

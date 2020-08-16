@@ -162,6 +162,17 @@ class Payment(models.Model):
         decimal_places=2,
         blank=False
     )
+
+    exemptAdditionalInterest = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    exemptPenalty = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
     checkNo = models.CharField(
         max_length=255,
         blank = True,
@@ -224,6 +235,9 @@ class Payment(models.Model):
         blank=True,
         null=True
     )
+    isPaymentExtension = models.BooleanField(
+        default=False,
+    )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
@@ -233,7 +247,7 @@ class Payment(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
-     
+    
 
     def __str__(self):
         return "%s %s" % (self.loan,self.total)
