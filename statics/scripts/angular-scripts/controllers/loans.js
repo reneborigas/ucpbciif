@@ -337,6 +337,7 @@ define(function () {
         $scope.newLoanRelease = function (borrowerId, loanId) {
             $state.go('app.borrowers.create_loan_release', { borrowerId: borrowerId, loanId: loanId });
         };
+
         $scope.goToFile = function (subProcessName, documentId) {
             var subProcessNameSlug = appFactory.slugify(subProcessName);
             $state.go('app.documents.info', { subProcessName: subProcessNameSlug, documentId: documentId });
@@ -345,6 +346,10 @@ define(function () {
         $scope.newPayment = function (id) {
             $state.go('app.payments.new', { loanId: id });
         };
+
+        $scope.viewAmortizationPayment = function(){
+            angular.element('#amortization-payment').modal('show');
+        }
 
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
