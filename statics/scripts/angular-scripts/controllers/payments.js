@@ -371,12 +371,12 @@ define(function () {
                                                 parseFloat($scope.payment.penaltyPayment);
                                             // check
                                             if ($scope.payment.paymentType == 2) {
-                                                $scope.payment.check = $scope.payment.principal;
+                                                $scope.payment.check = $scope.payment.principal.toFixed(2);
                                             } else {
-                                                $scope.payment.cash = $scope.payment.principal;
+                                                $scope.payment.cash = $scope.payment.principal.toFixed(2);
                                             }
 
-                                            $scope.payment.interestPayment = $scope.payment.totalInterest;
+                                            $scope.payment.interestPayment = $scope.payment.totalInterest.toFixed(2);
                                             $scope.payment.penaltyPayment = $scope.payment.penalty;
 
                                             $scope.payment.total = parseFloat($scope.payment.total);
@@ -580,20 +580,20 @@ define(function () {
             if ($scope.getOverPayment().toFixed(2) >= 1) {
                 // if (parseFloat($scope.payment.total).toFixed(2) > parseFloat($scope.payment.totalToPay).toFixed(2)) {
                 return (
-                    parseFloat($scope.payment.principalBalance) +
-                    parseFloat($scope.payment.principal) -
-                    parseFloat($scope.payment.total) +
-                    parseFloat($scope.payment.totalInterest) +
-                    parseFloat($scope.payment.penalty)
+                    parseFloat($scope.payment.principalBalance) 
+                    // parseFloat($scope.payment.principal) -
+                    // parseFloat($scope.payment.total) +
+                    // parseFloat($scope.payment.totalInterest) +
+                    // parseFloat($scope.payment.penalty)
                     // (parseFloat($scope.loan.interestBalance) - parseFloat($scope.payment.interest))
                 );
             } else {
                 return (
-                    parseFloat($scope.payment.principalBalance) +
-                    parseFloat($scope.payment.principal) -
-                    parseFloat($scope.payment.total) +
-                    parseFloat($scope.payment.totalInterest) +
-                    parseFloat($scope.payment.penalty)
+                    parseFloat($scope.payment.principalBalance) 
+                    // parseFloat($scope.payment.principal) -
+                    // parseFloat($scope.payment.total) +
+                    // parseFloat($scope.payment.totalInterest) +
+                    // parseFloat($scope.payment.penalty)
                 );
             }
         };

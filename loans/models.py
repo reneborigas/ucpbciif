@@ -730,6 +730,8 @@ class AmortizationItem(models.Model):
     def isOnCurrentAmortization(self):  
         return  (self.amortization ==  self.amortization.loan.getCurrentAmortization())
 
+    class Meta:
+        ordering = ('id', )
     # def isPaid(self):
     #     if  (self.payments.filter(isDeleted=False).count() > 0):
     #         return 'PAID'

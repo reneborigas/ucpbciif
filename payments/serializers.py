@@ -4,7 +4,7 @@ from rest_framework import serializers
 from .models import *
 from loans.models import AmortizationStatus,Amortization,AmortizationItem,Status
 from users.models import CustomUser
- 
+from django.db.models import  Q
 # from borrowers.serializers import BorrowerSerializer
 
 from loans import PMT
@@ -61,16 +61,23 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 # amortizationItem.days =  lastPayment.days
                 amortizationItem.days =  loan.term.paymentPeriod.paymentCycle
 
-                amortizationItem.schedule = lastPayment.datePayment
+                amortizationItem.schedule = schedule
                 amortizationItem.principal = lastPayment.principal
                 amortizationItem.interest = lastPayment.interest
                 amortizationItem.daysExceed = lastPayment.daysExceed
                 amortizationItem.daysAdvanced = lastPayment.daysAdvanced
                 amortizationItem.additionalInterest =  lastPayment.additionalInterest
                 amortizationItem.penalty =  lastPayment.penalty
-                
+                # print("balance")
+                # print(lastPayment.balance)
+                # if lastPayment.balance > 0:
+                #     print(lastPayment.balance)
+                #     print("balance2")
+                #     amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=3) #partial
+                #     amortizationItem.principal = lastPayment.balance
+                #     amortizationItem.interest = principalBalance * (loan.interestRate.interestRate/100) * loan.term.paymentPeriod.paymentCycle/360
             amortizationItem.save()
-            schedule = lastPayment.datePayment
+            # schedule = lastPayment.datePayment
         else:
             if (loanAmount>0):
                 pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (i-1))
@@ -160,17 +167,32 @@ class PaymentSerializer(ModelSerializer):
 
     def create(self, validated_data):
         payment = Payment.objects.create(**validated_data) 
-
-        payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2)
+        if payment.balance <= 0:
+           
+            payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
+       
+       
         payment.amortization.save()
 
-        payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
-
+       
         # payment.loan.getCurrentAmortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=2)
         # payment.loan.getCurrentAmortizationItem.save()
-
-        generateAmortizationSchedule(payment.loan,payment,payment.amortization)
         
+        
+        # payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
+        if payment.balance >= 1:
+            amortizationItem = payment.loan.getCurrentAmortizationItem()
+            amortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=3)
+            amortizationItem.principal = payment.balance
+            amortizationItem.interest =  payment.interestPayment - payment.interestPayment 
+            amortizationItem.total = amortizationItem.interest + amortizationItem.principal
+            amortizationItem.save()
+        else:
+            payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
+        
+            generateAmortizationSchedule(payment.loan,payment,payment.amortization)
+        # else: 
+        #    
         return payment
 
     def update(self, instance, validated_data):

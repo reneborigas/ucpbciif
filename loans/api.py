@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
-from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
+from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func, Q
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from datetime import datetime
 from borrowers.models import Borrower
@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
+
 
 class GetDashboardDataView(views.APIView):
     
@@ -118,6 +119,10 @@ class GetAmortizationItemsCalendarView(views.APIView):
                 amortizationItem.url = '/payments/' + str(amortizationItem.amortization.loan.id)
 
 
+            if amortizationItem.amortizationStatus.id == 3: #Partiall
+                amortizationItem.backgroundColor = '#ff0000'
+                amortizationItem.title = 'Unpaid Balance for Amortization: LN' + str(amortizationItem.amortization.loan.id)
+                amortizationItem.url = '/payments/' + str(amortizationItem.amortization.loan.id)
 
 
             

@@ -135,8 +135,8 @@ class CalculatePMTView(views.APIView):
         loan = Loan.objects.get(pk=loanId)
         loanAmount = loan.amount
         latestPayment = loan.getLatestPayment()
-        if latestPayment:
-           loanAmount = latestPayment.outStandingBalance
+        if latestPayment: 
+            loanAmount = latestPayment.outStandingBalance 
 
         pmt = PMT()
      
@@ -147,7 +147,7 @@ class CalculatePMTView(views.APIView):
         days =  loan.term.paymentPeriod.paymentCycle  
         noOfPaymentSchedules = loan.term.days / days
         print(noOfPaymentSchedules  )
-        pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
+        pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (loan.amortizations.count()-1))
          
         days =  loan.term.paymentPeriod.paymentCycle - delta.days
         daysExceed = days - loan.term.paymentPeriod.paymentCycle
@@ -156,13 +156,31 @@ class CalculatePMTView(views.APIView):
         daysAdvanced = loan.term.paymentPeriod.paymentCycle - days 
         
         interest = 0
+
+        principal = pmt.principal
+
+        payment = pmt.payment
+
         if daysAdvanced < 0:
             daysAdvanced = 0
-            interest = pmt.interest
+            # interest = pmt.interest
+            interest =loanAmount * (loan.interestRate.interestRate/100) * days/360
+            totalToPay = principal + interest
         else:
             print(days)
             interest =loanAmount * (loan.interestRate.interestRate/100) * days/360
+            totalToPay = principal + interest
             # pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
+
+        principalBalance =pmt.nextStartingValue
+        if latestPayment:
+            if latestPayment.balance >= 1:
+                principal = latestPayment.balance
+                interest = latestPayment.interest - latestPayment.interestPayment
+                totalToPay = principal + interest
+                loanAmount = latestPayment.balance
+                payment = principal
+                principalBalance = latestPayment.principalBalance
 
         additionalInterest = 0
         
@@ -174,25 +192,27 @@ class CalculatePMTView(views.APIView):
 
         penalty = 0
         if additionalInterest>0:
-            penalty =  (pmt.payment + additionalInterest)  *  (loan.interestRate.interestRate/100) * daysExceed/360
+            penalty =  ( payment + additionalInterest)  *  (loan.interestRate.interestRate/100) * daysExceed/360
 
-        totalToPayWithPenalty= pmt.payment + additionalInterest + penalty
-        totalInterest = pmt.interest + additionalInterest
+        totalToPayWithPenalty= totalToPay + additionalInterest + penalty
+        totalInterest = interest + additionalInterest
+        
+        
         return Response({
             'datePayment':datePayment,
             'dateSchedule':dateSchedule,  
             'days': days,
-            'principal':pmt.principal,
+            'principal':principal,
             'interest':interest,
             'totalInterest':totalInterest,
             'additionalInterest':additionalInterest, 
             'daysExceed':daysExceed,
             'daysAdvanced':daysAdvanced,
             'penalty':penalty, 
-            'totalToPay':pmt.payment,
+            'totalToPay':totalToPay,
             'totalToPayWithPenalty':totalToPayWithPenalty,
             'status': 'Accepted',
-            'principalBalance':pmt.nextStartingValue,
+            'principalBalance':principalBalance,
             'message': 'PMT Calculated'
         },status= status.HTTP_202_ACCEPTED)
  
