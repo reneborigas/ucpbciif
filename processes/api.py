@@ -13,7 +13,7 @@ from rest_framework import status, views
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
-from loans.models import Status,AmortizationStatus,LoanStatus
+from loans.models import Status,AmortizationStatus,LoanStatus,Loan
 from django.utils import timezone
 from loans import PMT
 
@@ -23,8 +23,14 @@ from users.models import CustomUser
 
 
 def generateAmortizationSchedule(loan,request):
+
+ 
     noOfPaymentSchedules = loan.term.days / loan.term.paymentPeriod.paymentCycle
-    schedule = loan.dateReleased  + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+    # noOfPaymentSchedules = loan.term.days / loan.term.paymentPeriod.paymentCycle
+ 
+    cycle = loan.term.paymentPeriod.paymentCycle
+
+    schedule = loan.dateReleased  + timezone.timedelta(days=cycle)
 
     pmt = PMT()
     
@@ -39,7 +45,10 @@ def generateAmortizationSchedule(loan,request):
             loan = loan,
             dateReleased = loan.dateReleased  + timezone.timedelta(days=1),
             amortizationStatus = AmortizationStatus.objects.get(pk=1),
-            createdBy = request.user
+            createdBy = request.user,
+            schedules = noOfPaymentSchedules,
+            cycle = cycle,
+            termDays = loan.term.days
         )
     amortization.save()
 
@@ -50,7 +59,7 @@ def generateAmortizationSchedule(loan,request):
         amortizationItem = AmortizationItem(
             schedule = schedule,
             amortization = amortization,
-            days= loan.term.paymentPeriod.paymentCycle,
+            days= cycle,
             principal = pmt.principal,
             interest = pmt.interest,
             additionalInterest = 0,
@@ -62,7 +71,7 @@ def generateAmortizationSchedule(loan,request):
         )
         amortizationItem.save()
 
-        schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+        schedule = schedule + timezone.timedelta(days=cycle)
         loanAmount = pmt.nextStartingValue
 
 class CreditLineApprovedView(views.APIView):
@@ -119,6 +128,157 @@ class LoanAvailmemtApprovedView(views.APIView):
         return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
 
 
+class SaveDraftRestructuredAmortizationView(views.APIView):
+
+    def post(self,request):
+
+        params = request.data.get("params") 
+        amortizationId = params["amortizationId"]
+
+        loanId = params["loanId"]
+
+
+        # amortization = Amortization.objects.filter(loan__id=loanId,amortizationStatus__id=1).first()
+        # if amortization:
+        #     amortization.amortizationStatus = AmortizationStatus.objects.get(pk=5) #VOID
+        #     amortization.save()
+        # else: 
+        #     return Response({'error':'Error on Saving Draft'},status.HTTP_400_BAD_REQUEST)
+        
+        amortization = Amortization.objects.filter(loan__id=loanId,amortizationStatus__id=1).first() #PAID
+
+        if amortization:
+            amortization.amortizationStatus = AmortizationStatus.objects.get(pk=6) #RESTRUCTURED
+            amortization.save()
+        # else: 
+        #     return Response({'error':'Error on Saving Draft'},status.HTTP_400_BAD_REQUEST)
+
+        amortization = Amortization.objects.get(id=amortizationId)
+        loan = Loan.objects.get(pk=loanId)
+        loan.loanStatus = LoanStatus.objects.get(id=10) #RESTRUCTURED
+        loan.isRestructured = True
+        loan.save()
+
+        
+        loan.isRestructured = False
+
+        loan.latestPayment = loan.getLatestPayment()
+        print("current")
+        if loan.latestPayment:
+            loan.amount = loan.latestPayment.principalBalance
+            print("latestPayment")
+            print(loan.latestPayment.principalBalance)
+
+        print(loan.amount)
+        loan.pk=None
+        loan.loanStatus = LoanStatus.objects.get(id=3) #RESTRUCTURED CURRENT
+        loan.save()
+
+       
+        if amortization:
+            amortization.amortizationStatus = AmortizationStatus.objects.get(pk=1) #UNPAID
+            amortization.loan = loan
+            amortization.save()
+        else: 
+            return Response({'error':'Error on Saving Draft'},status.HTTP_400_BAD_REQUEST)
+
+        
+        
+
+
+
+        return Response({
+            'success':'true',
+            'message': 'Restructured Amortization Generated',
+            'loanId':loan.id
+
+        },status= status.HTTP_202_ACCEPTED)
+
+
+class CalculateRestructurePMTView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+
+    def post(self,request):
+        params = request.data.get("params") 
+        
+        print(params)
+         
+        dateStart = datetime.strptime(params["dateStart"], '%m/%d/%Y')  
+         
+        cycle = params["cycle"]
+        termDays = params["termDays"]
+        loanId = params["loanId"]
+
+        loan = Loan.objects.get(pk=loanId)
+
+        Amortization.objects.filter(loan_id=loanId,amortizationStatus__id=4).delete()#DRAFT
+        
+        #loan principal balance
+        schedules = int(termDays)/int(cycle)
+
+        loan.latestPayment = loan.getLatestPayment()
+
+        if loan.latestPayment:
+            loanAmount = loan.latestPayment.outStandingBalance 
+        else:
+            loanAmount = loan.amount
+         
+
+        pmt = PMT()
+     
+        # loanAmount = loan.amount
+        print(loanAmount)
+        
+        # days =  loan.term.paymentPeriod.paymentCycle - delta.days
+        days =  cycle
+        noOfPaymentSchedules = schedules
+        print(noOfPaymentSchedules  )
+        schedule = dateStart    + timezone.timedelta(days=days) 
+
+        amortization = Amortization( 
+            loan = loan,
+            dateReleased = dateStart,
+            amortizationStatus = AmortizationStatus.objects.get(pk=4),#DRAFT
+            createdBy = request.user,
+            schedules = schedules,
+            termDays = termDays,
+            cycle =cycle
+        )
+
+        amortization.save()
+
+        for i in range(int(noOfPaymentSchedules)):
+
+            pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,termDays,noOfPaymentSchedules,noOfPaymentSchedules - i)
+
+            amortizationItem = AmortizationItem(
+                schedule = schedule,
+                amortization = amortization,
+                days= days,
+                principal = pmt.principal,
+                interest = pmt.interest,
+                additionalInterest = 0,
+                penalty = 0,
+                vat = 0,
+                total = pmt.payment,
+                principalBalance = pmt.nextStartingValue,
+                amortizationStatus = AmortizationStatus.objects.get(pk=1), 
+            )
+            amortizationItem.save()
+
+            schedule = schedule + timezone.timedelta(days=days)
+            loanAmount = pmt.nextStartingValue
+        
+
+        return Response({
+            'success':'true',
+            'message': 'Restructured Amortization Generated'
+        },status= status.HTTP_202_ACCEPTED)
+ 
+        # return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
+
+
 
 class CalculatePMTView(views.APIView):
     
@@ -133,6 +293,12 @@ class CalculatePMTView(views.APIView):
         loanId = params["loanId"]
 
         loan = Loan.objects.get(pk=loanId)
+
+        loan.latestAmortization = loan.getLatestAmortization() 
+ 
+        # noOfPaymentSchedules = loan.latestAmortization.schedules
+        cycle = loan.latestAmortization.cycle
+        termDays = loan.latestAmortization.termDays
         loanAmount = loan.amount
         latestPayment = loan.getLatestPayment()
         if latestPayment: 
@@ -144,23 +310,26 @@ class CalculatePMTView(views.APIView):
         print(loanAmount)
         delta = dateSchedule - datePayment
         # days =  loan.term.paymentPeriod.paymentCycle - delta.days
-        days =  loan.term.paymentPeriod.paymentCycle  
-        noOfPaymentSchedules = loan.term.days / days
-        print(noOfPaymentSchedules  )
-        pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - (loan.amortizations.count()-1))
+        days =  cycle 
+        noOfPaymentSchedules = termDays / days
+        # print(noOfPaymentSchedules  )
+        print(cycle)
+        print("asdasd")
+        
+        pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,termDays,noOfPaymentSchedules,noOfPaymentSchedules - (loan.amortizations.filter(amortizationStatus__name='PAID').count()    ))
          
-        days =  loan.term.paymentPeriod.paymentCycle - delta.days
-        daysExceed = days - loan.term.paymentPeriod.paymentCycle
+        days =  cycle - delta.days
+        daysExceed = days - cycle
         
         
-        daysAdvanced = loan.term.paymentPeriod.paymentCycle - days 
+        daysAdvanced = cycle - days 
         
         interest = 0
 
         principal = pmt.principal
 
         payment = pmt.payment
-
+        print(principal)
         if daysAdvanced < 0:
             daysAdvanced = 0
             # interest = pmt.interest

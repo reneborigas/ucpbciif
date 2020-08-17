@@ -236,7 +236,7 @@ class BorrowerSerializer(ModelSerializer):
     creditLines = CreditLineSerializer(many=True,read_only=True)
     payments = PaymentSerializer(many=True,read_only=True)
     totalPayments =  serializers.CharField(read_only=True)
-
+     
     def create(self, validated_data):
         borrower = Borrower.objects.create(**validated_data)
     

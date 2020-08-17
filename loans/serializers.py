@@ -165,7 +165,7 @@ class AmortizationSerializer(ModelSerializer):
     totalAmortizationInterest = serializers.CharField(read_only=True)
     totalObligations = serializers.CharField(read_only=True)
      
-    
+    totalAmortizationPrincipal = serializers.CharField(read_only=True)
     def create(self, validated_data):
         amortization = Amortization.objects.create(**validated_data) 
         return amortization
@@ -236,7 +236,13 @@ class LoanSerializer(ModelSerializer):
     term_name = serializers.ReadOnlyField(source='term.name')
     interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
-    totalAmortizationInterest = serializers.CharField(read_only=True)
+    totalAmortizationInterest = serializers.CharField(read_only=True) 
+
+     
+
+    loanTotalAmortizationPrincipal = serializers.CharField(read_only=True) 
+
+    totalDraftAmortizationInterest = serializers.CharField(read_only=True)
     totalObligations = serializers.CharField(read_only=True)
     latestAmortization =  AmortizationSerializer(read_only=True)
 
@@ -246,8 +252,13 @@ class LoanSerializer(ModelSerializer):
     interestBalance= serializers.CharField(read_only=True)
 
     totalPayment = serializers.CharField(read_only=True)
+
+    totalPrincipalPayment = serializers.CharField(read_only=True)
+    totalPrincipalBalance = serializers.CharField(read_only=True)
     currentAmortizationItem =   AmortizationItemSerializer(read_only=True)
     lastAmortizationItem =   AmortizationItemSerializer(read_only=True)
+
+    latestDraftAmortization =   AmortizationSerializer(read_only=True)
     # loanDocuments = DocumentSerializer(read_only=True,nany=True)
     
     # status=StatusSerializer(read_only=True)

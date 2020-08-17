@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import date
-from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum
+from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum,Q
 from django.db.models.functions import Coalesce
 from payments.models import Payment
 
@@ -401,18 +401,32 @@ class Borrower(models.Model):
         return "%s" % (self.cooperative)
     
     def getTotalAvailments(self):
-         
-        if(not self.loans.filter(loanStatus__name='CURRENT')):
-            return 0
-        return self.loans.filter(loanStatus__name='CURRENT').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
+        
+         
+        if(not self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'))):
+            return 0
+        
+        
+        loans = self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')) 
+        totalAvailments = 0
+        for loan in loans:
+            loan.totalAmortizationPrincipal = loan.getTotalAmortizationPrincipal() 
+            totalAvailments = totalAvailments + loan.totalAmortizationPrincipal
+
+        return totalAvailments
+        
     def getTotalOutstandingBalance(self):
          
-        if(not self.loans.filter(loanStatus__name='CURRENT')):
+        if(not self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'))):
             return 0
         totalBalance = 0 
-        for loan in self.loans.filter(loanStatus__name='CURRENT'):
-            totalBalance = totalBalance + loan.getOutstandingBalance()
+        for loan in self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')):
+
+            loan.totalAmortizationPrincipal = loan.getTotalAmortizationPrincipal() 
+
+            balance = loan.totalAmortizationPrincipal - loan.getTotalPrincipalPayment()
+            totalBalance = totalBalance + balance
             print(totalBalance)
 
         
@@ -420,9 +434,9 @@ class Borrower(models.Model):
 
     def getTotalAvailmentsPerProgram(self,loanProgramId):
          
-        if(not self.loans.filter(loanStatus__name='CURRENT',loanProgram_id=loanProgramId)):
+        if(not self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),loanProgram_id=loanProgramId)):
             return 0
-        return self.loans.filter(loanStatus__name='CURRENT',loanProgram_id=loanProgramId).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+        return self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),loanProgram_id=loanProgramId).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
 
     def getPayments(self):

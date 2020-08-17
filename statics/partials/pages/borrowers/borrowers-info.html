@@ -310,14 +310,14 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.amount | currency :'₱'}}
+                                                {{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.outStandingBalance | currency :'₱'}}
+                                                {{ loan.totalPrincipalBalance | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>

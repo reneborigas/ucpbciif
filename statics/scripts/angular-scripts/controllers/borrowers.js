@@ -593,6 +593,7 @@ define(function () {
 
                         $http
                             .get('/api/loans/loans/', {
+                                // params: { borrowerId: $scope.borrowerId, status: 'CURRENT' },
                                 params: { borrowerId: $scope.borrowerId, status: 'CURRENT' },
                             })
                             .then(

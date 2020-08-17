@@ -669,6 +669,31 @@ define(function () {
                         $scope.loanId = $stateParams.loanId;
                     },
                 })
+                .state('app.loans.restructeamortization', {
+                    url: '/:loanId/amortization/restructure',
+                    templateUrl: '/statics/partials/pages/loans/loans-amortization-restructure.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Restructure Amortization Schedule',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Restructure Amortization Schedule',
+                        parent: 'app.loans.info',
+                    },
+                    resolve: {
+                        fetchLoan: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
                 .state('app.loans.add', {
                     url: '/add',
                     templateUrl: '/statics/partials/pages/loans/loans-add.html',

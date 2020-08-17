@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from borrowers.models import Borrower
 from django.core.validators import MaxValueValidator, MinValueValidator 
-from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum
+from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum,Q
 
 class Status(models.Model):  
     name = models.CharField(
@@ -249,32 +249,42 @@ class LoanProgram(models.Model):
     def getActiveLoan(self,borrower):
        
         if self.programLoans.all().last():
-            return self.programLoans.filter(loanStatus__name='CURRENT',borrower=borrower).last()
+            return self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower).last()
 
         return None
 
     def getOverallLoan(self):
        
-        if(not self.programLoans.filter(loanStatus__name='CURRENT')):
+        if(not self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'))):
             return 0
-        return self.programLoans.filter(loanStatus__name='CURRENT').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+        return self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
 
     def getOverallLoanPercentage(self,totalLoans):
         
         from decimal import Decimal
 
-        if(not self.programLoans.filter(loanStatus__name='CURRENT')):
+        if(not self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'))):
             return 0
-        return  (self.programLoans.filter(loanStatus__name='CURRENT').aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] / Decimal(totalLoans)) * 100
+        return  (self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] / Decimal(totalLoans)) * 100
 
     def getTotalAvailments(self,borrower):
          
-        if(not self.programLoans.filter(loanStatus__name='CURRENT',borrower=borrower)):
-            return 0
-        return self.programLoans.filter(loanStatus__name='CURRENT',borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
+        # if(not self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower)):
+        #     return 0
+        # return self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
-   
+        if(not self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower)):
+            return 0
+        
+        
+        loans = self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED',borrower=borrower)) 
+        totalAvailments = 0
+        for loan in loans:
+            loan.totalAmortizationPrincipal = loan.getTotalAmortizationPrincipal() 
+            totalAvailments = totalAvailments + loan.totalAmortizationPrincipal
+
+        return totalAvailments
 
 
 class InterestRate(models.Model):
@@ -464,6 +474,10 @@ class Loan(models.Model):
         related_name="creditLineCreatedBy",
         null = True,
     )
+
+    isRestructured = models.BooleanField(
+        default=False,
+    )
     dateApproved = models.DateTimeField(
         blank=True,
         null=True
@@ -488,21 +502,66 @@ class Loan(models.Model):
         return "%s %s" % (self.borrower,self.amount)
 
     def getLatestAmortization(self):
+        if self.isRestructured:
+            return  self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
+        else:
+            return  self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+
+    def getLatestDraftAmortization(self):
       
-        return  self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        return  self.amortizations.filter(amortizationStatus__name='DRAFT').order_by('-id').first()
 
     def getLatestPayment(self):
       
         return  self.payments.filter(paymentStatus__name='TENDERED').order_by('-id').first()
 
     def getTotalAmortizationInterest(self):
+        if self.isRestructured:
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
+
+            if latestAmortization: 
+
+                totalInterests = latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID') 
+                if totalInterests:
+                    return latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID').aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
+                else:
+                    return 0
+                 
+        else: 
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first() 
+      
+            if latestAmortization: 
+                return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
+        return 0
+
+    def getTotalAmortizationPrincipal(self):
+        if self.isRestructured:
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
+
+            if latestAmortization: 
+
+                totalInterests = latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID') 
+                if totalInterests:
+                    return latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID').aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  
+                else:
+                    return 0
+                 
+        else: 
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first() 
+      
+            if latestAmortization: 
+                return latestAmortization.amortizationItems.aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  
+        return 0
+
+    def getTotalDraftAmortizationInterest(self):
          
-        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='DRAFT').order_by('-id').first()
       
         if latestAmortization: 
             return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
         return 0
 
+     
 
     # def getTotalAmortizationInterestByAmortization(self,amortizationId):
          
@@ -513,30 +572,56 @@ class Loan(models.Model):
     #     return 0
 
     def getTotalObligations(self):
-         
-        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        
+        
+        if self.isRestructured:
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
+            if latestAmortization: 
+                totalObligations = latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID') 
+                if totalObligations:
+                    return latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID').aggregate(totalObligations=Sum(F('total') ))['totalObligations']  
+                else:
+                    return 0
+        else: 
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
       
-        if latestAmortization: 
-            return latestAmortization.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations']  
+            if latestAmortization: 
+                return latestAmortization.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations']  
         return 0
 
     def getTotalAmortizationPayment(self):
-        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        if self.isRestructured:
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
+        else: 
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
       
         if latestAmortization: 
             return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']   
         return 0
 
+     
     def getOutstandingBalance(self):
         totalPayments = 0
         if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
             totalPayments =  self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']
-        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
-        print(totalPayments)
-        if latestAmortization: 
-            
-            return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
- 
+
+        if self.isRestructured:
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
+            if latestAmortization:
+                  
+                balance = latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID').aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  
+                if balance:
+                    return balance  - totalPayments
+                return 0
+                
+        else: 
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+             
+              
+            if latestAmortization: 
+                
+                return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
+    
         return   0  
         
     def getInterestBalance(self):
@@ -558,6 +643,14 @@ class Loan(models.Model):
  
         return   0  
 
+    def getTotalPrincipalPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('cash') ))['totalPayments'] +  self.payments.aggregate(totalPayments=Sum(F('check') ))['totalPayments']
+            return  totalPayments
+ 
+        return   0  
+
     def getCurrentAmortizationItem(self):
         
         latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
@@ -565,16 +658,16 @@ class Loan(models.Model):
 
 
         if latestAmortization: 
-            i = 0
-            for item in latestAmortization.amortizationItems.order_by('id').all():
-                if (i==amortizations.count()): 
-                    return item
-                i = i + 1 
-
+            # i = 0
+            # for item in latestAmortization.amortizationItems.order_by('id').all():
+            #     if (i==amortizations.count()): 
+            #         return item
+            #     i = i + 1 
+            return latestAmortization.amortizationItems.filter(amortizationStatus__name='UNPAID').order_by('id').first()
 
     def getLastAmortizationItem(self):
         
-        latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
+        latestAmortization = self.amortizations.filter(Q(amortizationStatus__name='UNPAID') | Q(amortizationStatus__name='RESTRUCTURED') ).order_by('-id').first()
         amortizations = self.amortizations.filter(amortizationStatus__name='PAID')
 
 
@@ -586,6 +679,7 @@ class Loan(models.Model):
         latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
 
         return latestAmortization
+ 
 class Amortization(models.Model): 
     
     loan = models.ForeignKey(
@@ -607,6 +701,24 @@ class Amortization(models.Model):
         null=True
        
     )
+
+    schedules = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+
+    cycle = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+    termDays = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+        default=0
+    ) 
+     
      
     createdBy = models.ForeignKey(
         'users.CustomUser',
@@ -632,6 +744,9 @@ class Amortization(models.Model):
 
     def getTotalAmortizationInterest(self):
         return self.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
+        
+    def getTotalAmortizationPrincipal(self):
+        return self.amortizationItems.aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  
     
     def getTotalObligations(self):
         return self.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations'] 
@@ -672,7 +787,7 @@ class AmortizationItem(models.Model):
         default=0
     ) 
 
-    schedule = models.DateTimeField(
+    schedule = models.DateField(
         blank=True,
         null=True
     )
@@ -721,10 +836,7 @@ class AmortizationItem(models.Model):
     def __str__(self):
         return "%s %s" % (self.amortization.loan,self.schedule) 
 
-    def isMaturingAmortizationItem(self):
-
-
-
+    def isMaturingAmortizationItem(self): 
         return  (self ==  self.amortization.loan.getCurrentAmortizationItem())
 
     def isOnCurrentAmortization(self):  

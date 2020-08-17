@@ -11,22 +11,22 @@ class PMT:
         
         noOfYears = termDays / 360
         frequencyPerYear = noOfPaymentSchedules / noOfYears
-        print(frequencyPerYear)
-        print("=====")
+        # print(frequencyPerYear)
+        # print("=====")
         #R
         periodicInterestRate = (interestRate/100) / int(frequencyPerYear)
-        print(periodicInterestRate)
+        # print(periodicInterestRate)
         #PV
         presentValue = loanAmount
-        print(presentValue)
-        print("---------------")
+        # print(presentValue)
+        # print("---------------")
         #n
         # totalNumberOfInterestPeriod = (frequencyPerYear * noOfYears) * -1
         totalNumberOfInterestPeriod = (remainingperiod) * -1
         
         #(PV*R)
         pvr = presentValue *  periodicInterestRate
-        print(pvr)
+        # print(pvr)
 
         self.payment =   pvr / (1 - (1 + periodicInterestRate) ** int(totalNumberOfInterestPeriod))
         self.interest = loanAmount * periodicInterestRate

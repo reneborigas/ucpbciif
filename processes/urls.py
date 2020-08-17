@@ -19,7 +19,11 @@ urlpatterns =  [ path('creditlineapproved/', CreditLineApprovedView.as_view()),
         path('loanavailmentapproved/', LoanAvailmemtApprovedView.as_view()),
         path('loanreleased/', LoanReleasedView.as_view()),
         path('calculatepmt/', CalculatePMTView.as_view()),
+        path('calculaterestructuredpmt/', CalculateRestructurePMTView.as_view()),
+        path('savedraft/', SaveDraftRestructuredAmortizationView.as_view()), 
         path('checkpermission/', CheckPermissionView.as_view()),
+
+        
         ]
 
 

@@ -624,7 +624,7 @@ define(function () {
             // console.log($scope.payment.outStandingBalance);
             // console.log($scope.payment);
 
-            if ($scope.newPaymentDetailsForm.$valid) {
+            // if ($scope.newPaymentForm.$valid) {
                 swal({
                     title: 'Save Payment',
                     text: 'Do you want to save new payment record?',
@@ -650,7 +650,7 @@ define(function () {
                         );
                     }
                 });
-            }
+            // }
         };
 
         var addPaymentBlockUI = blockUI.instances.get('addPaymentBlockUI');

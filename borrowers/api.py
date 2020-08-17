@@ -101,6 +101,9 @@ class BorrowerViewSet(ModelViewSet):
         for borrower in queryset:
             borrower.totalAvailments = borrower.getTotalAvailments()
             borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+
+            
+
             borrower.payments = borrower.getPayments()
             borrower.totalPayments = borrower.getTotalPayments()
 

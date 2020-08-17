@@ -252,18 +252,31 @@ class LoanViewSet(ModelViewSet):
             queryset = queryset.filter(borrower__borrowerId=borrowerId)
 
         if status is not None:
-            queryset = queryset.filter(loanStatus__name=status)
+            queryset = queryset.filter( Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')) 
 
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
+            loan.totalDraftAmortizationInterest = loan.getTotalDraftAmortizationInterest  
+
+            loan.loanTotalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
             loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
-            loan.latestAmortization = loan.getLatestAmortization  
+            loan.latestAmortization = loan.getLatestAmortization()
+
+            if loan.latestAmortization:
+                loan.latestAmortization.totalAmortizationPrincipal = loan.latestAmortization.getTotalAmortizationPrincipal()
+
+            loan.latestDraftAmortization = loan.getLatestDraftAmortization  
             loan.outStandingBalance = loan.getOutstandingBalance
             loan.currentAmortizationItem = loan.getCurrentAmortizationItem
             loan.lastAmortizationItem = loan.getLastAmortizationItem
             loan.totalObligations = loan.getTotalObligations
             loan.latestPayment = loan.getLatestPayment
             loan.totalPayment = loan.getTotalPayment
+            loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
+
+            loan.totalPrincipalBalance = loan.loanTotalAmortizationPrincipal  - loan.totalPrincipalPayment
+
+            
             loan.interestBalance = loan.getInterestBalance
 
             # for amortizationItem in loan.latestAmortization.amortizationItems:
@@ -273,6 +286,7 @@ class LoanViewSet(ModelViewSet):
 
                 amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
                 amortization.totalObligations = amortization.getTotalObligations
+                amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
 
         if dateFrom is not None and dateTo is not None:
             queryset=queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
@@ -303,7 +317,7 @@ class AmortizationViewSet(ModelViewSet):
         for amortization in queryset:
             amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
             amortization.totalObligations = amortization.getTotalObligations
-          
+            amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
             # for amortizationItem in amortization.amortizationItems:
             #     amortizationItem.isItemPaid = amortizationItem.isPaid()
 

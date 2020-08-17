@@ -1,4 +1,4 @@
-<div class="row" ng-controller="LoanInfoController">
+<div class="row" ng-controller="LoanAmortizationRestructureController">
     <div class="col-xl-12">
         <div class="card card-custom gutter-b">
             <div class="card-body">
@@ -12,29 +12,13 @@
                                 >
                                     Loan No. {{ loan.id }}
                                     <span class="label label-light-info label-inline font-weight-bolder ml-2">
-                                        {{loan.loanStatus_name}}
+                                         {{loan.loanStatus_name}}
                                     </span>
                                     <!-- <i class="fas fa-check-circle text-success icon-md ml-2"></i> -->
                                 </a>
                             </div>
                             <div class="my-lg-0 my-1">
                                 
-                                <a
-                                    href="#"
-                                    class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                                    ng-click="previewCheckRelease(loan.id)"
-                                    ng-if="loan.dateReleased && && !loan.isRestructured"
-                                >
-                                    Print Check
-                                </a>
-                                <a
-                                    href="#"
-                                    class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                                    ng-click=" newLoanRelease(borrower.borrowerId,loan.id)"
-                                    ng-if="!loan.dateReleased && loan.loanStatus !=8 && loan.loanStatus !=9"
-                                >
-                                    New Loan Release
-                                </a>
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
@@ -82,28 +66,14 @@
                                     <span class="font-weight-bolder text-dark">
                                         {{ loan.purpose }}
                                     </span>
-                                    <span
-                                        class="text-dark ml-2"
-                                        ng-click="edit(loan.id,loan.purpose,'Purpose')"
-                                        data-toggle="modal"
-                                        data-target="#edit-purpose-security"
-                                    >
-                                        <i class="fad fa-edit"></i>
-                                    </span>
+                                     
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="font-weight-bolder mr-2">Security:</span>
                                     <span class="font-weight-bolder text-dark">
                                         {{ loan.security }}
                                     </span>
-                                    <span
-                                        class="text-dark ml-2"
-                                        ng-click="edit(loan.id,loan.security,'Security')"
-                                        data-toggle="modal"
-                                        data-target="#edit-purpose-security"
-                                    >
-                                        <i class="fad fa-edit"></i>
-                                    </span>
+                                   
                                 </div>
                             </div>
                             <div class="d-flex flex-wrap align-items-center py-2">
@@ -128,11 +98,8 @@
                                         <div class="font-weight-bold mb-2">Released Date</div>
                                         <button
                                             class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold"
-                                            title="Edit Release Date"
-                                            data-toggle="tooltip"
-                                            data-placement="top"
-                                            ng-disabled="loan.payments.length >0"
-                                            ng-click="editReleaseDate(loan.id,loan.dateReleased)"
+                                           
+                                            
                                         >
                                             {{ loan.dateReleased | date: 'mediumDate' }}
                                         </button>
@@ -269,16 +236,11 @@
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
                         </span>
                         <div class="d-flex flex-column text-dark-75">
-                            
                             <span class="font-weight-bolder font-size-sm">Principal Balance</span>
-                            <span class="font-weight-bolder font-size-h5" ng-if="(loan.latestPayment && !loan.isRestructured)">
+                            <span class="font-weight-bolder font-size-h5" ng-if="loan.latestPayment">
                                 {{ loan.latestPayment.outStandingBalance | currency :'₱'}}
                             </span>
-
-                            <span class="font-weight-bolder font-size-h5" ng-if="loan.isRestructured">
-                                    {{ 0 | currency :'₱'}}
-                                </span>
-                            <span class="font-weight-bolder font-size-h5" ng-if="!loan.latestPayment && !loan.isRestructured">
+                            <span class="font-weight-bolder font-size-h5" ng-if="!loan.latestPayment">
                                 {{ loan.totalObligations | currency :'₱'}}
                             </span>
                         </div>
@@ -298,329 +260,23 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header align-items-center border-0 mt-4">
-                <h3 class="card-title align-items-start flex-column">
-                    <span class="font-weight-bolder text-dark">Existing Accommodations</span>
-                </h3>
-            </div>
-            <div class="card-body">
-                <div class="d-flex">
-                    <div class="flex-grow-1">
-                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                            <div class="table-responsive">
-                                <table
-                                    class="table table-head-custom table-head-bg table-vertical-center table-borderless"
-                                >
-                                    <tbody>
-                                        <tr>
-                                            <td class="py-2 pl-7">
-                                                <div class="d-flex align-items-center pb-2">
-                                                    <a
-                                                        href="#"
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
-                                                    >
-                                                        Loan Window
-                                                    </a>
-                                                </div>
-                                                <div class="d-flex align-items-center pb-2">
-                                                    <a
-                                                        href="#"
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
-                                                    >
-                                                        Credit Line Amount
-                                                    </a>
-                                                </div>
-                                                <div class="d-flex align-items-center pb-2">
-                                                    <a
-                                                        href="#"
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
-                                                    >
-                                                        Approval Date
-                                                    </a>
-                                                </div>
-                                                <div class="d-flex align-items-center pb-2">
-                                                    <a
-                                                        href="#"
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
-                                                    >
-                                                        Expiry Date
-                                                    </a>
-                                                </div>
-                                                <div class="d-flex align-items-center pb-2">
-                                                    <a
-                                                        href="#"
-                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
-                                                    >
-                                                        Total Availments
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            <td class="py-2" ng-repeat="window in windows">
-                                                <div class="pb-2">
-                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        {{ window.name}}
-                                                    </span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span
-                                                        class="text-dark-75 font-weight-bolder d-block font-size-lg"
-                                                        ng-bind="window.activeCreditLine ? (window.activeCreditLine.amount | currency :'₱') : '₱0.00'"
-                                                    ></span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span
-                                                        class="text-dark-75 font-weight-bolder d-block font-size-lg"
-                                                        ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateApproved | date : 'mediumDate') : 'N/A'"
-                                                    ></span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span
-                                                        class="text-dark-75 font-weight-bolder d-block font-size-lg"
-                                                        ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateExpired | date : 'mediumDate') : 'N/A'"
-                                                    ></span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        {{ window.totalAvailments | currency :'₱'}}
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="pb-2">
-                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        Total
-                                                    </span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        &nbsp;
-                                                    </span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        &nbsp;
-                                                    </span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        &nbsp;
-                                                    </span>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                        {{ borrower.totalAvailments | currency :'₱'}}
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div
-                                    class="d-flex justify-content-center align-items-center flex-wrap"
-                                    ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                                >
-                                    <div class="d-flex flex-wrap py-2 mr-3">
-                                        <button
-                                            href="#"
-                                            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                            ng-disabled="currentPageDocument(subProcess) == 0"
-                                            ng-click="gotoPrevDocument(subProcess)"
-                                        >
-                                            <i class="fas fa-chevron-left icon-sm"></i>
-                                        </button>
-                                        <button
-                                            href="#"
-                                            class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                            ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                            ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                            ng-click="jumpToPageDocument(n,subProcess)"
-                                        >
-                                            <small>{{n}}</small>
-                                        </button>
-                                        <button
-                                            href="#"
-                                            class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                            ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                            ng-click="gotoNextDocument(subProcess)"
-                                        >
-                                            <i class="fas fa-chevron-right icon-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header align-items-center border-0 mt-4">
-                <h3 class="card-title align-items-start flex-column">
-                    <span class="font-weight-bolder text-dark">Existing Accommodations</span>
-                </h3>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-borderless mb-0" align="center">
-                        <tbody>
-                            <tr>
-                                <td class="p-0" width="18%">
-                                    <div class="py-3 pl-24 bg-secondary">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Loan Window
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-light">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Credit Line Amount
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-secondary">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Approval Date
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-light">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Expiry Date
-                                        </a>
-                                    </div>
-                                    <div class="py-3 pl-24 bg-secondary">
-                                        <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                            Total Availments
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="p-0" ng-repeat="window in windows" style="width: 20%;">
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            {{ window.name}}
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span
-                                            class="text-dark-75 font-weight-normal font-size-lg"
-                                            ng-bind="window.activeCreditLine ? (window.activeCreditLine.amount | currency :'₱') : '₱0.00'"
-                                        ></span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span
-                                            class="text-dark-75 font-weight-normal font-size-lg"
-                                            ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateApproved | date : 'mediumDate') : 'N/A'"
-                                        ></span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span
-                                            class="text-dark-75 font-weight-normal font-size-lg"
-                                            ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateExpired | date : 'mediumDate') : 'N/A'"
-                                        ></span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ window.totalAvailments | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="p-0 text-right">
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            Total
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            &nbsp;
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            &nbsp;
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-light">
-                                        <span class="text-dark-75 font-weight-normal font-size-lg">
-                                            &nbsp;
-                                        </span>
-                                    </div>
-                                    <div class="text-center py-3 bg-secondary">
-                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{ borrower.totalAvailments | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div
-                        class="d-flex justify-content-center align-items-center flex-wrap"
-                        ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                    >
-                        <div class="d-flex flex-wrap py-2 mr-3">
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageDocument(subProcess) == 0"
-                                ng-click="gotoPrevDocument(subProcess)"
-                            >
-                                <i class="fas fa-chevron-left icon-sm"></i>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                ng-click="jumpToPageDocument(n,subProcess)"
-                            >
-                                <small>{{n}}</small>
-                            </button>
-                            <button
-                                href="#"
-                                class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                ng-click="gotoNextDocument(subProcess)"
-                            >
-                                <i class="fas fa-chevron-right icon-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+     
         <div class="card card-custom gutter-b" ng-if="loan.dateReleased" ng-init="showAmortizationSchedules = true">
             <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="font-weight-bolder text-dark">Amortization Schedule</span>
+                    <span class="font-weight-bolder text-dark">Restructure Amortization Schedule</span>
                     <span class="text-muted mt-3 font-weight-bold font-size-sm">
-                        Date Created: {{loan.latestAmortization.dateCreated | date : 'mediumDate' }}
+                         
                     </span>
                 </h3>
                 <div class="card-toolbar">
-                   
-                    <a
-                    href="#"
-                    class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
-                    ng-click="restructureAmortization(loan.id)" 
-                    ng-if="(loan.dateReleased && !loan.isRestructured )"
-                      >
-                    Restucture Amortization
-                     </a>
                     <button
                         class="btn btn-sm btn-info font-weight-bolder text-uppercase mr-3"
-                        ng-click="newPayment(loan.id)"
-                        ng-if="loan.dateReleased &&   !loan.isRestructured"
-                        ng-disabled="loan.outStandingBalance <= 0"
+                        ng-click="saveDraft(loan.latestDraftAmortization.id,loan.id)" 
+                        ng-disabled="!loan.latestDraftAmortization"
                     >
-                        New Payment
+                        Apply Restructured Amortization 
                     </button>
-
-                    <a
-                    href="#"
-                    class="btn btn-sm btn-light-success font-weight-bolder text-uppercase"
-                    ng-click="previewAmortizationSchedule(loan.id)"
-                      >
-                    Print
-                    </a>
                 </div>
             </div>
             <div class="card-body p-0">
@@ -699,13 +355,7 @@
                                             </span>
                                         </div>
                                     </th>
-                                    <th>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Status
-                                            </span>
-                                        </div>
-                                    </th>
+                                     
                                 </tr>
                             </thead>
                             <tbody>
@@ -720,7 +370,7 @@
                                     <td>
                                         <div class="px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.latestAmortization.dateReleased | date: 'mediumDate' }}
+                                                {{ loan.latestDraftAmortization.dateReleased | date: 'mediumDate' }}
                                             </span>
                                         </div>
                                     </td>
@@ -760,104 +410,199 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-2" ng-if="loan.latestPayment">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ loan.latestAmortization.totalAmortizationPrincipal | currency :'₱'}}
+                                                    {{ loan.latestPayment.outStandingBalance | currency :'₱'}}
                                             </span>
                                         </div>
+
+                                        <div class="text-right px-2" ng-if="!loan.latestPayment">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        {{ loan.amount | currency :'₱'}}
+                                                </span>
+                                            </div>
                                     </td>
                                 </tr>
-                                <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems  ">
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{$index+1 }}
-                                            </span>
-                                        </div>
+                                <tr ng-repeat="amortization in loan.latestDraftAmortization.amortizationItems  ">
+                                        <td>
+                                            <div class="text-center px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{$index+1 }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.schedule | date: 'mediumDate' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.days}}
+                                                </span>
+                                                <span
+                                                    class="text-dark-75 font-weight-bolder font-size-lg"
+                                                    ng-if="amortization.daysAdvanced > 0"
+                                                >
+                                                    (-{{ amortization.daysAdvanced }} days)
+                                                </span>
+                                                <span
+                                                    class="text-dark-75 font-weight-bolder font-size-lg"
+                                                    ng-if="amortization.daysExceed > 0"
+                                                >
+                                                    (+{{ amortization.daysExceed }} days)
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.principal | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.interest | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.additionalInterest | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.penalty | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.total | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    {{ amortization.principalBalance | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                <tr>
+                                    <td colspan="10">
+                                            <div class="card-body">
+                                                    <form class="form mt-0" name="newRestructuredAmortizationForm">
+                                                        <div class="row justify-content-center p-5">
+                                                            <div class="col-lg-12 pr-8">
+                                                                 
+                                                                <div class="form-group row">
+                                                                    <div class="col-lg-3">
+                                                                        <label>Start Date:</label>
+                                                                        <input
+                                                                            type="date"
+                                                                            min="0"
+                                                                            class="form-control"
+                                                                            id="dateStart"
+                                                                            name="dateStart"
+                                                                            ng-model="dateStart"
+                                                                            ng-class="{'is-invalid' : newRestructuredAmortizationForm.dateStart.$invalid && newRestructuredAmortizationForm.dateStart.$touched   }"
+                                                                            required
+                                                                        />
+                                                                        <span
+                                                                            class="form-text text-muted"
+                                                                            ng-show="newRestructuredAmortizationForm.dateStart.$touched && newRestructuredAmortizationForm.dateStart.$invalid"
+                                                                        >
+                                                                            Please enter start date.
+                                                                        </span>
+                                                                    </div>
+                                                                  
+                                                                    <div class="col-lg-3" >
+                                                                        <label>Payment Term Days:</label>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            step="1"
+                                                                            class="form-control"
+                                                                            placeholder="0"
+                                                                            id="termDays"
+                                                                            name="termDays"
+                                                                            ng-model="termDays"
+                                                                            ng-class="{'is-invalid' : newRestructuredAmortizationForm.termDays.$invalid && newRestructuredAmortizationForm.termDays.$touched   || exceeded, 'is-valid' : newRestructuredAmortizationForm.termDays.$valid && newRestructuredAmortizationForm.termDays.$touched && !exceeded }"
+                                                                            required
+                                                                            price
+                                                                           
+                                                                        />
+                                                                        <span
+                                                                            class="form-text text-muted"
+                                                                            ng-show="newRestructuredAmortizationForm.termDays.$touched && newRestructuredAmortizationForm.termDays.$invalid"
+                                                                        >
+                                                                            Please enter payment term.
+                                                                        </span>
+                                                                    </div>
+                                    
+                                                                    <div class="col-lg-3" >
+                                                                        <label>Payment Cycle:</label>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            step="1"
+                                                                            class="form-control"
+                                                                            placeholder="0"
+                                                                            id="cycle"
+                                                                            name="cycle"
+                                                                            ng-model="cycle"
+                                                                            ng-class="{'is-invalid' : newRestructuredAmortizationForm.cycle.$invalid && newRestructuredAmortizationForm.cycle.$touched   || exceeded, 'is-valid' : newRestructuredAmortizationForm.cycle.$valid && newRestructuredAmortizationForm.cycle.$touched && !exceeded }"
+                                                                            required
+                                                                            price
+                                                                           
+                                                                        />
+                                    
+                                                                        <span
+                                                                            class="form-text text-muted"
+                                                                            ng-show="newRestructuredAmortizationForm.cycle.$touched && newRestructuredAmortizationForm.cycle.$invalid"
+                                                                        >
+                                                                            Please enter payment cycle.
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="col-lg-3" >
+                                                                        <div class="mt-9">
+                                                                             
+                                                                            <button
+                                                                                class="btn btn-success text-uppercase p-2 pl-3 pr-3"
+                                                                                ng-click="calculateRestructuredAmortization(loan.id,dateStart,termDays,cycle)"
+                                                                                
+                                                                            >
+                                                                                Generate
+                                                                            </button>
+                                                                         </div>
+                                                                    </div>
+                                                                </div>
+                                                                 
+                                                                
+                                                                 
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="d-flex justify-content-between border-top mt-5 pt-5"> 
+                                                        </div>
+                                                    </form>
+                                                </div>
+
                                     </td>
-                                    <td>
-                                        <div class="px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.schedule | date: 'mediumDate' }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.days}}
-                                            </span>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder font-size-lg"
-                                                ng-if="amortization.daysAdvanced > 0"
-                                            >
-                                                (-{{ amortization.daysAdvanced }} days)
-                                            </span>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder font-size-lg"
-                                                ng-if="amortization.daysExceed > 0"
-                                            >
-                                                (+{{ amortization.daysExceed }} days)
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.principal | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.interest | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.additionalInterest | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.penalty | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.total | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.principalBalance | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.amortizationStatus_name}}
-                                            </span> -->
-                                            <button
-                                                class="btn btn-sm font-weight-bold"
-                                                ng-class="{'btn-light-primary' : amortization.amortizationStatus_name == 'PAID', 'btn-light-warning' : amortization.amortizationStatus_name == 'PARTIAL', 'btn-clean text-dark' : amortization.amortizationStatus_name == 'UNPAID'}"
-                                                ng-disabled="amortization.amortizationStatus_name == 'UNPAID'"
-                                                ng-click="viewAmortizationPayment()"
-                                            >
-                                                {{ amortization.amortizationStatus_name}}
-                                            </button>
-                                        </div>
-                                    </td>
+
                                 </tr>
                                 <tr class="table-success">
                                     <td>
@@ -878,16 +623,25 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.latestAmortization.totalAmortizationPrincipal | currency :'₱'}}
-                                            </span>
-                                        </div>
+                                        <div class="text-right px-2" ng-if="loan.latestPayment">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        {{ loan.latestPayment.outStandingBalance | currency :'₱'}}
+                                                </span>
+                                            </div>
+    
+                                            <div class="text-right px-2" ng-if="!loan.latestPayment">
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                            {{ loan.amount | currency :'₱'}}
+                                                    </span>
+                                                </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.totalAmortizationInterest | currency :'₱'}}
+                                                    <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                        {{ loan.totalDraftAmortizationInterest | currency :'₱'}}
+                                                    </span>
+                                                    
                                             </span>
                                         </div>
                                     </td>
@@ -1545,7 +1299,7 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                    {{ currentAmortization.totalAmortizationPrincipal | currency :'₱'}}
+                                                {{ currentAmortization.totalAmortizationPrincipal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -1597,417 +1351,6 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-5" ng-if="loan.dateReleased">
-        <div class="card card-custom card-stretch gutter-b">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon">
-                        <i class="fad fa-users-class"></i>
-                    </span>
-                    <h3 class="card-label">Notes</h3>
-                </div>
-            </div>
-            <div class="card-body" block-ui="noteBlockUI">
-                <div class="container">
-                    <form class="form">
-                        <div class="form-group">
-                            <textarea
-                                class="form-control form-control-lg form-control-solid"
-                                ng-model="newNote.noteDescription"
-                                name="noteDescription"
-                                rows="3"
-                                placeholder="Type notes"
-                            ></textarea>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button
-                                href="#"
-                                class="btn btn-light-primary font-weight-bold"
-                                ng-disabled="!newNote.noteDescription"
-                                ng-click="addNote(loan)"
-                            >
-                                <i class="fal fa-plus mr-2"></i>
-                                Add Notes
-                            </button>
-                        </div>
-                    </form>
-                    <div class="separator separator-dashed my-10"></div>
-                    <div class="timeline timeline-3 pb-5">
-                        <div class="timeline-items">
-                            <div
-                                class="timeline-item"
-                                ng-repeat="note in notes | orderBy:'-' | startFrom:currentPage.notes * pageSize.notes | limitTo: pageSize.notes "
-                            >
-                                <div class="timeline-media">
-                                    <i class="fad fa-sticky-note text-primary"></i>
-                                </div>
-                                <div class="timeline-content">
-                                    <p class="p-0">
-                                        {{ note.note}}
-                                    </p>
-                                    <small class="text-dark-75 font-weight-bold">
-                                        {{ note.committeeName }}
-                                        <small class="text-muted">- {{ note.action_time | date : 'medium' }}</small>
-                                    </small>
-                                    <br />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-if="notes">
-                        <pagination
-                            data="notes"
-                            page-size="pageSize.notes"
-                            currentpage="currentPage.notes"
-                        ></pagination>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Start Modal Purpose Security -->
-    <div
-        id="edit-purpose-security"
-        class="modal fade"
-        data-backdrop="static"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="staticBackdrop"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit {{modalTitle}}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="pb-1">
-                        <div class="form-group">
-                            <label>{{modalTitle}}</label>
-                            <textarea
-                                ng-model="update.note"
-                                name="purpose"
-                                type="text"
-                                rows="3"
-                                cols="50"
-                                class="form-control form-control-solid textarea"
-                            ></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">
-                        Close
-                    </button>
-                    <button
-                        class="btn btn-primary font-weight-bold"
-                        type="button"
-                        data-dismiss="modal"
-                        ng-click="update(update)"
-                    >
-                        Update
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal Purpose Security -->
-    <!-- Start Modal Edit Release Date -->
-    <div
-        id="edit-release-date"
-        class="modal fade"
-        data-backdrop="static"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="staticBackdrop"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Release Date</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="pb-1">
-                        <div class="form-group">
-                            <label>Release Date</label>
-                            <input type="date" class="form-control form-control-solid" ng-model="update.releaseDate" />
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">
-                        Close
-                    </button>
-                    <button
-                        class="btn btn-primary font-weight-bold"
-                        type="button"
-                        data-dismiss="modal"
-                        ng-click="updateReleaseDate(update.releaseDate)"
-                    >
-                        Update
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal Purpose Security -->
-    <!-- Start Modal Edit Release Date -->
-    <div
-        id="amortization-payment"
-        class="modal fade"
-        data-backdrop="static"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="staticBackdrop"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog modal-dialog-centered modal-xxl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Amortization Schedule Payment</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body" block-ui="amortizationSchedulePaymentBlockUI">
-                    <div class="table-responsive" ng-class="!showAmortizationSchedule ? 'py-10' : 'p-0'">
-                        <table class="table table-align-middle table-bordered" ng-if="showAmortizationSchedule">
-                            <thead>
-                                <tr>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Payment For
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Principal
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Interest
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Additional Interest
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Penalty
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Amortization
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Total Payable
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Payment Date
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Payment Type
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Total Payment
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Balance
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-sm">
-                                                Overpayment
-                                            </span>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="payment in loan.payments">
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.amortizationItem_schedule | date: 'mediumDate' }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.principal | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.interest | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.additionalInterest | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.penalty | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.totalToPay | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.totalToPayWithPenalty | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.datePayment | date: 'mediumDate' }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.paymentType_name }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.total | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.balance | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.overPayment | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-success">
-                                    <td>
-                                        <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-sm">
-                                                Total
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td colspan="9">
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-sm">
-                                                {{ loan.totalPayment | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td colspan="2">
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-sm"></span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <!-- <div
-                            class="d-flex justify-content-center align-items-center flex-wrap"
-                            ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                        >
-                            <div class="d-flex flex-wrap py-2 mr-3">
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) == 0"
-                                    ng-click="gotoPrevDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-left icon-sm"></i>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                    ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                    ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                    ng-click="jumpToPageDocument(n,subProcess)"
-                                >
-                                    <small>{{n}}</small>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                    ng-click="gotoNextDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-right icon-sm"></i>
-                                </button>
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal Purpose Security -->
+     
+    
 </div>

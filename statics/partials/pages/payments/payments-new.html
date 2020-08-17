@@ -371,13 +371,7 @@
                                             >
                                                 {{ isPaymentExtensionButton }}
                                             </a>
-                                            <!-- <a
-                                                class="btn btn-success btn-sm text-uppercase"
-                                                ng-click="paymentExtension(false)"
-                                                ng-if="payment.isPaymentExtension"
-                                            >
-                                                Remove Payment Extension
-                                            </a> -->
+                                             
                                         </div>
                                         <div class="ml-3">
                                             <span
@@ -400,46 +394,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <!-- <div class="text-right pl-16">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <span
-                                                    class="text-dark-75 font-weight-bolder font-size-lg"
-                                                    ng-if="payment.daysExceed > 0"
-                                                >
-                                                    {{payment.daysExceed }}
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <a
-                                                    class="btn btn-success btn-sm text-uppercase"
-                                                    ng-click="paymentExtension('true')"
-                                                    ng-if="!payment.isPaymentExtension"
-                                                >
-                                                    Apply Payment Extensions
-                                                </a>
-                                                <a
-                                                    class="btn btn-success btn-sm text-uppercase"
-                                                    ng-click="paymentExtension('false')"
-                                                    ng-if="payment.isPaymentExtension"
-                                                >
-                                                    Remove Payment Extension
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <span
-                                            class="text-dark-75 font-weight-bolder font-size-lg"
-                                            ng-if="payment.daysAdvanced > 0"
-                                        >
-                                            {{payment.daysAdvanced }}
-                                        </span>
-                                        <span
-                                            class="text-dark-75 font-weight-bolder font-size-lg"
-                                            ng-if="payment.daysAdvanced == 0 && payment.daysExceed == 0 "
-                                        >
-                                            {{payment.days }}
-                                        </span>
-                                    </div> -->
+                                     
                                 </td>
                                 <td>
                                     <div class="text-right px-2">
@@ -468,7 +423,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form class="form mt-0" name="newPaymentDetailsForm">
+                <form class="form mt-0" name="newPaymentForm">
                     <div class="row justify-content-center p-5">
                         <div class="col-lg-8 pr-8">
                             <div class="form-group row">
@@ -480,13 +435,13 @@
                                         name="paymentType"
                                         ng-model="payment.paymentType"
                                         ng-options="paymentType.id as (paymentType.name) for paymentType in paymentTypes"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.paymentType.$invalid &&
-                                        newPaymentDetailsForm.paymentType.$touched, 'is-valid' : newPaymentDetailsForm.paymentType.$valid && newPaymentDetailsForm.paymentType.$touched }"
+                                        ng-class="{'is-invalid' : newPaymentForm.paymentType.$invalid &&
+                                        newPaymentForm.paymentType.$touched, 'is-valid' : newPaymentForm.paymentType.$valid && newPaymentForm.paymentType.$touched }"
                                         required
                                     ></select>
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.paymentType.$touched && newPaymentDetailsForm.paymentType.$invalid"
+                                        ng-show="newPaymentForm.paymentType.$touched && newPaymentForm.paymentType.$invalid"
                                     >
                                         Please select payment type.
                                     </span>
@@ -502,12 +457,12 @@
                                         id="datePayment"
                                         name="datePayment"
                                         ng-model="payment.datePayment"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.datePayment.$invalid && newPaymentDetailsForm.datePayment.$touched   }"
+                                        ng-class="{'is-invalid' : newPaymentForm.datePayment.$invalid && newPaymentForm.datePayment.$touched   }"
                                         required
                                     />
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.datePayment.$touched && newPaymentDetailsForm.datePayment.$invalid"
+                                        ng-show="newPaymentForm.datePayment.$touched && newPaymentForm.datePayment.$invalid"
                                     >
                                         Please enter payment date.
                                     </span>
@@ -523,14 +478,14 @@
                                         id="penaltyPayment"
                                         name="penaltyPayment"
                                         ng-model="payment.penaltyPayment"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.penaltyPayment.$invalid && newPaymentDetailsForm.penaltyPayment.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.penaltyPayment.$valid && newPaymentDetailsForm.penaltyPayment.$touched && !exceeded }"
+                                        ng-class="{'is-invalid' : newPaymentForm.penaltyPayment.$invalid && newPaymentForm.penaltyPayment.$touched   || exceeded, 'is-valid' : newPaymentForm.penaltyPayment.$valid && newPaymentForm.penaltyPayment.$touched && !exceeded }"
                                         required
                                         price
                                         ng-disabled="payment.penalty <= 0"
                                     />
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.penaltyPayment.$touched && newPaymentDetailsForm.penaltyPayment.$invalid"
+                                        ng-show="newPaymentForm.penaltyPayment.$touched && newPaymentForm.penaltyPayment.$invalid"
                                     >
                                         Please enter payment for penalty.
                                     </span>
@@ -547,14 +502,14 @@
                                         id="interestPayment"
                                         name="interestPayment"
                                         ng-model="payment.interestPayment"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.interestPayment.$invalid && newPaymentDetailsForm.interestPayment.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.interestPayment.$valid && newPaymentDetailsForm.interestPayment.$touched && !exceeded }"
+                                        ng-class="{'is-invalid' : newPaymentForm.interestPayment.$invalid && newPaymentForm.interestPayment.$touched   || exceeded, 'is-valid' : newPaymentForm.interestPayment.$valid && newPaymentForm.interestPayment.$touched && !exceeded }"
                                         required
                                         price
                                         ng-disabled="payment.penaltyBalance >= 1"
                                     />
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.interestPayment.$touched && newPaymentDetailsForm.interestPayment.$invalid"
+                                        ng-show="newPaymentForm.interestPayment.$touched && newPaymentForm.interestPayment.$invalid"
                                     >
                                         Please enter payment for interest.
                                     </span>
@@ -571,14 +526,14 @@
                                         id="cash"
                                         name="cash"
                                         ng-model="payment.cash"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.cash.$invalid && newPaymentDetailsForm.cash.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.cash.$valid && newPaymentDetailsForm.cash.$touched && !exceeded }"
+                                        ng-class="{'is-invalid' : newPaymentForm.cash.$invalid && newPaymentForm.cash.$touched   || exceeded, 'is-valid' : newPaymentForm.cash.$valid && newPaymentForm.cash.$touched && !exceeded }"
                                         required
                                         price
                                         ng-disabled="payment.interestBalance >= 1"
                                     />
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.cash.$touched && newPaymentDetailsForm.cash.$invalid"
+                                        ng-show="newPaymentForm.cash.$touched && newPaymentForm.cash.$invalid"
                                     >
                                         Please enter cash tendered.
                                     </span>
@@ -595,7 +550,7 @@
                                         id="check"
                                         name="check"
                                         ng-model="payment.check"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.check.$invalid && newPaymentDetailsForm.check.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.check.$valid && newPaymentDetailsForm.check.$touched && !exceeded }"
+                                        ng-class="{'is-invalid' : newPaymentForm.check.$invalid && newPaymentForm.check.$touched   || exceeded, 'is-valid' : newPaymentForm.check.$valid && newPaymentForm.check.$touched && !exceeded }"
                                         required
                                         price
                                         ng-disabled="payment.interestBalance >= 1"
@@ -603,7 +558,7 @@
 
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.check.$touched && newPaymentDetailsForm.check.$invalid"
+                                        ng-show="newPaymentForm.check.$touched && newPaymentForm.check.$invalid"
                                     >
                                         Please enter check tendered.
                                     </span>
@@ -619,12 +574,12 @@
                                         id="checkNo"
                                         name="checkNo"
                                         ng-model="payment.checkNo"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.checkNo.$invalid && newPaymentDetailsForm.checkNo.$touched, 'is-valid' : newPaymentDetailsForm.checkNo.$valid && newPaymentDetailsForm.checkNo.$touched }"
+                                        ng-class="{'is-invalid' : newPaymentForm.checkNo.$invalid && newPaymentForm.checkNo.$touched, 'is-valid' : newPaymentForm.checkNo.$valid && newPaymentForm.checkNo.$touched }"
                                         required
                                     />
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.checkNo.$touched && newPaymentDetailsForm.checkNo.$invalid"
+                                        ng-show="newPaymentForm.checkNo.$touched && newPaymentForm.checkNo.$invalid"
                                     >
                                         Please enter Check No.
                                     </span>
@@ -638,12 +593,12 @@
                                         id="bankAccount"
                                         name="bankAccount"
                                         ng-model="payment.bankAccount"
-                                        ng-class="{'is-invalid' : newPaymentDetailsForm.bankAccount.$invalid && newPaymentDetailsForm.bankAccount.$touched, 'is-valid' : newPaymentDetailsForm.bankAccount.$valid && newPaymentDetailsForm.bankAccount.$touched }"
+                                        ng-class="{'is-invalid' : newPaymentForm.bankAccount.$invalid && newPaymentForm.bankAccount.$touched, 'is-valid' : newPaymentForm.bankAccount.$valid && newPaymentForm.bankAccount.$touched }"
                                         required
                                     />
                                     <span
                                         class="form-text text-muted"
-                                        ng-show="newPaymentDetailsForm.bankAccount.$touched && newPaymentDetailsForm.bankAccount.$invalid"
+                                        ng-show="newPaymentForm.bankAccount.$touched && newPaymentForm.bankAccount.$invalid"
                                     >
                                         Please enter Bank Account
                                     </span>
@@ -1073,295 +1028,8 @@
                 </form>
             </div>
         </div>
-        <!-- <div class="card card-custom gutter-b">
-            <div class="card-header">
-                <div class="card-title">
-                    <h3 class="card-label">
-                        Payment Details
-                        <span class="text-muted pt-2 font-size-sm d-block"></span>
-                    </h3>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="row justify-content-center p-5">
-                    <div class="col" ng-switch="step">
-                        <form class="form mt-0" name="newPaymentDetailsForm">
-                            <div class="pb-2">
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Loan Amount</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{loan.amount | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Interest</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{loan.totalAmortizationInterest | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Outstanding Balance
-                                    </label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{loan.outStandingBalance | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Schedule</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{loan.currentAmortizationItem.schedule | date :'mediumDate'}}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Principal</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{loan.currentAmortizationItem.principal | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Interest</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{loan.currentAmortizationItem.interest | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Total Amortization
-                                    </label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{loan.currentAmortizationItem.total | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="loanProgram" class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Payment Type
-                                    </label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <select
-                                            class="form-control"
-                                            id="paymentType"
-                                            name="paymentType"
-                                            ng-model="payment.paymentType"
-                                            ng-options="paymentType.id as (paymentType.name) for paymentType in paymentTypes"
-                                            ng-class="{'is-invalid' : newPaymentDetailsForm.paymentType.$invalid && newPaymentDetailsForm.paymentType.$touched, 'is-valid' : newPaymentDetailsForm.paymentType.$valid && newPaymentDetailsForm.paymentType.$touched }"
-                                            required
-                                        ></select>
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newPaymentDetailsForm.paymentType.$touched && newPaymentDetailsForm.paymentType.$invalid"
-                                        >
-                                            Please select payment type.
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row" ng-if="payment.paymentType == '1'">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Cash Tendered</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            step="0.01"
-                                            class="form-control"
-                                            id="cash"
-                                            name="cash"
-                                            ng-model="payment.cash"
-                                            ng-class="{'is-invalid' : newPaymentDetailsForm.cash.$invalid && newPaymentDetailsForm.cash.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.cash.$valid && newPaymentDetailsForm.cash.$touched && !exceeded }"
-                                            required
-                                            price
-                                        />
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newPaymentDetailsForm.cash.$touched && newPaymentDetailsForm.cash.$invalid"
-                                        >
-                                            Please enter cash tendered.
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row" ng-if="payment.paymentType == '2'">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Check Tendered</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            step="0.01"
-                                            class="form-control"
-                                            id="check"
-                                            name="check"
-                                            ng-model="payment.check"
-                                            ng-class="{'is-invalid' : newPaymentDetailsForm.check.$invalid && newPaymentDetailsForm.check.$touched   || exceeded, 'is-valid' : newPaymentDetailsForm.check.$valid && newPaymentDetailsForm.check.$touched && !exceeded }"
-                                            required
-                                            price
-                                        />
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newPaymentDetailsForm.check.$touched && newPaymentDetailsForm.check.$invalid"
-                                        >
-                                            Please enter check tendered.
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Balance</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{payment.balance | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Over Payment</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{payment.overPayment | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Outstanding Balance
-                                    </label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <span class="form-control-plaintext font-weight-bold">
-                                            {{payment.outStandingBalance | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row" ng-if="payment.paymentType == '2'">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Check No.</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <input
-                                            type="text"
-                                            min="0"
-                                            class="form-control"
-                                            id="checkNo"
-                                            name="checkNo"
-                                            ng-model="payment.checkNo"
-                                            ng-class="{'is-invalid' : newPaymentDetailsForm.checkNo.$invalid && newPaymentDetailsForm.checkNo.$touched, 'is-valid' : newPaymentDetailsForm.checkNo.$valid && newPaymentDetailsForm.checkNo.$touched }"
-                                            required
-                                        />
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newPaymentDetailsForm.checkNo.$touched && newPaymentDetailsForm.checkNo.$invalid"
-                                        >
-                                            Please enter Check No.
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row" ng-if="payment.paymentType == '2'">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Bank Account</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <input
-                                            type="text"
-                                            min="0"
-                                            class="form-control"
-                                            id="bankAccount"
-                                            name="bankAccount"
-                                            ng-model="payment.bankAccount"
-                                            ng-class="{'is-invalid' : newPaymentDetailsForm.bankAccount.$invalid && newPaymentDetailsForm.bankAccount.$touched, 'is-valid' : newPaymentDetailsForm.bankAccount.$valid && newPaymentDetailsForm.bankAccount.$touched }"
-                                            required
-                                        />
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newPaymentDetailsForm.bankAccount.$touched && newPaymentDetailsForm.bankAccount.$invalid"
-                                        >
-                                            Please enter Bank Account
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Payment Date</label>
-                                    <div class="col-lg-3 col-xl-6">
-                                        <input
-                                            type="date"
-                                            min="0"
-                                            class="form-control"
-                                            id="datePayment"
-                                            name="datePayment"
-                                            ng-model="payment.datePayment"
-                                            ng-class="{'is-invalid' : newPaymentDetailsForm.datePayment.$invalid && newPaymentDetailsForm.datePayment.$touched   }"
-                                            required
-                                        />
-                                        <span
-                                            class="form-text text-muted"
-                                            ng-show="newPaymentDetailsForm.datePayment.$touched && newPaymentDetailsForm.datePayment.$invalid"
-                                        >
-                                            Please enter payment date.
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Description</label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <textarea
-                                            type="text"
-                                            rows="4"
-                                            cols="50"
-                                            class="form-control textarea"
-                                            ng-model="payment.description"
-                                        ></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Remarks</label>
-                                    <div class="col-lg-9 col-xl-6">
-                                        <textarea
-                                            type="text"
-                                            rows="4"
-                                            cols="50"
-                                            class="form-control textarea"
-                                            ng-model="payment.remarks"
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between border-top mt-5 pt-5">
-                                <div class="mr-2">
-                                    <button
-                                        class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
-                                        ng-click="cancel(borrower.borrowerId)"
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                                <div>
-                                    <button
-                                        class="btn btn-success text-uppercase p-2 pl-3 pr-3"
-                                        ng-click="save()"
-                                        ng-disabled="insufficient"
-                                    >
-                                        Accept Payment
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+       
+           
 
         <div class="card card-custom gutter-b" ng-if="loan.dateReleased" ng-init="showAmortizationSchedules = true">
             <div class="card-header align-items-center border-0">
@@ -1520,7 +1188,7 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.amount | currency :'₱'}}
+                                                {{ loan.latestAmortization.totalAmortizationPrincipal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -1632,7 +1300,7 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.amount | currency :'₱'}}
+                                                {{ loan.latestAmortization.totalAmortizationPrincipal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>

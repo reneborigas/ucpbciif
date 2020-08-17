@@ -41,6 +41,7 @@ urlpatterns = [
     path('loans', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('loans/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('loans/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('loans/<int:id>/amortization/restructure', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     #borrowers
     path('borrowers', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
