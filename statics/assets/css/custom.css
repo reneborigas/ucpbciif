@@ -2759,3 +2759,37 @@ div[id*="license-text"] {
 ::-webkit-scrollbar-thumb:window-inactive {
 	/* background: rgba(255,0,0,0.4);  */
 }
+
+/* button:before {
+    content: attr(data-count);
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    display: block;
+    border-radius: 50%;
+    background: rgb(67, 151, 232);
+    border: 1px solid #FFF;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    color: #FFF;
+    position: absolute;
+    top: -7px;
+    left: -7px;
+}
+
+button.badge-top-right:before {
+    left: auto;
+    right: -7px;
+}
+
+button.badge-bottom-right:before {
+    left: auto;
+    top: auto;
+    right: -7px;
+    bottom: -7px;
+}
+
+button.badge-bottom-left:before {
+    top: auto;
+    bottom: -7px;
+} */

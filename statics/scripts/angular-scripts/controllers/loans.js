@@ -347,9 +347,32 @@ define(function () {
             $state.go('app.payments.new', { loanId: id });
         };
 
-        $scope.viewAmortizationPayment = function(){
+        var amortizationSchedulePaymentBlockUI = blockUI.instances.get('amortizationSchedulePaymentBlockUI');
+
+        $scope.viewAmortizationPayment = function () {
+            $scope.showAmortizationSchedule = false;
             angular.element('#amortization-payment').modal('show');
-        }
+            amortizationSchedulePaymentBlockUI.start('Fetching Amortization Payment Schedule...');
+            $http
+                .get('/api/loans/loans/', {
+                    params: { loanId: $scope.loanId },
+                })
+                .then(
+                    function (response) {
+                        $scope.loan = response.data[0];
+                        $timeout(function () {
+                            $scope.showAmortizationSchedule = true;
+                            amortizationSchedulePaymentBlockUI.stop();
+                        }, 1000);
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Loan Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
 
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
@@ -503,49 +526,6 @@ define(function () {
             });
         };
     });
-    // app.controller('DocumentAddController', function DocumentAddController(
-    //     $http,
-    //     $filter,
-    //     $scope,
-    //     toastr,
-    //     NgTableParams,
-    //     $state,
-    //     $timeout
-    // ) {
-    //     $scope.loan = {
-    //         loanName: '',
-    //         loanAmount: '',
-    //         borrower: '',
-    //     };
-
-    //     $scope.save = function () {
-    //         swal({
-    //             title: 'Create Document',
-    //             text: 'Do you want to save and create this loan?',
-    //             icon: 'info',
-    //             buttons: {
-    //                 cancel: true,
-    //                 confirm: 'Create',
-    //             },
-    //         }).then((isConfirm) => {
-    //             if (isConfirm) {
-    //                 $http.post('/api/documents/documents/', $scope.loan).then(
-    //                     function () {
-    //                         toastr.success('Success', 'New loan created.');
-    //                         swal('Success!', 'New Borrower Created.', 'success');
-    //                         $state.go('app.documents.list');
-    //                     },
-    //                     function (error) {
-    //                         toastr.error(
-    //                             'Error ' + error.status + ' ' + error.statusText,
-    //                             'Could not create new record. Please contact System Administrator.'
-    //                         );
-    //                     }
-    //                 );
-    //             }
-    //         });
-    //     };
-    // });
 
     app.controller('LoanReleasePrintController', function LoanReleasePrintController(
         $http,

@@ -294,7 +294,7 @@ define(function () {
                         $scope.loan = response.data[0];
 
                         $scope.payment = {
-                            loan: $scope.loan.id,  
+                            loan: $scope.loan.id,
                             amortization: $scope.loan.latestAmortization.id,
                             amortizationItem: $scope.loan.currentAmortizationItem.id,
                             principal: '0',
@@ -310,8 +310,8 @@ define(function () {
                             checkNo: '',
                             interestPayment: '0',
                             penaltyPayment: '0',
-                            exemptAdditionalInterest :'0',
-                            exemptPenalty :'0',
+                            exemptAdditionalInterest: '0',
+                            exemptPenalty: '0',
                             bankACcount: '',
                             datePayment: new Date($scope.loan.currentAmortizationItem.schedule),
                             outStandingBalance: '',
@@ -326,15 +326,12 @@ define(function () {
                         $scope.$watch(
                             'payment.datePayment',
                             function (newTerm, oldTerm) {
-                                console.log($scope.payment.loan);
-                                console.log(
-                                    new Date($scope.loan.currentAmortizationItem.schedule).toLocaleDateString()
-                                );
-
+                                console.log(newTerm.toLocaleDateString());
                                 $scope.payment.cash = 0;
                                 $scope.payment.check = 0;
                                 $scope.payment.interestPayment = 0;
                                 $scope.payment.penaltyPayment = 0;
+
                                 $http
                                     .post('/api/processes/calculatepmt/', {
                                         params: {
@@ -350,6 +347,7 @@ define(function () {
                                             console.log(response.data);
                                             $scope.newAmortization = response.data;
                                             $scope.payment.isPaymentExtension = false;
+                                            $scope.isPaymentExtensionButton = 'Apply Payment Extensions';
 
                                             $scope.payment.days = $scope.newAmortization.days;
                                             $scope.payment.principal = $scope.newAmortization.principal;
@@ -582,22 +580,18 @@ define(function () {
             console.log(parseFloat($scope.payment.totalToPay));
             if ($scope.getOverPayment().toFixed(2) >= 1) {
                 // if (parseFloat($scope.payment.total).toFixed(2) > parseFloat($scope.payment.totalToPay).toFixed(2)) {
-                return (
-                    parseFloat($scope.payment.principalBalance) 
-                    // parseFloat($scope.payment.principal) -
-                    // parseFloat($scope.payment.total) +
-                    // parseFloat($scope.payment.totalInterest) +
-                    // parseFloat($scope.payment.penalty)
-                    // (parseFloat($scope.loan.interestBalance) - parseFloat($scope.payment.interest))
-                );
+                return parseFloat($scope.payment.principalBalance);
+                // parseFloat($scope.payment.principal) -
+                // parseFloat($scope.payment.total) +
+                // parseFloat($scope.payment.totalInterest) +
+                // parseFloat($scope.payment.penalty)
+                // (parseFloat($scope.loan.interestBalance) - parseFloat($scope.payment.interest))
             } else {
-                return (
-                    parseFloat($scope.payment.principalBalance) 
-                    // parseFloat($scope.payment.principal) -
-                    // parseFloat($scope.payment.total) +
-                    // parseFloat($scope.payment.totalInterest) +
-                    // parseFloat($scope.payment.penalty)
-                );
+                return parseFloat($scope.payment.principalBalance);
+                // parseFloat($scope.payment.principal) -
+                // parseFloat($scope.payment.total) +
+                // parseFloat($scope.payment.totalInterest) +
+                // parseFloat($scope.payment.penalty)
             }
         };
         // + parseFloat($scope.loan.currentAmortizationItem.interest)
@@ -625,10 +619,6 @@ define(function () {
             $scope.payment.balance = parseFloat($scope.payment.balance).toFixed(2);
             $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
 
-
-
-
-            
             // console.log($scope.payment.balance);
             // console.log($scope.payment.overPayment);
             // console.log($scope.payment.outStandingBalance);
@@ -662,27 +652,31 @@ define(function () {
                 });
             }
         };
-        $scope.paymentExtension = function (bool) {
-            console.log(bool);
-            if(bool=='true'){
+
+        var addPaymentBlockUI = blockUI.instances.get('addPaymentBlockUI');
+
+        $scope.paymentExtension = function (paymentExtension) {
+            if (paymentExtension == false) {
+                addPaymentBlockUI.start('Applying Payment Extension...');
                 $scope.payment.isPaymentExtension = true;
                 $scope.payment.additionalInterest = 0;
-                $scope.payment.totalInterest = $scope.newAmortization.interest; 
-                $scope.payment.penalty =0;
-                $scope.payment.interestPayment =$scope.newAmortization.interest;
-                $scope.payment.penaltyPayment =0;
-                $scope.payment.totalToPayWithPenalty =$scope.newAmortization.totalToPay;  
-
-                $scope.payment.exemptAdditionalInterest =parseFloat($scope.newAmortization.additionalInterest).toFixed(2);
-             
+                $scope.payment.totalInterest = $scope.newAmortization.interest;
+                $scope.payment.penalty = 0;
+                $scope.payment.interestPayment = $scope.newAmortization.interest;
+                $scope.payment.penaltyPayment = 0;
+                $scope.payment.totalToPayWithPenalty = $scope.newAmortization.totalToPay;
+                $scope.payment.exemptAdditionalInterest = parseFloat($scope.newAmortization.additionalInterest).toFixed(
+                    2
+                );
                 $scope.payment.exemptPenalty = parseFloat($scope.newAmortization.penalty).toFixed(2);
+                $scope.isPaymentExtensionButton = 'Remove Payment Extensions';
+                addPaymentBlockUI.stop();
+            } else {
+                addPaymentBlockUI.start('Removing Payment Extension...');
+                $scope.payment.datePayment = new Date($scope.loan.currentAmortizationItem.schedule);
+                $scope.payment.isPaymentExtension = false;
+                addPaymentBlockUI.stop();
             }
-            else{
-                $scope.payment.datePayment =new Date($scope.loan.currentAmortizationItem.schedule);
-                $scope.payment.isPaymentExtension = true;
-                
-            }
-
         };
 
         $scope.viewBorrower = function (id) {

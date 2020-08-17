@@ -773,17 +773,17 @@
                                                 {{ amortization.days}}
                                             </span>
                                             <span
-                                            class="text-dark-75 font-weight-bolder font-size-lg"
-                                            ng-if="amortization.daysAdvanced > 0"
-                                        >
-                                            (-{{ amortization.daysAdvanced }} days)
-                                        </span>
-                                        <span
-                                        class="text-dark-75 font-weight-bolder font-size-lg"
-                                        ng-if="amortization.daysExceed > 0"
-                                    >
-                                        (+{{ amortization.daysExceed }} days)
-                                    </span>
+                                                class="text-dark-75 font-weight-bolder font-size-lg"
+                                                ng-if="amortization.daysAdvanced > 0"
+                                            >
+                                                (-{{ amortization.daysAdvanced }} days)
+                                            </span>
+                                            <span
+                                                class="text-dark-75 font-weight-bolder font-size-lg"
+                                                ng-if="amortization.daysExceed > 0"
+                                            >
+                                                (+{{ amortization.daysExceed }} days)
+                                            </span>
                                         </div>
                                     </td>
                                     <td>
@@ -812,15 +812,12 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.penalty | currency :'₱'}}
                                             </span>
-
-                                          
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.total  | currency :'₱'}}
- 
+                                                {{ amortization.total | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -1448,15 +1445,15 @@
                                                 {{ amortizationItem.days}}
                                             </span>
                                             <span
-                                            class="text-dark-75 font-weight-bolder font-size-lg"
-                                            ng-if="amortizationItem.daysAdvanced > 0"
-                                        >
-                                            (-{{ amortizationItem.daysAdvanced }} days)
-                                        </span>
-                                        
-                                        <span
-                                        class="text-dark-75 font-weight-bolder font-size-lg"
-                                        ng-if="amortizationItem.daysExceed > 0"
+                                                class="text-dark-75 font-weight-bolder font-size-lg"
+                                                ng-if="amortizationItem.daysAdvanced > 0"
+                                            >
+                                                (-{{ amortizationItem.daysAdvanced }} days)
+                                            </span>
+
+                                            <span
+                                                class="text-dark-75 font-weight-bolder font-size-lg"
+                                                ng-if="amortizationItem.daysExceed > 0"
                                             >
                                                 (+{{ amortizationItem.daysExceed }} days)
                                             </span>
@@ -1474,8 +1471,6 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortizationItem.interest | currency :'₱'}}
                                             </span>
-                                          
-                                           
                                         </div>
                                     </td>
                                     <!-- <td>
@@ -1497,7 +1492,6 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortizationItem.penalty | currency :'₱'}}
                                             </span>
-
                                         </div>
                                     </td>
                                     <td>
@@ -1761,9 +1755,9 @@
                     <h4 class="modal-title">Amortization Schedule Payment</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-align-middle table-bordered">
+                <div class="modal-body" block-ui="amortizationSchedulePaymentBlockUI">
+                    <div class="table-responsive" ng-class="!showAmortizationSchedule ? 'py-10' : 'p-0'">
+                        <table class="table table-align-middle table-bordered" ng-if="showAmortizationSchedule">
                             <thead>
                                 <tr>
                                     <th class="align-middle">
@@ -1963,7 +1957,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div
+                        <!-- <div
                             class="d-flex justify-content-center align-items-center flex-wrap"
                             ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
                         >
@@ -1994,7 +1988,7 @@
                                     <i class="fas fa-chevron-right icon-sm"></i>
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
