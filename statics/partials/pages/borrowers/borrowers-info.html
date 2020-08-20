@@ -712,8 +712,13 @@
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.creditLine_amount | currency :'₱'}}
+                                            
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="!loan.dateReleased">
+                                                    {{ loan.amount | currency :'₱'}}
+                                                </span>
+
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="loan.dateReleased">
+                                                    {{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
