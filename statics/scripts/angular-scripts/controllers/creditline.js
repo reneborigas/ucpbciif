@@ -167,9 +167,9 @@ define(function () {
             $scope.tableCreditLine.reload();
         };
 
-        $scope.view = function (officeName) {
-            var officeNameSlug = appFactory.slugify(officeName);
-            $state.go('app.committees.info', { officeName: officeNameSlug });
+        $scope.view = function (creditLineId) {
+             
+            $state.go('app.creditline.info', { creditLineId: creditLineId });
         };
 
         $scope.retrieveHeaders = function () {
@@ -255,4 +255,322 @@ define(function () {
             $popup.cellValues = $scope.retrieveCellValues();
         };
     });
+
+
+    app.controller('CreditLineInfoController', function CreditLineInfoController(
+        $http,
+        $filter,
+        $scope,
+        toastr,
+        NgTableParams,
+        appFactory,
+        $state,
+        $timeout,
+        blockUI,
+        $q,
+        $window
+    ) {
+        $http
+            .get('/api/loans/creditlines/', {
+                params: { creditLineId: $scope.creditLineId },
+            })
+            .then(
+                function (response) {
+                    $scope.creditLine = response.data[0];
+                   
+                   
+                    $http
+                        .get('/api/borrowers/borrowers/', {
+                            params: { borrowerId: $scope.creditLine.borrower },
+                        })
+                        .then(
+                            function (response) {
+                                $scope.borrower = response.data[0];
+                                $scope.showAccomodations = false;
+                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
+                                    console.log(data);
+                                    $scope.windows = data;
+                                    $scope.showAccomodations = true;
+                                });
+
+                                $http
+                                    .get('/api/documents/documents/', {
+                                        params: { creditLineId: $scope.creditLine.id ,subProcessName:'Credit Line Approval'},
+                                    })
+                                    .then(
+                                        function (response) {
+                                            $scope.documents = response.data;
+                                        },
+                                        function (error) {
+                                            toastr.error(
+                                                'Error ' + error.status + ' ' + error.statusText,
+                                                'Could not retrieve Documents. Please contact System Administrator.'
+                                            );
+                                        }
+                                    );
+
+                                    $http
+                                    .get('/api/loans/loans/', {
+                                        params: { creditLineId: $scope.creditLine.id },
+                                    })
+                                    .then(
+                                        function (response) {
+                                            $scope.loans = response.data;
+                                        },
+                                        function (error) {
+                                            toastr.error(
+                                                'Error ' + error.status + ' ' + error.statusText,
+                                                'Could not retrieve Loans. Please contact System Administrator.'
+                                            );
+                                        }
+                                    );
+
+                                // $scope.loadNotes();
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Loan Information. Please contact System Administrator.'
+                    );
+                }
+            );
+
+        $scope.loadAmortization = function (id) {
+            $http
+                .get('/api/loans/amortizations/', {
+                    params: { amortizationId: id },
+                })
+                .then(
+                    function (response) {
+                        $scope.currentAmortization = response.data[0];
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+
+            console.log($scope.currentAmortization);
+        };
+        $scope.viewLoan = function (id) {
+            $state.go('app.loans.info', { loanId: id });
+        };
+        $scope.loadNotes = function () {
+            return appFactory.getContentTypeId('note').then(function (data) {
+                return appFactory.getNotes($scope.loanId, data).then(function (response) {
+                    $scope.notes = response;
+                });
+            });
+        };
+
+        $scope.newLoanAvailment = function (borrowerId, creditLineId) {
+            $state.go('app.borrowers.create_loan_availment', { borrowerId: borrowerId, creditLineId: creditLineId });
+        };
+        $scope.newLoanRelease = function (borrowerId, loanId) {
+            $state.go('app.borrowers.create_loan_release', { borrowerId: borrowerId, loanId: loanId });
+        };
+        $scope.goToFile = function (subProcessName, documentId) {
+            var subProcessNameSlug = appFactory.slugify(subProcessName);
+            $state.go('app.documents.info', { subProcessName: subProcessNameSlug, documentId: documentId });
+        };
+
+        $scope.newPayment = function (id) {
+            $state.go('app.payments.new', { loanId: id });
+        };
+
+        var amortizationSchedulePaymentBlockUI = blockUI.instances.get('amortizationSchedulePaymentBlockUI');
+
+        $scope.viewAmortizationPayment = function (amortizationItemId) {
+            $scope.showAmortizationSchedule = false;
+            angular.element('#amortization-payment').modal('show');
+            amortizationSchedulePaymentBlockUI.start('Fetching Amortization Payment Schedule...');
+            $http
+                .get('/api/loans/amortizationitems/', {
+                    params: { amortizationItemId: amortizationItemId },
+                })
+                .then(
+                    function (response) {
+                        $scope.amortizationItem = response.data[0];
+                        $timeout(function () {
+                            $scope.showAmortizationSchedule = true;
+                            amortizationSchedulePaymentBlockUI.stop();
+                        }, 1000);
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Loan Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
+        $scope.restructureAmortization = function (id) {
+            $state.go('app.loans.restructeamortization', { loanId: id });
+        };
+
+        $scope.viewBorrower = function (id) {
+            $state.go('app.borrowers.info', { borrowerId: id });
+        };
+
+        $scope.previewLoanRelease = function (id) {
+            $window.open('/print/files/' + id, '_blank', 'width=800,height=800');
+        };
+
+        $scope.previewAmortizationSchedule = function (id) {
+            $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
+        };
+
+        $scope.previewPaymentHistory = function (id) {
+            $window.open('/print/loans/payment-history/' + id, '_blank', 'width=800,height=800');
+        };
+
+        $scope.previewAmortizationHistory = function (id) {
+            $window.open('/print/loans/amortization-history/' + id, '_blank', 'width=800,height=800');
+        };
+
+        $scope.previewCheckRelease = function (id) {
+            $window.open('/print/loans/check/' + id, '_blank', 'width=800,height=800');
+        };
+
+        $scope.update = function () {
+            if ($scope.modalTitle == 'Security') {
+                $http
+                    .post('/api/loans/updatecreditlineview/', {
+                        creditLineId: $scope.update.id,
+                        security: $scope.update.note,
+                    })
+                    .then(
+                        function (response) {
+                            angular.element('#edit-purpose-security').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $scope.creditLine.security = response.data.new_value;
+                            toastr.success('Success', 'Loan Security updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update document. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            } else {
+                $http
+                    .post('/api/loans/updatecreditlineview/', {
+                        creditLineId: $scope.update.id,
+                        purpose: $scope.update.note,
+                    })
+                    .then(
+                        function (response) {
+                            angular.element('#edit-purpose-security').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $scope.creditLine.purpose = response.data.new_value;
+                            toastr.success('Success', 'Loan Purpose updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update document. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            }
+        };
+
+        $scope.edit = function (id, value, title) {
+            $scope.update.id = id;
+            $scope.modalTitle = title;
+            $scope.update.note = value;
+        };
+
+        $scope.editReleaseDate = function (id, dateReleased) {
+            $scope.update.id = id;
+            $scope.update.releaseDate = new Date(dateReleased);
+            angular.element('#edit-release-date').modal('show');
+        };
+
+        $scope.updateReleaseDate = function () {
+            $http
+                .post('/api/loans/updateloanview/', {
+                    loanId: $scope.update.id,
+                    dateReleased: $scope.update.releaseDate,
+                })
+                .then(
+                    function (response) {
+                        angular.element('#edit-release-date').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        $state.reload();
+                        toastr.success('Success', 'Date Released updated.');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update date released. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
+
+        // -- Start Simple Pagination --
+        $scope.currentPage = {
+            notes: 0,
+        };
+
+        $scope.pageSize = {
+            notes: 5,
+        };
+        // -- End Simple Pagination --
+
+        var noteBlockUI = blockUI.instances.get('noteBlockUI');
+
+        $scope.newNote = {
+            noteDescription: '',
+        };
+
+        $scope.addNote = function (loan) {
+            noteBlockUI.start('Adding Note...');
+            $scope.note = {
+                committee: 1, //default commiitee to be replaced with
+                object_type: 'Loan',
+                object_id: loan.id,
+                content_type: '',
+                note: $scope.newNote.noteDescription,
+            };
+            return appFactory.getContentTypeId('note').then(function (data) {
+                $scope.note.content_type = data;
+                console.log($scope.note);
+                return $http.post('/api/committees/notes/', $scope.note).then(
+                    function () {
+                        toastr.success('Success', 'Note added succesfully.');
+                        $scope.loadNotes();
+
+                        $scope.newNote.noteDescription = '';
+                        noteBlockUI.stop();
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not create new record. Please contact System Administrator.'
+                        );
+                        noteBlockUI.stop();
+                    }
+                );
+            });
+        };
+    });
+
+
+
 });

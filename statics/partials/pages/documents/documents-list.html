@@ -130,14 +130,14 @@
                                 >
                                     {{ document.description }}
                                 </td>
-                                <td
+                                <!-- <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
                                     data-title="'FILE TYPE'"
                                     sortable="'documentTypeName'"
                                 >
                                     {{ document.documentTypeName }}
-                                </td>
+                                </td> -->
                                 <td
                                     class="datatable-cell datatable-cell-left"
                                     header-class="'text-left'"
@@ -145,6 +145,23 @@
                                     sortable="'documentTypeName'"
                                 >
                                     {{ document.currentStatus.name }}
+                                </td>
+                                <td
+                                class="datatable-cell datatable-cell-left"
+                                header-class="'text-left'"
+                                data-title="'DATE CREATED'"
+                                sortable="'dateCreated'"
+                                   >
+                                {{ document.dateCreated | date : 'mediumDate' }}
+                                </td>
+
+                                <td
+                                class="datatable-cell datatable-cell-left"
+                                header-class="'text-left'"
+                                data-title="'DATE APPROVED'"
+                                sortable="'dateApproved'"
+                                   >
+                                {{ document.dateApproved | date : 'mediumDate' }}
                                 </td>
                                 <!-- <td
                                     class="datatable-cell datatable-cell-left"

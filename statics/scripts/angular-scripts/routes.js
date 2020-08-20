@@ -801,6 +801,31 @@ define(function () {
                         label: 'Credit Line',
                     },
                 })
+                .state('app.creditline.info', {
+                    url: '/:creditLineId',
+                    templateUrl: '/statics/partials/pages/creditline/creditline-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Credit Line Info',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Credit Line No. {{creditLineId}}',
+                        parent: 'app.creditline.list',
+                    },
+                    resolve: {
+                        fetchLoan: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/loans/creditlines/', { params: { creditLineId: $stateParams.creditLineId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.creditLineId = $stateParams.creditLineId;
+                    },
+                })
                 .state('app.amortizations', {
                     url: '/amortizations',
                     template: '<ui-view></ui-view>',

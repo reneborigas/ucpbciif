@@ -105,7 +105,7 @@ class GetAmortizationItemsCalendarView(views.APIView):
 
 
         for amortizationItem in queryset:
-            amortizationItem.start =  amortizationItem.schedule.date() + timezone.timedelta(days=1)
+            amortizationItem.start =  amortizationItem.schedule + timezone.timedelta(days=1)
          
             # amortizationItem.className =  'fc-event-solid-danger fc-event-light'
             amortizationItem.description  = 'Due for LN' + str(amortizationItem.amortization.loan.id)
@@ -175,6 +175,40 @@ class UpdateCreditLineView(views.APIView):
 
         return Response({'error':'Error on updating creditline'},status.HTTP_400_BAD_REQUEST)
 
+
+class UpdateCreditLineView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+    def post(self,request):
+        creditLineId = request.data.get("creditLineId") 
+        new_value =''
+        if creditLineId:  
+            creditLine = CreditLine.objects.get(pk=creditLineId)
+           
+            purpose = request.data.get("purpose")  
+            if purpose: 
+                creditLine.purpose = purpose
+                new_value = purpose
+                creditLine.save()
+
+            security = request.data.get("security")  
+            if security: 
+                creditLine.security = security
+                new_value = security
+
+                creditLine.save()
+           
+
+            return Response({
+                'message': 'Credit LIne Updated', 
+                'creditLine': creditLine.id,
+                'new_value': new_value
+            },status= status.HTTP_202_ACCEPTED) 
+
+        return Response({'error':'Error on updating credit line'},status.HTTP_400_BAD_REQUEST)
+
+
+
 class UpdateLoanView(views.APIView):
     
     # @method_decorator(csrf_protect) 
@@ -235,6 +269,7 @@ class LoanViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
         loanId = self.request.query_params.get('loanId', None)
+        creditLineId = self.request.query_params.get('creditLineId', None)
         borrowerId = self.request.query_params.get('borrowerId', None)
         status = self.request.query_params.get('status', None)
         dateFrom = self.request.query_params.get('dateFrom', None)
@@ -247,6 +282,9 @@ class LoanViewSet(ModelViewSet):
         
         if loanId is not None:
             queryset = queryset.filter(id=loanId)
+
+        if creditLineId is not None:
+            queryset = queryset.filter(creditLine__id=creditLineId)
 
         if borrowerId is not None:
             queryset = queryset.filter(borrower__borrowerId=borrowerId)
@@ -357,6 +395,12 @@ class AmortizationItemViewSet(ModelViewSet):
         #     amortizationItem.isItemPaid = amortizationItem.isPaid()
         
         # fo
+
+        print(queryset)
+
+        for amortizationItem in queryset:
+            amortizationItem.totalPayment = amortizationItem.getTotalPayment
+
         return queryset
 
             

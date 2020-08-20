@@ -349,17 +349,17 @@ define(function () {
 
         var amortizationSchedulePaymentBlockUI = blockUI.instances.get('amortizationSchedulePaymentBlockUI');
 
-        $scope.viewAmortizationPayment = function () {
+        $scope.viewAmortizationPayment = function (amortizationItemId) {
             $scope.showAmortizationSchedule = false;
             angular.element('#amortization-payment').modal('show');
             amortizationSchedulePaymentBlockUI.start('Fetching Amortization Payment Schedule...');
             $http
-                .get('/api/loans/loans/', {
-                    params: { loanId: $scope.loanId },
+                .get('/api/loans/amortizationitems/', {
+                    params: { amortizationItemId: amortizationItemId },
                 })
                 .then(
                     function (response) {
-                        $scope.loan = response.data[0];
+                        $scope.amortizationItem = response.data[0];
                         $timeout(function () {
                             $scope.showAmortizationSchedule = true;
                             amortizationSchedulePaymentBlockUI.stop();

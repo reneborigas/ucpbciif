@@ -56,6 +56,7 @@ urlpatterns = [
 
     #credit-line
     path('credit-line', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('credit-line/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('amortizations', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('amortizations/maturing', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     #notifications

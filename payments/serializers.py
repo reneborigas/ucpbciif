@@ -9,7 +9,22 @@ from django.db.models import  Q
 
 from loans import PMT
 
+def excludeWeekends(amortizationItems):
 
+    for amortizationItem in amortizationItems.all():
+        print("weekno")
+        print(amortizationItem.schedule)
+        
+        weekno= amortizationItem.schedule.weekday()
+        print(weekno)
+        print("weekno")
+        
+        if weekno == 5:
+            amortizationItem.schedule = amortizationItem.schedule + timezone.timedelta(days=2)
+        if weekno == 6:
+            amortizationItem.schedule = amortizationItem.schedule + timezone.timedelta(days=1) 
+
+        amortizationItem.save()
 
 
 def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
@@ -76,6 +91,7 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 amortizationItem.daysAdvanced = lastPayment.daysAdvanced
                 amortizationItem.additionalInterest =  lastPayment.additionalInterest
                 amortizationItem.penalty =  lastPayment.penalty
+                
                 # print("balance")
                 # print(lastPayment.balance)
                 # if lastPayment.balance > 0:
@@ -85,6 +101,8 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 #     amortizationItem.principal = lastPayment.balance
                 #     amortizationItem.interest = principalBalance * (loan.interestRate.interestRate/100) * loan.term.paymentPeriod.paymentCycle/360
             amortizationItem.save()
+            lastPayment.amortizationItem = amortizationItem
+            lastPayment.save()
             # schedule = lastPayment.datePayment
         else:
             if (loanAmount>0):
@@ -125,6 +143,9 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 amortizationItem.save()
         schedule = schedule + timezone.timedelta(days=cycle)
         i = i+1
+
+
+    excludeWeekends(amortization.amortizationItems)
 
 class PaymentStatusSerializer(ModelSerializer):
      

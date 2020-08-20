@@ -398,12 +398,28 @@ class CreditLine(models.Model):
         if totalLoanAvailments:
             return self.amount - int(totalLoanAvailments)
         return self.amount
+    # def getTotalAvailment(self):
+    #     totalLoanAvailments=  self.loans.filter(loanStatus__name='CURRENT').aggregate(totalLoanAvailments=Sum(F('amount') ))['totalLoanAvailments'] 
+    #     if totalLoanAvailments:
+    #         return   int(totalLoanAvailments)
+    #     return 0
     def getTotalAvailment(self):
-        totalLoanAvailments=  self.loans.filter(loanStatus__name='CURRENT').aggregate(totalLoanAvailments=Sum(F('amount') ))['totalLoanAvailments'] 
-        if totalLoanAvailments:
-            return   int(totalLoanAvailments)
-        return 0
+         
+        # if(not self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower)):
+        #     return 0
+        # return self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
+        if(not self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'))):
+            return 0
+        
+        
+        loans = self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')) 
+        totalAvailments = 0
+        for loan in loans:
+            loan.totalAmortizationPrincipal = loan.getTotalAmortizationPrincipal() 
+            totalAvailments = totalAvailments + loan.totalAmortizationPrincipal
+
+        return totalAvailments
 
 class Loan(models.Model):
 
@@ -842,6 +858,13 @@ class AmortizationItem(models.Model):
     def isOnCurrentAmortization(self):  
         return  (self.amortization ==  self.amortization.loan.getCurrentAmortization())
 
+    def getTotalPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']
+            return  totalPayments
+ 
+        return   0  
     class Meta:
         ordering = ('id', )
     # def isPaid(self):

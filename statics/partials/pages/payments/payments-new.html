@@ -1019,7 +1019,7 @@
                             <button
                                 class="btn btn-success text-uppercase p-2 pl-3 pr-3"
                                 ng-click="save()"
-                                ng-disabled="insufficient || payment.total <= 0"
+                                ng-disabled="insufficient || payment.total <= 0 || !payment.checkNo || !payment.bankAccount"
                             >
                                 Accept Payment
                             </button>

@@ -210,7 +210,7 @@
                                                 width="20%"
                                                 align="right"
                                             >
-                                            {{ obligation.amount | currency :'₱'}}
+                                            {{ obligation.loanTotalAmortizationPrincipal | currency :'₱'}}
                                             </td>
                                             <td
                                                 class="p-0"
@@ -218,7 +218,7 @@
                                                 width="20%"
                                                 align="right"
                                             >
-                                            {{ obligation.outStandingBalance     | currency :'₱'}}
+                                            {{ obligation.totalPrincipalBalance     | currency :'₱'}}
                                             </td>
                                         </tr>
                                         <tr>

@@ -22,6 +22,19 @@ from decimal import Decimal
 from users.models import CustomUser
 
 
+def excludeWeekends(amortizationItems):
+
+    for amortizationItem in amortizationItems.all():
+
+        weekno= amortizationItem.schedule.weekday()
+     
+        if weekno == 5:
+            amortizationItem.schedule = amortizationItem.schedule + timezone.timedelta(days=2)
+        if weekno == 6:
+            amortizationItem.schedule = amortizationItem.schedule + timezone.timedelta(days=1) 
+
+        amortizationItem.save()
+
 def generateAmortizationSchedule(loan,request):
 
  
@@ -73,6 +86,8 @@ def generateAmortizationSchedule(loan,request):
 
         schedule = schedule + timezone.timedelta(days=cycle)
         loanAmount = pmt.nextStartingValue
+
+    excludeWeekends(amortization.amortizationItems)
 
 class CreditLineApprovedView(views.APIView):
     
@@ -235,7 +250,8 @@ class CalculateRestructurePMTView(views.APIView):
         noOfPaymentSchedules = schedules
         print(noOfPaymentSchedules  )
         schedule = dateStart    + timezone.timedelta(days=days) 
-
+       
+        
         amortization = Amortization( 
             loan = loan,
             dateReleased = dateStart,
@@ -266,11 +282,18 @@ class CalculateRestructurePMTView(views.APIView):
                 amortizationStatus = AmortizationStatus.objects.get(pk=1), 
             )
             amortizationItem.save()
+            
+ 
 
             schedule = schedule + timezone.timedelta(days=days)
+            
+           
+
             loanAmount = pmt.nextStartingValue
         
-
+        
+        
+        excludeWeekends(amortization.amortizationItems)
         return Response({
             'success':'true',
             'message': 'Restructured Amortization Generated'

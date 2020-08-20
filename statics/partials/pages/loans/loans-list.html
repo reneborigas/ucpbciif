@@ -238,8 +238,15 @@
                                     header-class="'text-right'"
                                     data-title="'LOAN AMOUNT'"
                                     sortable="'amount'"
-                                >
-                                    {{ loan.amount | currency :'₱'}}
+                                > 
+
+                                <span   ng-if="!loan.dateReleased">
+                                        {{ loan.amount | currency :'₱'}}
+                                    </span>
+
+                                <span  ng-if="loan.dateReleased">
+                                        {{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}
+                                </span>
                                 </td>
 
                                 <td

@@ -471,7 +471,7 @@
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                <a href="#" ng-click="viewLoan(loan.id)">{{ creditline.id }}</a>
+                                                <a href="#" ng-click="viewCreditLine(creditline.id)">{{ creditline.id }}</a>
                                             </span>
                                         </div>
                                     </td>
@@ -1354,6 +1354,10 @@
                                     currentpage="currentPage.attachments"
                                 ></pagination>
                             </div>
+                        </div>
+
+                        <div class="text-center" ng-if="borrowerAttachments.length == 0">
+                                <h6 class="font-size-sm">No attachment found</h6>
                         </div>
                     </div>
                 </div>

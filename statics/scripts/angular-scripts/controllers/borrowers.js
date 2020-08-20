@@ -713,6 +713,10 @@ define(function () {
         $scope.viewLoan = function (id) {
             $state.go('app.loans.info', { loanId: id });
         };
+
+        $scope.viewCreditLine = function (id) {
+            $state.go('app.creditline.info', { creditLineId: id });
+        };
         $scope.goToFile = function (subProcessName, id) {
             console.log(subProcessName);
             var subProcessNameSlug = appFactory.slugify(subProcessName);
@@ -1118,7 +1122,7 @@ define(function () {
                                 function () {
                                     return $http
                                         .patch(
-                                            '/api/borrowers/documents/' + $scope.borrower.contactPerson.id + '/',
+                                            '/api/borrowers/borrowers/' + $scope.borrower.contactPerson.id + '/',
                                             $scope.borrower.contactPerson
                                         )
                                         .then(
@@ -1293,8 +1297,8 @@ define(function () {
                             termid: $scope.subProcess.parentLastDocumentCreditLine.term.id,
 
                             loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
-                            purpose: '',
-                            security: '',
+                            purpose:  $scope.creditLine.purpose,
+                            security:$scope.creditLine.security,
                             loanStatus: 8, //loan availment,
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
@@ -1547,13 +1551,25 @@ define(function () {
                 } else {
                     valid = true;
                 }
+                // if($scope.creditLine.amount>0){
+                //     valid = true;
+                // }else{
+                //     valid = false;
+                // }
             } else if (subProcessName == 'Loan Availment') {
                 if ($scope.form.newLoanApplicationForm.$valid && $scope.form.newLoanDetailsForm.$valid) {
                     valid = false;
                 } else {
                     valid = true;
                 }
+                // if($scope.loan.amount>0){
+                //     valid = true;
+                // }else{
+                //     valid = false;
+                // }
             }
+
+            
             return valid;
         };
 
