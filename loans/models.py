@@ -679,7 +679,21 @@ class Loan(models.Model):
             #     if (i==amortizations.count()): 
             #         return item
             #     i = i + 1 
-            return latestAmortization.amortizationItems.filter(amortizationStatus__name='UNPAID').order_by('id').first()
+            latestAmortizationItem = latestAmortization.amortizationItems.filter(Q(amortizationStatus__name='UNPAID') | Q(amortizationStatus__name='PARTIAL')).order_by('id').first()
+            
+            check = 0
+            if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('check') ))['totalPayments']:
+                check = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('check') ))['totalPayments']
+
+            cash = 0  
+            if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('cash') ))['totalPayments']:
+                cash = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('cash') ))['totalPayments']
+                
+            paidPrincipal = cash + check
+            print(paidPrincipal)
+            latestAmortizationItem.principal = latestAmortizationItem.principal - paidPrincipal
+
+            return latestAmortizationItem
 
     def getLastAmortizationItem(self):
         
@@ -850,7 +864,7 @@ class AmortizationItem(models.Model):
 
 
     def __str__(self):
-        return "%s %s" % (self.amortization.loan,self.schedule) 
+        return "%s %s: %s %s" % (self.amortization.loan.id, self.id ,self.schedule,self.amortizationStatus) 
 
     def isMaturingAmortizationItem(self): 
         return  (self ==  self.amortization.loan.getCurrentAmortizationItem())

@@ -77,16 +77,18 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
             print(loanAmount)
             print("pasok")
             amortizationItem.amortization = amortization
+            payments = amortizationItem.payments.all()
+            
             amortizationItem.pk =None
             if (i  == (paidItems) ):
                 amortizationItem.principalBalance = loanAmount
-                amortizationItem.total =  lastPayment.total - ( lastPayment.additionalInterest + lastPayment.penalty )
+                # amortizationItem.total =  lastPayment.total - ( lastPayment.additionalInterest + lastPayment.penalty )
                 # amortizationItem.days =  lastPayment.days
                 amortizationItem.days =  cycle
 
                 amortizationItem.schedule = schedule
-                amortizationItem.principal = lastPayment.principal
-                amortizationItem.interest = lastPayment.interest
+                # amortizationItem.principal = lastPayment.principal
+                # amortizationItem.interest = lastPayment.interest
                 amortizationItem.daysExceed = lastPayment.daysExceed
                 amortizationItem.daysAdvanced = lastPayment.daysAdvanced
                 amortizationItem.additionalInterest =  lastPayment.additionalInterest
@@ -100,9 +102,17 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 #     amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=3) #partial
                 #     amortizationItem.principal = lastPayment.balance
                 #     amortizationItem.interest = principalBalance * (loan.interestRate.interestRate/100) * loan.term.paymentPeriod.paymentCycle/360
+
+                
             amortizationItem.save()
             lastPayment.amortizationItem = amortizationItem
             lastPayment.save()
+
+            for payment in payments:
+                payment.amortizationItem = amortizationItem
+                payment.save()
+
+
             # schedule = lastPayment.datePayment
         else:
             if (loanAmount>0):
@@ -196,6 +206,8 @@ class PaymentSerializer(ModelSerializer):
 
     def create(self, validated_data):
         payment = Payment.objects.create(**validated_data) 
+
+         
         if payment.balance <= 0:
            
             payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
@@ -211,9 +223,9 @@ class PaymentSerializer(ModelSerializer):
         # payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
         if payment.balance >= 1:
             amortizationItem = payment.loan.getCurrentAmortizationItem()
-            amortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=3)
-            amortizationItem.principal = payment.balance
-            amortizationItem.interest =  payment.interestPayment - payment.interestPayment 
+            amortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=3) #partial
+            amortizationItem.principal = payment.principal
+            amortizationItem.interest =   payment.interestPayment 
             amortizationItem.total = amortizationItem.interest + amortizationItem.principal
             amortizationItem.save()
         else:

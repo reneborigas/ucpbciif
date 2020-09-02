@@ -353,6 +353,8 @@ class CalculatePMTView(views.APIView):
 
         payment = pmt.payment
         print(principal)
+
+
         if daysAdvanced < 0:
             daysAdvanced = 0
             # interest = pmt.interest
@@ -365,6 +367,9 @@ class CalculatePMTView(views.APIView):
             # pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
 
         principalBalance =pmt.nextStartingValue
+
+
+        # payments = loan.latestAmortization. 
         if latestPayment:
             if latestPayment.balance >= 1:
                 principal = latestPayment.balance

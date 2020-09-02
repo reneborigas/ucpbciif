@@ -352,7 +352,7 @@ define(function () {
         $scope.viewAmortizationPayment = function (amortizationItemId) {
             $scope.showAmortizationSchedule = false;
             angular.element('#amortization-payment').modal('show');
-            amortizationSchedulePaymentBlockUI.start('Fetching Amortization Payment Schedule...');
+            amortizationSchedulePaymentBlockUI.start('Fetching Amortization Payments...');
             $http
                 .get('/api/loans/amortizationitems/', {
                     params: { amortizationItemId: amortizationItemId },

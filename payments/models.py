@@ -250,7 +250,7 @@ class Payment(models.Model):
     
 
     def __str__(self):
-        return "%s %s" % (self.loan,self.total)
+        return "%s - %s %s" % (self.id,self.loan,self.total)
 
  
 
