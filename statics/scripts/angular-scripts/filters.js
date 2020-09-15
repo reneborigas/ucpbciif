@@ -49,4 +49,10 @@ define(function () {
             };
         },
     ]);
+
+    app.filter('trustedHTML', function ($sce) {
+        return function (ss) {
+            return $sce.trustAsHtml(ss);
+        };
+    });
 });

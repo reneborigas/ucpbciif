@@ -30,16 +30,13 @@
                                             <ng-include src="getStepTemplate()"></ng-include>
                                             <div class="d-flex justify-content-between border-top mt-5 pt-5">
                                                 <div class="mr-2">
-                                                    <button
-                                                        class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
-                                                        ui-sref="app.borrowers.list"
-                                                    >
+                                                    <button class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3" ui-sref="app.borrowers.list">
                                                         Cancel
                                                     </button>
                                                     <button
                                                         class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
                                                         ng-click="prevStep()"
-                                                        ng-hide="currentStep == '1'"
+                                                        ng-if="currentStep != '1'"
                                                     >
                                                         Previous
                                                     </button>
@@ -48,7 +45,7 @@
                                                     <button
                                                         class="btn btn-success text-uppercase p-2 pl-3 pr-3"
                                                         ng-disabled="checkForm()"
-                                                        ng-hide="currentStep == '1'"
+                                                        ng-if="currentStep == '5'"
                                                         ng-click="save()"
                                                     >
                                                         Submit
@@ -56,7 +53,7 @@
                                                     <button
                                                         class="btn btn-primary text-uppercase p-2 pl-3 pr-3"
                                                         ng-click="nextStep()"
-                                                        ng-hide="currentStep == '4'"
+                                                        ng-if="currentStep != '5'"
                                                     >
                                                         Next Step
                                                     </button>

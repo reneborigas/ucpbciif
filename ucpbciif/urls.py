@@ -31,12 +31,12 @@ urlpatterns = [
     path('unauthorized', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('404', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('menu', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    
-    #loans
+
+    #Loan Management
+    #payments
     path('payments', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('payments/new', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('payments/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-
     #loans
     path('loans', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('loans/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
@@ -50,27 +50,27 @@ urlpatterns = [
     path('borrowers/<int:id>/new-loan-availment/<int:creditLineId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/new-loan-release/<int:loanId>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('borrowers/<int:id>/edit', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-
     #processes
     path('processes', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-
+    path('files', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('files/<str:documentType>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('files/<str:documentType>/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     #credit-line
     path('credit-line', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('credit-line/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('amortizations', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('amortizations/maturing', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    #notifications
-    
+
+    #Settings
     #committes
     path('committees', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('committees/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('committees/<str:officeName>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))), 
     path('committees/<str:officeName>/<int:committee>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    
-    #processes
-    path('files', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    path('files/<str:documentType>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
-    path('files/<str:documentType>/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    #Terms
+    path('terms', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('terms/add', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('terms/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))), 
 
     path('400', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 

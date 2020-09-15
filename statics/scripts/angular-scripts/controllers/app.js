@@ -21,21 +21,16 @@ define(function () {
     //     $scope.showHeader = false;
     //     $scope.showHeader = appLoginService.isLoggedIn();
 
-
-
     //     $scope.loadNotifications = function (user) {
     //             console.log(user.committeeId);
     //             console.log(user.committeeId);
-                 
+
     //                 return appFactory.getNotifications(user.id,user.committeeId).then(function (response) {
     //                     $scope.notifications = response;
-    
+
     //                     console.log($scope.notifications);
     //                 });
-                 
 
-                
-            
     //     };
 
     //     $scope.notifView = function (notificationId, object_id,content_type,slug ) {
@@ -47,7 +42,7 @@ define(function () {
     //            .then(
     //                function (response) {
     //                    console.log(response);
-                       
+
     //                },
     //                function (error) {
     //                    toastr.error(
@@ -56,7 +51,6 @@ define(function () {
     //                    );
     //                }
     //            );
-
 
     //         }else{
     //             $http.post('/api/notifications/viewnotifications/', {
@@ -65,7 +59,7 @@ define(function () {
     //            .then(
     //                function (response) {
     //                    console.log(response);
-                       
+
     //                },
     //                function (error) {
     //                    toastr.error(
@@ -76,27 +70,23 @@ define(function () {
     //            );
 
     //         }
-            
+
     //         if(content_type == 33){//documents
-    //             // $state.go('app.loans.info', { loanId: loanId }); 
-                 
+    //             // $state.go('app.loans.info', { loanId: loanId });
+
     //                 return appFactory.getNotifications($scope.user.id,$scope.user.committeeId).then(function (response) {
     //                     $scope.notifications = response;
     //                     $state.go('app.documents.info', { subProcessName: slug, documentId: object_id });
     //                     console.log($scope.notifications);
     //                 });
-                 
-              
-        
+
     //         }
 
     //     };
 
-
     // });
 
-
-     app.controller('NavBarController', function NavBarController( $http,toastr,$scope, appFactory, appLoginService, $state) {
+    app.controller('NavBarController', function NavBarController($http, toastr, $scope, appFactory, appLoginService, $state) {
         appFactory.getCurrentUserInfo().then(function (data) {
             $scope.user = data;
 
@@ -114,96 +104,75 @@ define(function () {
         $scope.showHeader = false;
         $scope.showHeader = appLoginService.isLoggedIn();
 
-
-
         $scope.loadNotifications = function (user) {
             $scope.notifClick = true;
-                
-                 
-                    return appFactory.getNotifications(user.id,user.committeeId).then(function (response) {
-                        $scope.notifications = response;
-    
-                        console.log($scope.notifications);
-                        $scope.notifClick = false;
-                    });
-                 
 
-                
-            
+            return appFactory.getNotifications(user.id, user.committeeId).then(function (response) {
+                $scope.notifications = response;
+
+                console.log($scope.notifications);
+                $scope.notifClick = false;
+            });
         };
 
-         
-        $scope.notifView = function (notificationId, object_id,content_type,slug ) {
+        $scope.notifView = function (notificationId, object_id, content_type, slug) {
             console.log($scope.user.id);
-            if($scope.user.committeeId){
-                $http.post('/api/notifications/viewnotifications/', {
-                    notificationId: notificationId ,  userId:$scope.user.id ,committeeId:$scope.user.committeeId ,
-               })
-               .then(
-                   function (response) {
-                       console.log(response);
-                       
-                   },
-                   function (error) {
-                       toastr.error(
-                           'Error ' + error.status + ' ' + error.statusText,
-                           'Could not retrieve view notification. Please contact System Administrator.'
-                       );
-                   }
-               );
-
-
-            }else{
-                $http.post('/api/notifications/viewnotifications/', {
-                    notificationId: notificationId , userId:$scope.user.id ,committeeId:$scope.user.committeeId ,
-               })
-               .then(
-                   function (response) {
-                       console.log(response);
-                       
-                   },
-                   function (error) {
-                       toastr.error(
-                           'Error ' + error.status + ' ' + error.statusText,
-                           'Could not retrieve view notification. Please contact System Administrator.'
-                       );
-                   }
-               );
-
-            }
-            
-            if(content_type == 33){//documents
-                // $state.go('app.loans.info', { loanId: loanId }); 
-                 
-                    return appFactory.getNotifications($scope.user.id,$scope.user.committeeId).then(function (response) {
-                        $scope.notifications = response;
-                        $state.go('app.documents.info', { subProcessName: slug, documentId: object_id });
-                        console.log($scope.notifications);
-                    });
-                 
-              
-        
+            if ($scope.user.committeeId) {
+                $http
+                    .post('/api/notifications/viewnotifications/', {
+                        notificationId: notificationId,
+                        userId: $scope.user.id,
+                        committeeId: $scope.user.committeeId,
+                    })
+                    .then(
+                        function (response) {
+                            console.log(response);
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve view notification. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            } else {
+                $http
+                    .post('/api/notifications/viewnotifications/', {
+                        notificationId: notificationId,
+                        userId: $scope.user.id,
+                        committeeId: $scope.user.committeeId,
+                    })
+                    .then(
+                        function (response) {
+                            console.log(response);
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve view notification. Please contact System Administrator.'
+                            );
+                        }
+                    );
             }
 
+            if (content_type == 33) {
+                //documents
+                // $state.go('app.loans.info', { loanId: loanId });
+
+                return appFactory.getNotifications($scope.user.id, $scope.user.committeeId).then(function (response) {
+                    $scope.notifications = response;
+                    $state.go('app.documents.info', { subProcessName: slug, documentId: object_id });
+                    console.log($scope.notifications);
+                });
+            }
         };
-
-
     });
-
-
 
     app.controller('FooterController', function FooterController($scope) {
         $scope.date = new Date();
     });
 
-    app.controller('SideBarController', function SideBarController(
-        $http,
-        $scope,
-        toastr,
-        $state,
-        $timeout,
-        appFactory
-    ) {
+    app.controller('SideBarController', function SideBarController($http, $scope, toastr, $state, $timeout, appFactory) {
         $http.get('/api/processes/subprocesses/').then(
             function (response) {
                 $scope.subProcesses = response.data;
@@ -216,16 +185,24 @@ define(function () {
                 });
             },
             function (error) {
-                toastr.error(
-                    'Error ' + error.status + error.statusText,
-                    'Could not retrieve Sub Processes. Please contact System Administrator.'
-                );
+                toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve Sub Processes. Please contact System Administrator.');
             }
         );
+        var app = JSON.parse(localStorage.getItem('selectedApp'));
+        $scope.navDirectory = app['navBar'];
     });
 
-    app.controller('MetroController', function MetroController($scope, $state) {
-        $scope.goToLMS = function () {
+    app.controller('MetroController', function MetroController($scope, $state, $http, $sce, appFactory) {
+        appFactory.getCurrentUserApps().then(function (data) {
+            $scope.apps = data;
+        });
+
+        $scope.goToApp = function (app) {
+            var appInfo = {
+                name: app.name,
+                navBar: app.navDirectory,
+            };
+            localStorage.selectedApp = JSON.stringify(appInfo);
             $state.go('app.dashboard');
         };
     });

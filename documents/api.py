@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
-from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func,CharField,Min,Max
+from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func,CharField,Min,Max,Q
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from committees.models import Note
 from processes.models import Statuses,SubProcess
@@ -70,7 +70,11 @@ class DocumentViewSet(ModelViewSet):
                 documentCode=Concat(F('subProcess__code'),F('id'), output_field=CharField()),
                 subProcessName=F('subProcess__name'),
                 documentTypeName=F('documentType__name'), 
-                borrowerName=F('borrower__cooperative__name'), 
+                # borrowerName=F('borrower__cooperative__name'), 
+                borrowerName=Case(
+                    When(Q(borrower__recordType='BD'),then=F('borrower__business__tradeName')),
+                    When(Q(borrower__recordType='ID'),then=Concat(F('borrower__individual__firstname'),V(' '),F('borrower__individual__middlename'),V(' '),F('borrower__individual__lastname')))
+                ),
                 lastDocumentMovementId=Max( 'documentMovements__id'),   
                 subProcessId=F('subProcess__id')
             ) .exclude(isDeleted=True).order_by('-id')         

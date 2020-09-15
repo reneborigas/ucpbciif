@@ -13,63 +13,51 @@
                 <div class="form-group form-group-xs row">
                     <label class="col-4 col-form-label">Name:</label>
                     <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.name }}</span>
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.borrowerName }}</span>
                     </div>
                 </div>
                 <div class="form-group form-group-xs row">
                     <label class="col-4 col-form-label">TIN #:</label>
                     <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.tin }}</span>
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.borrowerTIN }}</span>
                     </div>
                 </div>
                 <div class="form-group form-group-xs row">
                     <label class="col-4 col-form-label">Address:</label>
                     <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.address }}</span>
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.borrowerAddress}}</span>
                     </div>
                 </div>
                 <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Cooperative Type:</label>
+                    <label class="col-4 col-form-label">Borrower Type:</label>
                     <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">
-                            {{ borrower.cooperative.cooperativeTypeText }}
-                        </span>
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.borrowerType }}</span>
                     </div>
                 </div>
                 <div class="form-group form-group-xs row">
                     <label class="col-4 col-form-label">Phone:</label>
                     <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.phoneNo }}</span>
-                    </div>
-                </div>
-                <div class="form-group form-group-xs row">
-                    <label class="col-4 col-form-label">Telephone:</label>
-                    <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.telNo }}</span>
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.borrowerPhone }}</span>
                     </div>
                 </div>
                 <div class="form-group form-group-xs row">
                     <label class="col-4 col-form-label">Email:</label>
                     <div class="col-8">
                         <span class="form-control-plaintext font-weight-bold">
-                            <span class="form-control-plaintext font-weight-bold">
-                                {{ borrower.cooperative.emailAddress }}
-                            </span>
+                            <span class="form-control-plaintext font-weight-bold">{{ borrower.borrowerEmailAddress }}</span>
                         </span>
                     </div>
                 </div>
                 <div class="form-group form-group-xs row">
                     <label class="col-4 col-form-label">Description:</label>
                     <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">
-                            {{ borrower.cooperative.description }}
-                        </span>
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.description }}</span>
                     </div>
                 </div>
                 <div class="form-group form-group-xs row">
                     <label class="col-4 col-form-label">Remarks:</label>
                     <div class="col-8">
-                        <span class="form-control-plaintext font-weight-bold">{{ borrower.cooperative.remarks }}</span>
+                        <span class="form-control-plaintext font-weight-bold">{{ borrower.remarks }}</span>
                     </div>
                 </div>
             </div>
@@ -85,7 +73,7 @@
                                 <div class="d-flex flex-wrap my-2">
                                     <span class="text-muted font-weight-bold mr-2">Loan Facility :</span>
 
-                                    {{ borrower.cooperative.name }}
+                                    {{ borrower.borrowerName }}
                                 </div>
                             </div>
                         </div>
@@ -97,9 +85,7 @@
                                 </span>
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Program</span>
-                                    <span class="font-weight-bolder font-size-h5">
-                                        {{ creditLine.loanProgram_name }}
-                                    </span>
+                                    <span class="font-weight-bolder font-size-h5">{{ creditLine.loanProgram_name }}</span>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
@@ -108,9 +94,7 @@
                                 </span>
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Credit Line Amount</span>
-                                    <span class="font-weight-bolder font-size-h5">
-                                        {{ creditLine.amount | currency :'₱'}}
-                                    </span>
+                                    <span class="font-weight-bolder font-size-h5">{{ creditLine.amount | currency :'₱'}}</span>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
@@ -119,9 +103,7 @@
                                 </span>
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Total Availment</span>
-                                    <span class="font-weight-bolder font-size-h5">
-                                        {{ creditLine.totalAvailment | currency :'₱'}}
-                                    </span>
+                                    <span class="font-weight-bolder font-size-h5">{{ creditLine.totalAvailment | currency :'₱'}}</span>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
@@ -130,9 +112,7 @@
                                 </span>
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Remaining Credit Line Amount</span>
-                                    <span class="font-weight-bolder font-size-h5">
-                                        {{ creditLine.remainingCreditLine | currency :'₱'}}
-                                    </span>
+                                    <span class="font-weight-bolder font-size-h5">{{ creditLine.remainingCreditLine | currency :'₱'}}</span>
                                 </div>
                             </div>
 
@@ -154,9 +134,7 @@
                                 </span>
                                 <div class="d-flex flex-column text-dark-75">
                                     <span class="font-weight-bolder font-size-sm">Term</span>
-                                    <span class="font-weight-bolder font-size-h5">
-                                        {{ creditLine.term_name }}
-                                    </span>
+                                    <span class="font-weight-bolder font-size-h5">{{ creditLine.term_name }}</span>
                                 </div>
                             </div>
                         </div>
@@ -185,9 +163,7 @@
                         </span>
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Program</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.loanProgram_name }}
-                            </span>
+                            <span class="font-weight-bolder font-size-h5">{{ loan.loanProgram_name }}</span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
@@ -196,9 +172,7 @@
                         </span>
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Loan</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.amount | currency :'₱'}}
-                            </span>
+                            <span class="font-weight-bolder font-size-h5">{{ loan.amount | currency :'₱'}}</span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
@@ -219,9 +193,7 @@
                         </span>
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Term</span>
-                            <span class="font-weight-bolder font-size-h5">
-                                {{ loan.term_name }}
-                            </span>
+                            <span class="font-weight-bolder font-size-h5">{{ loan.term_name }}</span>
                         </div>
                     </div>
                 </div>
@@ -242,9 +214,7 @@
                         <form class="form mt-0" name="form.newCreditLineDetailsForm">
                             <div class="pb-2">
                                 <div class="form-group row">
-                                    <label for="loanProgram" class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Program
-                                    </label>
+                                    <label for="loanProgram" class="col-xl-3 col-lg-3 col-form-label text-right">Program</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <select
                                             class="form-control"
@@ -313,9 +283,7 @@
                                 </div> -->
 
                                 <div class="form-group row">
-                                    <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Interest Rate
-                                    </label>
+                                    <label for="interestRate" class="col-xl-3 col-lg-3 col-form-label text-right">Interest Rate</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <select
                                             class="form-control"
@@ -337,9 +305,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Term
-                                    </label>
+                                    <label for="term" class="col-xl-3 col-lg-3 col-form-label text-right">Term</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <select
                                             class="form-control"
@@ -413,10 +379,7 @@
                 </div>
             </div>
         </div>
-        <div
-            class="card card-custom gutter-b"
-            ng-show="(!subProcess.parentLastDocumentLoan&&subProcess.parentLastDocumentCreditLine)"
-        >
+        <div class="card card-custom gutter-b" ng-show="(!subProcess.parentLastDocumentLoan&&subProcess.parentLastDocumentCreditLine)">
             <div class="card-header">
                 <div class="card-title">
                     <h3 class="card-label">
@@ -475,9 +438,7 @@
                                             Please enter amount.
                                         </span>
 
-                                        <span class="form-text text-muted" ng-show="exceeded">
-                                            Amount exceeds remaining credit loan amount.
-                                        </span>
+                                        <span class="form-text text-muted" ng-show="exceeded">Amount exceeds remaining credit loan amount.</span>
                                     </div>
                                 </div>
 
@@ -506,7 +467,7 @@
                                 </div> -->
                                 <!-- 
                                 <div class="form-group row">
-                                    <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">
+                                    <label for="" class="col-xl-3 col-lg-3 col-form-label text-right">
                                         Term
                                     </label>
                                     <div class="col-lg-9 col-xl-6">
@@ -640,9 +601,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="cooperativeType" class="col-xl-3 col-lg-3 col-form-label text-right">
-                                        Committee
-                                    </label>
+                                    <label for="committee" class="col-xl-3 col-lg-3 col-form-label text-right">Committee</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <select
                                             class="form-control"
@@ -665,10 +624,7 @@
                             </div>
                             <div class="d-flex justify-content-between border-top mt-5 pt-5">
                                 <div class="mr-2">
-                                    <button
-                                        class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3"
-                                        ng-click="cancel(borrower.borrowerId)"
-                                    >
+                                    <button class="btn btn-light-primary text-uppercase p-2 pl-3 pr-3" ng-click="cancel(borrower.borrowerId)">
                                         Cancel
                                     </button>
                                 </div>

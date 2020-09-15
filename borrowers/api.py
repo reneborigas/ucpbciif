@@ -17,11 +17,11 @@ class CRUDBorrowerViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = Borrower.objects.annotate(
-            contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
-            cooperativeName=F('cooperative__name'),
-            tin=F('cooperative__tin'),
-            address=F('cooperative__address'),
-            phoneNo=F('cooperative__phoneNo'),
+            # contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
+            # cooperativeName=F('cooperative__name'),
+            # tin=F('cooperative__tin'),
+            # address=F('cooperative__address'),
+            # phoneNo=F('cooperative__phoneNo'),
         ).exclude(isDeleted=True).order_by('borrowerId')
         borrowerId = self.request.query_params.get('borrowerId', None)
 
@@ -38,17 +38,27 @@ class BorrowerViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Borrower.objects.prefetch_related('borrowerAttachments',  Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
         Prefetch( 'loans',queryset=Loan.objects.order_by('dateReleased')),
-            Prefetch('cooperative',Cooperative.objects.annotate(
-                cooperativeTypeText=F('cooperativeType__name')
-            ).all()),
+            # Prefetch('cooperative',Cooperative.objects.annotate(
+            #     cooperativeTypeText=F('cooperativeType__name')
+            # ).all()),
             Prefetch( 'documents__documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated'))
         ).annotate(
-            contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
-            cooperativeName=F('cooperative__name'),
-            tin=F('cooperative__tin'),
-            address=F('cooperative__address'),
-            phoneNo=F('cooperative__phoneNo'),
+            borrowerName=Case(
+                    When(Q(recordType='BD'),then=F('business__tradeName')),
+                    When(Q(recordType='ID'),then=Concat(F('individual__firstname'),V(' '),F('individual__middlename'),V(' '),F('individual__lastname')))
+                ),
+            borrowerType=Case(
+                When(recordType='BD',then=V('Business')),
+                When(recordType='ID',then=V('Individual')),
+                output_field=models.CharField()
+            ),
+            # contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
+            # cooperativeName=F('cooperative__name'),
+            # tin=F('cooperative__tin'),
+            # address=F('cooperative__address'),
+            # phoneNo=F('cooperative__phoneNo'),
         ).exclude(isDeleted=True).order_by('borrowerId')
+
         borrowerId = self.request.query_params.get('borrowerId', None)
         loanProgramId = self.request.query_params.get('loanProgramId', None)
         totalAvailmentsFrom = self.request.query_params.get('totalAvailmentsFrom', None)
@@ -112,30 +122,9 @@ class BorrowerViewSet(ModelViewSet):
 
         return queryset
 
-
-class ContactPersonViewSet(ModelViewSet):
-    queryset = ContactPerson.objects.all()
-    serializer_class = ContactPersonSerializer #test comment
-    permission_classes = (permissions.IsAuthenticated, )
-
-class GrantViewSet(ModelViewSet):
-    queryset = Grant.objects.all()
-    serializer_class = GrantSerializer
-    permission_classes = (permissions.IsAuthenticated, )
-
-class StandingCommitteViewSet(ModelViewSet):
-    queryset = StandingCommittee.objects.all()
-    serializer_class = StandingCommitteeSerializer
-    permission_classes = (permissions.IsAuthenticated, )
-
-class DirectorViewSet(ModelViewSet):
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
-    permission_classes = (permissions.IsAuthenticated, )
-
-class CooperativeViewSet(ModelViewSet):
-    queryset = Cooperative.objects.all()
-    serializer_class = CooperativeSerializer
+class BusinessViewSet(ModelViewSet):
+    queryset = Business.objects.all()
+    serializer_class = BusinessSerializer 
     permission_classes = (permissions.IsAuthenticated, )
 
 class BorrowerAttachmentViewSet(ModelViewSet):

@@ -2,7 +2,27 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
+from settings.models import AppName
 from django.db.models import Q, Prefetch,F,Value as V, Count, Sum, Max, Case, When
+
+
+
+class UserAppsViewSet(ModelViewSet):
+    queryset = UserApps.objects.all()
+    serializer_class = UserAppsSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = UserApps.objects.prefetch_related(
+            Prefetch('installedApps',queryset=AppName.objects.order_by('id'))
+        ).all()
+
+        user = self.request.query_params.get('user', None)
+        
+        if user is not None:
+            queryset = queryset.filter(user=user)
+
+        return queryset
 
 class ProfileViewSet(ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -22,7 +42,9 @@ class UserViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = CustomUser.objects.annotate(
+        queryset = CustomUser.objects.prefetch_related(
+            Prefetch('appAccess',UserApps.objects.all())
+        ).annotate(
             fullName=F('profile__name'),
             account_type_text=F('account_type__account_type'),
             committeePosition=F('committees__position__name'),

@@ -1,0 +1,119 @@
+<nav class="sidebar-nav">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" ui-sref-active="active" ui-sref="app.dashboard">
+                <i class="icon-speedometer"></i>
+                Dashboard
+                <span class="badge badge-info">NEW</span>
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-title">Loan Management</li>
+        <li class="nav-item">
+            <a class="nav-link" ng-class="{active: $state.includes('app.borrowers')}" ui-sref="app.borrowers.list">
+                <i class="fad fa-users"></i>
+                Borrowers
+            </a>
+        </li>
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.documents')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.documents')}">
+                <i class="fad fa-landmark"></i>
+                Credit Management
+            </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a
+                        class="nav-link pl-16"
+                        ui-sref-active="active"
+                        ng-repeat="subProcessSlug in subProcessSlugs"
+                        ui-sref="app.documents.list({ subProcessName : subProcessSlug.slug })"
+                    >
+                        <i class="fad fa-file-invoice"></i>
+                        {{ subProcessSlug.name }}
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.loans')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.loans')}">
+                <i class="fad fa-hand-holding-usd"></i>
+                Loans
+            </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.loans.list">
+                        <i class="fad fa-list-ul"></i>
+                        Loan List
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.payments')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.payments')}" href="#">
+                <i class="fad fa-money-bill"></i>
+                Payments
+            </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.payments.add">
+                        <i class="fad fa-spinner"></i>
+                        Processing
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.payments.list">
+                        <i class="fad fa-list-ul"></i>
+                        Payment List
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#">
+                <i class="fad fa-chart-bar"></i>
+                Amortizations
+            </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.amortizations.list">
+                        <i class="fad fa-calendar-alt"></i>
+                        Schedules
+                        <span class="badge badge-success">NEW</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.amortizations.maturing">
+                        <i class="fad fa-calendar-check"></i>
+                        Maturing Amortizations
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app. icons')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#">
+                <i class="fad fa-desktop"></i>
+                Monitoring
+            </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.creditline.list">
+                        <i class="fad fa-credit-card"></i>
+                        Credit Line
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
+                        <i class="fad fa-money-check"></i>
+                        Postdated Checks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
+                        <i class="fad fa-handshake"></i>
+                        Collaterals
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>

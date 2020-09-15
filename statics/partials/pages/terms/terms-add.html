@@ -1,0 +1,103 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <div class="card card-custom card-sticky gutter-b" ng-controller="TermsAddController">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Create New Term</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form" name="newTermForm">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Term Name:</label>
+                                    <span>*</span>
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-solid"
+                                        placeholder="Enter Term Name"
+                                        id="name"
+                                        name="name"
+                                        ng-model="term.name"
+                                        ng-class="{'is-invalid' : newTermForm.name.$invalid && newTermForm.name.$touched, 'is-valid' : newTermForm.name.$valid && newTermForm.name.$touched }"
+                                        required
+                                    />
+                                    <span class="form-text text-muted" ng-show="newTermForm.name.$touched && newTermForm.name.$invalid">
+                                        Please enter Term Name.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="days">Loan Duration</label>
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-solid"
+                                        id="days"
+                                        name="days"
+                                        placeholder="Number of Days"
+                                        ng-model="term.days"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="principalPaymentCycle">Principal Payment Cycle</label>
+                                    <select
+                                        class="form-control form-control-solid"
+                                        id="principalPaymentCycle"
+                                        name="principalPaymentCycle"
+                                        ng-model="term.principalPaymentPeriod"
+                                        ng-options="paymentperiod.id as paymentperiod.name for paymentperiod in paymentperiods"
+                                    ></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="interestPaymentCycle">Interest Payment Cycle</label>
+                                    <select
+                                        class="form-control form-control-solid"
+                                        id="interestPaymentCycle"
+                                        name="interestPaymentCycle"
+                                        ng-model="term.interestPaymentPeriod"
+                                        ng-options="paymentperiod.id as paymentperiod.name for paymentperiod in paymentperiods"
+                                    ></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Remarks:</label>
+                                    <textarea
+                                        type="text"
+                                        class="form-control form-control-solid textarea"
+                                        placeholder="Enter remarks"
+                                        rows="3"
+                                        cols="50"
+                                        id="remarks"
+                                        name="remarks"
+                                        ng-model="term.remarks"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="#" class="btn btn-secondary mr-2" ui-sref="app.terms.list">Back</a>
+                    <button class="btn btn-primary p-2 pl-3 pr-3" ng-click="createTerm(term)">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

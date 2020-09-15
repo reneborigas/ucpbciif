@@ -545,21 +545,34 @@ class LoanProgramDistributionViewSet(ModelViewSet):
 
 
 class TermViewSet(ModelViewSet):
-    queryset = Loan.objects.all()
+    queryset = Term.objects.all()
     serializer_class = TermSerializer 
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         queryset = Term.objects.order_by('id').annotate(
-              termName=Concat(F('name'),V(' '),F('paymentPeriod__name')),
+            principalPaymentPeriodName=F('principalPaymentPeriod__name'),
+            interestPaymentPeriodName=F('interestPaymentPeriod__name'),
         )
         termId = self.request.query_params.get('termId', None)
 
         if termId is not None:
             queryset = queryset.filter(id=termId)
 
+        return queryset
 
-      
+class CRUDTermViewSet(ModelViewSet):
+    queryset = Term.objects.all()
+    serializer_class = CRUDTermSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Term.objects.order_by('id')
+        termId = self.request.query_params.get('termId', None)
+
+        if termId is not None:
+            queryset = queryset.filter(id=termId)
+
         return queryset
 
 class InterestRateViewSet(ModelViewSet):
@@ -573,8 +586,6 @@ class InterestRateViewSet(ModelViewSet):
 
         if interestRateId is not None:
             queryset = queryset.filter(id=interestRateId)
-
-
       
         return queryset
 

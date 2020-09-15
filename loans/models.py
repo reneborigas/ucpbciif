@@ -155,27 +155,28 @@ class PaymentPeriod(models.Model):
         return "%s" % (self.name)
 
 class Term(models.Model):
-
     name = models.CharField(
         max_length=255,
         blank = False,
         null = False, 
     )    
-
     days = models.PositiveIntegerField(default=720,validators=[MinValueValidator(1), MaxValueValidator(720)]) 
-    
-    paymentPeriod = models.OneToOneField(
+    principalPaymentPeriod = models.ForeignKey(
         PaymentPeriod,
         on_delete=models.SET_NULL,
-        related_name="terms",
+        related_name="principalPaymentPeriod",
         null = True,
     )
-
+    interestPaymentPeriod = models.ForeignKey(
+        PaymentPeriod,
+        on_delete=models.SET_NULL,
+        related_name="interestPaymentPeriod",
+        null = True,
+    )
     remarks = models.TextField(
         blank = True,
         null = True,
     )
-
     createdBy = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.SET_NULL,

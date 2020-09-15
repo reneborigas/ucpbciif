@@ -1,0 +1,242 @@
+<div>
+    <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Directors</div>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary btn-sm" type="button" ng-click="addDirector()">
+                <i class="fal fa-plus mr-2"></i>
+                Add Director
+            </button>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="director in business.businessDirectors">
+        <div class="form-group">
+            <label for="directorName">Name</label>
+            <input type="text" class="form-control" id="directorName" name="directorName" placeholder="Name of Director" ng-model="director.name" />
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorPosition">Cooperative Position</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorPosition"
+                        name="directorPosition"
+                        placeholder="Cooperative Position"
+                        ng-model="director.position"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorEducationalAttainment">Educational Attainment</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorEducationalAttainment"
+                        name="directorEducationalAttainment"
+                        placeholder="Educational Attainment"
+                        ng-model="director.educationalAttainment"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorAge">Age</label>
+                    <input type="text" class="form-control" id="directorAge" name="directorAge" placeholder="Age" ng-model="director.age" />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorYearsInCoop">Years in Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorYearsInCoop"
+                        name="directorYearsInCoop"
+                        placeholder="Years in Cooperative"
+                        ng-model="director.yearsInCoop"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorOsLoanWithCoop">OS Loan with Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorOsLoanWithCoop"
+                        name="directorOsLoanWithCoop"
+                        placeholder="OS Loan with Cooperative"
+                        ng-model="director.oSLoanWithCoop"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorStatus">Status</label>
+                    <span>*</span>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorStatus"
+                        name="directorStatus"
+                        placeholder="Status"
+                        ng-model="director.status"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeDirector($index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove Director
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Standing Committee</div>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary btn-sm" type="button" ng-click="addCommittee()">
+                <i class="fal fa-plus mr-2"></i>
+                Add Committee
+            </button>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="standingCommittee in business.businessStandingCommittees">
+        <div class="form-group">
+            <label for="committeeName">Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="committeeName"
+                name="committeeName"
+                placeholder="Name of Standing Committee"
+                ng-model="standingCommittee.name"
+            />
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeeDepartment">Cooperative Department</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeDepartment"
+                        name="committeeDepartment"
+                        placeholder="Cooperative Department"
+                        ng-model="standingCommittee.department"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeePosition">Cooperative Position</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeePosition"
+                        name="committeePosition"
+                        placeholder="Cooperative Position"
+                        ng-model="standingCommittee.position"
+                    />
+                    <span
+                        class="form-text text-muted"
+                        ng-show="form.wizardForm.committeePosition.$touched && form.wizardForm.committeePosition.$invalid"
+                    >
+                        Please enter Committee's Position in Cooperative.
+                    </span>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeeEducationalAttainment">Educational Attainment</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeEducationalAttainment"
+                        name="committeeEducationalAttainment"
+                        placeholder="Educational Attainment"
+                        ng-model="standingCommittee.educationalAttainment"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeAge">Age</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeAge"
+                        name="committeeAge"
+                        placeholder="Age"
+                        ng-model="standingCommittee.age"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeYearsInCoop">Years in Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeYearsInCoop"
+                        name="committeeYearsInCoop"
+                        placeholder="Years in Cooperative"
+                        ng-model="standingCommittee.yearsInCoop"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeOsLoanWithCoop">OS Loan with Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeOsLoanWithCoop"
+                        name="committeeOsLoanWithCoop"
+                        placeholder="OS Loan with Cooperative"
+                        ng-model="standingCommittee.oSLoanWithCoop"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeStatus">Status</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeStatus"
+                        name="committeeStatus"
+                        placeholder="Status"
+                        ng-model="standingCommittee.status"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeCommittee($index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove Committee
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

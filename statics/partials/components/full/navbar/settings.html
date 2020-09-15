@@ -1,0 +1,25 @@
+<nav class="sidebar-nav">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" ui-sref-active="active" ui-sref="app.dashboard">
+                <i class="icon-speedometer"></i>
+                Dashboard
+                <span class="badge badge-info">NEW</span>
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-title">Settings</li>
+        <li class="nav-item">
+            <a class="nav-link" ng-class="{active: $state.includes('app.terms')}" ui-sref="app.terms.list">
+                <i class="fad fa-file-contract"></i>
+                Terms
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" ng-class="{active: $state.includes('app.committees')}" ui-sref="app.committees.offices">
+                <i class="fad fa-users-class"></i>
+                Committee
+            </a>
+        </li>
+    </ul>
+</nav>

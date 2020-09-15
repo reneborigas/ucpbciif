@@ -102,15 +102,25 @@ class PaymentPeriodSerializer(ModelSerializer):
         
 
 class TermSerializer(ModelSerializer):
-    paymentPeriod = PaymentPeriodSerializer(read_only=True)
+    principalPaymentPeriod = PaymentPeriodSerializer(read_only=True)
+    interestPaymentPeriod = PaymentPeriodSerializer(read_only=True)
+    principalPaymentPeriodName = serializers.CharField(read_only=True)
+    interestPaymentPeriodName = serializers.CharField(read_only=True)
     termName = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
-        term = Term.objects.create(**validated_data) 
+        term = Term.objects.create(**validated_data)
+
         return term
 
     def update(self, instance, validated_data):
-         
+        instance.name = validated_data.get("name",instance.name)
+        instance.days = validated_data.get("days",instance.days)
+        instance.principalPaymentPeriod = validated_data.get("principalPaymentPeriod",instance.principalPaymentPeriod)
+        instance.interestPaymentPeriod = validated_data.get("interestPaymentPeriod",instance.interestPaymentPeriod)
+        instance.remarks = validated_data.get("remarks",instance.remarks)
+        instance.dateUpdated = validated_data.get("dateUpdated",instance.dateUpdated)
+        instance.save()
 
         return instance
     
@@ -118,8 +128,16 @@ class TermSerializer(ModelSerializer):
         model = Term        
         fields = '__all__'
 
+class CRUDTermSerializer(ModelSerializer):
 
-
+    def create(self, validated_data):
+        term = Term.objects.create(**validated_data)
+        
+        return term
+        
+    class Meta:
+        model = Term        
+        fields = '__all__'
 
 class InterestRateSerializer(ModelSerializer):
    
@@ -208,7 +226,7 @@ class CreditLineSerializer(ModelSerializer):
     interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
     status_name = serializers.ReadOnlyField(source='status.name')
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
-    borrower_name = serializers.ReadOnlyField(source='borrower.cooperative.name')
+    borrower_name = serializers.ReadOnlyField(source='borrower.business.tradeName')
     remainingCreditLine = serializers.CharField(read_only=True)
     totalAvailment = serializers.CharField(read_only=True)
      
@@ -233,7 +251,7 @@ class LoanSerializer(ModelSerializer):
     creditLine_amount= serializers.ReadOnlyField(source='creditLine.amount')
     creditLine_dateApproved = serializers.ReadOnlyField(source='creditLine.dateApproved')
     creditLine_dateExpired = serializers.ReadOnlyField(source='creditLine.dateExpired')
-    borrower_name = serializers.ReadOnlyField(source='borrower.cooperative.name')
+    borrower_name = serializers.ReadOnlyField(source='borrower.business.tradeName')
     borrower_id = serializers.ReadOnlyField(source='borrower.borrowerId')
     amortizations     =  AmortizationSerializer(many=True,read_only=True)
     term_name = serializers.ReadOnlyField(source='term.name')

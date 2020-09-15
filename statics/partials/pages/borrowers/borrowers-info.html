@@ -7,42 +7,24 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap">
                             <div class="mr-3">
                                 <div class="d-flex align-items-center mr-3">
-                                    <h5 class="d-flex align-items-center text-dark font-weight-bold mr-3">
-                                        {{ borrower.cooperative.name }}
-                                    </h5>
+                                    <h5 class="d-flex align-items-center text-dark font-weight-bold mr-3">{{ borrower.borrowerName }}</h5>
                                 </div>
                                 <div class="d-flex flex-wrap my-2">
-                                    <a
-                                        href="#"
-                                        class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
-                                    >
+                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                         <i class="fad fa-users"></i>
-                                        {{ borrower.cooperative.cooperativeTypeText }}
+                                        {{ borrower.borrowerType }}
                                     </a>
-                                    <a
-                                        href="#"
-                                        class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
-                                    >
-                                        <i class="fad fa-envelope mr-1"></i>
-                                        {{ borrower.cooperative.emailAddress }}
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
-                                    >
+                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                         <i class="fad fa-mobile-android-alt"></i>
-                                        {{ borrower.cooperative.phoneNo }}
+                                        {{ borrower.borrowerPhoneNumber }}
                                     </a>
-                                    <a
-                                        href="#"
-                                        class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2"
-                                    >
+                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                         <i class="fad fa-map-marker-alt"></i>
-                                        {{ borrower.cooperative.address }}
+                                        {{ borrower.borrowerAddress }}
                                     </a>
                                 </div>
                             </div>
-                            <div class="mb-10">
+                            <!-- <div class="mb-10">
                                 <div class="dropdown dropdown-inline">
                                     <a
                                         href="#"
@@ -70,21 +52,19 @@
                                                     <span class="navi-text">Update</span>
                                                 </a>
                                             </li>
-                                            <!-- <li class="navi-item">
+                                            <li class="navi-item">
                                                 <a href="#" class="navi-link" ng-click="delete(borrower.borrowerId)">
                                                     <span class="navi-icon"><i class="fal fa-trash-alt mr-2"></i></span>
                                                     <span class="navi-text">Delete</span>
                                                 </a>
-                                            </li> -->
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="d-flex align-items-center flex-wrap justify-content-between">
-                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
-                                {{ borrower.cooperative.description }}
-                            </div>
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">{{ borrower.description }}</div>
                             <!-- <div class="d-flex mt-4 mt-sm-0">
                                 <span class="font-weight-bold mr-4">Progress</span>
                                 <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-500px">
@@ -112,36 +92,24 @@
                                 <tr>
                                     <td class="p-0" width="18%">
                                         <div class="py-3 pl-16 bg-secondary">
-                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                                Loan Window
-                                            </a>
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Loan Window</a>
                                         </div>
                                         <div class="py-3 pl-16 bg-light">
-                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                                Credit Line Amount
-                                            </a>
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Credit Line Amount</a>
                                         </div>
                                         <div class="py-3 pl-16 bg-secondary">
-                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                                Approval Date
-                                            </a>
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Approval Date</a>
                                         </div>
                                         <div class="py-3 pl-16 bg-light">
-                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                                Expiry Date
-                                            </a>
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Expiry Date</a>
                                         </div>
                                         <div class="py-3 pl-16 bg-secondary">
-                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">
-                                                Total Availments
-                                            </a>
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Total Availments</a>
                                         </div>
                                     </td>
                                     <td class="p-0" ng-repeat="window in windows">
                                         <div class="text-center py-3 bg-secondary">
-                                            <span class="text-dark-75 font-weight-normal font-size-lg">
-                                                {{ window.name}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">{{ window.name}}</span>
                                         </div>
                                         <div class="text-center py-3 bg-light">
                                             <span
@@ -169,24 +137,16 @@
                                     </td>
                                     <td class="p-0 text-right">
                                         <div class="text-center py-3 bg-secondary">
-                                            <span class="text-dark-75 font-weight-normal font-size-lg">
-                                                Total
-                                            </span>
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">Total</span>
                                         </div>
                                         <div class="text-center py-3 bg-light">
-                                            <span class="text-dark-75 font-weight-normal font-size-lg">
-                                                &nbsp;
-                                            </span>
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">&nbsp;</span>
                                         </div>
                                         <div class="text-center py-3 bg-secondary">
-                                            <span class="text-dark-75 font-weight-normal font-size-lg">
-                                                &nbsp;
-                                            </span>
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">&nbsp;</span>
                                         </div>
                                         <div class="text-center py-3 bg-light">
-                                            <span class="text-dark-75 font-weight-normal font-size-lg">
-                                                &nbsp;
-                                            </span>
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">&nbsp;</span>
                                         </div>
                                         <div class="text-center py-3 bg-secondary">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -202,10 +162,7 @@
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-icon" ng-click="showExistingAccomodations = !showExistingAccomodations">
-                    <i
-                        class="wide text-warning"
-                        ng-class=" showExistingAccomodations ? 'fal fa-angle-up' : 'fal fa-angle-down' "
-                    ></i>
+                    <i class="wide text-warning" ng-class=" showExistingAccomodations ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
                 </a>
             </div>
         </div>
@@ -213,9 +170,7 @@
         <div class="card card-custom gutter-b" ng-init="showObligations = true">
             <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="font-weight-bolder text-dark">
-                        Outstanding Obligations as of {{ dateToday | date :'mediumDate' }}
-                    </span>
+                    <span class="font-weight-bolder text-dark">Outstanding Obligations as of {{ dateToday | date :'mediumDate' }}</span>
                 </h3>
                 <div class="card-toolbar">
                     <a
@@ -235,44 +190,32 @@
                                 <tr>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                NO.
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">NO.</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                WINDOW
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">WINDOW</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                AVAILMENT DATE
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">AVAILMENT DATE</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                MATURITY DATE
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">MATURITY DATE</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                AMOUNT AVAILED
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">AMOUNT AVAILED</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                OUTSTANDING BALANCE
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">OUTSTANDING BALANCE</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -288,9 +231,7 @@
                                     </td>
                                     <td>
                                         <div class="px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.loanProgram_name }}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ loan.loanProgram_name }}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -361,9 +302,7 @@
                             </tbody>
                             <tbody ng-if="loans.length == 0">
                                 <tr>
-                                    <td class="py-8" colspan="6" align="center">
-                                        No records Found
-                                    </td>
+                                    <td class="py-8" colspan="6" align="center">No records Found</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -372,10 +311,7 @@
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-icon" ng-click="showObligations = !showObligations">
-                    <i
-                        class="wide text-warning"
-                        ng-class=" showObligations ? 'fal fa-angle-up' : 'fal fa-angle-down' "
-                    ></i>
+                    <i class="wide text-warning" ng-class=" showObligations ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
                 </a>
             </div>
         </div>
@@ -403,65 +339,47 @@
                                 <tr>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                NO.
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">NO.</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                WINDOW
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">WINDOW</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                TERM
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">TERM</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                CREDIT LINE AMOUNT
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">CREDIT LINE AMOUNT</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                TOTAL AVAILMENT
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">TOTAL AVAILMENT</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                INTEREST RATE
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">INTEREST RATE</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                DATE APPROVED
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">DATE APPROVED</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                EXPIRY DATE
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">EXPIRY DATE</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                ACTION
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">ACTION</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -477,23 +395,17 @@
                                     </td>
                                     <td>
                                         <div class="px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ creditline.loanProgram_name }}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ creditline.loanProgram_name }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ creditline.term_name }}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ creditline.term_name }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ creditline.amount | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ creditline.amount | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -506,9 +418,7 @@
 
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ creditline.interestRate_amount }} %
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ creditline.interestRate_amount }} %</span>
                                         </div>
                                     </td>
                                     <td>
@@ -583,18 +493,12 @@
                             </tbody>
                             <tbody ng-if="creditLines.length == 0">
                                 <tr>
-                                    <td class="py-8" colspan="8" align="center">
-                                        No records Found
-                                    </td>
+                                    <td class="py-8" colspan="8" align="center">No records Found</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div ng-if="creditLines">
-                            <pagination
-                                data="creditLines"
-                                page-size="pageSize.creditLines"
-                                currentpage="currentPage.creditLines"
-                            ></pagination>
+                            <pagination data="creditLines" page-size="pageSize.creditLines" currentpage="currentPage.creditLines"></pagination>
                         </div>
                     </div>
                 </div>
@@ -629,66 +533,48 @@
                                 <tr>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                NO.
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">NO.</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                WINDOW
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">WINDOW</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                TERM
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">TERM</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                CREDIT LINE AMOUNT
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">CREDIT LINE AMOUNT</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                LOAN AMOUNT
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">LOAN AMOUNT</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                INTEREST RATE
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">INTEREST RATE</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                DATE RELEASED
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">DATE RELEASED</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                STATUS
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">STATUS</span>
                                         </div>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr
-                                    ng-repeat="loan in borrower.loans | startFrom:currentPage.loans * pageSize.loans | limitTo: pageSize.loans"
-                                >
+                                <tr ng-repeat="loan in borrower.loans | startFrom:currentPage.loans * pageSize.loans | limitTo: pageSize.loans">
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -698,42 +584,33 @@
                                     </td>
                                     <td>
                                         <div class="px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.loanProgram_name }}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ loan.loanProgram_name }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.term_name }}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ loan.term_name }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
-                                            
                                             <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="!loan.dateReleased">
-                                                    {{ loan.amount | currency :'₱'}}
-                                                </span>
-
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="loan.dateReleased">
-                                                    {{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ loan.amount | currency :'₱'}}
                                             </span>
+
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="loan.dateReleased">
+                                                {{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}
+                                            </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.interestRate_amount }} %
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ loan.amount | currency :'₱'}}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ loan.interestRate_amount }} %</span>
                                         </div>
                                     </td>
                                     <td>
@@ -745,10 +622,7 @@
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <span
-                                                class="text-dark-75 font-weight-bolder font-size-lg"
-                                                ng-if="loan.loanStatus_name != 'APPROVED'"
-                                            >
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg" ng-if="loan.loanStatus_name != 'APPROVED'">
                                                 {{ loan.loanStatus_name }}
                                             </span>
                                             <a
@@ -808,18 +682,12 @@
                             </tbody>
                             <tbody ng-if="borrower.loans.length == 0">
                                 <tr>
-                                    <td class="py-8" colspan="8" align="center">
-                                        No records Found
-                                    </td>
+                                    <td class="py-8" colspan="8" align="center">No records Found</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div ng-if="borrower.loans">
-                            <pagination
-                                data="borrower.loans"
-                                page-size="pageSize.loans"
-                                currentpage="currentPage.loans"
-                            ></pagination>
+                            <pagination data="borrower.loans" page-size="pageSize.loans" currentpage="currentPage.loans"></pagination>
                         </div>
                     </div>
                 </div>
@@ -854,98 +722,72 @@
                                 <tr>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Loan
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Loan</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Payment For
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Payment For</span>
                                         </div>
                                     </th>
 
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Principal
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Principal</span>
                                         </div>
                                     </th>
 
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Interest
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Interest</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Additional Interest
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Additional Interest</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Penalty
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Penalty</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Amortization
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Amortization</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Total Payable
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Total Payable</span>
                                         </div>
                                     </th>
 
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Payment Date
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Payment Date</span>
                                         </div>
                                     </th>
 
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Total Payment
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Total Payment</span>
                                         </div>
                                     </th>
 
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Balance
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Balance</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Overpayment
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Overpayment</span>
                                         </div>
                                     </th>
                                     <th>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                Date Tendered
-                                            </span>
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Date Tendered</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -971,16 +813,12 @@
 
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.principal | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ payment.principal | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.interest | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ payment.interest | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -992,16 +830,12 @@
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.penalty | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ payment.penalty | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.totalToPay | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ payment.totalToPay | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -1022,24 +856,18 @@
 
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.total | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ payment.total | currency :'₱'}}</span>
                                         </div>
                                     </td>
 
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.balance | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ payment.balance | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ payment.overPayment | currency :'₱'}}
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ payment.overPayment | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -1053,9 +881,7 @@
                                 <tr class="table-success" ng-if="borrower.payments.length > 0">
                                     <td>
                                         <div class="text-center px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                Total
-                                            </span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">Total</span>
                                         </div>
                                     </td>
                                     <td>
@@ -1126,9 +952,7 @@
                             </tbody>
                             <tbody ng-if="borrower.payments.length == 0">
                                 <tr>
-                                    <td class="py-8" colspan="13" align="center">
-                                        No records Found
-                                    </td>
+                                    <td class="py-8" colspan="13" align="center">No records Found</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1144,10 +968,7 @@
             </div>
             <div class="card-footer d-flex justify-content-center p-0">
                 <a class="btn btn-icon" ng-click="showPaymentHistory = !showPaymentHistory">
-                    <i
-                        class="wide text-warning"
-                        ng-class=" showPaymentHistory ? 'fal fa-angle-up' : 'fal fa-angle-down' "
-                    ></i>
+                    <i class="wide text-warning" ng-class=" showPaymentHistory ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
                 </a>
             </div>
         </div>
@@ -1183,13 +1004,13 @@
                             <table class="table table-vertical-center table-head-custom table-head-bgtable-borderless">
                                 <thead>
                                     <tr class="bg-gray-100 text-left">
-                                        <th style="min-width: 120px;" class="pl-7">
+                                        <th style="min-width: 120px" class="pl-7">
                                             <span class="text-dark-75">File Name</span>
                                         </th>
-                                        <th style="min-width: 120px;">Created</th>
-                                        <th style="min-width: 120px;">Approved</th>
-                                        <th style="min-width: 120px;">Program</th>
-                                        <th style="min-width: 120px;">File Status</th>
+                                        <th style="min-width: 120px">Created</th>
+                                        <th style="min-width: 120px">Approved</th>
+                                        <th style="min-width: 120px">Program</th>
+                                        <th style="min-width: 120px">File Status</th>
                                     </tr>
                                 </thead>
                                 <tbody
@@ -1215,18 +1036,12 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg"
-                                                ng-if="document.dateApproved"
-                                            >
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-if="document.dateApproved">
                                                 {{ document.dateApproved | date: 'mediumDate' }}
                                             </span>
                                         </td>
                                         <td>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg"
-                                                ng-if="document.loan"
-                                            >
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-if="document.loan">
                                                 {{ document.loan.loanProgram_name }}
                                             </span>
 
@@ -1251,13 +1066,9 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody
-                                    ng-if="(borrower.documents | filter: {subProcess:{id:subProcess.id}}).length == 0"
-                                >
+                                <tbody ng-if="(borrower.documents | filter: {subProcess:{id:subProcess.id}}).length == 0">
                                     <tr>
-                                        <td class="py-8" colspan="4" align="center">
-                                            No records Found
-                                        </td>
+                                        <td class="py-8" colspan="4" align="center">No records Found</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1304,12 +1115,7 @@
                             <h3 class="card-label font-weight-bolder">Attachments</h3>
                         </div>
                         <div class="card-toolbar">
-                            <a
-                                href="#"
-                                class="btn btn-success font-weight-bolder font-size-sm"
-                                data-toggle="modal"
-                                data-target="#attach-file"
-                            >
+                            <a href="#" class="btn btn-success font-weight-bolder font-size-sm" data-toggle="modal" data-target="#attach-file">
                                 <i class="fal fa-paperclip"></i>
                                 Attach
                             </a>
@@ -1322,11 +1128,7 @@
                                 ng-repeat="borrowerAttachment in borrowerAttachments | orderBy:'':true | startFrom:currentPage.attachments * pageSize.attachments | limitTo: pageSize.attachments"
                             >
                                 <div class="d-flex align-items-center">
-                                    <a
-                                        href=""
-                                        class=""
-                                        ng-click="downloadFile(borrowerAttachment.fileAttachment,borrowerAttachment.fileName)"
-                                    >
+                                    <a href="" class="" ng-click="downloadFile(borrowerAttachment.fileAttachment,borrowerAttachment.fileName)">
                                         <div class="symbol symbol-45 symbol-hover mr-5">
                                             <span class="symbol-label btn btn-hover-primary">
                                                 <i class="fad fa-file-alt icon-xl text-hover-white"></i>
@@ -1334,12 +1136,8 @@
                                         </div>
                                     </a>
                                     <div class="d-flex flex-column flex-grow-1">
-                                        <span class="font-weight-bold">
-                                            {{ borrowerAttachment.fileName | trimStringWithExtension: 20 }}
-                                        </span>
-                                        <span class="text-muted font-weight-bold">
-                                            {{ borrowerAttachment.dateCreated | date : 'mediumDate' }}
-                                        </span>
+                                        <span class="font-weight-bold">{{ borrowerAttachment.fileName | trimStringWithExtension: 20 }}</span>
+                                        <span class="text-muted font-weight-bold">{{ borrowerAttachment.dateCreated | date : 'mediumDate' }}</span>
                                     </div>
                                 </div>
                                 <p class="text-dark-50 m-0 pt-3 font-weight-normal">
@@ -1362,7 +1160,7 @@
                         </div>
 
                         <div class="text-center" ng-if="borrowerAttachments.length == 0">
-                                <h6 class="font-size-sm">No attachment found</h6>
+                            <h6 class="font-size-sm">No attachment found</h6>
                         </div>
                     </div>
                 </div>
@@ -1397,15 +1195,7 @@
         </div>
     </div>
     <!-- Modal Attach File -->
-    <div
-        id="attach-file"
-        class="modal fade"
-        data-backdrop="static"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="staticBackdrop"
-        aria-hidden="true"
-    >
+    <div id="attach-file" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1428,15 +1218,8 @@
                             />
                             <div class="dropzone dropzone-multi">
                                 <div class="dropzone-panel mb-lg-0 mb-2">
-                                    <a
-                                        class="dropzone-select btn btn-light-primary font-weight-bold btn-sm"
-                                        ng-click="selectFile()"
-                                    >
-                                        Select files
-                                    </a>
-                                    <a class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm">
-                                        Remove All
-                                    </a>
+                                    <a class="dropzone-select btn btn-light-primary font-weight-bold btn-sm" ng-click="selectFile()">Select files</a>
+                                    <a class="dropzone-remove-all btn btn-light-primary font-weight-bold btn-sm">Remove All</a>
                                 </div>
                                 <div class="dropzone-items">
                                     <div class="dropzone-item" ng-repeat="file in fileList">
@@ -1473,9 +1256,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">
-                        Close
-                    </button>
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
                     <button
                         class="btn btn-primary font-weight-bold"
                         type="button"

@@ -625,31 +625,31 @@ define(function () {
             // console.log($scope.payment);
 
             // if ($scope.newPaymentForm.$valid) {
-                swal({
-                    title: 'Save Payment',
-                    text: 'Do you want to save new payment record?',
-                    icon: 'info',
-                    buttons: {
-                        cancel: true,
-                        confirm: 'Save',
-                    },
-                }).then((isConfirm) => {
-                    if (isConfirm) {
-                        $http.post('/api/payments/payments/', $scope.payment).then(
-                            function () {
-                                toastr.success('Success', 'Payment Successful.');
-                                swal('Success!', 'Payment Successful.', 'success');
-                                $state.go('app.loans.info', { loanId: $scope.payment.loan });
-                            },
-                            function (error) {
-                                // toastr.error(
-                                //     'Error ' + error.status + ' ' + error.statusText,
-                                //     'Could not create payment. Please contact System Administrator.'
-                                // );
-                            }
-                        );
-                    }
-                });
+            swal({
+                title: 'Save Payment',
+                text: 'Do you want to save new payment record?',
+                icon: 'info',
+                buttons: {
+                    cancel: true,
+                    confirm: 'Save',
+                },
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    $http.post('/api/payments/payments/', $scope.payment).then(
+                        function () {
+                            toastr.success('Success', 'Payment Successful.');
+                            swal('Success!', 'Payment Successful.', 'success');
+                            $state.go('app.loans.info', { loanId: $scope.payment.loan });
+                        },
+                        function (error) {
+                            // toastr.error(
+                            //     'Error ' + error.status + ' ' + error.statusText,
+                            //     'Could not create payment. Please contact System Administrator.'
+                            // );
+                        }
+                    );
+                }
+            });
             // }
         };
 

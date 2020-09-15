@@ -5,40 +5,231 @@ define(function () {
 
     app.factory('appFactory', function ($http, toastr, $filter) {
         return {
+            getTitleType: function () {
+                return $http.get('/api/settings/titletype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Title Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getGenderType: function () {
+                return $http.get('/api/settings/gendertype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Gender Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getCountryList: function () {
+                return $http.get('/api/settings/countries/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Countries List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getCivilStatusType: function () {
+                return $http.get('/api/settings/civilstatustype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve CivilStatus Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getIdentificationType: function () {
+                return $http.get('/api/settings/identificationtype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Identification Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getIDType: function () {
+                return $http.get('/api/settings/idtype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve ID Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getOwnerLesseeType: function () {
+                return $http.get('/api/settings/houseownerlessee/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Owner Lessee Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getAddressType: function () {
+                return $http.get('/api/settings/addresstype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Address Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getContactType: function () {
+                return $http.get('/api/settings/contacttype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Contact Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getPSICType: function () {
+                return $http.get('/api/settings/psic/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve PSIC Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getPSOCType: function () {
+                return $http.get('/api/settings/psoc/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve PSOC Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getIncomePeriodType: function () {
+                return $http.get('/api/settings/incomeperiod/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Income Period Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getCurrencyList: function () {
+                return $http.get('/api/settings/currencies/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Currency List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getOccupationStatusType: function () {
+                return $http.get('/api/settings/occupationstatustype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Occupation Status Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getLegalFormType: function () {
+                return $http.get('/api/settings/legalformtype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Legal Form Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getFirmSizeType: function () {
+                return $http.get('/api/settings/firmsizetype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Firm Size Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getNotifications: function (userId, committeeId) {
-                return $http
-                    .get('/api/notifications/notifications/', { params: { userId: userId, committeeId: committeeId } })
-                    .then(
-                        function (response) {
-                            return response.data;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + error.statusText,
-                                'Could not retrieve Notifications. Please contact System Administrator.'
-                            );
-                        }
-                    );
+                return $http.get('/api/notifications/notifications/', { params: { userId: userId, committeeId: committeeId } }).then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Notifications. Please contact System Administrator.'
+                        );
+                    }
+                );
             },
             getNotes: function (object_id, content_type) {
-                return $http
-                    .get('/api/committees/notes/', { params: { object_id: object_id, content_type: content_type } })
-                    .then(
-                        function (response) {
-                            return response.data;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + error.statusText,
-                                'Could not retrieve Borrower Name. Please contact System Administrator.'
-                            );
-                        }
-                    );
-            },
-            getBorrowerName: function (borrowerId) {
-                return $http.get('/api/borrowers/borrowers/', { params: { borrowerId: borrowerId } }).then(
+                return $http.get('/api/committees/notes/', { params: { object_id: object_id, content_type: content_type } }).then(
                     function (response) {
-                        return response.data[0].cooperativeName;
+                        return response.data;
                     },
                     function (error) {
                         toastr.error(
@@ -48,7 +239,19 @@ define(function () {
                     }
                 );
             },
-
+            getBorrowerName: function (borrowerId) {
+                return $http.get('/api/borrowers/borrowers/', { params: { borrowerId: borrowerId } }).then(
+                    function (response) {
+                        return response.data[0].borrowerName;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Borrower Name. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             checkPermissions: function (subProcessId) {
                 return $http.post('/api/processes/checkpermission/', { subProcessId: subProcessId }).then(
                     function (response) {
@@ -153,17 +356,13 @@ define(function () {
                     }
                 );
             },
-
             getLoan: function (loanId) {
                 return $http.get('/api/loans/loans/', { params: { loanId: loanId } }).then(
                     function (response) {
                         return response.data[0];
                     },
                     function (error) {
-                        toastr.error(
-                            'Error ' + error.status + error.statusText,
-                            'Could not retrieve Loan. Please contact System Administrator.'
-                        );
+                        toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve Loan. Please contact System Administrator.');
                     }
                 );
             },
@@ -182,6 +381,28 @@ define(function () {
                             'Error ' + error.status + error.statusText,
                             'Could not retrieve current user information. Please contact System Administrator.'
                         );
+                    }
+                );
+            },
+            getCurrentUserApps: function () {
+                var values = JSON.parse(localStorage.getItem('currentUser'));
+                return $http.get('/api/users/userapps/', { params: { user: values['id'] } }).then(
+                    function (response) {
+                        return response.data[0].installedApps;
+                    },
+                    function (error) {
+                        toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve App List. Please contact System Administrator.');
+                    }
+                );
+            },
+            getCurrentUserAppPermission: function (app) {
+                var values = JSON.parse(localStorage.getItem('currentUser'));
+                return $http.get('/api/users/userapps/', { params: { user: values['id'] } }).then(
+                    function (response) {
+                        return $filter('filter')(response.data[0].installedApps, { name: app });
+                    },
+                    function (error) {
+                        toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve App List. Please contact System Administrator.');
                     }
                 );
             },
@@ -207,32 +428,6 @@ define(function () {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
                             'Could not retrieve Content Type Id. Please contact System Administrator.'
-                        );
-                    }
-                );
-            },
-            getGenders: function () {
-                return $http.get('/api/settings/gendertype/').then(
-                    function (response) {
-                        return response.data;
-                    },
-                    function (error) {
-                        toastr.error(
-                            'Error ' + error.status + error.statusText,
-                            'Could not retrieve Gender list. Please contact System Administrator.'
-                        );
-                    }
-                );
-            },
-            getCooperativeType: function () {
-                return $http.get('/api/settings/cooperativetype/').then(
-                    function (response) {
-                        return response.data;
-                    },
-                    function (error) {
-                        toastr.error(
-                            'Error ' + error.status + error.statusText,
-                            'Could not retrieve Cooperative Type list. Please contact System Administrator.'
                         );
                     }
                 );
@@ -398,20 +593,18 @@ define(function () {
             },
 
             getLastActivity: function (documentId) {
-                return $http
-                    .get('/api/documents/documentmovements/', { params: { process: 'last', documentId: documentId } })
-                    .then(
-                        function (response) {
-                            console.log(response.data);
-                            return response.data;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + error.statusText,
-                                'Could not retrieve Last Activity list. Please contact System Administrator.'
-                            );
-                        }
-                    );
+                return $http.get('/api/documents/documentmovements/', { params: { process: 'last', documentId: documentId } }).then(
+                    function (response) {
+                        console.log(response.data);
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Last Activity list. Please contact System Administrator.'
+                        );
+                    }
+                );
             },
             getActivities: function (documentId) {
                 return $http.get('/api/documents/documentmovements/', { params: { documentId: documentId } }).then(
@@ -531,18 +724,7 @@ define(function () {
             convertAmountToWords: function (s) {
                 var myappthos = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
                 var myappdang = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-                var myapptenth = [
-                    'Ten',
-                    'Eleven',
-                    'Twelve',
-                    'Thirteen',
-                    'Fourteen',
-                    'Fifteen',
-                    'Sixteen',
-                    'Seventeen',
-                    'Eighteen',
-                    'Nineteen',
-                ];
+                var myapptenth = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
                 var myapptvew = ['Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
                 s = s.toString();

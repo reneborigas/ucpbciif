@@ -1,0 +1,19 @@
+Automatically assign committe to user who uses the system (creates document)
+Post-dated checque field on amortization
+
+Dashboard
+-Status of Documents
+-Clickable Loans on Calendar
+-Loans on Calendar Name Format (Borrower Name + Loan)
+
+Remove clearing date
+
+Enable editing of term of Amortization after creation but disabled after 1st payment
+
+Decimal Places - 21,000,000.00 Million became 20,999,999.99
+
+CRUD for Terms and Payment Cycles
+-Quarterly Payment of Interest
+-Annual Payment of Principal
+
+Add Special Computation on Amortizations

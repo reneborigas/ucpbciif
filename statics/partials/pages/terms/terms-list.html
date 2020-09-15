@@ -1,0 +1,94 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <div class="card card-custom" ng-controller="TermsListController">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="fad fa-users-class"></i>
+                        </span>
+                        <h3 class="card-label">Terms List</h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <button type="button" class="btn btn-primary float-right" ui-sref="app.terms.add">
+                            <i class="fad fa-file-contract"></i>
+                            New Term
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-xl-8">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto" />
+                                            <span><i class="far fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table
+                        class="table table-vertical-center datatable-table"
+                        ng-table="tableTerms"
+                        template-pagination="statics/partials/customs/pagination.html"
+                    >
+                        <tr class="datatable-row" ng-repeat="terms in $data">
+                            <td class="datatable-cell-sorted datatable-cell-center datatable-cell"></td>
+                            <td
+                                class="datatable-cell datatable-cell-left"
+                                header-class="'text-left'"
+                                style="width: 30%"
+                                data-title="'NAME'"
+                                sortable="'name'"
+                            >
+                                {{ terms.name }}
+                            </td>
+                            <td
+                                class="datatable-cell datatable-cell-left"
+                                header-class="'text-left'"
+                                style="width: 15%"
+                                data-title="'DAYS'"
+                                sortable="'days'"
+                            >
+                                {{ terms.days }}
+                            </td>
+                            <td
+                                class="datatable-cell datatable-cell-left"
+                                header-class="'text-left'"
+                                style="width: 20%"
+                                data-title="'PRINCIPAL PAYMENT CYCLE'"
+                                sortable="'principalPaymentPeriodName'"
+                            >
+                                {{ terms.principalPaymentPeriodName }}
+                            </td>
+                            <td
+                                class="datatable-cell datatable-cell-left"
+                                header-class="'text-left'"
+                                style="width: 20%"
+                                data-title="'INTEREST PAYMENT CYCLE'"
+                                sortable="'interestPaymentPeriodName'"
+                            >
+                                {{ terms.interestPaymentPeriodName }}
+                            </td>
+                            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" style="width: 20%" data-title="'ACTIONS'">
+                                <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(office.name)">
+                                    <i class="fad fa-eye"></i>
+                                </a>
+                                <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="edit(office.id)">
+                                    <i class="fad fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="delete(office.id)">
+                                    <i class="fad fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

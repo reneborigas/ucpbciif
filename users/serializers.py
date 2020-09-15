@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework import serializers
 from .models import *
 from committees.serializers import CommitteeSerializer,PositionSerializer
+from settings.serializers import AppNameSerializer
  
 class AccountTypeSerializer(ModelSerializer):
 
@@ -40,6 +41,14 @@ class UserLogsSerializer(ModelSerializer):
         model = UserLogs
         fields = '__all__'
 
+class UserAppsSerializer(ModelSerializer):
+    installedApps = AppNameSerializer(many=True,required=False)
+
+    class Meta:
+        model = UserApps
+        fields = '__all__'
+        read_only_fields = ('user', )
+
 class UserProfileSerializer(ModelSerializer):
 
     class Meta:
@@ -48,7 +57,8 @@ class UserProfileSerializer(ModelSerializer):
         read_only_fields = ('user', )
 
 class UserSerializer(ModelSerializer):
-    committees = CommitteeSerializer(many=True,required=False)   
+    committees = CommitteeSerializer(many=True,required=False)
+    appAccess = UserAppsSerializer(many=True,required=False) 
     profile = UserProfileSerializer(many=True,required=False)   
     fullName = serializers.CharField(read_only=True)    
     account_type_text = serializers.CharField(read_only=True)
@@ -107,4 +117,4 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id','fullName','username','email_address','password','account_type','account_type_text','is_active','date_joined','profile','committees', 'committeeId', 'positionId', 'committeePosition']
+        fields = '__all__'

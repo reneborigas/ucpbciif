@@ -89,7 +89,6 @@ class CustomUser(AbstractBaseUser):
     
     
     def getPosition(self):
-         
         committees = self.committees.filter(isDeleted=False)
 
         if committees.first():
@@ -98,8 +97,6 @@ class CustomUser(AbstractBaseUser):
         elif self.account_type.id == 1:
             return 'ADMIN'
         return ''
-
-
 
     @property
     def is_staff(self):
@@ -151,6 +148,21 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.user, self.name)
+
+class UserApps(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="appAccess"
+    )
+    installedApps = models.ManyToManyField(
+        'settings.AppName',
+        blank=True
+    )
+
+    def __str__(self):
+        return "%s - %s" % (self.user, self.installedApps)
+
 
 class UserLogs(models.Model):
     action_time = models.DateTimeField(

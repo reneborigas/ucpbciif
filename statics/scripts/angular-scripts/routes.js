@@ -41,11 +41,6 @@ define(function () {
                                 return $ocLazyLoad.load([
                                     {
                                         serie: true,
-                                        name: 'Bootstrap',
-                                        files: ['/statics/libs/bootstrap/js/css/bootstrap.css'],
-                                    },
-                                    {
-                                        serie: true,
                                         name: 'Font Awesome',
                                         files: ['/statics/assets/fonts/font-awesome/css/fontawesome-all.css'],
                                     },
@@ -107,7 +102,7 @@ define(function () {
                     templateUrl: '/statics/partials/components/metro/metro-view.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Metro View',
-                        stateTitle: 'Metro View',
+                        stateTitle: 'Main Menu',
                     },
                     ncyBreadcrumb: {
                         label: 'Home',
@@ -257,6 +252,8 @@ define(function () {
                         ],
                     },
                 })
+
+                // Loan Management
                 .state('app.borrowers', {
                     url: '/borrowers',
                     template: '<ui-view></ui-view>',
@@ -478,13 +475,11 @@ define(function () {
                                 });
                         },
                         fetchLoan: function ($http, $q, $stateParams) {
-                            return $http
-                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
-                                .then(function (response) {
-                                    if (response.data.length == 0) {
-                                        return $q.reject('Not Found');
-                                    }
-                                });
+                            return $http.get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } }).then(function (response) {
+                                if (response.data.length == 0) {
+                                    return $q.reject('Not Found');
+                                }
+                            });
                         },
                         fetchSubProcess: function ($stateParams, appFactory) {
                             return appFactory.getSubProcessByName('Loan Release').then(function (data) {
@@ -543,14 +538,12 @@ define(function () {
                     },
                     resolve: {
                         fetchSubProcess: function ($q, $stateParams, appFactory) {
-                            return appFactory
-                                .getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName))
-                                .then(function (data) {
-                                    if (!data) {
-                                        return $q.reject('Not Found');
-                                    }
-                                    return data;
-                                });
+                            return appFactory.getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName)).then(function (data) {
+                                if (!data) {
+                                    return $q.reject('Not Found');
+                                }
+                                return data;
+                            });
                         },
                     },
                     controller: function ($scope, fetchSubProcess) {
@@ -579,14 +572,12 @@ define(function () {
                                 });
                         },
                         fetchSubProcess: function ($q, $stateParams, appFactory) {
-                            return appFactory
-                                .getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName))
-                                .then(function (data) {
-                                    if (!data) {
-                                        return $q.reject('Not Found');
-                                    }
-                                    return data;
-                                });
+                            return appFactory.getSubProcessByName(appFactory.unSlugify($stateParams.subProcessName)).then(function (data) {
+                                if (!data) {
+                                    return $q.reject('Not Found');
+                                }
+                                return data;
+                            });
                         },
                         fetchPermission: function (fetchSubProcess, appFactory, $q, $state) {
                             return appFactory.checkPermissions(fetchSubProcess.id).then(function (data) {
@@ -656,13 +647,11 @@ define(function () {
                     },
                     resolve: {
                         fetchLoan: function ($http, $q, $stateParams) {
-                            return $http
-                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
-                                .then(function (response) {
-                                    if (response.data.length == 0) {
-                                        return $q.reject('Not Found');
-                                    }
-                                });
+                            return $http.get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } }).then(function (response) {
+                                if (response.data.length == 0) {
+                                    return $q.reject('Not Found');
+                                }
+                            });
                         },
                     },
                     controller: function ($scope, $stateParams, appFactory) {
@@ -681,13 +670,11 @@ define(function () {
                     },
                     resolve: {
                         fetchLoan: function ($http, $q, $stateParams) {
-                            return $http
-                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
-                                .then(function (response) {
-                                    if (response.data.length == 0) {
-                                        return $q.reject('Not Found');
-                                    }
-                                });
+                            return $http.get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } }).then(function (response) {
+                                if (response.data.length == 0) {
+                                    return $q.reject('Not Found');
+                                }
+                            });
                         },
                     },
                     controller: function ($scope, $stateParams, appFactory) {
@@ -744,13 +731,11 @@ define(function () {
                     },
                     resolve: {
                         fetchLoan: function ($http, $q, $stateParams) {
-                            return $http
-                                .get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } })
-                                .then(function (response) {
-                                    if (response.data.length == 0) {
-                                        return $q.reject('Not Found');
-                                    }
-                                });
+                            return $http.get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } }).then(function (response) {
+                                if (response.data.length == 0) {
+                                    return $q.reject('Not Found');
+                                }
+                            });
                         },
                     },
                     controller: function ($scope, $stateParams, appFactory) {
@@ -845,7 +830,6 @@ define(function () {
                         ],
                     },
                 })
-
                 .state('app.amortizations.maturing', {
                     url: '/maturing',
                     templateUrl: '/statics/partials/pages/amortizations/amortizations-maturing-list.html',
@@ -869,6 +853,85 @@ define(function () {
                         label: 'Amortizations',
                     },
                 })
+
+                // Settings
+                .state('app.terms', {
+                    url: '/terms',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Terms',
+                        skip: true,
+                    },
+                    resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Settings').then(function (data) {
+                                if (data.length == 0) {
+                                    return $q.reject('Not Found');
+                                }
+                            });
+                        },
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/terms.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.terms.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/terms/terms-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Terms List',
+                        stateTitle: 'Terms',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Terms',
+                    },
+                })
+                .state('app.terms.add', {
+                    url: '/add',
+                    templateUrl: '/statics/partials/pages/terms/terms-add.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Add Terms',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Add',
+                        parent: 'app.terms.list',
+                    },
+                })
+                .state('app.terms.info', {
+                    url: '/:borrowerId',
+                    templateUrl: '/statics/partials/pages/terms/terms-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Terms Info',
+                    },
+                    ncyBreadcrumb: {
+                        // label: '{{ borrowerName }}',
+                        parent: 'app.borrowers.list',
+                    },
+                    resolve: {
+                        // fetchBorrower: function ($http, $q, $stateParams) {
+                        //     return $http
+                        //         .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
+                        //         .then(function (response) {
+                        //             if (response.data.length == 0) {
+                        //                 return $q.reject('Not Found');
+                        //             }
+                        //         });
+                        // },
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        // $scope.borrowerId = $stateParams.borrowerId;
+                        // appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
+                        //     $scope.borrowerName = data;
+                        // });
+                    },
+                })
+
                 .state('app.committees', {
                     url: '/committees',
                     template: '<ui-view></ui-view>',
@@ -878,6 +941,13 @@ define(function () {
                         skip: true,
                     },
                     resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Settings').then(function (data) {
+                                if (data.length == 0) {
+                                    return $q.reject('Not Found');
+                                }
+                            });
+                        },
                         loadController: [
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
@@ -1057,14 +1127,6 @@ define(function () {
                         ],
                     },
                 })
-                // .state('simple.register', {
-                //     url: '/register',
-                //     templateUrl: '/statics/html/views/pages/register.html',
-                // })
-                // .state('simple.404', {
-                //     url: '/404',
-                //     templateUrl: '/statics/html/views/pages/404.html',
-                // })
                 .state('simple.500', {
                     url: '/500',
                     templateUrl: '/statics/html/views/pages/500.html',

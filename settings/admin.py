@@ -1,5 +1,21 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(GenderType)
 admin.site.register(CooperativeType)
+admin.site.register(AppName)
+admin.site.register(TitleType)
+admin.site.register(GenderType)
+admin.site.register(Country)
+admin.site.register(CivilStatusType)
+admin.site.register(IdentificationType)
+admin.site.register(IDType)
+admin.site.register(HouseOwnerLesseeType)
+admin.site.register(AddressType)
+admin.site.register(ContactType)
+admin.site.register(PSIC)
+admin.site.register(PSOC)
+admin.site.register(IncomePeriod)
+admin.site.register(Currency)
+admin.site.register(OccupationStatusType)
+admin.site.register(LegalFormType)
+admin.site.register(FirmSizeType)

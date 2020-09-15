@@ -13,21 +13,17 @@
                         <tbody>
                             <tr>
                                 <td class="p-0 font-weight-bolder" width="25%">Account Name:</td>
-                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
-                                    <strong>{{ borrower.cooperativeName }}</strong>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important" width="75%">
+                                    <strong>{{ borrower.borrowerName }}</strong>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="p-0 font-weight-bolder" width="25%">Address:</td>
-                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
-                                    {{ borrower.address}}
-                                </td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important" width="75%">{{ borrower.address}}</td>
                             </tr>
                             <tr>
                                 <td class="p-0 font-weight-bolder" width="25%">Contact Person:</td>
-                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important;" width="75%">
-                                    {{ borrower.contactPersonName }}
-                                </td>
+                                <td class="p-0" style="border-bottom: 1pt solid #464e5f !important" width="75%">{{ borrower.contactPersonName }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -39,135 +35,96 @@
                 <div class="table-responsive text-right">
                     <table class="table table-borderless">
                         <tbody>
-                            <tr
-                                style="
-                                    border-bottom: 1pt solid #464e5f !important;
-                                    border-top: 1pt solid #464e5f !important;
-                                "
-                            >
+                            <tr style="border-bottom: 1pt solid #464e5f !important; border-top: 1pt solid #464e5f !important">
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            No
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">No</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Window
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">Window</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="text-center">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Term
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">Term</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Credit Line Amount
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">Credit Line Amount</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Loan Amount
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">Loan Amount</span>
                                     </div>
                                 </td>
 
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Interest Rate
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">Interest Rate</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Date Released
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">Date Released</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            Status
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">Status</span>
                                     </div>
                                 </td>
                             </tr>
                             <tr ng-repeat="loan in borrower.loans">
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.id }}
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.id }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.loanProgram_name }}
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.loanProgram_name }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.term_name }}
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.term_name }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.creditLine_amount | currency :'₱'}}
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.creditLine_amount | currency :'₱'}}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.amount | currency :'₱'}}
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.amount | currency :'₱'}}</span>
                                     </div>
                                 </td>
 
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.interestRate_amount }} %
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.interestRate_amount }} %</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.dateReleased | date:'mediumDate' }}
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.dateReleased | date:'mediumDate' }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.loanStatus_name }}
-                                        </span>
+                                        <span class="text-dark-75">{{ loan.loanStatus_name }}</span>
                                     </div>
                                 </td>
                             </tr>
-                            <tr style="border-top: 1pt solid #464e5f !important;">
+                            <tr style="border-top: 1pt solid #464e5f !important">
                                 <td class="text-center" colspan="8">
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            -- NOTHING FOLLOWS --
-                                        </span>
+                                        <span class="text-dark-75">-- NOTHING FOLLOWS --</span>
                                     </div>
                                 </td>
                             </tr>
