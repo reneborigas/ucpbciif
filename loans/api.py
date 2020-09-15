@@ -105,8 +105,8 @@ class GetAmortizationItemsCalendarView(views.APIView):
 
 
         for amortizationItem in queryset:
-            amortizationItem.start =  amortizationItem.schedule + timezone.timedelta(days=1)
-         
+            amortizationItem.start =  amortizationItem.schedule  
+            # amortizationItem.start =  amortizationItem.schedule + timezone.timedelta(days=1)
             # amortizationItem.className =  'fc-event-solid-danger fc-event-light'
             amortizationItem.description  = 'Due for LN' + str(amortizationItem.amortization.loan.id)
             amortizationItem.url = '/loans/' + str(amortizationItem.amortization.loan.id)
