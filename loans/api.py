@@ -238,14 +238,14 @@ class UpdateLoanView(views.APIView):
                 
 
                 loan = Loan.objects.get(pk=loanId)
-                schedule = loan.dateReleased +  timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle  + 1 )
+                schedule = loan.dateReleased +  timezone.timedelta(days=loan.term.principalPaymentPeriod.paymentCycle  + 1 )
                 amortization = loan.getLatestAmortization()
                 amortization.dateReleased = loan.dateReleased   +  timezone.timedelta(days= 1 )
                 amortization.save()
 
                 for amortizationItem in amortization.amortizationItems.all().order_by('id'):
                     amortizationItem.schedule = schedule
-                    schedule = schedule + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+                    schedule = schedule + timezone.timedelta(days=loan.term.principalPaymentPeriod.paymentCycle)
                     amortizationItem.save()
                         
            

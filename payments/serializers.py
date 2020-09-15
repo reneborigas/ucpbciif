@@ -36,7 +36,7 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
     cycle = currentAmortization.cycle
     termDays = currentAmortization.termDays
 
-    schedule = loan.dateReleased  + timezone.timedelta(days=loan.term.paymentPeriod.paymentCycle)
+    schedule = loan.dateReleased  + timezone.timedelta(days=loan.term.principalPaymentPeriod.paymentCycle)
     noOfPaymentSchedules = termDays/cycle
     pmt = PMT()
     

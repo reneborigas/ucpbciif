@@ -38,10 +38,18 @@ def excludeWeekends(amortizationItems):
 def generateAmortizationSchedule(loan,request):
 
  
-    noOfPaymentSchedules = loan.term.days / loan.term.paymentPeriod.paymentCycle
+    noOfPrincipalPaymentSchedules = loan.term.days / loan.term.principalPaymentPeriod.paymentCycle
     # noOfPaymentSchedules = loan.term.days / loan.term.paymentPeriod.paymentCycle
- 
-    cycle = loan.term.paymentPeriod.paymentCycle
+    noOfInterestPaymentSchedules = loan.term.days / loan.term.interestPaymentPeriod.paymentCycle
+
+    if noOfPaymentSchedules > noOfInterestPaymentSchedules:
+     
+        noOfPaymentSchedules = noOfPaymentSchedules
+
+    else:
+        noOfPaymentSchedules = noOfInterestPaymentSchedules
+
+    cycle = loan.term.principalPaymentPeriod.paymentCycle
 
     schedule = loan.dateReleased  + timezone.timedelta(days=cycle)
 
@@ -426,12 +434,9 @@ class CalculatePMTView(views.APIView):
 class LoanReleasedView(views.APIView):
     
     # @method_decorator(csrf_protect)
+ 
 
-
-    
-
-    def post(self,request):
-
+    def post(self,request): 
         documentid = request.data.get("documentid") 
         print(documentid)
         if documentid:  
@@ -441,8 +446,9 @@ class LoanReleasedView(views.APIView):
 
 
             loan = document.loan
-            loan.dateReleased = timezone.now() 
 
+            loan.dateReleased = timezone.now() 
+           
             loan.loanStatus= LoanStatus.objects.get(pk=2) #CURRENT
             loan.save()
             generateAmortizationSchedule(loan,request)
