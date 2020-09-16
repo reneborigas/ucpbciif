@@ -24,22 +24,12 @@ define(function () {
                 getData: function (params) {
                     return $http.get('/api/loans/loans/', { params: $scope.params }).then(
                         function (response) {
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
+                            var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             params.total(response.data.length);
 
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
+                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             return page;
                         },
                         function (error) {
@@ -401,6 +391,12 @@ define(function () {
             $window.open('/print/loans/check/' + id, '_blank', 'width=800,height=800');
         };
 
+        $scope.edit = function (id, value, title) {
+            $scope.update.id = id;
+            $scope.modalTitle = title;
+            $scope.update.note = value;
+        };
+
         $scope.update = function () {
             if ($scope.modalTitle == 'Security') {
                 $http
@@ -447,10 +443,40 @@ define(function () {
             }
         };
 
-        $scope.edit = function (id, value, title) {
-            $scope.update.id = id;
-            $scope.modalTitle = title;
-            $scope.update.note = value;
+        $http.get('/api/loans/terms/').then(function (response) {
+            $scope.terms = response.data;
+        });
+
+        $scope.editTerm = function (id, value) {
+            $scope.updateTerm.id = id;
+            $scope.update.term = value;
+        };
+
+        $scope.updateTerm = function () {
+            $http
+                .post('/api/loans/updateloanview/', {
+                    loanId: $scope.updateTerm.id,
+                    term: $scope.updateTerm.term,
+                })
+                .then(
+                    function (response) {
+                        angular.element('#edit-loan-term').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        angular.forEach($scope.terms, function (term) {
+                            if (response.data.new_value == term.id) {
+                                $scope.loan.term_name = term.name;
+                            }
+                        });
+                        toastr.success('Success', 'Loan Term updated.');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update document. Please contact System Administrator.'
+                        );
+                    }
+                );
         };
 
         $scope.editReleaseDate = function (id, dateReleased) {
@@ -543,67 +569,64 @@ define(function () {
         $q,
         $window
     ) {
+        $scope.loadLoans = function () {
+            $http
+                .get('/api/loans/loans/', {
+                    params: { loanId: $scope.loanId },
+                })
+                .then(
+                    function (response) {
+                        $scope.loan = response.data[0];
+                        $scope.loan.outStandingBalance = parseFloat($scope.loan.outStandingBalance);
+                        console.log($scope.loan.outStandingBalance <= 0);
+                        $scope.currentAmortization = $scope.loan.amortizations[0];
+                        $http
+                            .get('/api/borrowers/borrowers/', {
+                                params: { borrowerId: $scope.loan.borrower },
+                            })
+                            .then(
+                                function (response) {
+                                    $scope.borrower = response.data[0];
+                                    $scope.showAccomodations = false;
+                                    appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
+                                        console.log(data);
+                                        $scope.windows = data;
+                                        $scope.showAccomodations = true;
+                                    });
 
-        $scope.loadLoans = function(){
-        $http
-            .get('/api/loans/loans/', {
-                params: { loanId: $scope.loanId },
-            })
-            .then(
-                function (response) {
-                    $scope.loan = response.data[0];
-                    $scope.loan.outStandingBalance = parseFloat($scope.loan.outStandingBalance);
-                    console.log($scope.loan.outStandingBalance <= 0);
-                    $scope.currentAmortization = $scope.loan.amortizations[0];
-                    $http
-                        .get('/api/borrowers/borrowers/', {
-                            params: { borrowerId: $scope.loan.borrower },
-                        })
-                        .then(
-                            function (response) {
-                                $scope.borrower = response.data[0];
-                                $scope.showAccomodations = false;
-                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
-                                    console.log(data);
-                                    $scope.windows = data;
-                                    $scope.showAccomodations = true;
-                                });
-
-                                $http
-                                    .get('/api/documents/documents/', {
-                                        params: { loanId: $scope.loan.id },
-                                    })
-                                    .then(
-                                        function (response) {
-                                            $scope.documents = response.data;
-                                        },
-                                        function (error) {
-                                            toastr.error(
-                                                'Error ' + error.status + ' ' + error.statusText,
-                                                'Could not retrieve Documents. Please contact System Administrator.'
-                                            );
-                                        }
+                                    $http
+                                        .get('/api/documents/documents/', {
+                                            params: { loanId: $scope.loan.id },
+                                        })
+                                        .then(
+                                            function (response) {
+                                                $scope.documents = response.data;
+                                            },
+                                            function (error) {
+                                                toastr.error(
+                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                    'Could not retrieve Documents. Please contact System Administrator.'
+                                                );
+                                            }
+                                        );
+                                },
+                                function (error) {
+                                    toastr.error(
+                                        'Error ' + error.status + ' ' + error.statusText,
+                                        'Could not retrieve Borrower Information. Please contact System Administrator.'
                                     );
-
-                                
-                            },
-                            function (error) {
-                                toastr.error(
-                                    'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
-                                );
-                            }
+                                }
+                            );
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Loan Information. Please contact System Administrator.'
                         );
-                },
-                function (error) {
-                    toastr.error(
-                        'Error ' + error.status + ' ' + error.statusText,
-                        'Could not retrieve Loan Information. Please contact System Administrator.'
-                    );
-                }
-            );
+                    }
+                );
         };
-        
+
         $scope.loadLoans();
 
         $scope.loadAmortization = function (id) {
@@ -626,16 +649,10 @@ define(function () {
             console.log($scope.currentAmortization);
         };
 
-      
-
-         
-
         $scope.goToFile = function (subProcessName, documentId) {
             var subProcessNameSlug = appFactory.slugify(subProcessName);
             $state.go('app.documents.info', { subProcessName: subProcessNameSlug, documentId: documentId });
         };
-
-       
 
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
@@ -707,38 +724,33 @@ define(function () {
             }
         };
 
-
-        $scope.calculateRestructuredAmortization = function(loanId,dateStart,termDays,cycle){
-
+        $scope.calculateRestructuredAmortization = function (loanId, dateStart, termDays, cycle) {
             $http
-            .post('/api/processes/calculaterestructuredpmt/', {
-                params: {
-                    loanId:loanId,
-                    dateStart: dateStart.toLocaleDateString(),
-                    termDays: termDays,
-                    cycle: cycle,
-                },
-            })
-            .then(
-                function (response) {
-                    console.log(response.data);
-                    
-                    $scope.loadLoans();
+                .post('/api/processes/calculaterestructuredpmt/', {
+                    params: {
+                        loanId: loanId,
+                        dateStart: dateStart.toLocaleDateString(),
+                        termDays: termDays,
+                        cycle: cycle,
+                    },
+                })
+                .then(
+                    function (response) {
+                        console.log(response.data);
 
+                        $scope.loadLoans();
 
-                    toastr.success('Success', 'Restructured Amortization Generated.');
-                },
-                function (error) {
-                    toastr.error(
-                        'Error ' + error.status + error.statusText,
-                        'Could not calculate restructured amortization. Please contact System Administrator.'
-                    );
-                }
-            );
-
-
+                        toastr.success('Success', 'Restructured Amortization Generated.');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not calculate restructured amortization. Please contact System Administrator.'
+                        );
+                    }
+                );
         };
-        $scope.saveDraft = function(amortizationId,loanId){
+        $scope.saveDraft = function (amortizationId, loanId) {
             swal({
                 title: 'Apply Restuctured Amortization',
                 text: 'Do you want to apply restructured amortization?',
@@ -749,17 +761,17 @@ define(function () {
                 },
             }).then((isConfirm) => {
                 if (isConfirm) {
-                        $http
+                    $http
                         .post('/api/processes/savedraft/', {
                             params: {
-                                amortizationId:amortizationId,
-                                loanId:loanId
+                                amortizationId: amortizationId,
+                                loanId: loanId,
                             },
                         })
                         .then(
                             function (response) {
                                 console.log(response.data);
-                                
+
                                 $state.go('app.loans.info', { loanId: response.data.loanId });
                                 toastr.success('Success', 'Restructured Amortization Applied.');
                             },
@@ -772,9 +784,6 @@ define(function () {
                         );
                 }
             });
-           
-
-
         };
         $scope.edit = function (id, value, title) {
             $scope.update.id = id;
@@ -810,8 +819,6 @@ define(function () {
                     }
                 );
         };
-
-       
     });
 
     app.controller('LoanReleasePrintController', function LoanReleasePrintController(

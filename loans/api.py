@@ -230,6 +230,14 @@ class UpdateLoanView(views.APIView):
                 new_value = security
 
                 loan.save()
+
+            term = request.data.get("term")
+            if term:
+                loan.term = Term.objects.get(id=term)
+                new_value = term
+
+                loan.save()
+
             dateReleased = request.data.get("dateReleased")  
             if dateReleased: 
                 loan.dateReleased = dateReleased
