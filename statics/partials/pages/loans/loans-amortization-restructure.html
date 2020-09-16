@@ -529,7 +529,7 @@
                                                                         </span>
                                                                     </div>
                                                                   
-                                                                    <div class="col-lg-3" >
+                                                                    <div class="col-lg-2" >
                                                                         <label>Payment Term Days:</label>
                                                                         <input
                                                                             type="number"
@@ -553,18 +553,18 @@
                                                                         </span>
                                                                     </div>
                                     
-                                                                    <div class="col-lg-3" >
-                                                                        <label>Payment Cycle:</label>
+                                                                    <div class="col-lg-2" >
+                                                                        <label>Principal Payment Cycle:</label>
                                                                         <input
                                                                             type="number"
                                                                             min="0"
                                                                             step="1"
                                                                             class="form-control"
                                                                             placeholder="0"
-                                                                            id="cycle"
-                                                                            name="cycle"
-                                                                            ng-model="cycle"
-                                                                            ng-class="{'is-invalid' : newRestructuredAmortizationForm.cycle.$invalid && newRestructuredAmortizationForm.cycle.$touched   || exceeded, 'is-valid' : newRestructuredAmortizationForm.cycle.$valid && newRestructuredAmortizationForm.cycle.$touched && !exceeded }"
+                                                                            id="principalPaymentCycle"
+                                                                            name="principalPaymentCycle"
+                                                                            ng-model="principalPaymentCycle"
+                                                                            ng-class="{'is-invalid' : newRestructuredAmortizationForm.principalPaymentCycle.$invalid && newRestructuredAmortizationForm.principalPaymentCycle.$touched   || exceeded, 'is-valid' : newRestructuredAmortizationForm.principalPaymentCycle.$valid && newRestructuredAmortizationForm.principalPaymentCycle.$touched && !exceeded }"
                                                                             required
                                                                             price
                                                                            
@@ -572,9 +572,34 @@
                                     
                                                                         <span
                                                                             class="form-text text-muted"
-                                                                            ng-show="newRestructuredAmortizationForm.cycle.$touched && newRestructuredAmortizationForm.cycle.$invalid"
+                                                                            ng-show="newRestructuredAmortizationForm.principalPaymentCycle.$touched && newRestructuredAmortizationForm.principalPaymentCycle.$invalid"
                                                                         >
-                                                                            Please enter payment cycle.
+                                                                            Please enter principal payment cycle.
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <div class="col-lg-2" >
+                                                                        <label>Interest Payment Cycle:</label>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            step="1"
+                                                                            class="form-control"
+                                                                            placeholder="0"
+                                                                            id="interestPaymentCycle"
+                                                                            name="interestPaymentCycle"
+                                                                            ng-model="interestPaymentCycle"
+                                                                            ng-class="{'is-invalid' : newRestructuredAmortizationForm.interestPaymentCycle.$invalid && newRestructuredAmortizationForm.interestPaymentCycle.$touched   || exceeded, 'is-valid' : newRestructuredAmortizationForm.interestPaymentCycle.$valid && newRestructuredAmortizationForm.interestPaymentCycle.$touched && !exceeded }"
+                                                                            required
+                                                                            price
+                                                                           
+                                                                        />
+                                    
+                                                                        <span
+                                                                            class="form-text text-muted"
+                                                                            ng-show="newRestructuredAmortizationForm.interestPaymentCycle.$touched && newRestructuredAmortizationForm.interestPaymentCycle.$invalid"
+                                                                        >
+                                                                            Please enter interest payment cycle.
                                                                         </span>
                                                                     </div>
                                                                     <div class="col-lg-3" >
@@ -582,7 +607,7 @@
                                                                              
                                                                             <button
                                                                                 class="btn btn-success text-uppercase p-2 pl-3 pr-3"
-                                                                                ng-click="calculateRestructuredAmortization(loan.id,dateStart,termDays,cycle)"
+                                                                                ng-click="calculateRestructuredAmortization(loan.id,dateStart,termDays,principalPaymentCycle,interestPaymentCycle)"
                                                                                 
                                                                             >
                                                                                 Generate

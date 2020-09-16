@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
-
+from processes.api import generateAmortizationSchedule,generateUnevenAmortizationSchedule
 
 class GetDashboardDataView(views.APIView):
     
@@ -233,10 +233,20 @@ class UpdateLoanView(views.APIView):
 
             term = request.data.get("term")
             if term:
-                loan.term = Term.objects.get(id=term)
-                new_value = term
 
-                loan.save()
+                if not loan.term == Term.objects.get(id=term):
+                    loan.term = Term.objects.get(id=term)
+                    new_value = term
+
+                    loan.save()
+
+                    
+                    if loan.term.principalPaymentPeriod == loan.term.interestPaymentPeriod:
+        
+                        generateAmortizationSchedule(loan,request)
+                    else:
+                        generateUnevenAmortizationSchedule(loan,request)
+
 
             dateReleased = request.data.get("dateReleased")  
             if dateReleased: 

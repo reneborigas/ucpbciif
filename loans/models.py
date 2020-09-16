@@ -516,12 +516,16 @@ class Loan(models.Model):
      
 
     def __str__(self):
-        return "%s %s" % (self.borrower,self.amount)
+        return "%s %s %s" % (self.id,self.borrower,self.amount)
 
     def getLatestAmortization(self):
+
+         
         if self.isRestructured:
+             
             return  self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
         else:
+            
             return  self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
 
     def getLatestDraftAmortization(self):

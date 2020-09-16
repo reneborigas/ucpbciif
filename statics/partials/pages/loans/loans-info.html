@@ -71,6 +71,7 @@
                                     <span class="font-weight-bolder text-dark">{{ loan.term_name }}</span>
                                     <span
                                         class="text-dark ml-2"
+                                        ng-if="loan.payments.length == 0 && !loan.isRestructured"
                                         ng-click="editTerm(loan.id,loan.term)"
                                         data-toggle="modal"
                                         data-target="#edit-loan-term"

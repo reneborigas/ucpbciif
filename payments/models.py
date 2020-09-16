@@ -71,6 +71,104 @@ class PaymentType(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
+
+class CheckStatus(models.Model):  
+    name = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+    isDefault = models.BooleanField(
+        default=False
+    )    
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="checkStatusesCreatedBy",
+        null = True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s" % (self.name  )
+
+class Check(models.Model):
+    loan =  models.ForeignKey(
+        'loans.Loan',
+        on_delete=models.CASCADE,
+        related_name="checks",
+    ) 
+    amortizationItem =  models.ForeignKey(
+        'loans.AmortizationItem',
+        on_delete=models.CASCADE,
+        related_name="amortizationItems",
+    ) 
+    dateReceived = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+    bankBranch = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+    checkNo = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+    amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    pnNo = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+    area = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
+    )
+    dateWarehoused = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+    warehousingBatchNo = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+ 
+    checkStatus = models.ForeignKey(
+        CheckStatus,
+        on_delete=models.CASCADE,
+        # limit_choices_to={'subProcess': document_.subProcess},
+        related_name="checkStatuses",
+    )
+
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )
+
 class Payment(models.Model):
     loan =  models.ForeignKey(
         'loans.Loan',

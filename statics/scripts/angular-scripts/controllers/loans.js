@@ -238,6 +238,8 @@ define(function () {
         $q,
         $window
     ) {
+        
+        $scope.loadLoan = function () {
         $http
             .get('/api/loans/loans/', {
                 params: { loanId: $scope.loanId },
@@ -295,6 +297,9 @@ define(function () {
                     );
                 }
             );
+        
+        };
+        $scope.loadLoan();
 
         $scope.loadAmortization = function (id) {
             $http
@@ -468,6 +473,7 @@ define(function () {
                                 $scope.loan.term_name = term.name;
                             }
                         });
+                        $scope.loadLoan();
                         toastr.success('Success', 'Loan Term updated.');
                     },
                     function (error) {
@@ -724,14 +730,15 @@ define(function () {
             }
         };
 
-        $scope.calculateRestructuredAmortization = function (loanId, dateStart, termDays, cycle) {
+        $scope.calculateRestructuredAmortization = function (loanId, dateStart, termDays, principalPaymentCycle, interestPaymentCycle) {
             $http
                 .post('/api/processes/calculaterestructuredpmt/', {
                     params: {
                         loanId: loanId,
                         dateStart: dateStart.toLocaleDateString(),
                         termDays: termDays,
-                        cycle: cycle,
+                        principalPaymentCycle: principalPaymentCycle,
+                        interestPaymentCycle: interestPaymentCycle,
                     },
                 })
                 .then(

@@ -1512,10 +1512,10 @@ define(function () {
                         subProcessId: $scope.subProcessId,
                         documentType: 1,
                         createdBy: appFactory.getCurrentUser(),
-                        committee: '',
+                        committee: appFactory.getCurrentUser(),
                         loan: '',
                     };
-                    console.log($scope.creditLine);
+                    console.log($scope.document);
                     if ($scope.creditLine) {
                         $scope.creditLine = {
                             creditlineid: $scope.creditLine.id,
