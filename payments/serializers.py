@@ -416,6 +416,36 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
         i = i+1
     # excludeWeekends(amortization.amortizationItems)
 
+class CheckStatusSerializer(ModelSerializer):
+     
+    def create(self, validated_data):
+        checkStatus = CheckStatus.objects.create(**validated_data) 
+
+        return checkStatus
+
+    def update(self, instance, validated_data):
+         
+        return instance
+    
+    class Meta:
+        model = CheckStatus        
+        fields = '__all__'
+
+class CheckSerializer(ModelSerializer):
+     
+    def create(self, validated_data):
+        check = Check.objects.create(**validated_data) 
+
+        return check
+
+    def update(self, instance, validated_data):
+         
+        return instance
+    
+    class Meta:
+        model = Check        
+        fields = '__all__'
+
 class PaymentStatusSerializer(ModelSerializer):
      
     def create(self, validated_data):

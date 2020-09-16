@@ -238,66 +238,64 @@ define(function () {
         $q,
         $window
     ) {
-        
         $scope.loadLoan = function () {
-        $http
-            .get('/api/loans/loans/', {
-                params: { loanId: $scope.loanId },
-            })
-            .then(
-                function (response) {
-                    $scope.loan = response.data[0];
-                    $scope.loan.outStandingBalance = parseFloat($scope.loan.outStandingBalance);
-                    console.log($scope.loan.outStandingBalance <= 0);
-                    $scope.currentAmortization = $scope.loan.amortizations[0];
-                    $http
-                        .get('/api/borrowers/borrowers/', {
-                            params: { borrowerId: $scope.loan.borrower },
-                        })
-                        .then(
-                            function (response) {
-                                $scope.borrower = response.data[0];
-                                $scope.showAccomodations = false;
-                                appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
-                                    console.log(data);
-                                    $scope.windows = data;
-                                    $scope.showAccomodations = true;
-                                });
+            $http
+                .get('/api/loans/loans/', {
+                    params: { loanId: $scope.loanId },
+                })
+                .then(
+                    function (response) {
+                        $scope.loan = response.data[0];
+                        $scope.loan.outStandingBalance = parseFloat($scope.loan.outStandingBalance);
+                        console.log($scope.loan.outStandingBalance <= 0);
+                        $scope.currentAmortization = $scope.loan.amortizations[0];
+                        $http
+                            .get('/api/borrowers/borrowers/', {
+                                params: { borrowerId: $scope.loan.borrower },
+                            })
+                            .then(
+                                function (response) {
+                                    $scope.borrower = response.data[0];
+                                    $scope.showAccomodations = false;
+                                    appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
+                                        console.log(data);
+                                        $scope.windows = data;
+                                        $scope.showAccomodations = true;
+                                    });
 
-                                $http
-                                    .get('/api/documents/documents/', {
-                                        params: { loanId: $scope.loan.id },
-                                    })
-                                    .then(
-                                        function (response) {
-                                            $scope.documents = response.data;
-                                        },
-                                        function (error) {
-                                            toastr.error(
-                                                'Error ' + error.status + ' ' + error.statusText,
-                                                'Could not retrieve Documents. Please contact System Administrator.'
-                                            );
-                                        }
+                                    $http
+                                        .get('/api/documents/documents/', {
+                                            params: { loanId: $scope.loan.id },
+                                        })
+                                        .then(
+                                            function (response) {
+                                                $scope.documents = response.data;
+                                            },
+                                            function (error) {
+                                                toastr.error(
+                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                    'Could not retrieve Documents. Please contact System Administrator.'
+                                                );
+                                            }
+                                        );
+
+                                    $scope.loadNotes();
+                                },
+                                function (error) {
+                                    toastr.error(
+                                        'Error ' + error.status + ' ' + error.statusText,
+                                        'Could not retrieve Borrower Information. Please contact System Administrator.'
                                     );
-
-                                $scope.loadNotes();
-                            },
-                            function (error) {
-                                toastr.error(
-                                    'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not retrieve Borrower Information. Please contact System Administrator.'
-                                );
-                            }
+                                }
+                            );
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Loan Information. Please contact System Administrator.'
                         );
-                },
-                function (error) {
-                    toastr.error(
-                        'Error ' + error.status + ' ' + error.statusText,
-                        'Could not retrieve Loan Information. Please contact System Administrator.'
-                    );
-                }
-            );
-        
+                    }
+                );
         };
         $scope.loadLoan();
 
@@ -512,6 +510,45 @@ define(function () {
                         );
                     }
                 );
+        };
+
+        $http.get('/api/payments/checkstatuses/').then(function (response) {
+            $scope.checkStatuses = response.data;
+        });
+
+        $scope.addPDC = function (index, amortizationSchedule) {
+            $scope.amortizationPayment = 'Payment #' + index;
+            $scope.amortizationSchedule = amortizationSchedule;
+        };
+
+        $scope.savePDC = function (check) {
+            swal({
+                title: 'Add Post Dated Check',
+                text: 'Do you want to apply post dated check to amortization?',
+                icon: 'info',
+                buttons: {
+                    cancel: true,
+                    confirm: 'Save',
+                },
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    $http.post('/api/processes/savedraft/', check).then(
+                        function (response) {
+                            angular.element('#editapp-pdc').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $scope.loadLoan();
+                            toastr.success('Success', 'Post dated check added.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + error.statusText,
+                                'Could not add post dated check. Please contact System Administrator.'
+                            );
+                        }
+                    );
+                }
+            });
         };
 
         // -- Start Simple Pagination --

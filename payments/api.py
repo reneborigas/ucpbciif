@@ -4,6 +4,13 @@ from .serializers import *
 from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
+
+
+
+class CheckStatusViewSet(ModelViewSet):
+    queryset = CheckStatus.objects.all()
+    serializer_class = CheckStatusSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
     
 class PaymentStatusViewSet(ModelViewSet):
     queryset = PaymentStatus.objects.all()

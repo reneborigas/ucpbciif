@@ -638,13 +638,6 @@
                                             <span class="text-dark-75 text-uppercase font-size-lg">Penalty</span>
                                         </div>
                                     </th>
-                                    <!-- <th>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">
-                                                VAT
-                                            </span>
-                                        </div>
-                                    </th> -->
                                     <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">Total Amortization</span>
@@ -658,6 +651,11 @@
                                     <th>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">Status</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">PDC</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -796,6 +794,25 @@
                                             >
                                                 {{ amortization.amortizationStatus_name}}
                                             </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <a class="btn btn-icon">
+                                                <i
+                                                    class="fad fa-money-check-edit"
+                                                    style="--fa-primary-color: #f64e60; --fa-secondary-color: #3699ff"
+                                                    data-toggle="modal"
+                                                    data-target="#edit-add-pdc"
+                                                    ng-click="addPDC($index+1,amortization.schedule)"
+                                                ></i>
+                                            </a>
+                                            <!-- <button
+                                                class="btn btn-sm font-weight-bold btn-primary"
+                                                
+                                            >
+                                                ADD PDC
+                                            </button> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1581,6 +1598,146 @@
         </div>
     </div>
     <!-- End Modal Purpose Security -->
+    <!-- Start Modal PDC -->
+    <div id="edit-add-pdc" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Post Dated Check</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold font-size-h6">Schedule:</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <label class="col-form-label font-size-h6">{{ amortizationPayment }}, {{ amortizationSchedule }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="dateReceived">Date Received From Accounting</label>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    id="dateReceived"
+                                    name="dateReceived"
+                                    placeholder="Registration Date"
+                                    ng-model="check.dateReceived"
+                                />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="bankBranch">Bank Branch</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="bankBranch"
+                                    name="bankBranch"
+                                    placeholder="Bank Branch"
+                                    ng-model="check.bankBranch"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="checkNo">Check No</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="checkNo"
+                                    name="checkNo"
+                                    placeholder="Check Number"
+                                    ng-model="check.checkNo"
+                                />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="amount">Amount</label>
+                                <input
+                                    type="text"
+                                    min="0"
+                                    class="form-control"
+                                    id="amount"
+                                    name="amount"
+                                    placeholder="Number of Employees"
+                                    ng-model="check.amount"
+                                    price
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="pnNo">PN No</label>
+                                <input type="text" class="form-control" id="pnNo" name="pnNo" placeholder="Check Number" ng-model="check.pnNo" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="area">Area</label>
+                                <input type="text" class="form-control" id="area" name="area" placeholder="Area" ng-model="check.area" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="dateWarehoused">Date Warehoused</label>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    id="dateWarehoused"
+                                    name="dateWarehoused"
+                                    placeholder="Date Warehoused"
+                                    ng-model="check.dateWarehoused"
+                                />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="warehousingBatchNo">Wearhousing Batch No</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="warehousingBatchNo"
+                                    name="warehousingBatchNo"
+                                    placeholder="Warehousing Batch Number"
+                                    ng-model="check.warehousingBatchNo"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="dateWarehoused">Check Status</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="check.status"
+                                    ng-options="checkStatus.id as checkStatus.name for checkStatus in checkStatuses"
+                                ></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary font-weight-bold" type="button" data-dismiss="modal" ng-click="savePDC(check)">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal PDC-->
     <!-- Start Modal Edit Release Date -->
     <div
         id="edit-release-date"
