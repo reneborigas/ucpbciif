@@ -172,7 +172,7 @@ define(function () {
         $scope.date = new Date();
     });
 
-    app.controller('SideBarController', function SideBarController($http, $scope, toastr, $state, $timeout, appFactory) {
+    app.controller('SideBarController', function SideBarController($http, $scope, toastr, $state, $timeout, appFactory, $q) {
         $http.get('/api/processes/subprocesses/').then(
             function (response) {
                 $scope.subProcesses = response.data;
@@ -209,10 +209,10 @@ define(function () {
 
     app.controller('RerouteController', function RerouteController($scope, $state, $location) {
         $scope.goToPreviousState = function () {
-            if ($scope.previousState) {
+            if ($scope.previousState.url) {
                 $location.path($scope.previousState.url);
             } else {
-                $state.go('app.dashboard');
+                $state.go('main.menu');
             }
         };
     });

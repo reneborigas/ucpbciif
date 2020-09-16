@@ -221,14 +221,17 @@ define(function () {
                         label: '404 Not Found',
                     },
                     resolve: {
-                        loadController: [
-                            '$ocLazyLoad',
-                            function ($ocLazyLoad) {
-                                return $ocLazyLoad.load({
-                                    files: ['/statics/scripts/angular-scripts/controllers/dashboard.js'],
-                                });
-                            },
-                        ],
+                        previousState: function ($state) {
+                            var currentStateData = {
+                                name: $state.current.name,
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params),
+                            };
+                            return currentStateData;
+                        },
+                    },
+                    controller: function (previousState, $scope) {
+                        $scope.previousState = previousState;
                     },
                 })
                 .state('app.dashboard', {
@@ -263,6 +266,24 @@ define(function () {
                         skip: true,
                     },
                     resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
                         loadController: [
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
@@ -517,6 +538,24 @@ define(function () {
                         skip: true,
                     },
                     resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
                         loadController: [
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
@@ -604,6 +643,24 @@ define(function () {
                         skip: true,
                     },
                     resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
                         loadController: [
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
@@ -698,6 +755,24 @@ define(function () {
                         skip: true,
                     },
                     resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
                         loadController: [
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
@@ -765,6 +840,24 @@ define(function () {
                         skip: true,
                     },
                     resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
                         loadController: [
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
@@ -820,6 +913,24 @@ define(function () {
                         skip: true,
                     },
                     resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
                         loadController: [
                             '$ocLazyLoad',
                             function ($ocLazyLoad) {
@@ -867,7 +978,18 @@ define(function () {
                         fetchRouteAppPermission: function ($http, $q, appFactory) {
                             return appFactory.getCurrentUserAppPermission('Settings').then(function (data) {
                                 if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
                                     return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
                                 }
                             });
                         },
@@ -904,31 +1026,29 @@ define(function () {
                     },
                 })
                 .state('app.terms.info', {
-                    url: '/:borrowerId',
+                    url: '/:termId',
                     templateUrl: '/statics/partials/pages/terms/terms-info.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Terms Info',
                     },
                     ncyBreadcrumb: {
-                        // label: '{{ borrowerName }}',
-                        parent: 'app.borrowers.list',
+                        label: '{{ termName }}',
+                        parent: 'app.terms.list',
                     },
                     resolve: {
-                        // fetchBorrower: function ($http, $q, $stateParams) {
-                        //     return $http
-                        //         .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
-                        //         .then(function (response) {
-                        //             if (response.data.length == 0) {
-                        //                 return $q.reject('Not Found');
-                        //             }
-                        //         });
-                        // },
+                        fetchTerm: function ($http, $q, $stateParams) {
+                            return $http.get('/api/loans/terms/', { params: { termId: $stateParams.termId } }).then(function (response) {
+                                if (response.data.length == 0) {
+                                    return $q.reject('Not Found');
+                                }
+                            });
+                        },
                     },
                     controller: function ($scope, $stateParams, appFactory) {
-                        // $scope.borrowerId = $stateParams.borrowerId;
-                        // appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
-                        //     $scope.borrowerName = data;
-                        // });
+                        $scope.termId = $stateParams.termId;
+                        appFactory.getTermName($scope.termId).then(function (data) {
+                            $scope.termName = data;
+                        });
                     },
                 })
 
@@ -944,7 +1064,18 @@ define(function () {
                         fetchRouteAppPermission: function ($http, $q, appFactory) {
                             return appFactory.getCurrentUserAppPermission('Settings').then(function (data) {
                                 if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
                                     return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
                                 }
                             });
                         },

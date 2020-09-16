@@ -47,17 +47,7 @@ define(function () {
         '$uibModal',
         '$uibModalStack',
         'Idle',
-        function (
-            $rootScope,
-            $state,
-            $stateParams,
-            $http,
-            appLoginService,
-            $transitions,
-            $uibModal,
-            $uibModalStack,
-            Idle
-        ) {
+        function ($rootScope, $state, $stateParams, $http, appLoginService, $transitions, $uibModal, $uibModalStack, Idle) {
             $http.defaults.xsrfHeaderName = 'X-CSRFToken';
             $http.defaults.xsrfCookieName = 'csrftoken';
 

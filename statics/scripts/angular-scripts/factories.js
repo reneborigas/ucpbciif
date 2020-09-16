@@ -402,7 +402,10 @@ define(function () {
                         return $filter('filter')(response.data[0].installedApps, { name: app });
                     },
                     function (error) {
-                        toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve App List. Please contact System Administrator.');
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve App List Permitted. Please contact System Administrator.'
+                        );
                     }
                 );
             },
@@ -484,6 +487,19 @@ define(function () {
                     }
                 );
             },
+            getTermName: function (termId) {
+                return $http.get('/api/loans/terms/', { params: { termId: termId } }).then(
+                    function (response) {
+                        return response.data[0].name;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Term Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getCommitteeName: function (committeeId) {
                 return $http.get('/api/committees/committees/', { params: { committeeId: committeeId } }).then(
                     function (response) {
@@ -492,7 +508,7 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + error.statusText,
-                            'Could not retrieve Committee list. Please contact System Administrator.'
+                            'Could not retrieve Committee Information. Please contact System Administrator.'
                         );
                     }
                 );

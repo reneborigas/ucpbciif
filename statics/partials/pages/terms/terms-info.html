@@ -1,0 +1,91 @@
+<div class="row" ng-controller="TermsInfoController">
+    <div class="col-xl-12">
+        <div class="row">
+            <div class="col">
+                <div class="card card-custom gutter-b">
+                    <div class="card-header py-3">
+                        <div class="card-title align-items-start flex-column">
+                            <h3 class="card-label font-weight-bolder text-dark">Term Information</h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <!-- <button
+                                type="reset"
+                                class="btn btn-success mr-2"
+                                ng-click="saveAccount()"
+                                ng-disabled="userCreationForm.$invalid"
+                                ng-if="!committee.user"
+                            >
+                                Create Account
+                            </button> -->
+                            <button type="reset" class="btn btn-secondary" ui-sref="app.terms.list">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form name="userCreationForm">
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold">Term Name:</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input
+                                        class="form-control form-control-lg"
+                                        type="text"
+                                        ng-model="term.name"
+                                        ng-disabled="true"
+                                        style="border: 0 !important; background: #fff !important"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold">Loan Duration:</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input
+                                        class="form-control form-control-lg"
+                                        type="text"
+                                        ng-model="term.days"
+                                        ng-disabled="true"
+                                        style="border: 0 !important; background: #fff !important"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold">Principal Payment Cycle:</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input
+                                        class="form-control form-control-lg"
+                                        type="text"
+                                        ng-model="term.principalPaymentPeriodName"
+                                        ng-disabled="true"
+                                        style="border: 0 !important; background: #fff !important"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold">Interest Payment Cycle:</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input
+                                        class="form-control form-control-lg"
+                                        type="text"
+                                        ng-model="term.interestPaymentPeriodName"
+                                        ng-disabled="true"
+                                        style="border: 0 !important; background: #fff !important"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold">Remarks:</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input
+                                        class="form-control form-control-lg"
+                                        type="text"
+                                        ng-model="term.remarks"
+                                        ng-disabled="true"
+                                        style="border: 0 !important; background: #fff !important"
+                                    />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

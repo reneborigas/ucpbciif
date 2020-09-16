@@ -33,8 +33,8 @@ define(function () {
             }
         );
 
-        $scope.view = function (officeName) {
-            $state.go('app.terms.info', { officeName: officeNameSlug });
+        $scope.view = function (termId) {
+            $state.go('app.terms.info', { termId: termId });
         };
     });
 
@@ -108,5 +108,23 @@ define(function () {
                 }
             });
         };
+    });
+
+    app.controller('TermsInfoController', function TermsInfoController($http, $filter, $scope, $state, $timeout, toastr, appFactory, NgTableParams) {
+        $http
+            .get('/api/loans/terms/', {
+                params: { termId: $scope.termId },
+            })
+            .then(
+                function (response) {
+                    $scope.term = response.data[0];
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Term Information. Please contact System Administrator.'
+                    );
+                }
+            );
     });
 });

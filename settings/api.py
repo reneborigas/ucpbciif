@@ -8,6 +8,20 @@ class AppNameViewSet(ModelViewSet):
     serializer_class = AppNameSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
+    def get_queryset(self):
+        queryset = AppName.objects.order_by('id')
+
+        appId = self.request.query_params.get('appId', None)
+        appName = self.request.query_params.get('appName', None)
+
+        if appId is not None:
+            queryset = queryset.filter(app=appId)
+
+        if appName is not None:
+            queryset = queryset.filter(name=appName)
+
+        return queryset
+
 class CooperativeTypeViewSet(ModelViewSet):
     queryset = CooperativeType.objects.order_by('id')
     serializer_class = CooperativeTypeSerializer

@@ -17,10 +17,14 @@ class UserAppsViewSet(ModelViewSet):
             Prefetch('installedApps',queryset=AppName.objects.order_by('id'))
         ).all()
 
-        user = self.request.query_params.get('user', None)
-        
+        user = self.request.query_params.get('user', None) 
+        appName = self.request.query_params.get('appName',None)
+
         if user is not None:
             queryset = queryset.filter(user=user)
+
+        if appName is not None:
+            queryset = queryset.filter(installedApps__name=appName)
 
         return queryset
 
