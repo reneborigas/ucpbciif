@@ -5,6 +5,19 @@ from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 
+class CheckViewSet(ModelViewSet):
+    queryset = Check.objects.all()
+    serializer_class = CheckSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Check.objects.order_by('id')
+        checkId = self.request.query_params.get('checkId', None)
+
+        if checkId is not None:
+            queryset = queryset.filter(id=checkId) 
+
+        return queryset
 
 
 class CheckStatusViewSet(ModelViewSet):

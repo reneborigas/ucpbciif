@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
-from payments.serializers import PaymentSerializer
+from payments.serializers import PaymentSerializer,CheckSerializer
  
 # from documents.serializers import DocumentSerializer
 # from borrowers.serializers import BorrowerSerializer
@@ -161,8 +161,10 @@ class AmortizationItemSerializer(ModelSerializer):
     amortizationStatus_name = serializers.ReadOnlyField(source='amortizationStatus.name')
     loan_id = serializers.ReadOnlyField(source='amortization.loan.id')
     payments = PaymentSerializer(many=True,read_only=True)
+    checks = CheckSerializer(many=True,read_only=True)
     
     totalPayment = serializers.CharField(read_only=True)
+    latestCheck = CheckSerializer(read_only=True)
     
     def create(self, validated_data):
         amortizationitem = AmortizationItem.objects.create(**validated_data) 

@@ -3,6 +3,7 @@ from django.utils import timezone
 from borrowers.models import Borrower
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum,Q
+from payments.models import Check
 
 class Status(models.Model):  
     name = models.CharField(
@@ -870,6 +871,12 @@ class AmortizationItem(models.Model):
 
     def __str__(self):
         return "%s %s: %s %s" % (self.amortization.loan.id, self.id ,self.schedule,self.amortizationStatus) 
+
+
+    def getPDC(self):  
+        latestPDC = self.checks.all().first()
+        print(latestPDC)
+        return latestPDC
 
     def isMaturingAmortizationItem(self): 
         return  (self ==  self.amortization.loan.getCurrentAmortizationItem())

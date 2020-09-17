@@ -516,12 +516,21 @@ define(function () {
             $scope.checkStatuses = response.data;
         });
 
-        $scope.addPDC = function (index, amortizationSchedule) {
+        $scope.addPDC = function (index, amortization) {
+            $scope.check={
+                amortizationItem:'',
+                loan:$scope.loan.id,
+            };
+            
             $scope.amortizationPayment = 'Payment #' + index;
-            $scope.amortizationSchedule = amortizationSchedule;
+            $scope.amortizationSchedule = amortization.schedule;
+            $scope.check.amortizationItem = amortization.id;
+
+            console.log($scope.check);
         };
 
         $scope.savePDC = function (check) {
+            console.log(check);
             swal({
                 title: 'Add Post Dated Check',
                 text: 'Do you want to apply post dated check to amortization?',
@@ -532,7 +541,7 @@ define(function () {
                 },
             }).then((isConfirm) => {
                 if (isConfirm) {
-                    $http.post('/api/processes/savedraft/', check).then(
+                    $http.post('/api/payments/checks/', check).then(
                         function (response) {
                             angular.element('#editapp-pdc').modal('hide');
                             $('body').removeClass('modal-open');

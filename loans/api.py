@@ -317,9 +317,16 @@ class LoanViewSet(ModelViewSet):
             loan.loanTotalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
             loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
             loan.latestAmortization = loan.getLatestAmortization()
-
+            
+          
             if loan.latestAmortization:
                 loan.latestAmortization.totalAmortizationPrincipal = loan.latestAmortization.getTotalAmortizationPrincipal()
+
+                for amortizationItem in loan.latestAmortization.amortizationItems.all() : 
+                    amortizationItem.latestCheck = amortizationItem.getPDC()
+                    
+                    print(amortizationItem.latestCheck)
+                
 
             loan.latestDraftAmortization = loan.getLatestDraftAmortization  
             loan.outStandingBalance = loan.getOutstandingBalance
@@ -398,7 +405,9 @@ class AmortizationItemViewSet(ModelViewSet):
         for amortizationItem in queryset:
             if(amortizationItem.isOnCurrentAmortization()):
                 amortizationItems.append(amortizationItem.id)
+
             
+
 
         queryset = queryset.filter(id__in=amortizationItems)    
          
@@ -418,7 +427,7 @@ class AmortizationItemViewSet(ModelViewSet):
 
         for amortizationItem in queryset:
             amortizationItem.totalPayment = amortizationItem.getTotalPayment
-
+            amortizationItem.latestCheck = amortizationItem.getPDC()
         return queryset
 
             

@@ -117,7 +117,7 @@ class Check(models.Model):
     amortizationItem =  models.ForeignKey(
         'loans.AmortizationItem',
         on_delete=models.CASCADE,
-        related_name="amortizationItems",
+        related_name="checks",
     ) 
     dateReceived = models.DateTimeField(
         blank=True,
@@ -152,9 +152,10 @@ class Check(models.Model):
         blank=True,
         null=True
     )
-    warehousingBatchNo = models.DateTimeField(
-        blank=True,
-        null=True
+    warehousingBatchNo = models.CharField(
+        max_length=255,
+        blank = False,
+        null = False, 
     )
  
     checkStatus = models.ForeignKey(
@@ -168,6 +169,12 @@ class Check(models.Model):
         blank = True,
         null = True,
     )
+
+
+
+    def __str__(self):
+        return "%s - %s %s" % (self.checkNo,self.bankBranch,self.checkStatus)
+
 
 class Payment(models.Model):
     loan =  models.ForeignKey(

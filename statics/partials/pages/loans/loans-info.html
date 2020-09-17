@@ -716,6 +716,11 @@
                                             </span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems  ">
                                     <td>
@@ -798,13 +803,22 @@
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
+                                            <button
+                                                class="btn btn-sm font-weight-bold"
+                                                ng-if="amortization.checks.length > 0" 
+                                                ng-class="'btn-clean text-dark'" 
+                                            >
+                                                {{ amortization.checks[0].checkNo}}
+                                            </button>
+
                                             <a class="btn btn-icon">
                                                 <i
+                                                    ng-if="amortization.checks.length == 0" 
                                                     class="fad fa-money-check-edit"
                                                     style="--fa-primary-color: #f64e60; --fa-secondary-color: #3699ff"
                                                     data-toggle="modal"
                                                     data-target="#edit-add-pdc"
-                                                    ng-click="addPDC($index+1,amortization.schedule)"
+                                                    ng-click="addPDC($index+1,amortization)"
                                                 ></i>
                                             </a>
                                             <!-- <button
@@ -853,6 +867,11 @@
                                     </td> -->
                                     <td>
                                         <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
@@ -1612,7 +1631,7 @@
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold font-size-h6">Schedule:</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <label class="col-form-label font-size-h6">{{ amortizationPayment }}, {{ amortizationSchedule }}</label>
+                                    <label class="col-form-label font-size-h6">{{ amortizationPayment }}: {{ amortizationSchedule | date : 'mediumDate' }} </label>
                                 </div>
                             </div>
                         </div>
@@ -1723,7 +1742,8 @@
                                 <label for="dateWarehoused">Check Status</label>
                                 <select
                                     class="form-control"
-                                    ng-model="check.status"
+                                    id="checkStatus"
+                                    ng-model="check.checkStatus"
                                     ng-options="checkStatus.id as checkStatus.name for checkStatus in checkStatuses"
                                 ></select>
                             </div>

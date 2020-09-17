@@ -94,8 +94,9 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 amortizationItem.daysAdvanced = lastPayment.daysAdvanced
                 amortizationItem.additionalInterest =  lastPayment.additionalInterest
                 amortizationItem.penalty =  lastPayment.penalty
+                lastCheck = amortizationItem.getPDC()
                 
-                # print("balance")
+                print(lastCheck)
                 # print(lastPayment.balance)
                 # if lastPayment.balance > 0:
                 #     print(lastPayment.balance)
@@ -108,7 +109,8 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
             amortizationItem.save()
             lastPayment.amortizationItem = amortizationItem
             lastPayment.save()
-
+            lastCheck.amortizationItem = amortizationItem
+            lastCheck.save()
             for payment in payments:
                 payment.amortizationItem = amortizationItem
                 payment.save()
@@ -339,7 +341,12 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
                 amortizationItem.additionalInterest =  lastPayment.additionalInterest
                 amortizationItem.penalty =  lastPayment.penalty
                 
-                # print("balance")
+                lastCheck = amortizationItem.getPDC()
+                print(lastCheck)
+                if lastCheck:
+                    lastCheck.amortizationItem = amortizationItem
+                    lastCheck.save()
+                
                 # print(lastPayment.balance)
                 # if lastPayment.balance > 0:
                 #     print(lastPayment.balance)
@@ -352,6 +359,7 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
             amortizationItem.save()
             lastPayment.amortizationItem = amortizationItem
             lastPayment.save()
+            
 
             for payment in payments:
                 payment.amortizationItem = amortizationItem
@@ -416,6 +424,22 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
         i = i+1
     # excludeWeekends(amortization.amortizationItems)
 
+
+class CheckSerializer(ModelSerializer):
+     
+    def create(self, validated_data):
+        check = Check.objects.create(**validated_data) 
+         
+        return check
+
+    def update(self, instance, validated_data):
+         
+        return instance
+    
+    class Meta:
+        model = Check        
+        fields = '__all__'
+
 class CheckStatusSerializer(ModelSerializer):
      
     def create(self, validated_data):
@@ -430,22 +454,7 @@ class CheckStatusSerializer(ModelSerializer):
     class Meta:
         model = CheckStatus        
         fields = '__all__'
-
-class CheckSerializer(ModelSerializer):
-     
-    def create(self, validated_data):
-        check = Check.objects.create(**validated_data) 
-
-        return check
-
-    def update(self, instance, validated_data):
-         
-        return instance
-    
-    class Meta:
-        model = Check        
-        fields = '__all__'
-
+              
 class PaymentStatusSerializer(ModelSerializer):
      
     def create(self, validated_data):
