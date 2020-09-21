@@ -97,6 +97,9 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 lastCheck = amortizationItem.getPDC()
                 
                 print(lastCheck)
+                if lastCheck:
+                    lastCheck.amortizationItem = amortizationItem
+                    lastCheck.save()
                 # print(lastPayment.balance)
                 # if lastPayment.balance > 0:
                 #     print(lastPayment.balance)
@@ -109,8 +112,7 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
             amortizationItem.save()
             lastPayment.amortizationItem = amortizationItem
             lastPayment.save()
-            lastCheck.amortizationItem = amortizationItem
-            lastCheck.save()
+           
             for payment in payments:
                 payment.amortizationItem = amortizationItem
                 payment.save()

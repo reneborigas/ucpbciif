@@ -540,13 +540,13 @@ class CalculatePMTView(views.APIView):
             daysExceed = 0
 
         if daysExceed > 0:
-            additionalInterest = (principalBalance )  *  (loan.interestRate.interestRate/100) * daysExceed/360
+            additionalInterest = (int(totalToPay) )  *  (loan.interestRate.interestRate/100) * daysExceed/360
 
         penalty = 0
         if additionalInterest>0:
-            penalty =  ( principalBalance + additionalInterest)  *  (loan.interestRate.interestRate/100) * daysExceed/360
+            penalty =  ( int(totalToPay) + int(additionalInterest))  *  (12/100) * daysExceed/360
 
-        totalToPayWithPenalty= totalToPay + additionalInterest + penalty
+        totalToPayWithPenalty= int(totalToPay) + int(additionalInterest) + int(penalty)
         totalInterest = interest + additionalInterest
         
         

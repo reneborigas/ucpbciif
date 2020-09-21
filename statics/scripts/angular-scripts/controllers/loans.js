@@ -525,6 +525,8 @@ define(function () {
             $scope.amortizationPayment = 'Payment #' + index;
             $scope.amortizationSchedule = amortization.schedule;
             $scope.check.amortizationItem = amortization.id;
+            $scope.check.amount = amortization.total;
+            
 
             console.log($scope.check);
         };

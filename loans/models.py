@@ -161,7 +161,7 @@ class Term(models.Model):
         blank = False,
         null = False, 
     )    
-    days = models.PositiveIntegerField(default=720,validators=[MinValueValidator(1), MaxValueValidator(720)]) 
+    days = models.PositiveIntegerField(default=720,validators=[MinValueValidator(1), MaxValueValidator(5000)]) 
     principalPaymentPeriod = models.ForeignKey(
         PaymentPeriod,
         on_delete=models.SET_NULL,
