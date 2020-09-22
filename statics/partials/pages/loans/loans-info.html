@@ -818,7 +818,7 @@
                                                 ng-if="amortization.checks.length > 0"
                                                 data-toggle="modal"
                                                 data-target="#view-pdc"
-                                                ng-click="viewPDC($index+1,amortization,amortization.checks[0])"
+                                                ng-click="viewPDC($index+1,amortization,amortization.checks[0].id)"
                                             >
                                                 {{ amortization.checks[0].checkNo}}
                                             </a>
@@ -1596,7 +1596,7 @@
         aria-labelledby="staticBackdrop"
         aria-hidden="true"
     >
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Loan Term</h4>
@@ -1965,7 +1965,7 @@
                             <div class="form-group row">
                                 <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Amount:</label>
                                 <div class="col-lg-6 col-xl-6">
-                                    <label class="col-form-label">{{ check.amount }}</label>
+                                    <label class="col-form-label">{{ check.amount | currency :'₱' }}</label>
                                 </div>
                             </div>
                         </div>
