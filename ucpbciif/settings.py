@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'csvimport.app.CSVImportConf',
     'users',
     'settings',
     'borrowers',
@@ -45,7 +46,8 @@ INSTALLED_APPS = [
     'processes',
     'committees',
     'documents',
-    'notifications'
+    'notifications',
+    'accounting'
 ]
 
 MIDDLEWARE = [
