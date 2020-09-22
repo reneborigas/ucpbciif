@@ -266,9 +266,9 @@ class UpdateLoanView(views.APIView):
                 
 
                 loan = Loan.objects.get(pk=loanId)
-                schedule = loan.dateReleased +  timezone.timedelta(days=loan.term.principalPaymentPeriod.paymentCycle  + 1 )
+                schedule = loan.dateReleased +  timezone.timedelta(days=loan.term.interestPaymentPeriod.paymentCycle )
                 amortization = loan.getLatestAmortization()
-                amortization.dateReleased = loan.dateReleased   +  timezone.timedelta(days= 1 )
+                amortization.dateReleased = loan.dateReleased    
                 amortization.save()
 
                 for amortizationItem in amortization.amortizationItems.all().order_by('id'):
@@ -344,8 +344,10 @@ class LoanViewSet(ModelViewSet):
 
             if loan.latestDraftAmortization:
                 loan.latestDraftAmortization.totalAmortizationPrincipal = loan.latestDraftAmortization.getTotalAmortizationPrincipal()
-                loan.latestDraftAmortization.totalAmortizationInterest = loan.getTotalDraftAmortizationInterest()
-
+                loan.latestDraftAmortization.totalAmortizationInterest = loan.latestDraftAmortization.getTotalAmortizationInterest()
+                loan.latestDraftAmortization.totalAmortizationAccruedInterest = loan.latestDraftAmortization.getTotalAmortizationAccruedInterest()
+                
+                
             loan.outStandingBalance = loan.getOutstandingBalance
             loan.currentAmortizationItem = loan.getCurrentAmortizationItem
             loan.lastAmortizationItem = loan.getLastAmortizationItem
@@ -365,6 +367,7 @@ class LoanViewSet(ModelViewSet):
             for amortization in loan.amortizations.all() : 
 
                 amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
+                amortization.totalAmortizationAccruedInterest = amortization.getTotalAmortizationAccruedInterest
                 
                 amortization.totalObligations = amortization.getTotalObligations
                 amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal

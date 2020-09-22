@@ -186,6 +186,8 @@ class AmortizationSerializer(ModelSerializer):
     # termName = serializers.CharField(read_only=True) 
     amortizationItems = AmortizationItemSerializer(many=True,read_only=True)
     totalAmortizationInterest = serializers.CharField(read_only=True)
+    totalAmortizationAccruedInterest = serializers.CharField(read_only=True)
+    
     totalObligations = serializers.CharField(read_only=True)
      
     totalAmortizationPrincipal = serializers.CharField(read_only=True)

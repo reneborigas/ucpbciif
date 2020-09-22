@@ -262,19 +262,15 @@
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Accrued Interest</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">Interest</span>
                                         </div>
                                     </th>
-                                    <th>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">Add. Interest</span>
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 text-uppercase font-size-lg">Penalty</span>
-                                        </div>
-                                    </th>
+                                    
                                     <!-- <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
@@ -328,11 +324,7 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                        </div>
-                                    </td>
+                                     
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -394,31 +386,19 @@
                                             <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.interest | currency :'₱'}}
                                             </span> -->
+                                            <input type="text" class="form-control" placeholder="Accrued Interest" ng-model="amortization.accruedInterest" price />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ amortization.interest | currency :'₱'}}
+                                            </span> -->
                                             <input type="text" class="form-control" placeholder="Interest" ng-model="amortization.interest" price />
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.additionalInterest | currency :'₱'}}
-                                            </span> -->
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Additional Interest"
-                                                ng-model="amortization.additionalInterest"
-                                                price
-                                            />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.penalty | currency :'₱'}}
-                                            </span> -->
-                                            <input type="text" class="form-control" placeholder="Penalty" ng-model="amortization.penalty" price />
-                                        </div>
-                                    </td>
+                                   
+                                     
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">{{ amortization.total | currency :'₱'}}</span>
@@ -444,6 +424,11 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ loan.latestDraftAmortization.totalAmortizationPrincipal | currency :'₱'}}
@@ -453,7 +438,14 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.latestDraftAmortization.totalAmortizationInterest | currency :'₱'}}
+                                                {{ loan.latestDraftAmortization.totalAmortizationAccruedInterest  | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.latestDraftAmortization.totalAmortizationInterest  - loan.latestDraftAmortization.totalAmortizationAccruedInterest| currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -472,21 +464,7 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
                                         </div>
                                     </td> -->
-                                    <td>
-                                        <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
-                                        </div>
-                                    </td>
+                                 
                                 </tr>
                                 <tr>
                                     <td colspan="10">

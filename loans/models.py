@@ -570,7 +570,13 @@ class Loan(models.Model):
             return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
         return 0
 
-     
+    def getTotalDraftAmortizationAccruedInterest(self):
+        latestAmortization = self.amortizations.filter(amortizationStatus__name='DRAFT').order_by('-id').first()
+      
+        if latestAmortization: 
+            return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('accruedInterest') ))['totalAmortizationInterest']  
+        return 0
+
 
     # def getTotalAmortizationInterestByAmortization(self,amortizationId):
          
@@ -758,6 +764,9 @@ class Amortization(models.Model):
 
     def getTotalAmortizationInterest(self):
         return self.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('interest') ))['totalAmortizationInterest']  
+
+    def getTotalAmortizationAccruedInterest(self):
+        return self.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('accruedInterest') ))['totalAmortizationInterest']  
         
     def getTotalAmortizationPrincipal(self):
         return self.amortizationItems.aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  

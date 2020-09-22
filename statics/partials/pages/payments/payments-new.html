@@ -302,7 +302,7 @@
                                 <td>
                                     <div class="text-right px-2">
                                         <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{loan.currentAmortizationItem.interest | currency :'₱'}}
+                                            {{loan.currentAmortizationItem.interest - loan.currentAmortizationItem.accruedInterest  | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
@@ -434,7 +434,7 @@
                                 <td>
                                     <div class="text-right px-2">
                                         <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                            {{payment.interest | currency :'₱'}}
+                                            {{payment.interest - payment.accruedInterest | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
@@ -476,7 +476,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-4">
                                     <label>Payment Date:</label>
                                     <input
                                         type="date"
@@ -495,7 +495,7 @@
                                         Please enter payment date.
                                     </span>
                                 </div>
-                                <div class="col-lg-3" ng-if="payment.paymentType">
+                                <div class="col-lg-2" ng-if="payment.paymentType">
                                     <label>Penalty Payment:</label>
                                     <input
                                         type="text"
@@ -518,8 +518,30 @@
                                         Please enter payment for penalty.
                                     </span>
                                 </div>
-
-                                <div class="col-lg-3" ng-if="payment.paymentType">
+                                <div class="col-lg-2" ng-if="payment.paymentType">
+                                    <label>A.I. Payment:</label>
+                                    <input
+                                        type="text"
+                                        min="0"
+                                        step="0.01"
+                                        class="form-control"
+                                        placeholder="0"
+                                        id="accruedInterestPayment"
+                                        name="accruedInterestPayment"
+                                        ng-model="payment.accruedInterestPayment"
+                                        ng-class="{'is-invalid' : newPaymentForm.accruedInterestPayment.$invalid && newPaymentForm.accruedInterestPayment.$touched   || exceeded, 'is-valid' : newPaymentForm.accruedInterestPayment.$valid && newPaymentForm.accruedInterestPayment.$touched && !exceeded }"
+                                        required
+                                        price
+                                        ng-disabled="payment.penaltyBalance >= 1"
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="newPaymentForm.accruedInterestPayment.$touched && newPaymentForm.accruedInterestPayment.$invalid"
+                                    >
+                                        Please enter payment for accrued interest.
+                                    </span>
+                                </div>
+                                <div class="col-lg-2" ng-if="payment.paymentType">
                                     <label>Interest Payment:</label>
                                     <input
                                         type="text"
@@ -543,7 +565,7 @@
                                     </span>
                                 </div>
 
-                                <div class="col-lg-3" ng-if="payment.paymentType != '2' && payment.paymentType">
+                                <div class="col-lg-2" ng-if="payment.paymentType != '2' && payment.paymentType">
                                     <label>Principal Payment:</label>
                                     <input
                                         type="text"
@@ -567,7 +589,7 @@
                                     </span>
                                 </div>
 
-                                <div class="col-lg-3" ng-if="payment.paymentType == '2'  && payment.paymentType">
+                                <div class="col-lg-2" ng-if="payment.paymentType == '2'  && payment.paymentType">
                                     <label>Principal Payment:</label>
                                     <input
                                         type="text"
@@ -881,6 +903,22 @@
                                             <div class="text-right px-2">
                                                 <span class="text-dark-75 font-size-lg">
                                                     {{payment.penaltyPayment | currency :'₱'}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="pl-4">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    Accrued Interest Payment
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-size-lg">
+                                                    {{payment.accruedInterestPayment | currency :'₱'}}
                                                 </span>
                                             </div>
                                         </td>

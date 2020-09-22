@@ -432,11 +432,18 @@ class CalculateRestructurePMTView(views.APIView):
 
                     principaEntry = int(loan.amount) / noOfPrincipalPaymentSchedules
                 print(i)
+                lastPayment = schedule - timezone.timedelta(days=cycle)
+    
+                dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
+
+                accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+
                 amortizationItem = AmortizationItem(
                     schedule = schedule,
                     amortization = amortization,
                     days= cycle,
                     principal = principaEntry,
+                    accruedInterest = accruedInterest,
                     interest = pmtInterest.interest,
                     additionalInterest = 0,
                     penalty = 0,
@@ -551,16 +558,22 @@ class CalculatePMTView(views.APIView):
                 principal =  pmt.principal - latestPayment.overPayment
                 totalToPay = principal + interest
 
-            diff =  datePayment - latestPayment.datePayment 
+            diff =  datePayment.replace(tzinfo=None) - latestPayment.datePayment.replace(tzinfo=None) 
+
             totalDays = diff.days
+            print('totalDays')
+            
+            print(totalDays)
+        
         else:
              
-            totalDays = days=cycle
+            totalDays = days =cycle + 1
 
         
-        dayTillCutOff = totalDays - int(datePayment.strftime ('%d') )
+        dayTillCutOff = totalDays - int(datePayment.strftime ('%d') ) - 1
 
-       
+        print('dayTillCutOff')
+        print(dayTillCutOff)
         accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
         print(accruedInterest)
         additionalInterest = 0

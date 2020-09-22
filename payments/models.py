@@ -212,6 +212,11 @@ class Payment(models.Model):
         decimal_places=2,
         blank=False
     )
+    accruedInterest = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
     interest = models.DecimalField(
         max_digits=12,
         decimal_places=2,
@@ -258,6 +263,11 @@ class Payment(models.Model):
         blank=False
     )
     interestPayment = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=False
+    )
+    accruedInterestPayment = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         blank=False

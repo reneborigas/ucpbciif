@@ -122,13 +122,18 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
         else:
             if (loanAmount>0):
                 pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,termDays,noOfPaymentSchedules,noOfPaymentSchedules - (i-1))
+                lastPayment = schedule - timezone.timedelta(days=cycle)
+    
+                dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
 
+                accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
                 
                 amortizationItem = AmortizationItem(
                 schedule = schedule,
                 amortization = amortization,
                 days= cycle,
                 principal = pmt.principal,
+                accruedInterest = accruedInterest,
                 interest = pmt.interest,
                 additionalInterest = 0,
                 penalty = 0,
@@ -381,11 +386,18 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
 
                     principaEntry = int(loan.amount) / noOfPrincipalPaymentSchedules
                 print(i)
+                lastPayment = schedule - timezone.timedelta(days=cycle)
+    
+                dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
+
+                accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+                
                 amortizationItem = AmortizationItem(
                     schedule = schedule,
                     amortization = amortization,
                     days= cycle,
                     principal = principaEntry,
+                    accruedInterest = accruedInterest,
                     interest = pmtInterest.interest,
                     additionalInterest = 0,
                     penalty = 0,
@@ -527,6 +539,7 @@ class PaymentSerializer(ModelSerializer):
             amortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=3) #partial
             amortizationItem.principal = payment.principal
             amortizationItem.interest =   payment.interestPayment 
+            amortizationItem.accruedInterest =   payment.accruedInterestPayment 
             amortizationItem.total = amortizationItem.interest + amortizationItem.principal
             amortizationItem.save()
         else:
