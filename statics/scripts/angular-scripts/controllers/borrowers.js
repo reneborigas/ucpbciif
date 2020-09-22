@@ -375,11 +375,11 @@ define(function () {
         };
 
         $scope.checkForm = function () {
-            var valid;
+            var invalid;
             if ($scope.form.wizardForm.$valid) {
-                valid = false;
+                invalid = false;
             } else {
-                valid = true;
+                invalid = true;
             }
         };
 
@@ -1790,12 +1790,12 @@ define(function () {
             );
 
         $scope.checkForm = function (subProcessName) {
-            var valid;
+            var invalid;
             if (subProcessName == 'Credit Line Approval') {
                 if ($scope.form.newLoanApplicationForm.$valid && $scope.form.newCreditLineDetailsForm.$valid) {
-                    valid = false;
+                    invalid = false;
                 } else {
-                    valid = true;
+                    invalid = true;
                 }
                 // if($scope.creditLine.amount>0){
                 //     valid = true;
@@ -1804,9 +1804,9 @@ define(function () {
                 // }
             } else if (subProcessName == 'Loan Availment') {
                 if ($scope.form.newLoanApplicationForm.$valid && $scope.form.newLoanDetailsForm.$valid) {
-                    valid = false;
+                    invalid = false;
                 } else {
-                    valid = true;
+                    invalid = true;
                 }
                 // if($scope.loan.amount>0){
                 //     valid = true;
@@ -1815,7 +1815,7 @@ define(function () {
                 // }
             }
 
-            return valid;
+            return invalid;
         };
 
         $scope.cancel = function (id) {

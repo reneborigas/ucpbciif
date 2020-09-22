@@ -233,16 +233,26 @@ class UpdateLoanView(views.APIView):
 
             term = request.data.get("term")
             if term:
-
                 if not loan.term == Term.objects.get(id=term):
                     loan.term = Term.objects.get(id=term)
                     new_value = term
 
                     loan.save()
 
-                    
                     if loan.term.principalPaymentPeriod == loan.term.interestPaymentPeriod:
-        
+                        generateAmortizationSchedule(loan,request)
+                    else:
+                        generateUnevenAmortizationSchedule(loan,request)
+
+            interest = request.data.get("interest")
+            if interest:
+                if not loan.interestRate == InterestRate.objects.get(id=interest):
+                    loan.interestRate = InterestRate.objects.get(id=interest)
+                    new_value = interest
+
+                    loan.save()
+
+                    if loan.term.principalPaymentPeriod == loan.term.interestPaymentPeriod:
                         generateAmortizationSchedule(loan,request)
                     else:
                         generateUnevenAmortizationSchedule(loan,request)
@@ -328,7 +338,12 @@ class LoanViewSet(ModelViewSet):
                     print(amortizationItem.latestCheck)
                 
 
-            loan.latestDraftAmortization = loan.getLatestDraftAmortization  
+            loan.latestDraftAmortization = loan.getLatestDraftAmortization()  
+
+            if loan.latestDraftAmortization:
+                loan.latestDraftAmortization.totalAmortizationPrincipal = loan.latestDraftAmortization.getTotalAmortizationPrincipal()
+                loan.latestDraftAmortization.totalAmortizationInterest = loan.getTotalDraftAmortizationInterest()
+
             loan.outStandingBalance = loan.getOutstandingBalance
             loan.currentAmortizationItem = loan.getCurrentAmortizationItem
             loan.lastAmortizationItem = loan.getLastAmortizationItem
@@ -608,7 +623,7 @@ class InterestRateViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = InterestRate.objects.order_by('id')
+        queryset = InterestRate.objects.order_by('interestRate')
         interestRateId = self.request.query_params.get('interestRateId', None)
 
         if interestRateId is not None:

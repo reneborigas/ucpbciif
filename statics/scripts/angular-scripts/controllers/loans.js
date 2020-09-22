@@ -451,11 +451,13 @@ define(function () {
         });
 
         $scope.editTerm = function (id, value) {
-            $scope.updateTerm.id = id;
-            $scope.update.term = value;
+            $scope.updateTerm = {
+                id: id,
+                term: value.id,
+            };
         };
 
-        $scope.updateTerm = function () {
+        $scope.updateLoanTerm = function () {
             $http
                 .post('/api/loans/updateloanview/', {
                     loanId: $scope.updateTerm.id,
@@ -473,6 +475,45 @@ define(function () {
                         });
                         $scope.loadLoan();
                         toastr.success('Success', 'Loan Term updated.');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update document. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
+
+        $http.get('/api/loans/interestrates/').then(function (response) {
+            $scope.interestrates = response.data;
+        });
+
+        $scope.editInterest = function (id, value) {
+            $scope.updateInterest = {
+                id: id,
+                interest: value,
+            };
+        };
+
+        $scope.updateLoanInterest = function () {
+            $http
+                .post('/api/loans/updateloanview/', {
+                    loanId: $scope.updateInterest.id,
+                    interest: $scope.updateInterest.interest,
+                })
+                .then(
+                    function (response) {
+                        angular.element('#edit-loan-interest').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        angular.forEach($scope.interestrates, function (interestrate) {
+                            if (response.data.new_value == interestrate.id) {
+                                $scope.loan.interestRate_amount = interestrate.interestRate;
+                            }
+                        });
+                        $scope.loadLoan();
+                        toastr.success('Success', 'Loan Interest updated.');
                     },
                     function (error) {
                         toastr.error(
@@ -517,16 +558,15 @@ define(function () {
         });
 
         $scope.addPDC = function (index, amortization) {
-            $scope.check={
-                amortizationItem:'',
-                loan:$scope.loan.id,
+            $scope.check = {
+                amortizationItem: '',
+                loan: $scope.loan.id,
             };
-            
+
             $scope.amortizationPayment = 'Payment #' + index;
             $scope.amortizationSchedule = amortization.schedule;
             $scope.check.amortizationItem = amortization.id;
             $scope.check.amount = amortization.total;
-            
 
             console.log($scope.check);
         };
@@ -634,6 +674,12 @@ define(function () {
                         $scope.loan.outStandingBalance = parseFloat($scope.loan.outStandingBalance);
                         console.log($scope.loan.outStandingBalance <= 0);
                         $scope.currentAmortization = $scope.loan.amortizations[0];
+                        if ($scope.loan.latestDraftAmortization) {
+                            console.log($scope.loan.latestDraftAmortization);
+                            angular.forEach($scope.loan.latestDraftAmortization.amortizationItems, function (amortizationItem) {
+                                amortizationItem.schedule = new Date(amortizationItem.schedule);
+                            });
+                        }
                         $http
                             .get('/api/borrowers/borrowers/', {
                                 params: { borrowerId: $scope.loan.borrower },
@@ -778,6 +824,38 @@ define(function () {
             }
         };
 
+        var draftAmortizationBlockUI = blockUI.instances.get('draftAmortizationBlockUI');
+
+        $scope.updateAmortizationDay = function (amortizationItem) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
+            $timeout(function () {
+                draftAmortizationBlockUI.stop();
+            }, 5000);
+            // $http
+            // .post('/api/processes/calculaterestructuredpmt/', {
+            //     params: {
+            //         loanId: loanId,
+            //         dateStart: dateStart.toLocaleDateString(),
+            //         termDays: termDays,
+            //         principalPaymentCycle: principalPaymentCycle,
+            //         interestPaymentCycle: interestPaymentCycle,
+            //     },
+            // })
+            // .then(
+            //     function (response) {
+            //         $scope.loadLoans();
+            //         toastr.success('Success', 'Restructured Amortization Generated.');
+            //         draftAmortizationBlockUI.stop();
+            //     },
+            //     function (error) {
+            //         toastr.error(
+            //             'Error ' + error.status + error.statusText,
+            //             'Could not calculate restructured amortization. Please contact System Administrator.'
+            //         );
+            //     }
+            // );
+        };
+
         $scope.calculateRestructuredAmortization = function (loanId, dateStart, termDays, principalPaymentCycle, interestPaymentCycle) {
             $http
                 .post('/api/processes/calculaterestructuredpmt/', {
@@ -791,10 +869,7 @@ define(function () {
                 })
                 .then(
                     function (response) {
-                        console.log(response.data);
-
                         $scope.loadLoans();
-
                         toastr.success('Success', 'Restructured Amortization Generated.');
                     },
                     function (error) {
@@ -805,6 +880,7 @@ define(function () {
                     }
                 );
         };
+
         $scope.saveDraft = function (amortizationId, loanId) {
             swal({
                 title: 'Apply Restuctured Amortization',
@@ -840,6 +916,7 @@ define(function () {
                 }
             });
         };
+
         $scope.edit = function (id, value, title) {
             $scope.update.id = id;
             $scope.modalTitle = title;

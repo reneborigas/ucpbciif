@@ -65,6 +65,15 @@
                                         {{ loan.interestRate_amount }}
                                         <span>%</span>
                                     </span>
+                                    <span
+                                        class="text-dark ml-2"
+                                        ng-if="loan.payments.length == 0 && !loan.isRestructured"
+                                        ng-click="editInterest(loan.id,loan.interestRate)"
+                                        data-toggle="modal"
+                                        data-target="#edit-loan-interest"
+                                    >
+                                        <i class="fad fa-edit"></i>
+                                    </span>
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="font-weight-bolder mr-2">Term:</span>
@@ -805,15 +814,15 @@
                                         <div class="text-center px-2">
                                             <button
                                                 class="btn btn-sm font-weight-bold"
-                                                ng-if="amortization.checks.length > 0" 
-                                                ng-class="'btn-clean text-dark'" 
+                                                ng-if="amortization.checks.length > 0"
+                                                ng-class="'btn-clean text-dark'"
                                             >
                                                 {{ amortization.checks[0].checkNo}}
                                             </button>
 
                                             <a class="btn btn-icon">
                                                 <i
-                                                    ng-if="amortization.checks.length == 0" 
+                                                    ng-if="amortization.checks.length == 0"
                                                     class="fad fa-money-check-edit"
                                                     style="--fa-primary-color: #f64e60; --fa-secondary-color: #3699ff"
                                                     data-toggle="modal"
@@ -1544,6 +1553,44 @@
             </div>
         </div>
     </div>
+    <!-- Start Modal Loan Interest -->
+    <div
+        id="edit-loan-interest"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Loan Interest</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="pb-1">
+                        <div class="form-group">
+                            <label>Loan Interest</label>
+                            <select
+                                class="form-control"
+                                ng-model="updateInterest.interest"
+                                ng-options="interestrate.id as interestrate.interestRate for interestrate in interestrates"
+                            ></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary font-weight-bold" type="button" data-dismiss="modal" ng-click="updateLoanInterest(updateInterest)">
+                        Update
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal Loan Interest -->
     <!-- Start Modal Loan Term -->
     <div
         id="edit-loan-term"
@@ -1570,7 +1617,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary font-weight-bold" type="button" data-dismiss="modal" ng-click="updateTerm(updateTerm)">
+                    <button class="btn btn-primary font-weight-bold" type="button" data-dismiss="modal" ng-click="updateLoanTerm(updateTerm)">
                         Update
                     </button>
                 </div>
@@ -1631,7 +1678,9 @@
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold font-size-h6">Schedule:</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <label class="col-form-label font-size-h6">{{ amortizationPayment }}: {{ amortizationSchedule | date : 'mediumDate' }} </label>
+                                    <label class="col-form-label font-size-h6">
+                                        {{ amortizationPayment }}: {{ amortizationSchedule | date : 'mediumDate' }}
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -1796,7 +1845,7 @@
             </div>
         </div>
     </div>
-    <!-- End Modal Purpose Security -->
+    <!-- End Modal Edit Release Date -->
     <!-- Start Modal Edit Release Date -->
     <div
         id="amortization-payment"

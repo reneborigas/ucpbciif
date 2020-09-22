@@ -20,10 +20,10 @@ Add Special Computation on Amortizations
 
 
 Sept 23, 2020
-Edit Interest Rate for Loans
+Edit Interest Rate for Loans - Done
 Outstanding Balance Label Change
 Penalty = Current Interest Rate x (Days Late/360)
-Interest Rate interval by 0.25
+Interest Rate interval by 0.25 - Done
 Release Date Amortization Bug
 
 
