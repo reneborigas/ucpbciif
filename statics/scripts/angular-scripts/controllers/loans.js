@@ -446,9 +446,14 @@ define(function () {
             }
         };
 
-        $http.get('/api/loans/terms/').then(function (response) {
-            $scope.terms = response.data;
-        });
+        $http.get('/api/loans/terms/').then(
+            function (response) {
+                $scope.terms = response.data;
+            },
+            function (error) {
+                toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve Loan Terms List. Please contact System Administrator.');
+            }
+        );
 
         $scope.editTerm = function (id, value) {
             $scope.updateTerm = {
@@ -485,9 +490,17 @@ define(function () {
                 );
         };
 
-        $http.get('/api/loans/interestrates/').then(function (response) {
-            $scope.interestrates = response.data;
-        });
+        $http.get('/api/loans/interestrates/').then(
+            function (response) {
+                $scope.interestrates = response.data;
+            },
+            function (error) {
+                toastr.error(
+                    'Error ' + error.status + error.statusText,
+                    'Could not retrieve Interest Rates List. Please contact System Administrator.'
+                );
+            }
+        );
 
         $scope.editInterest = function (id, value) {
             $scope.updateInterest = {
@@ -553,26 +566,31 @@ define(function () {
                 );
         };
 
-        $http.get('/api/payments/checkstatuses/').then(function (response) {
-            $scope.checkStatuses = response.data;
-        });
+        $http.get('/api/payments/checkstatuses/').then(
+            function (response) {
+                $scope.checkStatuses = response.data;
+            },
+            function (error) {
+                toastr.error(
+                    'Error ' + error.status + error.statusText,
+                    'Could not retrieve Check Status List. Please contact System Administrator.'
+                );
+            }
+        );
 
         $scope.addPDC = function (index, amortization) {
-            $scope.check = {
+            $scope.newCheck = {
                 amortizationItem: '',
                 loan: $scope.loan.id,
             };
 
             $scope.amortizationPayment = 'Payment #' + index;
             $scope.amortizationSchedule = amortization.schedule;
-            $scope.check.amortizationItem = amortization.id;
-            $scope.check.amount = amortization.total;
-
-            console.log($scope.check);
+            $scope.newCheck.amortizationItem = amortization.id;
+            $scope.newCheck.amount = amortization.total;
         };
 
         $scope.savePDC = function (check) {
-            console.log(check);
             swal({
                 title: 'Add Post Dated Check',
                 text: 'Do you want to apply post dated check to amortization?',
@@ -600,6 +618,29 @@ define(function () {
                     );
                 }
             });
+        };
+
+        $scope.viewPDC = function (index, amortization, checkId) {
+            $scope.amortizationPayment = 'Payment #' + index;
+            $scope.amortizationSchedule = amortization.schedule;
+
+            $http
+                .get('/api/payments/checks/', {
+                    params: { checkId: checkId },
+                })
+                .then(
+                    function (response) {
+                        $scope.check = response.data[0];
+                        $scope.check.dateReceived = appFactory.dateWithoutTime($scope.check.dateReceived);
+                        $scope.check.dateWarehoused = appFactory.dateWithoutTime($scope.check.dateWarehoused);
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Check Information. Please contact System Administrator.'
+                        );
+                    }
+                );
         };
 
         // -- Start Simple Pagination --

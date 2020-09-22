@@ -11,7 +11,9 @@ class CheckViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Check.objects.order_by('id')
+        queryset = Check.objects.annotate(
+            checkStatusText=F('checkStatus__name')
+        ).order_by('id')
         checkId = self.request.query_params.get('checkId', None)
 
         if checkId is not None:
@@ -24,6 +26,7 @@ class CheckStatusViewSet(ModelViewSet):
     queryset = CheckStatus.objects.all()
     serializer_class = CheckStatusSerializer 
     permission_classes = (permissions.IsAuthenticated, )
+    
     
 class PaymentStatusViewSet(ModelViewSet):
     queryset = PaymentStatus.objects.all()

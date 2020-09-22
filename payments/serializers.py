@@ -428,6 +428,7 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
 
 
 class CheckSerializer(ModelSerializer):
+    checkStatusText = serializers.CharField(read_only=True)
      
     def create(self, validated_data):
         check = Check.objects.create(**validated_data) 
