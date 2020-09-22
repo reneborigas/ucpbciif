@@ -1,19 +1,29 @@
-Automatically assign committe to user who uses the system (creates document)
-Post-dated checque field on amortization
+Automatically assign committe to user who uses the system (creates document) - Done
+Post-dated checque field on amortization - Done 
 
 Dashboard
 -Status of Documents
 -Clickable Loans on Calendar
 -Loans on Calendar Name Format (Borrower Name + Loan)
 
-Remove clearing date
+Remove clearing date - Edit Release Date Not yet Done
 
-Enable editing of term of Amortization after creation but disabled after 1st payment
+Enable editing of term of Amortization after creation but disabled after 1st payment - Done
 
-Decimal Places - 21,000,000.00 Million became 20,999,999.99
+Decimal Places - 21,000,000.00 Million became 20,999,999.99 - Pending
 
 CRUD for Terms and Payment Cycles
--Quarterly Payment of Interest
--Annual Payment of Principal
+-Quarterly Payment of Interest - Done
+-Annual Payment of Principal - Done
 
 Add Special Computation on Amortizations
+
+
+Sept 23, 2020
+Edit Interest Rate for Loans
+Outstanding Balance Label Change
+Penalty = Current Interest Rate x (Days Late/360)
+Interest Rate interval by 0.25
+Release Date Amortization Bug
+
+
