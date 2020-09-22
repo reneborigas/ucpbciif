@@ -249,6 +249,13 @@
                                 <th>
                                     <div class="text-right px-2">
                                         <span class="text-dark-75 text-uppercase font-size-lg">
+                                            Accrued Interest
+                                        </span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="text-right px-2">
+                                        <span class="text-dark-75 text-uppercase font-size-lg">
                                             Interest
                                         </span>
                                     </div>
@@ -282,6 +289,13 @@
                                     <div class="text-right px-2">
                                         <span class="text-dark-75 font-weight-bolder font-size-lg">
                                             {{loan.currentAmortizationItem.principal | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-right px-2">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{loan.currentAmortizationItem.accruedInterest | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
@@ -335,6 +349,13 @@
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
                                                 Principal
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
+                                             Accrued Interest
                                             </span>
                                         </div>
                                     </th>
@@ -400,6 +421,13 @@
                                     <div class="text-right px-2">
                                         <span class="text-dark-75 font-weight-bolder font-size-lg">
                                             {{payment.principal | currency :'₱'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-right px-2">
+                                        <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                            {{payment.accruedInterest | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
@@ -1086,6 +1114,13 @@
                                     <th>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">
+                                                Accrued Interest
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">
                                                 Interest
                                             </span>
                                         </div>
@@ -1187,6 +1222,11 @@
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ loan.latestAmortization.totalAmortizationPrincipal | currency :'₱'}}
                                             </span>
@@ -1219,6 +1259,14 @@
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.principal | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                
+                                                {{ amortization.accruedInterest | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -1307,7 +1355,14 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ loan.totalAmortizationInterest | currency :'₱'}}
+                                                {{ loan.totalAmortizationAccruedInterest | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.totalAmortizationInterest - loan.totalAmortizationAccruedInterest | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>

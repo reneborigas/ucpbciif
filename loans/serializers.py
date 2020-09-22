@@ -261,7 +261,7 @@ class LoanSerializer(ModelSerializer):
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
     totalAmortizationInterest = serializers.CharField(read_only=True) 
 
-     
+    totalAmortizationAccruedInterest = serializers.CharField(read_only=True) 
 
     loanTotalAmortizationPrincipal = serializers.CharField(read_only=True) 
 

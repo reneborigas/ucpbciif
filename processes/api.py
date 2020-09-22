@@ -76,12 +76,18 @@ def generateAmortizationSchedule(loan,request):
     for i in range(int(noOfPaymentSchedules)):
 
         pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
+        lastPayment = schedule - timezone.timedelta(days=cycle)
+        dayTillCutOff = cycle - int(lastPayment.strftime ('%d') )
+
        
+        accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+ 
         amortizationItem = AmortizationItem(
             schedule = schedule,
             amortization = amortization,
             days= cycle,
             principal = pmt.principal,
+            accruedInterest = accruedInterest,
             interest = pmt.interest,
             additionalInterest = 0,
             penalty = 0,
@@ -149,11 +155,17 @@ def generateUnevenAmortizationSchedule(loan,request):
 
             principaEntry = int(loan.amount) / noOfPrincipalPaymentSchedules
         print(i)
+        lastPayment = schedule - timezone.timedelta(days=cycle)
+      
+        dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
+       
+        accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
         amortizationItem = AmortizationItem(
             schedule = schedule,
             amortization = amortization,
             days= cycle,
             principal = principaEntry,
+            accruedInterest = accruedInterest,
             interest = pmtInterest.interest,
             additionalInterest = 0,
             penalty = 0,
@@ -343,7 +355,7 @@ class CalculateRestructurePMTView(views.APIView):
         print(noOfPaymentSchedules  )
         schedule = dateStart    + timezone.timedelta(days=days) 
        
-        
+       
         amortization = Amortization( 
             loan = loan,
             dateReleased = dateStart,
@@ -359,12 +371,18 @@ class CalculateRestructurePMTView(views.APIView):
             for i in range(int(noOfPaymentSchedules)):
 
                 pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,termDays,noOfPaymentSchedules,noOfPaymentSchedules - i)
+                lastPayment = schedule - timezone.timedelta(days=cycle)
+    
+                dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
+
+                accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
 
                 amortizationItem = AmortizationItem(
                     schedule = schedule,
                     amortization = amortization,
                     days= days,
                     principal = pmt.principal,
+                    accruedInterest = accruedInterest,
                     interest = pmt.interest,
                     additionalInterest = 0,
                     penalty = 0,
@@ -486,7 +504,7 @@ class CalculatePMTView(views.APIView):
         print(cycle)
         print("asdasd")
         
-        # pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,termDays,noOfPaymentSchedules,noOfPaymentSchedules - (loan.amortizations.filter(amortizationStatus__name='PAID').count()    ))
+        pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,termDays,noOfPaymentSchedules,noOfPaymentSchedules - (loan.amortizations.filter(amortizationStatus__name='PAID').count()    ))
          
         days =  cycle - delta.days
         daysExceed = days - cycle
@@ -518,7 +536,7 @@ class CalculatePMTView(views.APIView):
         # principalBalance =pmt.nextStartingValue
         principalBalance = loan.currentAmortizationItem.principalBalance
 
-
+        totalDays = 0
         # payments = loan.latestAmortization. 
         if latestPayment:
             if latestPayment.balance >= 1:
@@ -533,9 +551,20 @@ class CalculatePMTView(views.APIView):
                 principal =  pmt.principal - latestPayment.overPayment
                 totalToPay = principal + interest
 
+            diff =  datePayment - latestPayment.datePayment 
+            totalDays = diff.days
+        else:
+             
+            totalDays = days=cycle
 
-        additionalInterest = 0
         
+        dayTillCutOff = totalDays - int(datePayment.strftime ('%d') )
+
+       
+        accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+        print(accruedInterest)
+        additionalInterest = 0
+        print("accruedInterest")
         if daysExceed < 0:
             daysExceed = 0
 
@@ -555,6 +584,7 @@ class CalculatePMTView(views.APIView):
             'dateSchedule':dateSchedule,  
             'days': days,
             'principal':principal,
+            'accruedInterest':accruedInterest,
             'interest':interest,
             'totalInterest':totalInterest,
             'additionalInterest':additionalInterest, 

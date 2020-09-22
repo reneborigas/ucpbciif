@@ -273,7 +273,7 @@ class UpdateLoanView(views.APIView):
 
                 for amortizationItem in amortization.amortizationItems.all().order_by('id'):
                     amortizationItem.schedule = schedule
-                    schedule = schedule + timezone.timedelta(days=loan.term.principalPaymentPeriod.paymentCycle)
+                    schedule = schedule + timezone.timedelta(days=loan.term.interestPaymentPeriod.paymentCycle)
                     amortizationItem.save()
                         
            
@@ -322,6 +322,8 @@ class LoanViewSet(ModelViewSet):
 
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
+            loan.totalAmortizationAccruedInterest = loan.getTotalAmortizationAccruedInterest
+              
             loan.totalDraftAmortizationInterest = loan.getTotalDraftAmortizationInterest  
 
             loan.loanTotalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
@@ -363,6 +365,7 @@ class LoanViewSet(ModelViewSet):
             for amortization in loan.amortizations.all() : 
 
                 amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
+                
                 amortization.totalObligations = amortization.getTotalObligations
                 amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
 

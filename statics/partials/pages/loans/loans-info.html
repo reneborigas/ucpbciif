@@ -812,30 +812,25 @@
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <button
-                                                class="btn btn-sm font-weight-bold"
+                                            <a
+                                                href="#"
+                                                class="text-hover-info font-weight-bolder text-primary"
                                                 ng-if="amortization.checks.length > 0"
-                                                ng-class="'btn-clean text-dark'"
+                                                data-toggle="modal"
+                                                data-target="#view-pdc"
+                                                ng-click="viewPDC($index+1,amortization,amortization.checks[0])"
                                             >
                                                 {{ amortization.checks[0].checkNo}}
-                                            </button>
-
-                                            <a class="btn btn-icon">
+                                            </a>
+                                            <a class="btn btn-icon" ng-if="amortization.checks.length == 0">
                                                 <i
-                                                    ng-if="amortization.checks.length == 0"
                                                     class="fad fa-money-check-edit"
                                                     style="--fa-primary-color: #f64e60; --fa-secondary-color: #3699ff"
                                                     data-toggle="modal"
-                                                    data-target="#edit-add-pdc"
+                                                    data-target="#add-pdc"
                                                     ng-click="addPDC($index+1,amortization)"
                                                 ></i>
                                             </a>
-                                            <!-- <button
-                                                class="btn btn-sm font-weight-bold btn-primary"
-                                                
-                                            >
-                                                ADD PDC
-                                            </button> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1664,8 +1659,8 @@
         </div>
     </div>
     <!-- End Modal Purpose Security -->
-    <!-- Start Modal PDC -->
-    <div id="edit-add-pdc" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <!-- Start Modal Add PDC -->
+    <div id="add-pdc" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1673,140 +1668,376 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
+                    <form name="form.addPDCForm">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold font-size-h6">Schedule:</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <label class="col-form-label font-size-h6">
+                                            {{ amortizationPayment }}: {{ amortizationSchedule | date : 'mediumDate' }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="dateReceived">Date Received From Accounting</label>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        id="dateReceived"
+                                        name="dateReceived"
+                                        placeholder="Registration Date"
+                                        ng-model="newCheck.dateReceived"
+                                        ng-class="{'is-invalid' : form.addPDCForm.dateReceived.$invalid &&
+                                        form.addPDCForm.dateReceived.$touched, 'is-valid' : form.addPDCForm.dateReceived.$valid && form.addPDCForm.dateReceived.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.addPDCForm.dateReceived.$touched && form.addPDCForm.dateReceived.$invalid"
+                                    >
+                                        Please select date check received from accounting.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="bankBranch">Bank Branch</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="bankBranch"
+                                        name="bankBranch"
+                                        placeholder="Bank Branch"
+                                        ng-model="newCheck.bankBranch"
+                                        ng-class="{'is-invalid' : form.addPDCForm.bankBranch.$invalid &&
+                                        form.addPDCForm.bankBranch.$touched, 'is-valid' : form.addPDCForm.bankBranch.$valid && form.addPDCForm.bankBranch.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.addPDCForm.bankBranch.$touched && form.addPDCForm.bankBranch.$invalid"
+                                    >
+                                        Please input bacnk branch.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="checkNo">Check Number</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="checkNo"
+                                        name="checkNo"
+                                        placeholder="Check Number"
+                                        ng-model="newCheck.checkNo"
+                                        ng-class="{'is-invalid' : form.addPDCForm.checkNo.$invalid &&
+                                        form.addPDCForm.checkNo.$touched, 'is-valid' : form.addPDCForm.checkNo.$valid && form.addPDCForm.checkNo.$touched }"
+                                        required
+                                    />
+                                    <span class="form-text text-muted" ng-show="form.addPDCForm.checkNo.$touched && form.addPDCForm.checkNo.$invalid">
+                                        Please input check number.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="amount">Amount</label>
+                                    <input
+                                        type="text"
+                                        min="0"
+                                        class="form-control"
+                                        id="amount"
+                                        name="amount"
+                                        placeholder="Number of Employees"
+                                        ng-model="newCheck.amount"
+                                        price
+                                        ng-class="{'is-invalid' : form.addPDCForm.amount.$invalid &&
+                                        form.addPDCForm.amount.$touched, 'is-valid' : form.addPDCForm.amount.$valid && form.addPDCForm.amount.$touched }"
+                                        required
+                                    />
+                                    <span class="form-text text-muted" ng-show="form.addPDCForm.amount.$touched && form.addPDCForm.amount.$invalid">
+                                        Please input check amount.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="pnNo">PN Number</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="pnNo"
+                                        name="pnNo"
+                                        placeholder="Check Number"
+                                        ng-model="newCheck.pnNo"
+                                        ng-class="{'is-invalid' : form.addPDCForm.pnNo.$invalid &&
+                                        form.addPDCForm.pnNo.$touched, 'is-valid' : form.addPDCForm.pnNo.$valid && form.addPDCForm.pnNo.$touched }"
+                                        required
+                                    />
+                                    <span class="form-text text-muted" ng-show="form.addPDCForm.pnNo.$touched && form.addPDCForm.pnNo.$invalid">
+                                        Please input PN number.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="area">Area</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="area"
+                                        name="area"
+                                        placeholder="Area"
+                                        ng-model="newCheck.area"
+                                        ng-class="{'is-invalid' : form.addPDCForm.area.$invalid &&
+                                        form.addPDCForm.area.$touched, 'is-valid' : form.addPDCForm.area.$valid && form.addPDCForm.area.$touched }"
+                                        required
+                                    />
+                                    <span class="form-text text-muted" ng-show="form.addPDCForm.area.$touched && form.addPDCForm.area.$invalid">
+                                        Please input check area.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="dateWarehoused">Date Warehoused</label>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        id="dateWarehoused"
+                                        name="dateWarehoused"
+                                        placeholder="Date Warehoused"
+                                        ng-model="newCheck.dateWarehoused"
+                                        ng-class="{'is-invalid' : form.addPDCForm.dateWarehoused.$invalid &&
+                                        form.addPDCForm.dateWarehoused.$touched, 'is-valid' : form.addPDCForm.dateWarehoused.$valid && form.addPDCForm.dateWarehoused.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.addPDCForm.dateWarehoused.$touched && form.addPDCForm.dateWarehoused.$invalid"
+                                    >
+                                        Please input date check warehoused.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="warehousingBatchNo">Warehousing Batch No</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="warehousingBatchNo"
+                                        name="warehousingBatchNo"
+                                        placeholder="Warehousing Batch Number"
+                                        ng-model="newCheck.warehousingBatchNo"
+                                        ng-class="{'is-invalid' : form.addPDCForm.warehousingBatchNo.$invalid &&
+                                        form.addPDCForm.warehousingBatchNo.$touched, 'is-valid' : form.addPDCForm.warehousingBatchNo.$valid && form.addPDCForm.warehousingBatchNo.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.addPDCForm.warehousingBatchNo.$touched && form.addPDCForm.warehousingBatchNo.$invalid"
+                                    >
+                                        Please input warehousing batch number.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="dateWarehoused">Check Status</label>
+                                    <select
+                                        class="form-control"
+                                        id="checkStatus"
+                                        name="checkStatus"
+                                        ng-model="newCheck.checkStatus"
+                                        ng-options="checkStatus.id as checkStatus.name for checkStatus in checkStatuses"
+                                        ng-class="{'is-invalid' : form.addPDCForm.checkStatus.$invalid &&
+                                        form.addPDCForm.checkStatus.$touched, 'is-valid' : form.addPDCForm.checkStatus.$valid && form.addPDCForm.checkStatus.$touched }"
+                                        required
+                                    ></select>
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.addPDCForm.checkStatus.$touched && form.addPDCForm.checkStatus.$invalid"
+                                    >
+                                        Please input check status.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="remarks">Remarks</label>
+                                    <textarea
+                                        type="text"
+                                        class="form-control"
+                                        id="remarks"
+                                        name="remarks"
+                                        placeholder="Remarks"
+                                        ng-model="newCheck.remarks"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="savePDC(newCheck)"
+                        ng-disabled="form.addPDCForm.$invalid"
+                    >
+                        Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal Add PDC-->
+    <!-- Start Modal View PDC -->
+    <div id="view-pdc" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Post Dated Check</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
                     <div class="row">
                         <div class="col">
                             <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold font-size-h6">Schedule:</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <label class="col-form-label font-size-h6">
-                                        {{ amortizationPayment }}: {{ amortizationSchedule | date : 'mediumDate' }}
-                                    </label>
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Schedule:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ amortizationPayment }}: {{ amortizationSchedule | date : 'mediumDate' }}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="form-group">
-                                <label for="dateReceived">Date Received From Accounting</label>
-                                <input
-                                    type="date"
-                                    class="form-control"
-                                    id="dateReceived"
-                                    name="dateReceived"
-                                    placeholder="Registration Date"
-                                    ng-model="check.dateReceived"
-                                />
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="bankBranch">Bank Branch</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="bankBranch"
-                                    name="bankBranch"
-                                    placeholder="Bank Branch"
-                                    ng-model="check.bankBranch"
-                                />
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Date Received From Accounting:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.dateReceived }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="form-group">
-                                <label for="checkNo">Check No</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="checkNo"
-                                    name="checkNo"
-                                    placeholder="Check Number"
-                                    ng-model="check.checkNo"
-                                />
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="amount">Amount</label>
-                                <input
-                                    type="text"
-                                    min="0"
-                                    class="form-control"
-                                    id="amount"
-                                    name="amount"
-                                    placeholder="Number of Employees"
-                                    ng-model="check.amount"
-                                    price
-                                />
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Bank Branch:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.bankBranch }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="form-group">
-                                <label for="pnNo">PN No</label>
-                                <input type="text" class="form-control" id="pnNo" name="pnNo" placeholder="Check Number" ng-model="check.pnNo" />
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="area">Area</label>
-                                <input type="text" class="form-control" id="area" name="area" placeholder="Area" ng-model="check.area" />
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Check Number:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.checkNo }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="form-group">
-                                <label for="dateWarehoused">Date Warehoused</label>
-                                <input
-                                    type="date"
-                                    class="form-control"
-                                    id="dateWarehoused"
-                                    name="dateWarehoused"
-                                    placeholder="Date Warehoused"
-                                    ng-model="check.dateWarehoused"
-                                />
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="warehousingBatchNo">Wearhousing Batch No</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="warehousingBatchNo"
-                                    name="warehousingBatchNo"
-                                    placeholder="Warehousing Batch Number"
-                                    ng-model="check.warehousingBatchNo"
-                                />
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Amount:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.amount }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="form-group">
-                                <label for="dateWarehoused">Check Status</label>
-                                <select
-                                    class="form-control"
-                                    id="checkStatus"
-                                    ng-model="check.checkStatus"
-                                    ng-options="checkStatus.id as checkStatus.name for checkStatus in checkStatuses"
-                                ></select>
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">PN Number:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.pnNo }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Area:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.area }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Date Warehoused:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.dateWarehoused }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Warehousing Batch Number:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.warehousingBatchNo }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Check Status:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.checkStatusText }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-xl-6 col-lg-6 col-form-label font-weight-bold">Remarks:</label>
+                                <div class="col-lg-6 col-xl-6">
+                                    <label class="col-form-label">{{ check.remarks }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary font-weight-bold" type="button" data-dismiss="modal" ng-click="savePDC(check)">Add</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Modal PDC-->
+    <!-- End Modal View PDC-->
     <!-- Start Modal Edit Release Date -->
     <div
         id="edit-release-date"

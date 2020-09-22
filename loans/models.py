@@ -515,7 +515,21 @@ class Loan(models.Model):
 
     def getLatestPayment(self):
         return  self.payments.filter(paymentStatus__name='TENDERED').order_by('-id').first()
+    def getTotalAmortizationAccruedInterest(self):
+        if self.isRestructured:
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
 
+            if latestAmortization: 
+                totalInterests = latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID') 
+                if totalInterests:
+                    return latestAmortization.amortizationItems.filter(amortizationStatus__name='PAID').aggregate(totalAmortizationInterest=Sum(F('accruedInterest') ))['totalAmortizationInterest']  
+                else:
+                    return 0
+        else: 
+            latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first() 
+            if latestAmortization: 
+                return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F('accruedInterest') ))['totalAmortizationInterest']  
+        return 0
     def getTotalAmortizationInterest(self):
         if self.isRestructured:
             latestAmortization = self.amortizations.filter(amortizationStatus__name='RESTRUCTURED').order_by('-id').first()
@@ -786,6 +800,7 @@ class AmortizationItem(models.Model):
         null=True
     )
     principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    accruedInterest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     additionalInterest = models.DecimalField(
         max_digits=12,
