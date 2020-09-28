@@ -558,8 +558,9 @@ class Loan(models.Model):
                     return 0
         else: 
             latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first() 
-      
+           
             if latestAmortization: 
+                 
                 return latestAmortization.amortizationItems.aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  
         return 0
 
@@ -681,16 +682,18 @@ class Loan(models.Model):
             latestAmortizationItem = latestAmortization.amortizationItems.filter(Q(amortizationStatus__name='UNPAID') | Q(amortizationStatus__name='PARTIAL')).order_by('id').first()
             
             check = 0
-            if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('check') ))['totalPayments']:
-                check = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('check') ))['totalPayments']
-
             cash = 0  
-            if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('cash') ))['totalPayments']:
-                cash = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('cash') ))['totalPayments']
+            if latestAmortizationItem:
+                if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('check') ))['totalPayments']:
+                    check = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('check') ))['totalPayments']
+
+           
+                if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('cash') ))['totalPayments']:
+                    cash = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F('cash') ))['totalPayments']
                 
-            paidPrincipal = cash + check
-            print(paidPrincipal)
-            latestAmortizationItem.principal = latestAmortizationItem.principal - paidPrincipal
+                paidPrincipal = cash + check
+                print(paidPrincipal) 
+                latestAmortizationItem.principal = latestAmortizationItem.principal - paidPrincipal
 
             return latestAmortizationItem
 
@@ -809,6 +812,7 @@ class AmortizationItem(models.Model):
         null=True
     )
     principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    deductAccruedInterest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     accruedInterest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     additionalInterest = models.DecimalField(

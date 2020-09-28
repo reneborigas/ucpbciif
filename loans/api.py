@@ -208,6 +208,86 @@ class UpdateCreditLineView(views.APIView):
         return Response({'error':'Error on updating credit line'},status.HTTP_400_BAD_REQUEST)
 
 
+class UpdateAmortizationItemView(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+    def post(self,request):
+        amortizationItemId = request.data.get("amortizationItemId") 
+        print("etp")
+        new_value =''
+        if amortizationItemId:  
+            amortizationItem = AmortizationItem.objects.get(pk=amortizationItemId)
+           
+            days = request.data.get("days")  
+            if days: 
+                amortizationItem.days = days
+                new_value = days
+                amortizationItem.save()
+
+            schedule = request.data.get("schedule")  
+            if schedule: 
+                amortizationItem.schedule = datetime.strptime(schedule, '%m/%d/%Y')  
+                new_value = schedule
+                amortizationItem.save()
+            
+            accruedInterest = request.data.get("accruedInterest")  
+            if accruedInterest: 
+                 
+                amortizationItem.accruedInterest = accruedInterest 
+                
+                # amortizationItem.deductAccruedInterest = int(amortizationItem.interest)  - int(amortizationItem.accruedInterest)
+                amortizationItem.interest =  int(amortizationItem.deductAccruedInterest)  + int(amortizationItem.accruedInterest)
+                amortizationItem.total = int(amortizationItem.interest) + int(amortizationItem.principal)
+                new_value = accruedInterest
+                amortizationItem.save()
+                lastBalance = amortizationItem.amortization.loan.amount
+
+                for amortizationItem in amortizationItem.amortization.amortizationItems.all():
+                    amortizationItem.principalBalance = lastBalance - amortizationItem.total
+                    amortizationItem.save()
+                    lastBalance =  amortizationItem.principalBalance 
+
+            interest = request.data.get("interest")  
+            if interest: 
+                
+                amortizationItem.deductAccruedInterest = float(interest)
+                 
+                amortizationItem.interest =  (float(amortizationItem.deductAccruedInterest))  + float(amortizationItem.accruedInterest)
+                amortizationItem.total = float(amortizationItem.interest) + float(amortizationItem.principal)
+
+                new_value = interest
+                amortizationItem.save()
+                lastBalance = amortizationItem.amortization.loan.amount
+
+
+                for amortizationItem in amortizationItem.amortization.amortizationItems.all():
+                    amortizationItem.principalBalance = lastBalance - amortizationItem.total
+                    amortizationItem.save()
+                    lastBalance =  amortizationItem.principalBalance 
+
+            principal = request.data.get("principal")  
+            if principal: 
+                amortizationItem.principal = principal 
+                amortizationItem.total = int(amortizationItem.interest) + int(amortizationItem.principal)
+
+                new_value = principal
+                amortizationItem.save()
+                lastBalance = amortizationItem.amortization.loan.amount
+
+                for amortizationItem in amortizationItem.amortization.amortizationItems.all():
+                    amortizationItem.principalBalance = lastBalance - amortizationItem.total
+                    amortizationItem.save()
+                    lastBalance =  amortizationItem.principalBalance 
+
+
+            return Response({
+                'message': 'Amortization Item Updated', 
+                'amortizationItem': amortizationItem.id,
+                'new_value': new_value
+            },status= status.HTTP_202_ACCEPTED) 
+
+        return Response({'error':'Error on updating credit line'},status.HTTP_400_BAD_REQUEST)
+
 
 class UpdateLoanView(views.APIView):
     
@@ -295,7 +375,7 @@ class LoanViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
+        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.exclude(amortizationStatus__name='DRAFT').order_by('-id')),)
         loanId = self.request.query_params.get('loanId', None)
         creditLineId = self.request.query_params.get('creditLineId', None)
         borrowerId = self.request.query_params.get('borrowerId', None)

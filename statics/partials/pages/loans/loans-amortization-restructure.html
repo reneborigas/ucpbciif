@@ -358,7 +358,9 @@
                                             <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.schedule | date: 'mediumDate' }}
                                             </span> -->
-                                            <input type="date" class="form-control" ng-model="amortization.schedule" />
+                                            <input type="date" class="form-control" ng-model="amortization.schedule" 
+                                            ng-model-options="{debounce: 2000}"
+                                            ng-change="updateAmortizationSchedule(amortization.id,amortization.schedule)"/>
                                         </div>
                                     </td>
                                     <td>
@@ -369,7 +371,7 @@
                                                 step="1"
                                                 ng-model="amortization.days"
                                                 ng-model-options="{debounce: 2000}"
-                                                ng-change="updateAmortizationDay(amortization)"
+                                                ng-change="updateAmortizationDay(amortization.id,amortization.days)"
                                             />
                                         </div>
                                     </td>
@@ -378,7 +380,9 @@
                                             <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.principal | currency :'₱'}}
                                             </span> -->
-                                            <input type="text" class="form-control" placeholder="Principal" ng-model="amortization.principal" price />
+                                            <input type="text" class="form-control" placeholder="Principal" ng-model="amortization.principal" price 
+                                            ng-model-options="{debounce: 2000}"
+                                            ng-change="updateAmortizationPrincipal(amortization.id,amortization.principal)"/>
                                         </div>
                                     </td>
                                     <td>
@@ -386,7 +390,9 @@
                                             <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.interest | currency :'₱'}}
                                             </span> -->
-                                            <input type="text" class="form-control" placeholder="Accrued Interest" ng-model="amortization.accruedInterest" price />
+                                            <input type="text" class="form-control" placeholder="Accrued Interest" ng-model="amortization.accruedInterest" price
+                                            ng-model-options="{debounce: 2000}"
+                                            ng-change="updateAmortizationAccruedInterest(amortization.id,amortization.accruedInterest)"/>
                                         </div>
                                     </td>
                                     <td>
@@ -394,7 +400,9 @@
                                             <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.interest | currency :'₱'}}
                                             </span> -->
-                                            <input type="text" class="form-control" placeholder="Interest" ng-model="amortization.interest" price />
+                                            <input type="text" class="form-control" placeholder="Interest" ng-model="amortization.deductAccruedInterest" price  
+                                             ng-model-options="{debounce: 2000}"
+                                            ng-change="updateAmortizationInterest(amortization.id,amortization.deductAccruedInterest)"/>
                                         </div>
                                     </td>
                                    

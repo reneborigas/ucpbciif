@@ -575,7 +575,7 @@ define(function () {
             if (parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPayWithPenalty) <= 0) {
                 return 0;
             }
-            return parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPayWithPenalty);
+            return (parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPayWithPenalty)).toFixed(2) ;
         };
 
         $scope.getOutStandingBalance = function () {

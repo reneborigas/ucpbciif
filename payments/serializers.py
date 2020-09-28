@@ -133,6 +133,7 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 amortization = amortization,
                 days= cycle,
                 principal = pmt.principal,
+                deductAccruedInterest =  pmt.interest- accruedInterest,
                 accruedInterest = accruedInterest,
                 interest = pmt.interest,
                 additionalInterest = 0,
@@ -150,6 +151,8 @@ def generateAmortizationSchedule(loan,lastPayment,currentAmortization):
                 amortization = amortization,
                 days= cycle,
                 principal = 0,
+                accruedInterest =0,
+                deductAccruedInterest =0,
                 interest = 0,
                 vat = 0,
                 total = 0,
@@ -397,6 +400,7 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
                     amortization = amortization,
                     days= cycle,
                     principal = principaEntry,
+                    deductAccruedInterest =  pmtInterest.interest- accruedInterest,
                     accruedInterest = accruedInterest,
                     interest = pmtInterest.interest,
                     additionalInterest = 0,
@@ -424,6 +428,8 @@ def generateUnevenAmortizationSchedule(loan,lastPayment,currentAmortization):
                 days= cycle,
                 principal = 0,
                 interest = 0,
+                accruedInterest = 0,
+                deductAccruedInterest =0,
                 vat = 0,
                 total = 0,
                 principalBalance = 0,
@@ -523,9 +529,15 @@ class PaymentSerializer(ModelSerializer):
          
         if payment.balance <= 0:
            
-            payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
+            # payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
        
-       
+            amortizationItem = payment.loan.getCurrentAmortizationItem()
+            amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
+            amortizationItem.daysExceed = payment.daysExceed
+            amortizationItem.daysAdvanced = payment.daysAdvanced
+            amortizationItem.additionalInterest =  payment.additionalInterest
+            amortizationItem.penalty =  payment.penalty
+            amortizationItem.save()
         payment.amortization.save()
 
        
@@ -537,18 +549,18 @@ class PaymentSerializer(ModelSerializer):
         if payment.balance >= 1:
             amortizationItem = payment.loan.getCurrentAmortizationItem()
             amortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=3) #partial
-            amortizationItem.principal = payment.principal
+            # amortizationItem.principal = payment.principal
             amortizationItem.interest =   payment.interestPayment 
             amortizationItem.accruedInterest =   payment.accruedInterestPayment 
             amortizationItem.total = amortizationItem.interest + amortizationItem.principal
             amortizationItem.save()
-        else:
-            payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
-            if payment.loan.term.principalPaymentPeriod == payment.loan.term.interestPaymentPeriod:
+        # else:
+        #     payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
+        #     if payment.loan.term.principalPaymentPeriod == payment.loan.term.interestPaymentPeriod:
 
-                generateAmortizationSchedule(payment.loan,payment,payment.amortization)
-            else:
-                generateUnevenAmortizationSchedule(payment.loan,payment,payment.amortization)
+        #         generateAmortizationSchedule(payment.loan,payment,payment.amortization)
+        #     else:
+        #         generateUnevenAmortizationSchedule(payment.loan,payment,payment.amortization)
         # else: 
         #    
         return payment
