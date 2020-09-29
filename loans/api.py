@@ -231,7 +231,8 @@ class UpdateAmortizationItemView(views.APIView):
                 amortizationItem.save()
             
             accruedInterest = request.data.get("accruedInterest")  
-            if accruedInterest: 
+
+            if accruedInterest is not None: 
                  
                 amortizationItem.accruedInterest = accruedInterest 
                 
@@ -240,15 +241,15 @@ class UpdateAmortizationItemView(views.APIView):
                 amortizationItem.total = int(amortizationItem.interest) + int(amortizationItem.principal)
                 new_value = accruedInterest
                 amortizationItem.save()
-                lastBalance = amortizationItem.amortization.loan.amount
+                # lastBalance = amortizationItem.amortization.loan.amount
 
-                for amortizationItem in amortizationItem.amortization.amortizationItems.all():
-                    amortizationItem.principalBalance = lastBalance - amortizationItem.total
-                    amortizationItem.save()
-                    lastBalance =  amortizationItem.principalBalance 
+                # for amortizationItem in amortizationItem.amortization.amortizationItems.all():
+                #     amortizationItem.principalBalance = lastBalance - amortizationItem.total
+                #     amortizationItem.save()
+                #     lastBalance =  amortizationItem.principalBalance 
 
             interest = request.data.get("interest")  
-            if interest: 
+            if interest is not None: 
                 
                 amortizationItem.deductAccruedInterest = float(interest)
                  
@@ -257,27 +258,41 @@ class UpdateAmortizationItemView(views.APIView):
 
                 new_value = interest
                 amortizationItem.save()
-                lastBalance = amortizationItem.amortization.loan.amount
+                # lastBalance = amortizationItem.amortization.loan.amount
 
 
-                for amortizationItem in amortizationItem.amortization.amortizationItems.all():
-                    amortizationItem.principalBalance = lastBalance - amortizationItem.total
-                    amortizationItem.save()
-                    lastBalance =  amortizationItem.principalBalance 
+                # for amortizationItem in amortizationItem.amortization.amortizationItems.all():
+                #     amortizationItem.principalBalance = lastBalance - amortizationItem.total
+                #     amortizationItem.save()
+                #     lastBalance =  amortizationItem.principalBalance 
 
             principal = request.data.get("principal")  
-            if principal: 
+            if principal is not None: 
                 amortizationItem.principal = principal 
                 amortizationItem.total = int(amortizationItem.interest) + int(amortizationItem.principal)
 
                 new_value = principal
                 amortizationItem.save()
-                lastBalance = amortizationItem.amortization.loan.amount
+                # lastBalance = amortizationItem.amortization.loan.amount
 
-                for amortizationItem in amortizationItem.amortization.amortizationItems.all():
-                    amortizationItem.principalBalance = lastBalance - amortizationItem.total
-                    amortizationItem.save()
-                    lastBalance =  amortizationItem.principalBalance 
+                # for amortizationItem in amortizationItem.amortization.amortizationItems.all():
+                #     amortizationItem.principalBalance = lastBalance - amortizationItem.total
+                #     amortizationItem.save()
+                #     lastBalance =  amortizationItem.principalBalance 
+
+            principalBalance = request.data.get("principalBalance")  
+            if principalBalance is not None: 
+                amortizationItem.principalBalance = principalBalance 
+              
+                new_value = principalBalance
+                amortizationItem.save()
+                # lastBalance = amortizationItem.amortization.loan.amount
+
+                # for amortizationItem in amortizationItem.amortization.amortizationItems.all():
+                #     amortizationItem.principalBalance = lastBalance - amortizationItem.total
+                #     amortizationItem.save()
+                #     lastBalance =  amortizationItem.principalBalance 
+
 
 
             return Response({
@@ -375,7 +390,7 @@ class LoanViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.exclude(amortizationStatus__name='DRAFT').order_by('-id')),)
+        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
         loanId = self.request.query_params.get('loanId', None)
         creditLineId = self.request.query_params.get('creditLineId', None)
         borrowerId = self.request.query_params.get('borrowerId', None)
