@@ -9,18 +9,33 @@
         </li>
         <li class="divider"></li>
         <li class="nav-title">Accounting</li>
-        <li class="nav-item">
-            <a class="nav-link">
-                <i class="fad fa-file-alt"></i>
-                Chart of Accounts
+        <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="fad fa-book-user"></i>
+                Accounts
             </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active">
+                        <i class="fad fa-user-chart"></i>
+                        Customers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active">
+                        <i class="fad fa-user-tag"></i>
+                        Vendors
+                    </a>
+                </li>
+            </ul>
         </li>
         <li class="nav-item">
             <a class="nav-link">
-                <i class="fad fa-sack"></i>
-                Budget
+                <i class="fad fa-book-alt"></i>
+                General Journal
             </a>
         </li>
+        <li class="nav-title">Monitoring</li>
         <li class="nav-item">
             <a class="nav-link">
                 <i class="fad fa-money-check-edit"></i>
@@ -33,57 +48,25 @@
                 Bank Reconciliation
             </a>
         </li>
-        <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="fad fa-desktop"></i>
-                Monitoring
+        <li class="nav-item">
+            <a class="nav-link">
+                <i class="fad fa-sack"></i>
+                Budget
             </a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link pl-16" ui-sref-active="active">
-                        <i class="fad fa-hand-receiving"></i>
-                        Accounts Receivable Monitoring
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link pl-16" ui-sref-active="active">
-                        <i class="fad fa-hand-holding fa-flip-horizontal"></i>
-                        Accounts Payable Monitoring
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link pl-16" ui-sref-active="active">
-                        <i class="fad fa-monitor-heart-rate"></i>
-                        FFE Monitoring
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link pl-16" ui-sref-active="active">
-                        <i class="fad fa-monitor-heart-rate"></i>
-                        eDST Monitoring
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link pl-16" ui-sref-active="active">
-                        <i class="fad fa-monitor-heart-rate"></i>
-                        Prepaid Expenses Monitoring
-                    </a>
-                </li>
-            </ul>
         </li>
-        <li class="nav-title">BookKeeping</li>
+        <li class="nav-title">Configuration</li>
+        <li class="nav-item">
+            <a class="nav-link">
+                <i class="fad fa-file-alt"></i>
+                Chart of Accounts
+            </a>
+        </li>
         <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
                 <i class="fad fa-books"></i>
                 Books
             </a>
             <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link pl-16" ui-sref-active="active">
-                        <i class="fad fa-book-alt"></i>
-                        General Journal
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link pl-16" ui-sref-active="active">
                         <i class="fad fa-book"></i>
@@ -108,13 +91,19 @@
                         Subsidiary Ledgers
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link pl-16" ui-sref-active="active">
                         <i class="fad fa-book-user"></i>
                         Individual Ledgers
                     </a>
-                </li>
+                </li> -->
             </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link">
+                <i class="fad fa-percentage"></i>
+                Taxes
+            </a>
         </li>
     </ul>
 </nav>

@@ -290,20 +290,17 @@
                                     <table class="table table-vertical-center table-light table-borderless">
                                         <thead>
                                             <th style="width: 28%">Full Name</th>
-                                            <th style="width: 18%">Address</th>
                                             <th style="width: 18%">Phone Number</th>
-                                            <th style="width: 18%">Telephone Number</th>
                                             <th style="width: 18%">Email Address</th>
                                         </thead>
                                         <tr align="center">
                                             <td style="width: 28%">
-                                                {{ borrower.contactPerson.firstname }} {{ borrower.contactPerson.middlename }} {{
-                                                borrower.contactPerson.lastname }}
+                                                {{ borrower.business.businessContactPerson[0].firstname }} {{
+                                                borrower.business.businessContactPerson[0].middlename }} {{
+                                                borrower.business.businessContactPerson[0].lastname }}
                                             </td>
-                                            <td style="width: 18%">{{ borrower.contactPerson.address }}</td>
-                                            <td style="width: 18%">{{ borrower.contactPerson.phoneNo }}</td>
-                                            <td style="width: 18%">{{ borrower.contactPerson.telNo }}</td>
-                                            <td style="width: 18%">{{ borrower.contactPerson.emailAddress }}</td>
+                                            <td style="width: 18%">{{ borrower.business.businessContactPerson[0].phoneNo }}</td>
+                                            <td style="width: 18%">{{ borrower.business.businessContactPerson[0].emailAddress }}</td>
                                         </tr>
                                     </table>
                                 </td>

@@ -88,6 +88,7 @@ urlpatterns = [
 
     # App Urls
     path('api/auth/',include('auth.urls')),
+    path('api/accounting/',include('accounting.urls'),name='accounting'),
     path('api/borrowers/',include('borrowers.urls'),name='borrowers'),
     path('api/documents/',include('documents.urls'),name='documents'),
     path('api/loans/',include('loans.urls'),name='loans'),

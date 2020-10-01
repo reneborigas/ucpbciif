@@ -292,8 +292,10 @@ class Address(models.Model):
         null=True,
         blank=True
     )
-    country = models.CharField(
-        max_length=255,
+    country = models.ForeignKey(
+        'settings.Country',
+        on_delete=models.SET_NULL,
+        related_name="addressCountry",
         null=True,
         blank=True
     )
@@ -983,18 +985,6 @@ class Borrower(models.Model):
         blank = True,
         null = True, 
     )
-    # cooperative = models.OneToOneField(
-    #     Cooperative,
-    #     on_delete=models.SET_NULL,
-    #     related_name="borrowerCooperative",
-    #     null = True,
-    # )
-    # contactPerson = models.OneToOneField(
-    #     ContactPerson,
-    #     on_delete=models.SET_NULL,
-    #     related_name="borrowerContactPerson",
-    #     null = True,
-    # ) 
     status = models.CharField(
         max_length=255,
         blank = True,
