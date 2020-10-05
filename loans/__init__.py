@@ -31,7 +31,6 @@ class PMT:
         self.payment =   pvr / (1 - (1 + periodicInterestRate) ** int(totalNumberOfInterestPeriod))
         self.interest = loanAmount * periodicInterestRate
         
-
         self.principal = self.payment - self.interest
         self.nextStartingValue = loanAmount -  self.principal
 

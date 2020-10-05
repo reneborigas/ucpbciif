@@ -559,8 +559,7 @@ class Loan(models.Model):
         else: 
             latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first() 
            
-            if latestAmortization: 
-                 
+            if latestAmortization:       
                 return latestAmortization.amortizationItems.aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  
         return 0
 
