@@ -4,7 +4,8 @@ html {
 	text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
-	-webkit-tap-highlight-color: transparent
+	-webkit-tap-highlight-color: transparent;
+	
 }
 
 body,
@@ -42,7 +43,7 @@ body {
 	-webkit-box-direction: normal;
 	-ms-flex-direction: column;
 	flex-direction: column;
-	color: #464e5f
+	color: #464e5f;
 }
 
 .content {

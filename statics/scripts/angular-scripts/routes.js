@@ -952,7 +952,6 @@ define(function () {
                         label: 'Maturing Amortizations',
                     },
                 })
-
                 .state('app.amortizations.list', {
                     url: '',
                     templateUrl: '/statics/partials/pages/amortizations/amortizations-list.html',
@@ -962,6 +961,84 @@ define(function () {
                     },
                     ncyBreadcrumb: {
                         label: 'Amortizations',
+                    },
+                })
+
+                //Accounting
+                .state('app.invoices', {
+                    url: '/invoices',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Invoices',
+                        skip: true,
+                    },
+                    resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Accounting System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/transactions.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.invoices.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/sales/invoices-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Invoices List',
+                        stateTitle: 'Invoices',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Invoices',
+                    },
+                })
+                .state('app.invoices.info', {
+                    url: '/:transactionId',
+                    templateUrl: '/statics/partials/pages/sales/invoices-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Info',
+                    },
+                    ncyBreadcrumb: {
+                        label: '{{ transactionNumber }}',
+                        parent: 'app.invoices.list',
+                    },
+                    resolve: {
+                        fetchTransaction: function ($http, $q, $stateParams) {
+                            return $http
+                                .get('/api/borrowers/borrowers/', { params: { borrowerId: $stateParams.borrowerId } })
+                                .then(function (response) {
+                                    if (response.data.length == 0) {
+                                        return $q.reject('Not Found');
+                                    }
+                                });
+                        },
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                        appFactory.getBorrowerName($scope.borrowerId).then(function (data) {
+                            $scope.borrowerName = data;
+                        });
                     },
                 })
 

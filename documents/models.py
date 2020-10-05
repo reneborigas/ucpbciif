@@ -194,13 +194,13 @@ class DocumentMovement(models.Model):
     committee = models.ForeignKey(
         'committees.Committee',
         on_delete=models.CASCADE,
-        related_name="documentMovementCommittes",
+        related_name="documentMovementCommittee",
     )
     status = models.ForeignKey(
         'processes.Statuses',
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
-        related_name="documentMovementStatuses",
+        related_name="documentMovementStatus",
     )
     description = models.TextField(
         blank = True,
