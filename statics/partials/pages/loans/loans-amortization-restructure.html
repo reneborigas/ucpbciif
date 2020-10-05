@@ -412,11 +412,22 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">{{ amortization.total | currency :'₱'}}</span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
                                                 {{ amortization.principalBalance | currency :'₱'}}
                                             </span>
+                                        </div>
+                                    </td> -->
+
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ amortization.interest | currency :'₱'}}
+                                            </span> -->
+                                            <input type="text" class="form-control" placeholder="Principal Balance" ng-model="amortization.principalBalance" price  
+                                             ng-model-options="{debounce: 2000}"
+                                            ng-change="updateAmortizationPrincipalBalance(amortization.id,amortization.principalBalance)"/>
                                         </div>
                                     </td>
                                 </tr>

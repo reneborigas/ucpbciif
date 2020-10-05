@@ -297,9 +297,7 @@ class SaveDraftRestructuredAmortizationView(views.APIView):
         else: 
             return Response({'error':'Error on Saving Draft'},status.HTTP_400_BAD_REQUEST)
 
-        
-        
-
+         
 
 
         return Response({

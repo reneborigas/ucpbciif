@@ -314,8 +314,9 @@ function price($filter) {
             if (valStr.length === 1 && valStr[0] === '-') {
                 displayValue = valStr[0];
             } else if (valStr.length === 1 && valStr[0] === '0') {
-                displayValue = '';
-            } else {
+                displayValue = '0.0';
+            } 
+            else {
                 displayValue = $filter('number')(displayValue);
             }
 

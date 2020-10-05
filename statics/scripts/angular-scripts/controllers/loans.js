@@ -1018,7 +1018,31 @@ define(function () {
                     }
                 );
              };
+             $scope.updateAmortizationPrincipalBalance = function (amortizationItem,principalBalance) {
+                draftAmortizationBlockUI.start('Updating Amortization Items...'); 
 
+                $http
+                .post('/api/loans/updateamortizationitem/', {
+                    amortizationItemId: amortizationItem,
+                    principalBalance:principalBalance,
+                })
+                .then(
+                    function (response) {
+                    
+                        // $scope.amortization.sc = response.data.new_value;
+                        $scope.loadLoans();
+                        draftAmortizationBlockUI.stop();
+                        toastr.success('Success', 'Amortization Item Updated');
+                    },
+                    function (error) {
+                        draftAmortizationBlockUI.stop();
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update amortization item. Please contact System Administrator.'
+                        );
+                    }
+                );
+             };
         $scope.calculateRestructuredAmortization = function (loanId, dateStart, termDays, principalPaymentCycle, interestPaymentCycle) {
             $http
                 .post('/api/processes/calculaterestructuredpmt/', {

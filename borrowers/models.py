@@ -15,6 +15,7 @@ class Business(models.Model):
         null=True,
         blank=True
     )
+   
     officialRegisteredTradeName = models.CharField(
         max_length=255,
         null=True,
