@@ -557,10 +557,12 @@ class Loan(models.Model):
                 else:
                     return 0
         else: 
-            latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first() 
+
+            # latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first() 
            
-            if latestAmortization:       
-                return latestAmortization.amortizationItems.aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  
+            # if latestAmortization:       
+            #     return latestAmortization.amortizationItems.aggregate(totalAmortizationPrincipal=Sum(F('principal') ))['totalAmortizationPrincipal']  
+            return self.amount
         return 0
 
     def getTotalDraftAmortizationInterest(self):
@@ -810,9 +812,9 @@ class AmortizationItem(models.Model):
         blank=True,
         null=True
     )
-    principal = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    principal = models.DecimalField( max_digits=12, decimal_places=3,blank=False)
     deductAccruedInterest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
-    accruedInterest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    accruedInterest = models.DecimalField( max_digits=12, decimal_places=3,blank=False)
     interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     additionalInterest = models.DecimalField(
         max_digits=12,

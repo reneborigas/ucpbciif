@@ -581,7 +581,7 @@ define(function () {
         $scope.getOutStandingBalance = function () {
             console.log(parseFloat($scope.payment.total));
             console.log(parseFloat($scope.payment.totalToPay));
-            if ($scope.getOverPayment().toFixed(2) >= 1) {
+            if ($scope.getOverPayment() >= 1) {
                 // if (parseFloat($scope.payment.total).toFixed(2) > parseFloat($scope.payment.totalToPay).toFixed(2)) {
                 return parseFloat($scope.payment.principalBalance);
                 // parseFloat($scope.payment.principal) -

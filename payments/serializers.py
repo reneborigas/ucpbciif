@@ -530,10 +530,9 @@ class PaymentSerializer(ModelSerializer):
         if payment.balance <= 0:
            
             # payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
-       
             amortizationItem = payment.loan.getCurrentAmortizationItem()
             amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
-            amortizationItem.daysExceed = payment.daysExceed
+            # amortizationItem.daysExceed = payment.principal
             amortizationItem.daysAdvanced = payment.daysAdvanced
             amortizationItem.additionalInterest =  payment.additionalInterest
             amortizationItem.penalty =  payment.penalty
@@ -549,7 +548,7 @@ class PaymentSerializer(ModelSerializer):
         if payment.balance >= 1:
             amortizationItem = payment.loan.getCurrentAmortizationItem()
             amortizationItem.amortizationStatus  = AmortizationStatus.objects.get(pk=3) #partial
-            # amortizationItem.principal = payment.principal
+            # amortizationItem.principal = amortizationItem.principal
             amortizationItem.interest =   payment.interestPayment 
             amortizationItem.accruedInterest =   payment.accruedInterestPayment 
             amortizationItem.total = amortizationItem.interest + amortizationItem.principal
