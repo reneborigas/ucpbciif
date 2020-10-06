@@ -279,6 +279,12 @@ class LoanSerializer(ModelSerializer):
     totalPayment = serializers.CharField(read_only=True)
 
     totalPrincipalPayment = serializers.CharField(read_only=True)
+    totalInterestPayment = serializers.CharField(read_only=True)
+    totalAccruedInterestPayment = serializers.CharField(read_only=True)
+    totalPenaltyPayment  = serializers.CharField(read_only=True)
+    totalAdditionalInterestPayment = serializers.CharField(read_only=True)
+    totalTotalInterestPayment = serializers.CharField(read_only=True)
+
     totalPrincipalBalance = serializers.CharField(read_only=True)
     currentAmortizationItem =   AmortizationItemSerializer(read_only=True)
     lastAmortizationItem =   AmortizationItemSerializer(read_only=True)

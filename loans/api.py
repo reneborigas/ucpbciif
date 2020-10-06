@@ -450,6 +450,11 @@ class LoanViewSet(ModelViewSet):
             loan.latestPayment = loan.getLatestPayment
             loan.totalPayment = loan.getTotalPayment
             loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
+            loan.totalInterestPayment = loan.getTotaInterestPayment()
+            loan.totalAccruedInterestPayment = loan.getTotalAccruedInterestPayment()
+            loan.totalTotalInterestPayment = loan.getTotalTotalInterestPayment()
+            loan.totalPenaltyPayment = loan.getTotalPenaltyPayment()
+            loan.totalAdditionalInterestPayment = loan.getTotalAdditionalInterestPayment()
 
             loan.totalPrincipalBalance = loan.loanTotalAmortizationPrincipal  - loan.totalPrincipalPayment
 

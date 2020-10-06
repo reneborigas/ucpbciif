@@ -117,6 +117,15 @@ class BorrowerViewSet(ModelViewSet):
             borrower.payments = borrower.getPayments()
             borrower.totalPayments = borrower.getTotalPayments()
 
+            for loan in borrower.loans.all():
+                loan.totalPayment = loan.getTotalPayment
+                loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
+                loan.totalInterestPayment = loan.getTotaInterestPayment()
+                loan.totalAccruedInterestPayment = loan.getTotalAccruedInterestPayment()
+                loan.totalTotalInterestPayment = loan.getTotalTotalInterestPayment()
+                loan.totalPenaltyPayment = loan.getTotalPenaltyPayment()
+                loan.totalAdditionalInterestPayment = loan.getTotalAdditionalInterestPayment()
+
             if loanProgramId is not None: 
                 borrower.totalAvailmentPerProgram = borrower.getTotalAvailmentsPerProgram(loanProgramId)
 

@@ -668,6 +668,47 @@ class Loan(models.Model):
  
         return   0  
 
+    def getTotaInterestPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('interestPayment') ))['totalPayments']  
+            return  totalPayments
+ 
+        return   0  
+
+    def getTotalAccruedInterestPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('accruedInterestPayment') ))['totalPayments']  
+            return  totalPayments
+ 
+        return   0  
+
+    def getTotalPenaltyPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('penaltyPayment') ))['totalPayments']  
+            return  totalPayments
+ 
+        return   0  
+
+
+    def getTotalTotalInterestPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('interestPayment') ))['totalPayments']  +  (self.payments.aggregate(totalPayments=Sum(F('accruedInterestPayment') ))['totalPayments']   )
+            return  totalPayments
+ 
+        return   0 
+
+    def getTotalAdditionalInterestPayment(self):
+        totalPayments = 0
+        if self.payments.aggregate(totalPayments=Sum(F('total') ))['totalPayments']:
+            totalPayments =  self.payments.aggregate(totalPayments=Sum(F('interestPayment') ))['totalPayments']  - (self.payments.aggregate(totalPayments=Sum(F('interest') ))['totalPayments']  - self.payments.aggregate(totalPayments=Sum(F('accruedInterest') ))['totalPayments']  )
+            return  totalPayments
+ 
+        return   0  
+
     def getCurrentAmortizationItem(self):
         
         latestAmortization = self.amortizations.filter(amortizationStatus__name='UNPAID').order_by('-id').first()
