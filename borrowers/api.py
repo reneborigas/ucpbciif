@@ -52,6 +52,7 @@ class BorrowerViewSet(ModelViewSet):
                 When(recordType='ID',then=V('Individual')),
                 output_field=models.CharField()
             ),
+            branchCode=F('branch__branchCode')
             # contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
             # cooperativeName=F('cooperative__name'),
             # tin=F('cooperative__tin'),
@@ -60,6 +61,7 @@ class BorrowerViewSet(ModelViewSet):
         ).exclude(isDeleted=True).order_by('borrowerId')
 
         borrowerId = self.request.query_params.get('borrowerId', None)
+        branch = self.request.query_params.get('branch', None)
         loanProgramId = self.request.query_params.get('loanProgramId', None)
         totalAvailmentsFrom = self.request.query_params.get('totalAvailmentsFrom', None)
         totalAvailmentsTo = self.request.query_params.get('totalAvailmentsTo', None)
@@ -75,6 +77,9 @@ class BorrowerViewSet(ModelViewSet):
 # .filter(status__name='RELEASED')
         if borrowerId is not None:
             queryset = queryset.filter(borrowerId=borrowerId)
+
+        if branch is not None:
+            queryset = queryset.filter(branch=branch)
 
         
         if totalAvailmentsFrom is not None and totalAvailmentsTo is not None:

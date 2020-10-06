@@ -526,7 +526,7 @@ define(function () {
                     }
                 );
             },
-            getTerm: function () {
+            getLoanTerms: function () {
                 return $http.get('/api/loans/terms/').then(
                     function (response) {
                         return response.data;

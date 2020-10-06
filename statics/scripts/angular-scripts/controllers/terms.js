@@ -3,35 +3,65 @@ define(function () {
 
     var app = angular.module('app');
 
-    app.controller('TermsListController', function TermsListController($http, $filter, $scope, $state, $timeout, toastr, appFactory, NgTableParams) {
-        $scope.tableTerms = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/loans/terms/').then(
-                        function (response) {
-                            var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
-                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                            params.total(response.data.length);
+    app.controller('TermsListController', function TermsListController(
+        $http,
+        $filter,
+        $scope,
+        $state,
+        $timeout,
+        toastr,
+        appFactory,
+        NgTableParams,
+        blockUI
+    ) {
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Term List. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var termListBlockUI = blockUI.instances.get('termListBlockUI');
+
+        $scope.loadTerms = function () {
+            termListBlockUI.start('Loading Terms...');
+            $scope.tableTerms = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
                 },
-            }
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/loans/terms/').then(
+                            function (response) {
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                termListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not load Term List. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
+
+        $scope.$watch(
+            'searchTermAuto.keyword',
+            function (newTerm, oldTerm) {
+                $scope.tableTerms.filter({ $: newTerm });
+            },
+            true
         );
+
+        $scope.loadTerms();
 
         $scope.view = function (termId) {
             $state.go('app.terms.info', { termId: termId });

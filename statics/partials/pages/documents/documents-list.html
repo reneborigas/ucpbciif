@@ -23,11 +23,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="navi flex-column navi-hover py-2">
-                                    <li
-                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-                                    >
-                                        Choose an option:
-                                    </li>
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link" ng-click="printDataTable()">
                                             <span class="navi-icon">
@@ -65,17 +61,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" block-ui="documentListBlockUI">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        ng-model="searchTermAuto"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
                             </div>
@@ -103,15 +94,8 @@
                                     </a>
                                 </td>
 
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'FILE NAME'"
-                                    sortable="'name'"
-                                >
-                                    <a href="" ng-click="view(document.subProcessName,document.id)">
-                                        {{ document.name }}
-                                    </a>
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'FILE NAME'" sortable="'name'">
+                                    <a href="" ng-click="view(document.subProcessName,document.id)">{{ document.name }}</a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -147,21 +131,21 @@
                                     {{ document.currentStatus.name }}
                                 </td>
                                 <td
-                                class="datatable-cell datatable-cell-left"
-                                header-class="'text-left'"
-                                data-title="'DATE CREATED'"
-                                sortable="'dateCreated'"
-                                   >
-                                {{ document.dateCreated | date : 'mediumDate' }}
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'DATE CREATED'"
+                                    sortable="'dateCreated'"
+                                >
+                                    {{ document.dateCreated | date : 'mediumDate' }}
                                 </td>
 
                                 <td
-                                class="datatable-cell datatable-cell-left"
-                                header-class="'text-left'"
-                                data-title="'DATE APPROVED'"
-                                sortable="'dateApproved'"
-                                   >
-                                {{ document.dateApproved | date : 'mediumDate' }}
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'DATE APPROVED'"
+                                    sortable="'dateApproved'"
+                                >
+                                    {{ document.dateApproved | date : 'mediumDate' }}
                                 </td>
                                 <!-- <td
                                     class="datatable-cell datatable-cell-left"
@@ -181,43 +165,22 @@
                                 <td colspan="9">
                                     <table class="table table-vertical-center table-light table-borderless">
                                         <thead>
-                                            <th style="width: 28%;">
-                                                Activity
-                                            </th>
-                                            <th style="width: 18%;">
-                                                Committee
-                                            </th>
-                                            <th style="width: 18%;">
-                                                Status
-                                            </th>
-                                            <th style="width: 18%;">
-                                                Description
-                                            </th>
-                                            <th style="width: 18%;">
-                                                Date
-                                            </th>
+                                            <th style="width: 28%">Activity</th>
+                                            <th style="width: 18%">Committee</th>
+                                            <th style="width: 18%">Status</th>
+                                            <th style="width: 18%">Description</th>
+                                            <th style="width: 18%">Date</th>
                                         </thead>
-                                        <tr
-                                            ng-repeat="documentmovement in document.documentMovements | orderBy:'-' "
-                                            align="center"
-                                        >
-                                            <td style="width: 28%;">
+                                        <tr ng-repeat="documentmovement in document.documentMovements | orderBy:'-' " align="center">
+                                            <td style="width: 28%">
                                                 {{ documentmovement.name }}
                                                 <span ng-if=" documentmovement.outputName">-</span>
                                                 {{ documentmovement.outputName }}
                                             </td>
-                                            <td style="width: 18%;">
-                                                {{ documentmovement.committeeName }}
-                                            </td>
-                                            <td style="width: 18%;">
-                                                {{ documentmovement.statusName }}
-                                            </td>
-                                            <td style="width: 18%;">
-                                                {{ documentmovement.description }}
-                                            </td>
-                                            <td style="width: 18%;">
-                                                {{ documentmovement.dateCreated | date: 'mediumDate' }}
-                                            </td>
+                                            <td style="width: 18%">{{ documentmovement.committeeName }}</td>
+                                            <td style="width: 18%">{{ documentmovement.statusName }}</td>
+                                            <td style="width: 18%">{{ documentmovement.description }}</td>
+                                            <td style="width: 18%">{{ documentmovement.dateCreated | date: 'mediumDate' }}</td>
                                         </tr>
                                     </table>
                                 </td>

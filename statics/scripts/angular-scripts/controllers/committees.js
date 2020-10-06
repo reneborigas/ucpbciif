@@ -11,45 +11,56 @@ define(function () {
         $timeout,
         toastr,
         appFactory,
-        NgTableParams
+        NgTableParams,
+        blockUI
     ) {
-        $scope.tableOffices = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/committees/offices/').then(
-                        function (response) {
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            params.total(response.data.length);
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Commitee Offices. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var officeListBlockUI = blockUI.instances.get('officeListBlockUI');
+
+        $scope.loadOffices = function () {
+            officeListBlockUI.start('Loading Commitees...');
+            $scope.tableOffices = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
                 },
-            }
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/committees/offices/').then(
+                            function (response) {
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                officeListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not load Commitee Offices. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
+
+        $scope.loadOffices();
+
+        $scope.$watch(
+            'searchTermAuto.keyword',
+            function (newTerm, oldTerm) {
+                $scope.tableOffices.filter({ $: newTerm });
+            },
+            true
         );
 
         $scope.view = function (officeName) {
@@ -154,30 +165,18 @@ define(function () {
                                 if (response.data.length > 0) {
                                     $scope.loadCommittee(response.data[0].id, response.data[0].name);
                                 }
-                                var filteredData = params.filter()
-                                    ? $filter('filter')(response.data, params.filter())
-                                    : response.data;
-                                var orderedData = params.sorting()
-                                    ? $filter('orderBy')(filteredData, params.orderBy())
-                                    : filteredData;
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                                 params.total(response.data.length);
 
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                                 return page;
                             },
                             function (error) {
                                 toastr.error(
                                     'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not load Commitee Positions for ' +
-                                        $scope.officeName +
-                                        '. Please contact System Administrator.'
+                                    'Could not load Commitee Positions for ' + $scope.officeName + '. Please contact System Administrator.'
                                 );
                             }
                         );
@@ -201,22 +200,12 @@ define(function () {
                     getData: function (params) {
                         return $http.get('/api/committees/committees/', { params: { positionId: positionId } }).then(
                             function (response) {
-                                var filteredData = params.filter()
-                                    ? $filter('filter')(response.data, params.filter())
-                                    : response.data;
-                                var orderedData = params.sorting()
-                                    ? $filter('orderBy')(filteredData, params.orderBy())
-                                    : filteredData;
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                                 params.total(response.data.length);
 
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                                 $timeout(function () {
                                     committeeBlockUI.stop();
                                 }, 1000);
@@ -226,9 +215,7 @@ define(function () {
                             function (error) {
                                 toastr.error(
                                     'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not load Commitee Personnel for ' +
-                                        $scope.officeName +
-                                        '. Please contact System Administrator.'
+                                    'Could not load Commitee Personnel for ' + $scope.officeName + '. Please contact System Administrator.'
                                 );
                                 $timeout(function () {
                                     committeeBlockUI.stop();
@@ -325,11 +312,7 @@ define(function () {
                                 valueToDisplay: 'committeeName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
                                 logDetails: [
                                     {
-                                        action:
-                                            'Created ' +
-                                            $scope.currentCommitteePositionName +
-                                            ' ' +
-                                            response.data.committeeName, //Details of Log
+                                        action: 'Created ' + $scope.currentCommitteePositionName + ' ' + response.data.committeeName, //Details of Log
                                     },
                                 ],
                             };

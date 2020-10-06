@@ -23,11 +23,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="navi flex-column navi-hover py-2">
-                                    <li
-                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-                                    >
-                                        Choose an option:
-                                    </li>
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link" ng-click="printDataTable()">
                                             <span class="navi-icon">
@@ -65,17 +61,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" block-ui="creditLineListBlockUI">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        ng-model="searchTermAuto"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
                                 <div class="dropdown dropdown-inline ml-4">
@@ -90,12 +81,7 @@
                                         Add Filter
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a
-                                            href=""
-                                            ng-click="showFilter(filter)"
-                                            class="dropdown-item"
-                                            ng-repeat="filter in filters"
-                                        >
+                                        <a href="" ng-click="showFilter(filter)" class="dropdown-item" ng-repeat="filter in filters">
                                             <i
                                                 class="mr-2"
                                                 ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
@@ -118,17 +104,17 @@
                                 >
                                     <option value="" disabled selected>Select Borrower</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
                                 <label>{{$parent.filters[1].name}}:</label>
                                 <select
                                     class="form-control"
                                     ng-model="params[$parent.filters[1].params.param1]"
-                                    ng-options="loanProgram.id as loanProgram.name for loanProgram in loanPrograms"
+                                    ng-options="term.id as term.name for term in terms"
                                 >
-                                    <option value="" disabled selected>Select Borrower</option>
+                                    <option value="" disabled selected>Select Term</option>
                                 </select>
-                            </div> -->
+                            </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
                                 <label>{{$parent.filters[2].name}}:</label>
                                 <div class="input-group">
@@ -140,9 +126,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -164,9 +148,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -188,9 +170,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -202,7 +182,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
-                                <label{{$parent.filters[5].name}}:</label>
+                                <label>{{$parent.filters[5].name}}:</label>
                                 <div class="input-group">
                                     <input
                                         type="date"
@@ -211,9 +191,7 @@
                                         datepicker-localdate
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="date"
@@ -233,9 +211,7 @@
                                         datepicker-localdate
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="date"
@@ -270,12 +246,7 @@
                             template-pagination="statics/partials/customs/pagination.html"
                         >
                             <tr class="datatable-row" ng-repeat="creditline in $data">
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'NO'"
-                                    sortable="'id'"
-                                >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'NO'" sortable="'id'">
                                     {{ creditline.id }}
                                 </td>
                                 <td
@@ -286,12 +257,7 @@
                                 >
                                     {{ creditline.borrower_name }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'TERM'"
-                                    sortable="'term_name'"
-                                >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
                                     {{ creditline.term_name }}
                                 </td>
                                 <td
@@ -335,16 +301,8 @@
                                     {{ creditline.dateExpired | date : 'mediumDate' }}
                                 </td>
 
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'ACTIONS'"
-                                >
-                                    <a
-                                        href=""
-                                        class="btn btn-sm btn-clean btn-icon mr-2"
-                                        ng-click="view(creditline.id)"
-                                    >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
+                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(creditline.id)">
                                         <i class="fad fa-eye"></i>
                                     </a>
                                 </td>

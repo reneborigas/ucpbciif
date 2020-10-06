@@ -23,11 +23,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="navi flex-column navi-hover py-2">
-                                    <li
-                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-                                    >
-                                        Choose an option:
-                                    </li>
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link" ng-click="printDataTable()">
                                             <span class="navi-icon">
@@ -65,17 +61,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" block-ui="amortizationListBlockUI">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        ng-model="searchTermAuto"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
                                 <div class="dropdown dropdown-inline ml-4">
@@ -90,12 +81,7 @@
                                         Add Filter
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a
-                                            href=""
-                                            ng-click="showFilter(filter)"
-                                            class="dropdown-item"
-                                            ng-repeat="filter in filters"
-                                        >
+                                        <a href="" ng-click="showFilter(filter)" class="dropdown-item" ng-repeat="filter in filters">
                                             <i
                                                 class="mr-2"
                                                 ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
@@ -129,9 +115,7 @@
                                         datepicker-localdate
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="date"
@@ -144,23 +128,11 @@
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
                                 <label>{{$parent.filters[1].name}}:</label>
                                 <div class="input-group">
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        step="1"
-                                        ng-model="params[$parent.filters[1].params.param1]"
-                                    />
+                                    <input type="number" class="form-control" step="1" ng-model="params[$parent.filters[1].params.param1]" />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        step="1"
-                                        ng-model="params[$parent.filters[1].params.param2]"
-                                    />
+                                    <input type="number" class="form-control" step="1" ng-model="params[$parent.filters[1].params.param2]" />
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
@@ -174,9 +146,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -198,9 +168,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -222,9 +190,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -246,9 +212,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -270,9 +234,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -294,9 +256,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -308,10 +268,32 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[7].showFilter">
-                                <label>Status:</label>
+                                <label>{{$parent.filters[7].name}}:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[7].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">to</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[7].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[8].showFilter">
+                                <label>{{$parent.filters[8].name}}:</label>
                                 <select
                                     class="form-control"
-                                    ng-model="params[$parent.filters[6].params.param1]"
+                                    ng-model="params[$parent.filters[8].params.param1]"
                                     ng-options="amortizationStatus.name as amortizationStatus.name for amortizationStatus in amortizationStatuses"
                                 >
                                     <option value="" disabled selected>Select Status</option>
@@ -358,9 +340,7 @@
                                     data-title="'LOAN'"
                                     sortable="'loan_id'"
                                 >
-                                    <a href="" ng-click="view(amortizationitem.loan_id)">
-                                        LN{{ amortizationitem.loan_id }}
-                                    </a>
+                                    <a href="" ng-click="view(amortizationitem.loan_id)">LN{{ amortizationitem.loan_id }}</a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -408,8 +388,7 @@
                                     data-title="'PENALTY'"
                                     sortable="'penalty'"
                                 >
-                                    {{ amortizationitem.penalty | currency :'₱'}} (+{{ amortizationitem.daysExceed }}
-                                    days)
+                                    {{ amortizationitem.penalty | currency :'₱'}} (+{{ amortizationitem.daysExceed }} days)
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"

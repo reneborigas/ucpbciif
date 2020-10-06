@@ -12,55 +12,62 @@ define(function () {
         toastr,
         appFactory,
         NgTableParams,
-        $window
+        $window,
+        blockUI
     ) {
-        $scope.tableCreditLine = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/loans/creditlines/', { params: $scope.params }).then(
-                        function (response) {
-                            console.log(response.data);
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            params.total(response.data.length);
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Credit Line Lists. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var creditLineListBlockUI = blockUI.instances.get('creditLineListBlockUI');
+
+        $scope.loadCreditLines = function () {
+            creditLineListBlockUI.start('Loading Credit Lines...');
+            $scope.tableCreditLine = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
                 },
-            }
-        );
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/loans/creditlines/', { params: $scope.params }).then(
+                            function (response) {
+                                console.log(response.data);
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                creditLineListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not load Credit Line Lists. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
 
         $scope.$watch(
-            'searchTermAuto',
+            'searchTermAuto.keyword',
             function (newTerm, oldTerm) {
                 $scope.tableCreditLine.filter({ $: newTerm });
             },
             true
         );
+
+        $scope.loadCreditLines();
+
+        appFactory.getLoanTerms().then(function (data) {
+            $scope.terms = data;
+        });
 
         $scope.params = {};
 
@@ -155,7 +162,7 @@ define(function () {
                     });
                 }
             });
-            $scope.tableCreditLine.reload();
+            $scope.loadCreditLines();
         };
 
         $scope.resetFilter = function () {
@@ -164,11 +171,10 @@ define(function () {
             });
             $scope.showFilterButton = false;
             $scope.params = {};
-            $scope.tableCreditLine.reload();
+            $scope.loadCreditLines();
         };
 
         $scope.view = function (creditLineId) {
-             
             $state.go('app.creditline.info', { creditLineId: creditLineId });
         };
 
@@ -240,11 +246,11 @@ define(function () {
                     });
                 }
             });
-            if ($scope.searchTermAuto) {
+            if ($scope.searchTermAuto.keyword) {
                 filters.push({
                     name: 'Search',
                     filterFormat: 'uppercase',
-                    params: { input: $scope.searchTermAuto },
+                    params: { input: $scope.searchTermAuto.keyword },
                 });
             }
             var $popup = $window.open('/print/credit-line', '_blank', 'directories=0,width=800,height=800');
@@ -255,7 +261,6 @@ define(function () {
             $popup.cellValues = $scope.retrieveCellValues();
         };
     });
-
 
     app.controller('CreditLineInfoController', function CreditLineInfoController(
         $http,
@@ -277,8 +282,7 @@ define(function () {
             .then(
                 function (response) {
                     $scope.creditLine = response.data[0];
-                   
-                   
+
                     $http
                         .get('/api/borrowers/borrowers/', {
                             params: { borrowerId: $scope.creditLine.borrower },
@@ -295,7 +299,7 @@ define(function () {
 
                                 $http
                                     .get('/api/documents/documents/', {
-                                        params: { creditLineId: $scope.creditLine.id ,subProcessName:'Credit Line Approval'},
+                                        params: { creditLineId: $scope.creditLine.id, subProcessName: 'Credit Line Approval' },
                                     })
                                     .then(
                                         function (response) {
@@ -309,7 +313,7 @@ define(function () {
                                         }
                                     );
 
-                                    $http
+                                $http
                                     .get('/api/loans/loans/', {
                                         params: { creditLineId: $scope.creditLine.id },
                                     })
@@ -570,7 +574,4 @@ define(function () {
             });
         };
     });
-
-
-
 });

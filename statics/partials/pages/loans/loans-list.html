@@ -23,11 +23,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="navi flex-column navi-hover py-2">
-                                    <li
-                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-                                    >
-                                        Choose an option:
-                                    </li>
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link" ng-click="printDataTable()">
                                             <span class="navi-icon">
@@ -65,17 +61,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" block-ui="loanListBlockUI">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        ng-model="searchTermAuto"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
                                 <div class="dropdown dropdown-inline ml-4">
@@ -90,12 +81,7 @@
                                         Add Filter
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a
-                                            href=""
-                                            ng-click="showFilter(filter)"
-                                            class="dropdown-item"
-                                            ng-repeat="filter in filters"
-                                        >
+                                        <a href="" ng-click="showFilter(filter)" class="dropdown-item" ng-repeat="filter in filters">
                                             <i
                                                 class="mr-2"
                                                 ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
@@ -119,9 +105,7 @@
                                         datepicker-localdate
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="date"
@@ -142,9 +126,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -225,12 +207,7 @@
                                 >
                                     {{ loan.loanProgram_name }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'TERM'"
-                                    sortable="'term_name'"
-                                >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
                                     {{ loan.term_name }}
                                 </td>
                                 <td
@@ -238,15 +215,10 @@
                                     header-class="'text-right'"
                                     data-title="'LOAN AMOUNT'"
                                     sortable="'amount'"
-                                > 
+                                >
+                                    <span ng-if="!loan.dateReleased">{{ loan.amount | currency :'₱'}}</span>
 
-                                <span   ng-if="!loan.dateReleased">
-                                        {{ loan.amount | currency :'₱'}}
-                                    </span>
-
-                                <span  ng-if="loan.dateReleased">
-                                        {{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}
-                                </span>
+                                    <span ng-if="loan.dateReleased">{{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}</span>
                                 </td>
 
                                 <td

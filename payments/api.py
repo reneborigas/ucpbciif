@@ -68,8 +68,12 @@ class PaymentViewSet(ModelViewSet):
         borrowerId = self.request.query_params.get('borrowerId', None)
         principalFrom = self.request.query_params.get('principalFrom', None)
         principalTo = self.request.query_params.get('principalTo', None)
+
         interestFrom = self.request.query_params.get('interestFrom', None)
         interestTo = self.request.query_params.get('interestTo', None)
+        accruedInterestFrom = self.request.query_params.get('accruedInterestFrom', None)
+        accruedInterestTo = self.request.query_params.get('accruedInterestTo', None)
+
         paymentDateFrom = self.request.query_params.get('paymentDateFrom', None)
         paymentDateTo = self.request.query_params.get('paymentDateTo', None)
         totalPaymentFrom = self.request.query_params.get('totalPaymentFrom', None)
@@ -87,10 +91,10 @@ class PaymentViewSet(ModelViewSet):
             queryset=queryset.filter(principal__gte=principalFrom).filter(principal__lte=principalTo)
         
         if interestFrom is not None and interestTo is not None:
-            queryset=queryset.filter(interest__gte=interestFrom).filter(interest__lte=interestTo)
+            queryset=queryset.filter(interestPayment__gte=interestFrom).filter(interestPayment__lte=interestTo)
 
-        if interestFrom is not None and interestTo is not None:
-            queryset=queryset.filter(interest__gte=interestFrom).filter(interest__lte=interestTo)
+        if accruedInterestFrom is not None and accruedInterestTo is not None:
+            queryset=queryset.filter(accruedInterestPayment__gte=accruedInterestFrom).filter(accruedInterestPayment__lte=accruedInterestTo)
 
         if paymentDateFrom is not None and paymentDateTo is not None:
             queryset=queryset.filter(datePayment__date__gte=paymentDateFrom).filter(datePayment__date__lte=paymentDateTo)

@@ -29,11 +29,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="navi flex-column navi-hover py-2">
-                                    <li
-                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-                                    >
-                                        Choose an option:
-                                    </li>
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link" ng-click="printDataTable()">
                                             <span class="navi-icon">
@@ -71,17 +67,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" block-ui="paymentListBlockUI">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        ng-model="searchTermAuto"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
                                 <div class="dropdown dropdown-inline ml-4">
@@ -96,12 +87,7 @@
                                         Add Filter
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a
-                                            href=""
-                                            ng-click="showFilter(filter)"
-                                            class="dropdown-item"
-                                            ng-repeat="filter in filters"
-                                        >
+                                        <a href="" ng-click="showFilter(filter)" class="dropdown-item" ng-repeat="filter in filters">
                                             <i
                                                 class="mr-2"
                                                 ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
@@ -136,9 +122,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -160,9 +144,7 @@
                                         price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
                                         type="text"
@@ -177,21 +159,21 @@
                                 <label>{{$parent.filters[3].name}}:</label>
                                 <div class="input-group">
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[3].params.param1]"
-                                        datepicker-localdate
+                                        price
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
-                                        type="date"
+                                        type="text"
                                         class="form-control"
+                                        placeholder="0"
                                         ng-model="params[$parent.filters[3].params.param2]"
-                                        datepicker-localdate
+                                        price
                                     />
                                 </div>
                             </div>
@@ -199,41 +181,59 @@
                                 <label>{{$parent.filters[4].name}}:</label>
                                 <div class="input-group">
                                     <input
-                                        type="text"
+                                        type="date"
                                         class="form-control"
-                                        placeholder="0"
                                         ng-model="params[$parent.filters[4].params.param1]"
-                                        price
+                                        datepicker-localdate
                                     />
                                     <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            to
-                                        </span>
+                                        <span class="input-group-text">to</span>
                                     </div>
                                     <input
-                                        type="text"
+                                        type="date"
                                         class="form-control"
-                                        placeholder="0"
                                         ng-model="params[$parent.filters[4].params.param2]"
-                                        price
+                                        datepicker-localdate
                                     />
                                 </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
                                 <label>{{$parent.filters[5].name}}:</label>
-                                <select
-                                    class="form-control"
-                                    ng-model="params[$parent.filters[5].params.param1]"
-                                    ng-options="paymentType.name as paymentType.name for paymentType in paymentTypes"
-                                >
-                                    <option value="" disabled selected>Select Payment Type</option>
-                                </select>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[5].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">to</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[5].params.param2]"
+                                        price
+                                    />
+                                </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[6].showFilter">
                                 <label>{{$parent.filters[6].name}}:</label>
                                 <select
                                     class="form-control"
                                     ng-model="params[$parent.filters[6].params.param1]"
+                                    ng-options="paymentType.name as paymentType.name for paymentType in paymentTypes"
+                                >
+                                    <option value="" disabled selected>Select Payment Type</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[7].showFilter">
+                                <label>{{$parent.filters[7].name}}:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[7].params.param1]"
                                     ng-options="paymentStatus.name as paymentStatus.name for paymentStatus in paymentStatuses"
                                 >
                                     <option value="" disabled selected>Select Status</option>
@@ -296,9 +296,7 @@
                                     data-title="'BORROWER'"
                                     sortable="'borrower_name'"
                                 >
-                                    <a href="#" ng-click="viewBorrower(payment.borrower_id)">
-                                        {{ payment.borrower_name }}
-                                    </a>
+                                    <a href="#" ng-click="viewBorrower(payment.borrower_id)">{{ payment.borrower_name }}</a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"

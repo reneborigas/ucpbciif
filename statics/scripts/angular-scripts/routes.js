@@ -963,6 +963,54 @@ define(function () {
                         label: 'Amortizations',
                     },
                 })
+                .state('app.lms-reports', {
+                    url: '/loan-reports',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Reports',
+                        skip: true,
+                    },
+                    resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/reports.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.lms-reports.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/reports/lms/reports-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loan Reports',
+                        stateTitle: 'Loan Reports',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Loan Reports',
+                    },
+                })
 
                 //Accounting
                 .state('app.invoices', {

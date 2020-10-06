@@ -60,6 +60,8 @@ urlpatterns = [
     path('credit-line/<int:id>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('amortizations', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path('amortizations/maturing', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    #reports
+    path('loan-reports', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     #Settings
     #committes

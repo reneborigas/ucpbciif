@@ -12,55 +12,62 @@ define(function () {
         toastr,
         appFactory,
         NgTableParams,
-        $window
+        $window,
+        blockUI
     ) {
-        $scope.tableAmortization = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/loans/amortizationitems/', { params: $scope.params }).then(
-                        function (response) {
-                            console.log(response.data);
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            params.total(response.data.length);
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Amortization Lists. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var amortizationListBlockUI = blockUI.instances.get('amortizationListBlockUI');
+
+        $scope.loadAmortizations = function () {
+            amortizationListBlockUI.start('Loading Amortizations...');
+            $scope.tableAmortization = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
                 },
-            }
-        );
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/loans/amortizationitems/', { params: $scope.params }).then(
+                            function (response) {
+                                console.log(response.data);
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                amortizationListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not load Amortization Lists. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
 
         $scope.$watch(
-            'searchTermAuto',
+            'searchTermAuto.keyword',
             function (newTerm, oldTerm) {
                 $scope.tableAmortization.filter({ $: newTerm });
             },
             true
         );
+
+        $scope.loadAmortizations();
+
+        appFactory.getAmortizationStatus().then(function (data) {
+            $scope.amortizationStatuses = data;
+        });
 
         $scope.params = {};
 
@@ -102,6 +109,15 @@ define(function () {
                 },
             },
             {
+                name: 'Accrued Interest Range',
+                showFilter: false,
+                filterFormat: "currency :'₱'",
+                params: {
+                    param1: 'interestFrom',
+                    param2: 'interestTo',
+                },
+            },
+            {
                 name: 'Penalty Amount Range',
                 showFilter: false,
                 filterFormat: "currency :'₱'",
@@ -124,8 +140,8 @@ define(function () {
                 showFilter: false,
                 filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'amortizationFrom',
-                    param2: 'amortizationTo',
+                    param1: 'principalBalanceFrom',
+                    param2: 'principalBalanceTo',
                 },
             },
             {
@@ -165,7 +181,8 @@ define(function () {
                     });
                 }
             });
-            $scope.tableAmortization.reload();
+            console.log($scope.params);
+            $scope.loadAmortizations();
         };
 
         $scope.resetFilter = function () {
@@ -174,7 +191,7 @@ define(function () {
             });
             $scope.showFilterButton = false;
             $scope.params = {};
-            $scope.tableAmortization.reload();
+            $scope.loadAmortizations();
         };
 
         $scope.view = function (loanId) {
@@ -249,11 +266,11 @@ define(function () {
                     });
                 }
             });
-            if ($scope.searchTermAuto) {
+            if ($scope.searchTermAuto.keyword) {
                 filters.push({
                     name: 'Search',
                     filterFormat: 'uppercase',
-                    params: { input: $scope.searchTermAuto },
+                    params: { input: $scope.searchTermAuto.keyword },
                 });
             }
             var $popup = $window.open('/print/amortizations', '_blank', 'directories=0,width=800,height=800');
@@ -274,59 +291,62 @@ define(function () {
         toastr,
         appFactory,
         NgTableParams,
-        $window
+        $window,
+        blockUI
     ) {
-        $scope.tableMaturingAmortization = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/loans/amortizationitems/', { params: $scope.params }).then(
-                        function (response) {
-                            console.log(response.data);
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            params.total(response.data.length);
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Maturing Amortization Lists. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var maturingAmortizationListBlockUI = blockUI.instances.get('maturingAmortizationListBlockUI');
+
+        $scope.loadMaturingAmortizations = function () {
+            maturingAmortizationListBlockUI.start('Loading Maturing Amortizations...');
+            $scope.tableMaturingAmortization = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
                 },
-            }
-        );
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/loans/amortizationitems/', { params: $scope.params }).then(
+                            function (response) {
+                                console.log(response.data);
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                maturingAmortizationListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not load Maturing Amortization Lists. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
 
         $scope.$watch(
-            'searchTermAuto',
+            'searchTermAuto.keyword',
             function (newTerm, oldTerm) {
                 $scope.tableMaturingAmortization.filter({ $: newTerm });
             },
             true
         );
 
-        // appFactory.getAmortizationStatus().then(function (data) {
-        //     $scope.amortizationStatuses = data;
-        // });
+        $scope.loadMaturingAmortizations();
+
+        appFactory.getAmortizationStatus().then(function (data) {
+            $scope.amortizationStatuses = data;
+        });
 
         $scope.params = {
             maturing: 'TRUE',
@@ -370,6 +390,15 @@ define(function () {
                 },
             },
             {
+                name: 'Accrued Interest Range',
+                showFilter: false,
+                filterFormat: "currency :'₱'",
+                params: {
+                    param1: 'accruedInterestFrom',
+                    param2: 'accruedInterestTo',
+                },
+            },
+            {
                 name: 'Penalty Amount Range',
                 showFilter: false,
                 filterFormat: "currency :'₱'",
@@ -392,8 +421,8 @@ define(function () {
                 showFilter: false,
                 filterFormat: "currency :'₱'",
                 params: {
-                    param1: 'amortizationFrom',
-                    param2: 'amortizationTo',
+                    param1: 'principalBalanceFrom',
+                    param2: 'principalBalanceTo',
                 },
             },
             {
@@ -433,7 +462,7 @@ define(function () {
                     });
                 }
             });
-            $scope.tableMaturingAmortization.reload();
+            $scope.loadMaturingAmortizations();
         };
 
         $scope.resetFilter = function () {
@@ -441,8 +470,10 @@ define(function () {
                 filter.showFilter = false;
             });
             $scope.showFilterButton = false;
-            $scope.params = {};
-            $scope.tableMaturingAmortization.reload();
+            $scope.params = {
+                maturing: 'TRUE',
+            };
+            $scope.loadMaturingAmortizations();
         };
 
         $scope.view = function (loanId) {
@@ -517,11 +548,11 @@ define(function () {
                     });
                 }
             });
-            if ($scope.searchTermAuto) {
+            if ($scope.searchTermAuto.keyword) {
                 filters.push({
                     name: 'Search',
                     filterFormat: 'uppercase',
-                    params: { input: $scope.searchTermAuto },
+                    params: { input: $scope.searchTermAuto.keyword },
                 });
             }
             var $popup = $window.open('/print/maturingamortizations', '_blank', 'directories=0,width=800,height=800');

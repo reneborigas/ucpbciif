@@ -12,44 +12,61 @@ define(function () {
         toastr,
         appFactory,
         NgTableParams,
-        $window
+        $window,
+        blockUI
     ) {
-        $scope.tableBorrowers = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/borrowers/borrowers/', { params: $scope.params }).then(
-                        function (response) {
-                            var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
-                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                            params.total(response.data.length);
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not load Borrowers. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var borrowerListBlockUI = blockUI.instances.get('borrowerListBlockUI');
+
+        $scope.loadBorrowers = function () {
+            borrowerListBlockUI.start('Loading Borrowers...');
+            $scope.tableBorrowers = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
                 },
-            }
-        );
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/borrowers/borrowers/', { params: $scope.params }).then(
+                            function (response) {
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                borrowerListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not load Borrowers. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
 
         $scope.$watch(
-            'searchTermAuto',
+            'searchTermAuto.keyword',
             function (newTerm, oldTerm) {
                 $scope.tableBorrowers.filter({ $: newTerm });
             },
             true
         );
+
+        $scope.loadBorrowers();
+
+        appFactory.getBranches().then(function (data) {
+            $scope.branches = data;
+        });
 
         $scope.params = {};
 
@@ -60,6 +77,14 @@ define(function () {
                 filterFormat: 'uppercase',
                 params: {
                     param1: 'borrowerId',
+                },
+            },
+            {
+                name: 'Branch',
+                showFilter: false,
+                filterFormat: 'uppercase',
+                params: {
+                    param1: 'branch',
                 },
             },
             {
@@ -127,7 +152,7 @@ define(function () {
                     });
                 }
             });
-            $scope.tableBorrowers.reload();
+            $scope.loadBorrowers();
         };
 
         $scope.resetFilter = function () {
@@ -136,7 +161,7 @@ define(function () {
             });
             $scope.showFilterButton = false;
             $scope.params = {};
-            $scope.tableBorrowers.reload();
+            $scope.loadBorrowers();
         };
 
         $scope.view = function (id) {
@@ -215,11 +240,11 @@ define(function () {
                     });
                 }
             });
-            if ($scope.searchTermAuto) {
+            if ($scope.searchTermAuto.keyword) {
                 filters.push({
                     name: 'Search',
                     filterFormat: 'uppercase',
-                    params: { input: $scope.searchTermAuto },
+                    params: { input: $scope.searchTermAuto.keyword },
                 });
             }
             var $popup = $window.open('/print/borrowers', '_blank', 'directories=0,width=800,height=800');
@@ -1440,7 +1465,7 @@ define(function () {
             $scope.committees = data;
         });
 
-        appFactory.getTerm().then(function (data) {
+        appFactory.getLoanTerms().then(function (data) {
             $scope.terms = data;
         });
 

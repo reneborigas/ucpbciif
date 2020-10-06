@@ -3,7 +3,7 @@ define(function () {
 
     var app = angular.module('app');
 
-    app.controller('PaymentListController', function LoanListController(
+    app.controller('PaymentListController', function PaymentListController(
         $http,
         $filter,
         $scope,
@@ -12,54 +12,57 @@ define(function () {
         $state,
         $timeout,
         appFactory,
-        $window
+        $window,
+        blockUI
     ) {
-        $scope.tablePayments = new NgTableParams(
-            {
-                page: 1,
-                count: 20,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/payments/payments/', { params: $scope.params }).then(
-                        function (response) {
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            params.total(response.data.length);
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not Load Payments. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var paymentListBlockUI = blockUI.instances.get('paymentListBlockUI');
+
+        $scope.loadPayments = function () {
+            paymentListBlockUI.start('Loading Payments...');
+            $scope.tablePayments = new NgTableParams(
+                {
+                    page: 1,
+                    count: 20,
                 },
-            }
-        );
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/payments/payments/', { params: $scope.params }).then(
+                            function (response) {
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                paymentListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not Load Payments. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
 
         $scope.$watch(
-            'searchTermAuto',
+            'searchTermAuto.keyword',
             function (newTerm, oldTerm) {
                 $scope.tablePayments.filter({ $: newTerm });
             },
             true
         );
+
+        $scope.loadPayments();
 
         appFactory.getPaymentStatus().then(function (data) {
             $scope.paymentStatuses = data;
@@ -81,7 +84,7 @@ define(function () {
                 },
             },
             {
-                name: 'Principal Range',
+                name: 'Principal Payment Range',
                 showFilter: false,
                 filterFormat: "currency :'₱'",
                 params: {
@@ -90,7 +93,16 @@ define(function () {
                 },
             },
             {
-                name: 'Interest Range',
+                name: 'Interest Payment Range',
+                showFilter: false,
+                filterFormat: "currency :'₱'",
+                params: {
+                    param1: 'interestFrom',
+                    param2: 'interestTo',
+                },
+            },
+            {
+                name: 'Accrued Interest Payment Range',
                 showFilter: false,
                 filterFormat: "currency :'₱'",
                 params: {
@@ -161,7 +173,7 @@ define(function () {
                     });
                 }
             });
-            $scope.tablePayments.reload();
+            $scope.loadPayments();
         };
 
         $scope.resetFilter = function () {
@@ -170,7 +182,7 @@ define(function () {
             });
             $scope.showFilterButton = false;
             $scope.params = {};
-            $scope.tablePayments.reload();
+            $scope.loadPayments();
         };
 
         $scope.viewLoan = function (id) {
@@ -180,14 +192,6 @@ define(function () {
         $scope.viewBorrower = function (id) {
             $state.go('app.borrowers.info', { borrowerId: id });
         };
-
-        $scope.$watch(
-            'searchTermAuto',
-            function (newTerm, oldTerm) {
-                $scope.tablePayments.filter({ $: newTerm });
-            },
-            true
-        );
 
         $scope.retrieveHeaders = function () {
             var headers = [];
@@ -252,11 +256,11 @@ define(function () {
                     });
                 }
             });
-            if ($scope.searchTermAuto) {
+            if ($scope.searchTermAuto.keyword) {
                 filters.push({
                     name: 'Search',
                     filterFormat: 'uppercase',
-                    params: { input: $scope.searchTermAuto },
+                    params: { input: $scope.searchTermAuto.keyword },
                 });
             }
             var $popup = $window.open('/print/payments', '_blank', 'directories=0,width=800,height=800');
@@ -337,9 +341,7 @@ define(function () {
                                         params: {
                                             datePayment: newTerm.toLocaleDateString(),
                                             loanId: $scope.payment.loan,
-                                            dateSchedule: new Date(
-                                                $scope.loan.currentAmortizationItem.schedule
-                                            ).toLocaleDateString(),
+                                            dateSchedule: new Date($scope.loan.currentAmortizationItem.schedule).toLocaleDateString(),
                                         },
                                     })
                                     .then(
@@ -353,18 +355,16 @@ define(function () {
                                             $scope.payment.principal = $scope.newAmortization.principal;
                                             $scope.payment.interest = $scope.newAmortization.interest;
                                             $scope.payment.accruedInterest = $scope.newAmortization.accruedInterest;
-                                            
+
                                             $scope.payment.totalInterest = $scope.newAmortization.totalInterest;
 
                                             $scope.payment.totalToPay = $scope.newAmortization.totalToPay;
-                                            $scope.payment.totalToPayWithPenalty =
-                                                $scope.newAmortization.totalToPayWithPenalty;
+                                            $scope.payment.totalToPayWithPenalty = $scope.newAmortization.totalToPayWithPenalty;
                                             $scope.payment.daysExceed = $scope.newAmortization.daysExceed;
                                             $scope.payment.daysAdvanced = $scope.newAmortization.daysAdvanced;
                                             $scope.payment.principalBalance = $scope.newAmortization.principalBalance;
 
-                                            $scope.payment.additionalInterest =
-                                                $scope.newAmortization.additionalInterest;
+                                            $scope.payment.additionalInterest = $scope.newAmortization.additionalInterest;
                                             $scope.payment.penalty = $scope.newAmortization.penalty;
                                             $scope.payment.total =
                                                 parseFloat($scope.payment.cash) +
@@ -379,7 +379,8 @@ define(function () {
                                                 $scope.payment.cash = $scope.payment.principal.toFixed(2);
                                             }
 
-                                            $scope.payment.interestPayment = $scope.payment.totalInterest.toFixed(2) - $scope.payment.accruedInterest.toFixed(2);
+                                            $scope.payment.interestPayment =
+                                                $scope.payment.totalInterest.toFixed(2) - $scope.payment.accruedInterest.toFixed(2);
                                             $scope.payment.penaltyPayment = $scope.payment.penalty;
                                             $scope.payment.accruedInterestPayment = $scope.payment.accruedInterest.toFixed(2);
                                             $scope.payment.total = parseFloat($scope.payment.total);
@@ -387,9 +388,7 @@ define(function () {
                                             $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
                                             $scope.payment.balance = $scope.getBalance();
                                             $scope.payment.overPayment = $scope.getOverPayment();
-                                            $scope.payment.outStandingBalance = parseFloat(
-                                                $scope.getOutStandingBalance()
-                                            ).toFixed(2);
+                                            $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
                                         },
                                         function (error) {
                                             toastr.error(
@@ -433,9 +432,7 @@ define(function () {
                                 console.log(newTerm);
                                 $scope.payment.balance = $scope.getBalance().toFixed(2);
                                 $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);
-                                $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(
-                                    2
-                                );
+                                $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
                                 $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
                                 $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
                                 console.log($scope.payment.outStandingBalance);
@@ -463,9 +460,7 @@ define(function () {
                                 console.log(newTerm);
                                 $scope.payment.balance = $scope.getBalance();
                                 $scope.payment.overPayment = $scope.getOverPayment();
-                                $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(
-                                    2
-                                );
+                                $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
                                 $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
                                 $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
                                 console.log($scope.payment.outStandingBalance);
@@ -558,10 +553,19 @@ define(function () {
         };
 
         $scope.getInterestBalance = function () {
-            if (parseFloat($scope.payment.totalInterest) - parseFloat($scope.payment.interestPayment) - parseFloat($scope.payment.accruedInterestPayment) <= 0) {
+            if (
+                parseFloat($scope.payment.totalInterest) -
+                    parseFloat($scope.payment.interestPayment) -
+                    parseFloat($scope.payment.accruedInterestPayment) <=
+                0
+            ) {
                 return 0;
             }
-            return parseFloat($scope.payment.totalInterest) - parseFloat($scope.payment.interestPayment)- parseFloat($scope.payment.accruedInterestPayment);
+            return (
+                parseFloat($scope.payment.totalInterest) -
+                parseFloat($scope.payment.interestPayment) -
+                parseFloat($scope.payment.accruedInterestPayment)
+            );
         };
 
         $scope.getPenaltyBalance = function () {
@@ -575,7 +579,7 @@ define(function () {
             if (parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPayWithPenalty) <= 0) {
                 return 0;
             }
-            return (parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPayWithPenalty)).toFixed(2) ;
+            return (parseFloat($scope.payment.total) - parseFloat($scope.payment.totalToPayWithPenalty)).toFixed(2);
         };
 
         $scope.getOutStandingBalance = function () {
@@ -620,7 +624,7 @@ define(function () {
             $scope.payment.check = parseFloat($scope.payment.check).toFixed(2);
             $scope.payment.interestPayment = parseFloat($scope.payment.interestPayment).toFixed(2);
             $scope.payment.accruedInterestPayment = parseFloat($scope.payment.accruedInterestPayment).toFixed(2);
-           
+
             $scope.payment.penaltyPayment = parseFloat($scope.payment.penaltyPayment).toFixed(2);
             $scope.payment.balance = parseFloat($scope.payment.balance).toFixed(2);
             $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
@@ -672,9 +676,7 @@ define(function () {
                 $scope.payment.interestPayment = $scope.newAmortization.interest;
                 $scope.payment.penaltyPayment = 0;
                 $scope.payment.totalToPayWithPenalty = $scope.newAmortization.totalToPay;
-                $scope.payment.exemptAdditionalInterest = parseFloat($scope.newAmortization.additionalInterest).toFixed(
-                    2
-                );
+                $scope.payment.exemptAdditionalInterest = parseFloat($scope.newAmortization.additionalInterest).toFixed(2);
                 $scope.payment.exemptPenalty = parseFloat($scope.newAmortization.penalty).toFixed(2);
                 $scope.isPaymentExtensionButton = 'Remove Payment Extensions';
                 addPaymentBlockUI.stop();
@@ -712,8 +714,15 @@ define(function () {
         $state,
         $timeout,
         appFactory,
-        limitToFilter
+        limitToFilter,
+        blockUI
     ) {
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
+
+        var paymentAddBlockUI = blockUI.instances.get('paymentAddBlockUI');
+
         $scope.tableLoans = new NgTableParams(
             {
                 page: 1,
@@ -724,22 +733,14 @@ define(function () {
                 getData: function (params) {
                     return $http.get('/api/loans/loans/', { params: { status: 'CURRENT' } }).then(
                         function (response) {
-                            var filteredData = params.filter()
-                                ? $filter('filter')(response.data, params.filter())
-                                : response.data;
-                            var orderedData = params.sorting()
-                                ? $filter('orderBy')(filteredData, params.orderBy())
-                                : filteredData;
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
+                            var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                             params.total(response.data.length);
 
-                            var page = orderedData.slice(
-                                (params.page() - 1) * params.count(),
-                                params.page() * params.count()
-                            );
+                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+
+                            paymentAddBlockUI.stop();
                             return page;
                         },
                         function (error) {
@@ -753,16 +754,8 @@ define(function () {
             }
         );
 
-        // $scope.$watch(
-        //     'searchTermAuto',
-        //     function (newTerm, oldTerm) {
-
-        //         $scope.tableLoans.filter({ id: newTerm });
-        //     },
-        //     true
-        // );
-
         $scope.searchLoan = function (term) {
+            paymentAddBlockUI.start('Loading Loans...');
             $scope.tableLoans.filter({ id: term });
             if (term) {
                 $timeout(function () {

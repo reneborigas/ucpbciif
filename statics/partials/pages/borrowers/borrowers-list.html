@@ -10,8 +10,8 @@
                         <h3 class="card-label">Borrowers List</h3>
                     </div>
                     <div class="card-toolbar">
-                        <button type="button" class="btn btn-primary float-right" ui-sref="app.borrowers.add">
-                            <i class="fad fa-user-plus mr-2"></i>
+                        <button type="button" class="btn btn-primary float-right mr-2" ui-sref="app.borrowers.add">
+                            <i class="fad fa-user-plus"></i>
                             New Borrower
                         </button>
                         <div class="dropdown dropdown-inline mr-2">
@@ -65,12 +65,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" block-ui="borrowerListBlockUI">
                     <div class="mb-4">
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto" />
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
                                 <div class="dropdown dropdown-inline ml-4">
@@ -111,25 +111,13 @@
                             </div> -->
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
                                 <label>{{$parent.filters[1].name}}:</label>
-                                <div class="input-group">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="0"
-                                        ng-model="params[$parent.filters[1].params.param1]"
-                                        price
-                                    />
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">to</span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="0"
-                                        class="form-control"
-                                        ng-model="params[$parent.filters[1].params.param2]"
-                                        price
-                                    />
-                                </div>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[1].params.param1]"
+                                    ng-options="branch.id as branch.branchCode for branch in branches"
+                                >
+                                    <option value="" disabled selected>Select Branch Code</option>
+                                </select>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
                                 <label>{{$parent.filters[2].name}}:</label>
@@ -146,8 +134,8 @@
                                     </div>
                                     <input
                                         type="text"
-                                        class="form-control"
                                         placeholder="0"
+                                        class="form-control"
                                         ng-model="params[$parent.filters[2].params.param2]"
                                         price
                                     />
@@ -179,9 +167,31 @@
                                 <label>{{$parent.filters[4].name}}:</label>
                                 <div class="input-group">
                                     <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[4].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">to</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[4].params.param2]"
+                                        price
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[5].showFilter">
+                                <label>{{$parent.filters[5].name}}:</label>
+                                <div class="input-group">
+                                    <input
                                         type="date"
                                         class="form-control"
-                                        ng-model="params[$parent.filters[4].params.param1]"
+                                        ng-model="params[$parent.filters[5].params.param1]"
                                         datepicker-localdate
                                     />
                                     <div class="input-group-append">
@@ -190,7 +200,7 @@
                                     <input
                                         type="date"
                                         class="form-control"
-                                        ng-model="params[$parent.filters[4].params.param2]"
+                                        ng-model="params[$parent.filters[5].params.param2]"
                                         datepicker-localdate
                                     />
                                 </div>
@@ -235,6 +245,14 @@
                                     sortable="'borrowerName'"
                                 >
                                     {{ borrower.borrowerName }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'BRANCH'"
+                                    sortable="'branchCode'"
+                                >
+                                    {{ borrower.branchCode }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"

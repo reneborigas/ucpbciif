@@ -12,44 +12,57 @@ define(function () {
         $state,
         $timeout,
         appFactory,
-        $window
+        $window,
+        blockUI
     ) {
-        $scope.tableLoans = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http.get('/api/loans/loans/', { params: $scope.params }).then(
-                        function (response) {
-                            var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
-                            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                            params.total(response.data.length);
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
 
-                            var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                            return page;
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not Load Loans. Please contact System Administrator.'
-                            );
-                        }
-                    );
+        var loanListBlockUI = blockUI.instances.get('loanListBlockUI');
+
+        $scope.loadLoans = function () {
+            loanListBlockUI.start('Loading Loans...');
+            $scope.tableLoans = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
                 },
-            }
-        );
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/loans/loans/', { params: $scope.params }).then(
+                            function (response) {
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                params.total(response.data.length);
+
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                loanListBlockUI.stop();
+                                return page;
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not Load Loans. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    },
+                }
+            );
+        };
 
         $scope.$watch(
-            'searchTermAuto',
+            'searchTermAuto.keyword',
             function (newTerm, oldTerm) {
                 $scope.tableLoans.filter({ $: newTerm });
             },
             true
         );
+
+        $scope.loadLoans();
 
         appFactory.getLoanPrograms().then(function (data) {
             $scope.loanPrograms = data;
@@ -125,7 +138,7 @@ define(function () {
                     });
                 }
             });
-            $scope.tableLoans.reload();
+            $scope.loadLoans();
         };
 
         $scope.resetFilter = function () {
@@ -134,7 +147,7 @@ define(function () {
             });
             $scope.showFilterButton = false;
             $scope.params = {};
-            $scope.tablePayments.reload();
+            $scope.loadLoans();
         };
 
         $scope.view = function (id) {
@@ -209,11 +222,11 @@ define(function () {
                     });
                 }
             });
-            if ($scope.searchTermAuto) {
+            if ($scope.searchTermAuto.keyword) {
                 filters.push({
                     name: 'Search',
                     filterFormat: 'uppercase',
-                    params: { input: $scope.searchTermAuto },
+                    params: { input: $scope.searchTermAuto.keyword },
                 });
             }
             var $popup = $window.open('/print/loans', '_blank', 'directories=0,width=800,height=800');
@@ -867,47 +880,19 @@ define(function () {
 
         var draftAmortizationBlockUI = blockUI.instances.get('draftAmortizationBlockUI');
 
-        $scope.updateAmortizationDay = function (amortizationItem,amortizationDay) {
-            draftAmortizationBlockUI.start('Updating Amortization Items...'); 
+        $scope.updateAmortizationDay = function (amortizationItem, amortizationDay) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
 
             $http
-            .post('/api/loans/updateamortizationitem/', {
-                amortizationItemId: amortizationItem,
-                days: amortizationDay,
-            })
-            .then(
-                function (response) {
-                   
-                    // $scope.amortization.sc = response.data.new_value;
-                    draftAmortizationBlockUI.stop();
-                    // toastr.success('Success', 'Loan Security updated.');
-                },
-                function (error) {
-                    toastr.error(
-                        'Error ' + error.status + ' ' + error.statusText,
-                        'Could not update amortization item. Please contact System Administrator.'
-                    );
-                }
-            );
-            
-        };
-            $scope.updateAmortizationSchedule = function (amortizationItem,amortizationSchedule) {
-                draftAmortizationBlockUI.start('Updating Amortization Items...'); 
-    
-                $http
                 .post('/api/loans/updateamortizationitem/', {
                     amortizationItemId: amortizationItem,
-                    schedule: new Date(
-                        amortizationSchedule
-                    ).toLocaleDateString(),
+                    days: amortizationDay,
                 })
                 .then(
                     function (response) {
-                       
                         // $scope.amortization.sc = response.data.new_value;
-                        $scope.loadLoans();
                         draftAmortizationBlockUI.stop();
-                        toastr.success('Success', 'Amortization Item Updated');
+                        // toastr.success('Success', 'Loan Security updated.');
                     },
                     function (error) {
                         toastr.error(
@@ -916,44 +901,63 @@ define(function () {
                         );
                     }
                 );
-            
         };
-        $scope.updateAmortizationPrincipal = function (amortizationItem,amortizationPrincipal) {
-            draftAmortizationBlockUI.start('Updating Amortization Items...'); 
+        $scope.updateAmortizationSchedule = function (amortizationItem, amortizationSchedule) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
 
             $http
-            .post('/api/loans/updateamortizationitem/', {
-                amortizationItemId: amortizationItem,
-                principal:amortizationPrincipal,
-            })
-            .then(
-                function (response) {
-                   
-                    // $scope.amortization.sc = response.data.new_value;
-                    $scope.loadLoans();
-                    draftAmortizationBlockUI.stop();
-                    toastr.success('Success', 'Amortization Item Updated');
-                },
-                function (error) {
-                    toastr.error(
-                        'Error ' + error.status + ' ' + error.statusText,
-                        'Could not update amortization item. Please contact System Administrator.'
-                    );
-                }
-            );
-            
+                .post('/api/loans/updateamortizationitem/', {
+                    amortizationItemId: amortizationItem,
+                    schedule: new Date(amortizationSchedule).toLocaleDateString(),
+                })
+                .then(
+                    function (response) {
+                        // $scope.amortization.sc = response.data.new_value;
+                        $scope.loadLoans();
+                        draftAmortizationBlockUI.stop();
+                        toastr.success('Success', 'Amortization Item Updated');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update amortization item. Please contact System Administrator.'
+                        );
+                    }
+                );
         };
-            $scope.updateAmortizationPrincipal = function (amortizationItem,amortizationPrincipal) {
-                draftAmortizationBlockUI.start('Updating Amortization Items...'); 
+        $scope.updateAmortizationPrincipal = function (amortizationItem, amortizationPrincipal) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
 
-                $http
+            $http
                 .post('/api/loans/updateamortizationitem/', {
                     amortizationItemId: amortizationItem,
-                    principal:amortizationPrincipal,
+                    principal: amortizationPrincipal,
                 })
                 .then(
                     function (response) {
-                    
+                        // $scope.amortization.sc = response.data.new_value;
+                        $scope.loadLoans();
+                        draftAmortizationBlockUI.stop();
+                        toastr.success('Success', 'Amortization Item Updated');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update amortization item. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
+        $scope.updateAmortizationPrincipal = function (amortizationItem, amortizationPrincipal) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
+
+            $http
+                .post('/api/loans/updateamortizationitem/', {
+                    amortizationItemId: amortizationItem,
+                    principal: amortizationPrincipal,
+                })
+                .then(
+                    function (response) {
                         // $scope.amortization.sc = response.data.new_value;
                         $scope.loadLoans();
                         draftAmortizationBlockUI.stop();
@@ -967,18 +971,17 @@ define(function () {
                         );
                     }
                 );
-             };
-             $scope.updateAmortizationAccruedInterest = function (amortizationItem,accruedInterest) {
-                draftAmortizationBlockUI.start('Updating Amortization Items...'); 
+        };
+        $scope.updateAmortizationAccruedInterest = function (amortizationItem, accruedInterest) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
 
-                $http
+            $http
                 .post('/api/loans/updateamortizationitem/', {
                     amortizationItemId: amortizationItem,
-                    accruedInterest:accruedInterest,
+                    accruedInterest: accruedInterest,
                 })
                 .then(
                     function (response) {
-                    
                         // $scope.amortization.sc = response.data.new_value;
                         $scope.loadLoans();
                         draftAmortizationBlockUI.stop();
@@ -992,18 +995,17 @@ define(function () {
                         );
                     }
                 );
-             };
-             $scope.updateAmortizationInterest = function (amortizationItem,interest) {
-                draftAmortizationBlockUI.start('Updating Amortization Items...'); 
+        };
+        $scope.updateAmortizationInterest = function (amortizationItem, interest) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
 
-                $http
+            $http
                 .post('/api/loans/updateamortizationitem/', {
                     amortizationItemId: amortizationItem,
-                    interest:interest,
+                    interest: interest,
                 })
                 .then(
                     function (response) {
-                    
                         // $scope.amortization.sc = response.data.new_value;
                         $scope.loadLoans();
                         draftAmortizationBlockUI.stop();
@@ -1017,18 +1019,17 @@ define(function () {
                         );
                     }
                 );
-             };
-             $scope.updateAmortizationPrincipalBalance = function (amortizationItem,principalBalance) {
-                draftAmortizationBlockUI.start('Updating Amortization Items...'); 
+        };
+        $scope.updateAmortizationPrincipalBalance = function (amortizationItem, principalBalance) {
+            draftAmortizationBlockUI.start('Updating Amortization Items...');
 
-                $http
+            $http
                 .post('/api/loans/updateamortizationitem/', {
                     amortizationItemId: amortizationItem,
-                    principalBalance:principalBalance,
+                    principalBalance: principalBalance,
                 })
                 .then(
                     function (response) {
-                    
                         // $scope.amortization.sc = response.data.new_value;
                         $scope.loadLoans();
                         draftAmortizationBlockUI.stop();
@@ -1042,7 +1043,7 @@ define(function () {
                         );
                     }
                 );
-             };
+        };
         $scope.calculateRestructuredAmortization = function (loanId, dateStart, termDays, principalPaymentCycle, interestPaymentCycle) {
             $http
                 .post('/api/processes/calculaterestructuredpmt/', {

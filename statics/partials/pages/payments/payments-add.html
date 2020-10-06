@@ -10,7 +10,7 @@
                         <h3 class="card-label">Search Loan</h3>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" block-ui="paymentAddBlockUI">
                     <div class="mb-4">
                         <div class="d-flex justify-content-center align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
@@ -20,8 +20,8 @@
                                             type="text"
                                             class="form-control"
                                             placeholder="Search Loan Number"
-                                            ng-model="searchTermAuto"
-                                            ng-enter="searchLoan(searchTermAuto)"
+                                            ng-model="searchTermAuto.keyword"
+                                            ng-enter="searchLoan(searchTermAuto.keyword)"
                                         />
                                         <span><i class="far fa-search"></i></span>
                                     </div>
@@ -30,7 +30,7 @@
                                     <a
                                         href="#"
                                         class="btn btn-light-primary px-6 font-weight-bold ml-4"
-                                        ng-click="searchLoan(searchTermAuto)"
+                                        ng-click="searchLoan(searchTermAuto.keyword)"
                                     >
                                         Search
                                     </a>
@@ -38,76 +38,36 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="datatable datatable-default datatable-subtable fade datatable-selectable"
-                        ng-show="showTable"
-                    >
+                    <div class="datatable datatable-default datatable-subtable fade datatable-selectable" ng-if="showTable">
                         <table
                             class="table table-vertical-center datatable-table"
                             ng-table="tableLoans"
                             template-pagination="statics/partials/customs/pagination.html"
                         >
-                            <tr
-                                class="datatable-row"
-                                ng-repeat="loan in $data"
-                                ng-show="showTable"
-                                ng-click="addPayment(loan.id)"
-                            >
-                                <td
-                                    class="datatable-cell datatable-cell-center text-center"
-                                    header-class="'text-center'"
-                                    data-title="'LOAN NO.'"
-                                >
+                            <tr class="datatable-row" ng-repeat="loan in $data" ng-show="showTable" ng-click="addPayment(loan.id)">
+                                <td class="datatable-cell datatable-cell-center text-center" header-class="'text-center'" data-title="'LOAN NO.'">
                                     LN{{ loan.id }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'BORROWER'"
-                                >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'">
                                     {{ loan.borrower_name }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'WINDOW'"
-                                >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'WINDOW'">
                                     {{ loan.loanProgram_name }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'TERM'"
-                                >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'">
                                     {{ loan.term_name }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'LOAN AMOUNT'"
-                                >
+                                <td class="datatable-cell datatable-cell-left text-right" header-class="'text-right'" data-title="'LOAN AMOUNT'">
                                     {{ loan.amount | currency :'₱'}}
                                 </td>
 
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'INTEREST RATE'"
-                                >
+                                <td class="datatable-cell datatable-cell-left text-right" header-class="'text-right'" data-title="'INTEREST RATE'">
                                     {{ loan.interestRate_amount }} %
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'DATE RELEASED'"
-                                >
+                                <td class="datatable-cell datatable-cell-left text-right" header-class="'text-right'" data-title="'DATE RELEASED'">
                                     {{ loan.dateReleased | date:'mediumDate' }}
                                 </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'STATUS'"
-                                >
+                                <td class="datatable-cell datatable-cell-left text-right" header-class="'text-right'" data-title="'STATUS'">
                                     {{ loan.loanStatus_name }}
                                 </td>
                             </tr>

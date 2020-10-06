@@ -4,7 +4,6 @@
             <a class="nav-link" ui-sref-active="active" ui-sref="app.dashboard">
                 <i class="icon-speedometer"></i>
                 Dashboard
-                <span class="badge badge-info">NEW</span>
             </a>
         </li>
         <li class="divider"></li>
@@ -68,8 +67,8 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.icons')}">
-            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#">
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.amortizations')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.amortizations')}" href="#">
                 <i class="fad fa-chart-bar"></i>
                 Amortizations
             </a>
@@ -78,7 +77,6 @@
                     <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.amortizations.list">
                         <i class="fad fa-calendar-alt"></i>
                         Schedules
-                        <span class="badge badge-success">NEW</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -89,8 +87,8 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app. icons')}">
-            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.icons')}" href="#">
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.creditline')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.creditline')}" href="#">
                 <i class="fad fa-desktop"></i>
                 Monitoring
             </a>
@@ -114,6 +112,12 @@
                     </a>
                 </li>
             </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" ng-class="{active: $state.includes('app.lms-reports')}" ui-sref="app.lms-reports.list">
+                <i class="fad fa-chart-line"></i>
+                Reports
+            </a>
         </li>
     </ul>
 </nav>

@@ -13,37 +13,35 @@ define(function () {
         $timeout,
         appFactory,
         $window,
-        $stateParams
+        $stateParams,
+        blockUI
     ) {
-        $scope.tableDocuments = new NgTableParams(
-            {
-                page: 1,
-                count: 10,
-            },
-            {
-                counts: [10, 20, 30, 50, 100],
-                getData: function (params) {
-                    return $http
-                        .get('/api/documents/documents/', { params: { subProcessId: $scope.subProcessId } })
-                        .then(
+        $scope.searchTermAuto = {
+            keyword: '',
+        };
+
+        var documentListBlockUI = blockUI.instances.get('documentListBlockUI');
+
+        $scope.loadDocuments = function () {
+            documentListBlockUI.start('Loading ' + $scope.subProcessName + 's...');
+            $scope.tableDocuments = new NgTableParams(
+                {
+                    page: 1,
+                    count: 10,
+                },
+                {
+                    counts: [10, 20, 30, 50, 100],
+                    getData: function (params) {
+                        return $http.get('/api/documents/documents/', { params: { subProcessId: $scope.subProcessId } }).then(
                             function (response) {
                                 console.log(response.data);
-                                var filteredData = params.filter()
-                                    ? $filter('filter')(response.data, params.filter())
-                                    : response.data;
-                                var orderedData = params.sorting()
-                                    ? $filter('orderBy')(filteredData, params.orderBy())
-                                    : filteredData;
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
+                                var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
+                                var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                                 params.total(response.data.length);
 
-                                var page = orderedData.slice(
-                                    (params.page() - 1) * params.count(),
-                                    params.page() * params.count()
-                                );
+                                var page = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                documentListBlockUI.stop();
                                 return page;
                             },
                             function (error) {
@@ -53,17 +51,20 @@ define(function () {
                                 );
                             }
                         );
-                },
-            }
-        );
+                    },
+                }
+            );
+        };
 
         $scope.$watch(
-            'searchTermAuto',
+            'searchTermAuto.keyword',
             function (newTerm, oldTerm) {
                 $scope.tableDocuments.filter({ $: newTerm });
             },
             true
         );
+
+        $scope.loadDocuments();
 
         $scope.retrieveHeaders = function () {
             var headers = [];
@@ -133,18 +134,14 @@ define(function () {
                     });
                 }
             });
-            if ($scope.searchTermAuto) {
+            if ($scope.searchTermAuto.keyword) {
                 filters.push({
                     name: 'Search',
                     filterFormat: 'uppercase',
-                    params: { input: $scope.searchTermAuto },
+                    params: { input: $scope.searchTermAuto.keyword },
                 });
             }
-            var $popup = $window.open(
-                '/print/' + $stateParams.subProcessName,
-                '_blank',
-                'directories=0,width=800,height=800'
-            );
+            var $popup = $window.open('/print/' + $stateParams.subProcessName, '_blank', 'directories=0,width=800,height=800');
             $popup.title = 'Loan List';
             $popup.user = $scope.loadCurrentUserInfo();
             $popup.filters = filters;
@@ -221,37 +218,35 @@ define(function () {
             } else {
                 console.log($scope.lastActivity.output.nextStep);
                 if ($scope.lastActivity.output.nextStep) {
-                    $http
-                        .get('/api/processes/steps/', { params: { stepId: $scope.lastActivity.output.nextStep } })
-                        .then(
-                            function (response) {
-                                $scope.currentStep = response.data[0];
-                                $scope.loadCurrentUser();
-                                // $http
-                                //     .get('/api/processes/steprequirements/', {
-                                //         params: { stepId: $scope.currentStep.id },
-                                //     })
-                                //     .then(
-                                //         function (response) {
-                                //             $scope.stepRequirements = response.data;
+                    $http.get('/api/processes/steps/', { params: { stepId: $scope.lastActivity.output.nextStep } }).then(
+                        function (response) {
+                            $scope.currentStep = response.data[0];
+                            $scope.loadCurrentUser();
+                            // $http
+                            //     .get('/api/processes/steprequirements/', {
+                            //         params: { stepId: $scope.currentStep.id },
+                            //     })
+                            //     .then(
+                            //         function (response) {
+                            //             $scope.stepRequirements = response.data;
 
-                                //             $scope.currentRequirement = $scope.stepRequirements[0];
-                                //         },
-                                //         function (error) {
-                                //             toastr.error(
-                                //                 'Error ' + error.status + ' ' + error.statusText,
-                                //                 'Could not retrieve Step Requirements Information. Please contact System Administrator.'
-                                //             );
-                                //         }
-                                //     );
-                            },
-                            function (error) {
-                                toastr.error(
-                                    'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not retrieve current procedure. Please contact System Administrator.'
-                                );
-                            }
-                        );
+                            //             $scope.currentRequirement = $scope.stepRequirements[0];
+                            //         },
+                            //         function (error) {
+                            //             toastr.error(
+                            //                 'Error ' + error.status + ' ' + error.statusText,
+                            //                 'Could not retrieve Step Requirements Information. Please contact System Administrator.'
+                            //             );
+                            //         }
+                            //     );
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve current procedure. Please contact System Administrator.'
+                            );
+                        }
+                    );
                 }
             }
 
@@ -332,26 +327,24 @@ define(function () {
         };
 
         $scope.loadProcessRequirements = function () {
-            $http
-                .get('/api/processes/processrequirements/', { params: { subProcessId: $scope.document.subProcess.id } })
-                .then(
-                    function (response) {
-                        $scope.processRequirements = response.data;
+            $http.get('/api/processes/processrequirements/', { params: { subProcessId: $scope.document.subProcess.id } }).then(
+                function (response) {
+                    $scope.processRequirements = response.data;
 
-                        $scope.currentRequirement = $scope.processRequirements[0];
-                        if ($scope.processRequirements[0]) {
-                            $scope.goToRequirement($scope.processRequirements[0].id);
-                        }
-                        // $scope.currentRequirement.attachments =
-                        // 	$scope.currentRequirement.stepRequirementAttachments;
-                    },
-                    function (error) {
-                        toastr.error(
-                            'Error ' + error.status + ' ' + error.statusText,
-                            'Could not retrieve Process Requirements Information. Please contact System Administrator.'
-                        );
+                    $scope.currentRequirement = $scope.processRequirements[0];
+                    if ($scope.processRequirements[0]) {
+                        $scope.goToRequirement($scope.processRequirements[0].id);
                     }
-                );
+                    // $scope.currentRequirement.attachments =
+                    // 	$scope.currentRequirement.stepRequirementAttachments;
+                },
+                function (error) {
+                    toastr.error(
+                        'Error ' + error.status + ' ' + error.statusText,
+                        'Could not retrieve Process Requirements Information. Please contact System Administrator.'
+                    );
+                }
+            );
         };
         $http.get('/api/documents/documentmovements/', { params: { documentId: $scope.documentId } }).then(
             function (response) {
@@ -560,10 +553,7 @@ define(function () {
                 })
                 .then(
                     function (response) {
-                        defer.resolve(
-                            'Success',
-                            appFactory.trimString(response.data.fileName, 9) + ' uploaded successfully.'
-                        );
+                        defer.resolve('Success', appFactory.trimString(response.data.fileName, 9) + ' uploaded successfully.');
                         return defer.promise;
                     },
                     function (error) {
@@ -737,15 +727,7 @@ define(function () {
         };
     });
 
-    app.controller('DocumentAddController', function DocumentAddController(
-        $http,
-        $filter,
-        $scope,
-        toastr,
-        NgTableParams,
-        $state,
-        $timeout
-    ) {
+    app.controller('DocumentAddController', function DocumentAddController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout) {
         $scope.loan = {
             loanName: '',
             loanAmount: '',

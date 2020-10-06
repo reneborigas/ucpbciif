@@ -519,6 +519,26 @@ class AmortizationItemViewSet(ModelViewSet):
         amortizationItemId = self.request.query_params.get('amortizationItemId', None)
         maturing = self.request.query_params.get('maturing', None)
 
+        scheduleDateFrom = self.request.query_params.get('scheduleDateFrom',None)
+        scheduleDateTo = self.request.query_params.get('scheduleDateTo',None)
+        numberofDaysFrom = self.request.query_params.get('numberofDaysFrom',None)
+        numberofDaysTo = self.request.query_params.get('numberofDaysTo',None)
+        principalFrom = self.request.query_params.get('principalFrom',None)
+        principalTo = self.request.query_params.get('principalTo',None)
+
+        interestFrom = self.request.query_params.get('interestFrom',None)
+        interestTo = self.request.query_params.get('interestTo',None)
+        accruedInterestFrom = self.request.query_params.get('accruedInterestFrom',None)
+        accruedInterestTo = self.request.query_params.get('accruedInterestTo',None)
+
+        penaltyFrom = self.request.query_params.get('penaltyFrom',None)
+        penaltyTo = self.request.query_params.get('penaltyTo',None)
+        amortizationFrom = self.request.query_params.get('amortizationFrom',None)
+        amortizationTo = self.request.query_params.get('amortizationTo',None)
+        principalBalanceFrom = self.request.query_params.get('principalBalanceFrom',None)
+        principalBalanceTo = self.request.query_params.get('principalBalanceTo',None)
+        status = self.request.query_params.get('status',None)
+
         amortizationItems = []
         if amortizationItemId is not None:
             queryset = queryset.filter(id=amortizationItemId)
@@ -526,9 +546,6 @@ class AmortizationItemViewSet(ModelViewSet):
         for amortizationItem in queryset:
             if(amortizationItem.isOnCurrentAmortization()):
                 amortizationItems.append(amortizationItem.id)
-
-            
-
 
         queryset = queryset.filter(id__in=amortizationItems)    
          
@@ -539,16 +556,40 @@ class AmortizationItemViewSet(ModelViewSet):
                     amortizationItems.append(amortizationItem.id)
              
             queryset = queryset.filter(id__in=amortizationItems)
-        # for amortizationItem in queryset:
-        #     amortizationItem.isItemPaid = amortizationItem.isPaid()
-        
-        # fo
 
-        print(queryset)
 
         for amortizationItem in queryset:
             amortizationItem.totalPayment = amortizationItem.getTotalPayment
             amortizationItem.latestCheck = amortizationItem.getPDC()
+
+        if status is not None:
+            queryset = queryset.filter(status__name=status)
+
+        if scheduleDateFrom is not None and scheduleDateTo is not None:
+            queryset=queryset.filter(schedule__gte=scheduleDateFrom).filter(schedule__lte=scheduleDateTo)
+
+        if numberofDaysFrom is not None and numberofDaysTo is not None:
+            queryset=queryset.filter(days__gte=numberofDaysFrom).filter(days__lte=numberofDaysTo)
+
+        if principalFrom is not None and principalTo is not None:
+            queryset=queryset.filter(principal__gte=principalFrom).filter(principal__lte=principalTo)
+
+        if interestFrom is not None and interestTo is not None:
+            queryset=queryset.filter(interest__gte=interestFrom).filter(interest__lte=interestTo)
+
+        if accruedInterestFrom is not None and accruedInterestTo is not None:
+            queryset=queryset.filter(accruedInterest__gte=accruedInterestFrom).filter(accruedInterest__lte=accruedInterestTo)
+
+        if penaltyFrom is not None and penaltyTo is not None:
+            queryset=queryset.filter(penalty__gte=penaltyFrom).filter(penalty__lte=penaltyTo)
+
+        if amortizationFrom is not None and amortizationTo is not None:
+            queryset=queryset.filter(total__gte=amortizationFrom).filter(total__lte=amortizationTo)
+
+        if principalBalanceFrom is not None and principalBalanceTo is not None:
+            queryset=queryset.filter(principalBalance__gte=principalBalanceFrom).filter(principalBalance__lte=principalBalanceTo)
+
+        
         return queryset
 
             
