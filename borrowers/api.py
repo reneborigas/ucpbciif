@@ -146,3 +146,8 @@ class BorrowerAttachmentViewSet(ModelViewSet):
             queryset = queryset.filter(borrower=borrowerId) 
 
         return queryset
+
+class BranchViewSet(ModelViewSet):
+    queryset = Branch.objects.all()
+    serializer_class = BranchSerializer
+    permission_classes = (permissions.IsAuthenticated, )

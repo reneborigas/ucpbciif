@@ -5,6 +5,19 @@ define(function () {
 
     app.factory('appFactory', function ($http, toastr, $filter) {
         return {
+            getBranches: function () {
+                return $http.get('/api/borrowers/branches/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + error.statusText,
+                            'Could not retrieve Branch List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getTitleType: function () {
                 return $http.get('/api/settings/titletype/').then(
                     function (response) {

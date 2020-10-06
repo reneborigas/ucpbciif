@@ -41,15 +41,14 @@
             </div>
             <div class="col-6">
                 <div class="form-group">
-                    <label for="branchCode">Branch Code</label>
-                    <input
-                        type="text"
+                    <label for="branch">Branch Code</label>
+                    <select
                         class="form-control"
-                        id="branchCode"
-                        name="branchCode"
-                        placeholder="Branch Code"
-                        ng-model="borrower.branchCode"
-                    />
+                        id="branch"
+                        name="branch"
+                        ng-model="business.branch"
+                        ng-options="branch.id as branch.branchCode for branch in branches"
+                    ></select>
                 </div>
             </div>
         </div>

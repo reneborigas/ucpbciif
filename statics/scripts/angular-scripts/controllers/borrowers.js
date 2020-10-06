@@ -431,6 +431,9 @@ define(function () {
         appFactory.getFirmSizeType().then(function (data) {
             $scope.firmSizes = data;
         });
+        appFactory.getBranches().then(function (data) {
+            $scope.branches = data;
+        });
 
         $scope.individual = {
             title: '',
@@ -654,7 +657,7 @@ define(function () {
             business: '',
             recordType: '',
             providerCode: '',
-            branchCode: '',
+            branch: '',
             subjectReferenceDate: new Date(),
             providerSubjectNumber: '',
             status: '',

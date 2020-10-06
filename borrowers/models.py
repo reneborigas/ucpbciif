@@ -7,6 +7,53 @@ from payments.models import Payment
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
+class Branch(models.Model):
+    name = models.CharField(
+        max_length=255,
+        blank = True,
+        null = True, 
+    )
+    address = models.TextField(
+        blank = True,
+        null = True,
+    )    
+    branchCode = models.CharField(
+        max_length=255,
+        blank = True,
+        null = True, 
+    )
+    status = models.CharField(
+        max_length=255,
+        blank = True,
+        null = True, 
+    )
+    description = models.TextField(
+        blank = True,
+        null = True,
+    )
+    remarks = models.TextField(
+        blank = True,
+        null = True,
+    )    
+    createdBy = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.SET_NULL,
+        related_name="branchCreatedBy",
+        null=True,
+        blank=True
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s - %s" % (self.name, self.branchCode)
 
 
 class Business(models.Model):
@@ -972,10 +1019,13 @@ class Borrower(models.Model):
         blank = True,
         null = True, 
     )
-    branchCode = models.CharField(
-        max_length=255,
+    branch = models.ForeignKey(
+        Branch,
+        on_delete=models.SET_NULL,
+        related_name="borrowerBranch",
+        null = True,
         blank = True,
-        null = True, 
+        default=6,
     )
     subjectReferenceDate = models.DateField(
         null=True,
@@ -1012,7 +1062,7 @@ class Borrower(models.Model):
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
-    ) 
+    )
     dateUpdated = models.DateTimeField(
         auto_now_add=True,
     )

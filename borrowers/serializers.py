@@ -7,6 +7,11 @@ from processes.serializers import SubProcessSerializer
 from loans.serializers import LoanSerializer,CreditLineSerializer
 from payments.serializers import PaymentSerializer
 
+class BranchSerializer(ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = '__all__'
+        
 class FamilySerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
 
