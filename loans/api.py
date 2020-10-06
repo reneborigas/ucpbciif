@@ -14,6 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
 from processes.api import generateAmortizationSchedule,generateUnevenAmortizationSchedule
+from decimal import Decimal
 
 class GetDashboardDataView(views.APIView):
     
@@ -368,7 +369,22 @@ class UpdateLoanView(views.APIView):
 
                 for amortizationItem in amortization.amortizationItems.all().order_by('id'):
                     amortizationItem.schedule = schedule
+                   
+
+                   
+                    dayTillCutOff = loan.term.interestPaymentPeriod.paymentCycle - int(timezone.localtime(schedule).strftime ('%d') )  
+                     
+                    print("interest rates")
+                   
+                
+                    accruedInterest = Decimal((amortizationItem.principal + amortizationItem.principalBalance) ) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+                    print(round(accruedInterest,2))
+                    
+                    amortizationItem.accruedInterest = accruedInterest
+                    amortizationItem.deductAccruedInterest = amortizationItem.interest - accruedInterest
                     schedule = schedule + timezone.timedelta(days=loan.term.interestPaymentPeriod.paymentCycle)
+
+
                     amortizationItem.save()
                         
            
@@ -444,7 +460,9 @@ class LoanViewSet(ModelViewSet):
                 
                 
             loan.outStandingBalance = loan.getOutstandingBalance
-            loan.currentAmortizationItem = loan.getCurrentAmortizationItem
+            loan.currentAmortizationItem = loan.getCurrentAmortizationItem()
+            if loan.currentAmortizationItem:
+                loan.currentAmortizationItem.latestCheck =  loan.currentAmortizationItem.getPDC()
             loan.lastAmortizationItem = loan.getLastAmortizationItem
             loan.totalObligations = loan.getTotalObligations
             loan.latestPayment = loan.getLatestPayment

@@ -1543,7 +1543,7 @@ define(function () {
                         committee: appFactory.getCurrentUser(),
                         loan: '',
                     };
-                    console.log($scope.document);
+                    console.log($scope.creditLine);
                     if ($scope.creditLine) {
                         $scope.creditLine = {
                             creditlineid: $scope.creditLine.id,
@@ -1600,12 +1600,13 @@ define(function () {
                             totalAvailment: '',
                             term: '',
                             loanProgram: '',
-                            purpose: '',
-                            security: '',
+                            purpose: 'For relending within the coconut community with priority to coconut farmer members',
+                            security: 'Post-dated checks and JSS of BODs, Manager and Treasurer',
                             status: 1,
                             borrower: $scope.borrowerId,
                             createdBy: appFactory.getCurrentUser(),
                         };
+                        console.log($scope.creditLine);
                     }
 
                     if ($scope.subProcess.parentLastDocumentCreditLine && !$scope.creditLine.creditlineid) {
@@ -1629,6 +1630,7 @@ define(function () {
 
                         $scope.loan = {
                             loanid: null,
+                            pnNo:'',
                             amount: '',
                             creditLine: $scope.subProcess.parentLastDocumentCreditLine.id,
                             interestRate: $scope.subProcess.parentLastDocumentCreditLine.interestRate,
@@ -1662,6 +1664,7 @@ define(function () {
                     if ($scope.subProcess.parentLastDocumentLoan) {
                         $scope.loan = {
                             loanid: $scope.subProcess.parentLastDocumentLoan.id,
+                            pnNo: $scope.subProcess.parentLastDocumentLoan.pnNo,
                             amount: parseFloat($scope.subProcess.parentLastDocumentLoan.amount),
                             creditLine: $scope.subProcess.parentLastDocumentLoan.creditLine,
                             interestRate: $scope.subProcess.parentLastDocumentLoan.interestRate,
