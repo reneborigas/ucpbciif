@@ -318,7 +318,7 @@ define(function () {
                             remarks: '',
                             description: '',
                             paymentStatus: '2',
-                            createdBy: '1',
+                            createdBy: '1'
                         };
 
                         console.log($scope.payment.paymentType);
@@ -432,7 +432,7 @@ define(function () {
                             function (newTerm, oldTerm) {
                                 console.log(newTerm);
                                 $scope.payment.balance = $scope.getBalance().toFixed(2);
-                                $scope.payment.overPayment = $scope.getOverPayment().toFixed(2);
+                                $scope.payment.overPayment = $scope.getOverPayment();
                                 $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(
                                     2
                                 );
@@ -624,11 +624,15 @@ define(function () {
             $scope.payment.penaltyPayment = parseFloat($scope.payment.penaltyPayment).toFixed(2);
             $scope.payment.balance = parseFloat($scope.payment.balance).toFixed(2);
             $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(2);
-
+            
+            if ($scope.loan.currentAmortizationItem.latestCheck){
+                $scope.payment.pdc =$scope.loan.currentAmortizationItem.latestCheck.id;
+            }
+           
             // console.log($scope.payment.balance);
             // console.log($scope.payment.overPayment);
             // console.log($scope.payment.outStandingBalance);
-            // console.log($scope.payment);
+            console.log($scope.payment);
 
             // if ($scope.newPaymentForm.$valid) {
             console.log($scope.payment);

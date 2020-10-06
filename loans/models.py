@@ -424,6 +424,12 @@ class CreditLine(models.Model):
         return totalAvailments
 
 class Loan(models.Model):
+    pnNo = models.CharField(
+        blank = True,
+        null = True,
+        max_length=25
+        
+    )
     borrower =  models.ForeignKey(
         'borrowers.Borrower',
         on_delete=models.CASCADE,
@@ -455,10 +461,12 @@ class Loan(models.Model):
     purpose = models.TextField(
         blank = True,
         null = True,
+        default='For relending within the coconut community with priority to coconut farmer members'
     )
     security = models.TextField(
         blank = True,
         null = True,
+        default='Post-dated checks and JSS of BODs, Manager and Treasurer'
     )
     loanStatus = models.ForeignKey(
         LoanStatus,
@@ -636,7 +644,6 @@ class Loan(models.Model):
              
               
             if latestAmortization: 
-                
                 return latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F('total') ))['totalAmortizationPayment']  -  totalPayments
     
         return   0  
@@ -856,7 +863,7 @@ class AmortizationItem(models.Model):
     principal = models.DecimalField( max_digits=12, decimal_places=3,blank=False)
     deductAccruedInterest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
     accruedInterest = models.DecimalField( max_digits=12, decimal_places=3,blank=False)
-    interest = models.DecimalField( max_digits=12, decimal_places=2,blank=False)
+    interest = models.DecimalField( max_digits=12, decimal_places=3,blank=False)
     additionalInterest = models.DecimalField(
         max_digits=12,
         decimal_places=2,

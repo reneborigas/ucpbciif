@@ -76,12 +76,15 @@ def generateAmortizationSchedule(loan,request):
     for i in range(int(noOfPaymentSchedules)):
 
         pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
-        lastPayment = schedule - timezone.timedelta(days=cycle)
+        lastPayment = schedule  
         dayTillCutOff = cycle - int(lastPayment.strftime ('%d') )
 
+        print("interest rate")
        
-        accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
- 
+        print(Decimal((pmt.principal + pmt.nextStartingValue) - pmt.interest))
+        accruedInterest = Decimal((pmt.principal + pmt.nextStartingValue) ) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+        print(round(accruedInterest,2))
+        
         amortizationItem = AmortizationItem(
             schedule = schedule,
             amortization = amortization,
@@ -242,7 +245,7 @@ class LoanAvailmemtApprovedView(views.APIView):
  
         return Response({'error':'Error on approving credit line'},status.HTTP_400_BAD_REQUEST)
 
-
+ 
 class SaveDraftRestructuredAmortizationView(views.APIView):
 
     def post(self,request):
@@ -435,7 +438,7 @@ class CalculateRestructurePMTView(views.APIView):
                 print(i)
                 lastPayment = schedule - timezone.timedelta(days=cycle)
     
-                dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
+                dayTillCutOff = cycle - int(timezone.localtime(lastPayment).strftime ('%d') ) 
 
                 accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
 
@@ -566,33 +569,34 @@ class CalculatePMTView(views.APIView):
             print('totalDays')
             
             print(totalDays)
-            dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )     - 1
+            dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )     
         
         else:
              
             totalDays = days   
 
         
-            dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )  
+            dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )   
 
         print( int(datePayment.replace(tzinfo=None).strftime ('%d') )  )
         print('dayTillCutOff')
         print(dayTillCutOff)
-        accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+        accruedInterest = (Decimal(pmt.principal + pmt.nextStartingValue)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
         print(pmt.principal)
         additionalInterest = 0
         print("accruedInterest")
+        # interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)
         if daysExceed < 0:
             daysExceed = 0
 
         if daysExceed > 0:
-            additionalInterest = (int(totalToPay) )  *  (loan.interestRate.interestRate/100) * daysExceed/360
+            additionalInterest = (Decimal(totalToPay) )  *  (loan.interestRate.interestRate/100) * daysExceed/360
 
         penalty = 0
         if additionalInterest>0:
-            penalty =  ( int(totalToPay) + int(additionalInterest))  *  (12/100) * daysExceed/360
+            penalty =  ( Decimal(totalToPay) + Decimal(float(additionalInterest)))  *  Decimal(12/100) * daysExceed/360
 
-        totalToPayWithPenalty= int(totalToPay) + int(additionalInterest) + int(penalty)
+        totalToPayWithPenalty= (totalToPay) + (additionalInterest) + (penalty)
         totalInterest = interest + additionalInterest
         
         

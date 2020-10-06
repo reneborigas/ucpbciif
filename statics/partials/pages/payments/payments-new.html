@@ -614,7 +614,45 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="form-group row" ng-if="payment.paymentType == '2'">
+
+                            <div class="form-group row">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="pl-4">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    Post Dated Check
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-size-lg">
+                                                    {{loan.currentAmortizationItem.latestCheck.checkNo}}  
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="pl-4">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                    Banck Branch
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-size-lg">
+                                                   {{loan.currentAmortizationItem.latestCheck.bankBranch}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="form-group row" ng-if="payment.paymentType == '2' && !loan.currentAmortizationItem.latestCheck">
                                 <div class="col-lg-6">
                                     <label>Check No:</label>
                                     <input
@@ -1085,7 +1123,8 @@
                             <button
                                 class="btn btn-success text-uppercase p-2 pl-3 pr-3"
                                 ng-click="save()"
-                                ng-disabled="insufficient || payment.total <= 0 || !payment.checkNo || !payment.bankAccount"
+                                ng-disabled="insufficient || payment.total <= 0 "
+                                 
                             >
                                 Accept Payment
                             </button>

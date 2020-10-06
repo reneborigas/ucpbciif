@@ -443,8 +443,12 @@ define(function () {
 
                                 $http.post(output.callBackLink, param).then(function (response) {
                                     console.log(response);
+                                   
                                     if ($scope.document.loan) {
                                         $state.go('app.loans.info', { loanId: $scope.document.loan.id });
+                                    }
+                                    else if ( $scope.document.creditLine) {
+                                        $state.go('app.creditline.info', { creditLineId: $scope.document.creditLine.id });
                                     }
                                 });
                                 toastr.success('Success', 'File successfully moved to the next phase.');

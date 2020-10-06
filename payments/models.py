@@ -182,6 +182,13 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         related_name="payments",
     ) 
+    pdc =  models.ForeignKey(
+        Check,
+        on_delete=models.SET_NULL,
+        related_name="payments",
+        blank=True,
+        null=True
+    ) 
     amortization =  models.ForeignKey(
         'loans.Amortization',
         on_delete=models.CASCADE,
