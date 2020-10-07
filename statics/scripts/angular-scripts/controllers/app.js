@@ -114,6 +114,28 @@ define(function () {
                 $scope.notifClick = false;
             });
         };
+        $scope.clearNotifications = function (user) {
+             
+            $http.post('/api/notifications/clearnotifications/', { 
+                        userId: $scope.user.id,
+                        committeeId: $scope.user.committeeId,
+                    })
+                    .then(
+                        function (response) {
+                            console.log(response);
+                            
+                        $scope.loadNotifications(user);
+
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve clear notification. Please contact System Administrator.'
+                            );
+                        }
+                    );
+        };
+        
 
         $scope.notifView = function (notificationId, object_id, content_type, slug) {
             console.log($scope.user.id);

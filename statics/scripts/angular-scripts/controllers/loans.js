@@ -153,7 +153,9 @@ define(function () {
         $scope.view = function (id) {
             $state.go('app.loans.info', { loanId: id });
         };
-
+        $scope.viewBorrower = function (id) {
+            $state.go('app.borrowers.info', { borrowerId: id });
+        };
         $scope.retrieveHeaders = function () {
             var headers = [];
             var ngTable = document.getElementById('tableLoans');
