@@ -162,6 +162,8 @@ define(function () {
             });
         };
 
+        
+
         $scope.notifView = function (notificationId, object_id, content_type, slug) {
             console.log($scope.user.id);
             if ($scope.user.committeeId) {

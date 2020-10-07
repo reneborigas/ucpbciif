@@ -14,6 +14,60 @@ from django.views.decorators.csrf import csrf_protect
 
 from users.models import CustomUser
 
+class ClearNotification(views.APIView):
+    
+    # @method_decorator(csrf_protect) 
+    def post(self,request): 
+ 
+        committeeId = request.data.get("committeeId") 
+        userId = request.data.get("userId") 
+        
+        # subProcessId = request.data.get("subProcessId") 
+        
+
+        
+
+        if committeeId:  
+           
+            notificationViews = []
+            notificationViews = NotificationView.objects.filter(committee =Committee.objects.get(pk=committeeId) )
+            
+            for notificationview in notificationViews:
+                notificationViews.append(notificationview.notification.id)
+
+
+            notifications = Notification.objects.exclude(id__in=notificationViews)
+
+            for notification in notifications: 
+
+                notificationView = NotificationView(notification=Notification.objects.get(pk=notification.id),committee=Committee.objects.get(pk=committeeId))
+                
+                notificationView.save()
+
+        if userId:  
+           
+            notificationViews = []
+            notificationViews = NotificationView.objects.filter(user=CustomUser.objects.get(pk=userId) )
+            
+            for notificationview in notificationViews:
+                notificationViews.append(notificationview.notification.id)
+
+
+            notifications = Notification.objects.exclude(id__in=notificationViews)
+
+            for notification in notifications: 
+
+                notificationView = NotificationView(notification=Notification.objects.get(pk=notification.id),user=CustomUser.objects.get(pk=userId))
+                
+                notificationView.save()
+
+
+            return Response({
+                'message': 'Notification Cleared' 
+            },status= status.HTTP_202_ACCEPTED) 
+
+
+        return Response({'error':'Error on viewing notification'},status.HTTP_400_BAD_REQUEST)
 class ViewNotification(views.APIView):
     
     # @method_decorator(csrf_protect) 

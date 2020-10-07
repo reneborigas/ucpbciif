@@ -12,6 +12,7 @@ router.register(r'notifications',NotificationViewSet)
 
 urlpatterns =  [ 
         path('viewnotifications/', ViewNotification.as_view()), 
+        path('clearnotifications/', ClearNotification.as_view()), 
         ]
 
 urlpatterns += router.urls

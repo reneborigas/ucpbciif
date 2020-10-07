@@ -699,20 +699,26 @@ define(function () {
                         pageTitle: 'UCPB CIIF | Loan Info',
                     },
                     ncyBreadcrumb: {
-                        label: 'Loan No. {{loanId}}',
+                        label: 'PN No. {{pnNo}}',
                         parent: 'app.loans.list',
                     },
                     resolve: {
-                        fetchLoan: function ($http, $q, $stateParams) {
-                            return $http.get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } }).then(function (response) {
-                                if (response.data.length == 0) {
+                        fetchLoan: function ($http, $q, $stateParams,appFactory) {
+
+                            return appFactory.getLoan($stateParams.subProcessName).then(function (data) {
+                                if (!data) {
                                     return $q.reject('Not Found');
                                 }
+                                return data;
                             });
+                            
+                            
                         },
                     },
-                    controller: function ($scope, $stateParams, appFactory) {
+                    controller: function ($scope, $stateParams, appFactory,fetchLoan) {
                         $scope.loanId = $stateParams.loanId;
+                        $scope.pnNo = fetchLoan.pnNo;
+                        
                     },
                 })
                 .state('app.loans.restructeamortization', {
@@ -726,16 +732,20 @@ define(function () {
                         parent: 'app.loans.info',
                     },
                     resolve: {
-                        fetchLoan: function ($http, $q, $stateParams) {
-                            return $http.get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } }).then(function (response) {
-                                if (response.data.length == 0) {
+                        fetchLoan: function ($http, $q, $stateParams,appFactory) {
+
+                            return appFactory.getLoan($stateParams.subProcessName).then(function (data) {
+                                if (!data) {
                                     return $q.reject('Not Found');
                                 }
-                            });
+                                return data;
+                            }); 
+                            
                         },
                     },
-                    controller: function ($scope, $stateParams, appFactory) {
+                    controller: function ($scope, $stateParams, appFactory,fetchLoan) {
                         $scope.loanId = $stateParams.loanId;
+                        $scope.pnNo = fetchLoan.pnNo; 
                     },
                 })
                 .state('app.loans.add', {
@@ -805,16 +815,20 @@ define(function () {
                         parent: 'app.loans.info',
                     },
                     resolve: {
-                        fetchLoan: function ($http, $q, $stateParams) {
-                            return $http.get('/api/loans/loans/', { params: { loanId: $stateParams.loanId } }).then(function (response) {
-                                if (response.data.length == 0) {
+                        fetchLoan: function ($http, $q, $stateParams,appFactory) {
+
+                            return appFactory.getLoan($stateParams.subProcessName).then(function (data) {
+                                if (!data) {
                                     return $q.reject('Not Found');
                                 }
-                            });
+                                return data;
+                            }); 
+                            
                         },
                     },
-                    controller: function ($scope, $stateParams, appFactory) {
+                    controller: function ($scope, $stateParams, appFactory,fetchLoan) {
                         $scope.loanId = $stateParams.loanId;
+                        $scope.pnNo = fetchLoan.pnNo;
                     },
                 })
                 .state('app.payments.add', {

@@ -280,10 +280,13 @@ class LoanProgram(models.Model):
             return 0
         
         
-        loans = self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED',borrower=borrower)) 
+        loans = self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower) 
         totalAvailments = 0
+        print("loans")
         for loan in loans:
+            
             loan.totalAmortizationPrincipal = loan.getTotalAmortizationPrincipal() 
+            print(loan.totalAmortizationPrincipal )
             totalAvailments = totalAvailments + loan.totalAmortizationPrincipal
 
         return totalAvailments
@@ -510,7 +513,7 @@ class Loan(models.Model):
     )
 
     def __str__(self):
-        return "%s %s %s" % (self.id,self.borrower,self.amount)
+        return "%s %s %s %s" % (self.pnNo,self.id,self.borrower,self.amount)
 
     def getLatestAmortization(self):
         if self.isRestructured:
