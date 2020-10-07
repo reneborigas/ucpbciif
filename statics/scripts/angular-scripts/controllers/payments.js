@@ -730,7 +730,7 @@ define(function () {
         $scope.tableLoans = new NgTableParams(
             {
                 page: 1,
-                count: 10,
+                count: 20,
             },
             {
                 counts: [10, 20, 30, 50, 100],
@@ -760,7 +760,7 @@ define(function () {
 
         $scope.searchLoan = function (term) {
             paymentAddBlockUI.start('Loading Loans...');
-            $scope.tableLoans.filter({ id: term });
+            $scope.tableLoans.filter({ pnNo: term });
             if (term) {
                 $timeout(function () {
                     $scope.showTable = true;
@@ -775,7 +775,7 @@ define(function () {
         $scope.addPayment = function (id) {
             swal({
                 title: 'Process Payment',
-                text: 'Process Payment for LN' + id + '?',
+                text: 'Process Payment for ' + pnNo + '?',
                 icon: 'info',
                 buttons: {
                     cancel: false,

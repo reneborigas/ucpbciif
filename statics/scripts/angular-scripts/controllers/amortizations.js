@@ -26,7 +26,7 @@ define(function () {
             $scope.tableAmortization = new NgTableParams(
                 {
                     page: 1,
-                    count: 10,
+                    count: 20,
                 },
                 {
                     counts: [10, 20, 30, 50, 100],
@@ -305,7 +305,7 @@ define(function () {
             $scope.tableMaturingAmortization = new NgTableParams(
                 {
                     page: 1,
-                    count: 10,
+                    count: 20,
                 },
                 {
                     counts: [10, 20, 30, 50, 100],

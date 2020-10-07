@@ -165,3 +165,8 @@ class BranchViewSet(ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
     permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Branch.objects.order_by('id')
+
+        return queryset

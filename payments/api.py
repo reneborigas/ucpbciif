@@ -62,7 +62,13 @@ class PaymentViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Payment.objects.order_by('id')
+        queryset = Payment.objects.annotate(
+            borrowerName=Case(
+                    When(Q(loan__borrower__recordType='BD'),then=F('loan__borrower__business__tradeName')),
+                    When(Q(loan__borrower__recordType='ID'),then=Concat(F('loan__borrower__individual__firstname'),V(' '),F('loan__borrower__individual__middlename'),V(' '),F('loan__borrower__individual__lastname')))
+                ),
+            pnNo=F('loan__pnNo')
+        ).order_by('id')
         paymentId = self.request.query_params.get('paymentId', None)
 
         borrowerId = self.request.query_params.get('borrowerId', None)

@@ -827,7 +827,7 @@ class Amortization(models.Model):
         return self.amortizationItems.aggregate(totalObligations=Sum(F('total') ))['totalObligations'] 
 
 
-# class IsCurrentAmortizaionItem(models.Manager):
+# class IsCurrentAmortizationItem(models.Manager):
 #     def get_queryset(self):
 #         now = timezone.now()
 #         start = now - datetime.timedelta(days=7)

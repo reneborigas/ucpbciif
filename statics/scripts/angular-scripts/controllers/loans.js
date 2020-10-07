@@ -26,7 +26,7 @@ define(function () {
             $scope.tableLoans = new NgTableParams(
                 {
                     page: 1,
-                    count: 10,
+                    count: 20,
                 },
                 {
                     counts: [10, 20, 30, 50, 100],
@@ -324,7 +324,7 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + ' ' + error.statusText,
-                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                            'Could not retrieve Amortization Information. Please contact System Administrator.'
                         );
                     }
                 );
@@ -795,7 +795,7 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + ' ' + error.statusText,
-                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                            'Could not retrieve Amortization Information. Please contact System Administrator.'
                         );
                     }
                 );
@@ -1358,7 +1358,7 @@ define(function () {
                     function (error) {
                         toastr.error(
                             'Error ' + error.status + ' ' + error.statusText,
-                            'Could not retrieve Amortizaion Information. Please contact System Administrator.'
+                            'Could not retrieve Amortization Information. Please contact System Administrator.'
                         );
                     }
                 );

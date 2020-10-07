@@ -1011,6 +1011,28 @@ define(function () {
                         label: 'Loan Reports',
                     },
                 })
+                .state('app.lms-reports.info', {
+                    url: '/:category/:subcategory',
+                    templateUrl: '/statics/partials/pages/reports/lms/reports-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loan Reports Info',
+                        stateTitle: 'Loan Reports Info',
+                    },
+                    ncyBreadcrumb: {
+                        label: '{{ category }} {{ subcategory }}',
+                        parent: 'app.lms-reports.list',
+                    },
+                    params: {
+                        filter: null,
+                        url: null,
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.filter = $stateParams.filter;
+                        $scope.url = $stateParams.url;
+                        $scope.category = appFactory.unSlugify($stateParams.category);
+                        $scope.subcategory = appFactory.unSlugify($stateParams.subcategory);
+                    },
+                })
 
                 //Accounting
                 .state('app.invoices', {

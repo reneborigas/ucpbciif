@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
@@ -406,7 +406,7 @@ class LoanViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
+        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(branch=F('borrower__branch__branchCode'),termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
         loanId = self.request.query_params.get('loanId', None)
         creditLineId = self.request.query_params.get('creditLineId', None)
         borrowerId = self.request.query_params.get('borrowerId', None)

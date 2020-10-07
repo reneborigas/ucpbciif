@@ -26,7 +26,7 @@ define(function () {
             $scope.tableBorrowers = new NgTableParams(
                 {
                     page: 1,
-                    count: 10,
+                    count: 20,
                 },
                 {
                     counts: [10, 20, 30, 50, 100],
@@ -1630,7 +1630,7 @@ define(function () {
 
                         $scope.loan = {
                             loanid: null,
-                            pnNo:'',
+                            pnNo: '',
                             amount: '',
                             creditLine: $scope.subProcess.parentLastDocumentCreditLine.id,
                             interestRate: $scope.subProcess.parentLastDocumentCreditLine.interestRate,

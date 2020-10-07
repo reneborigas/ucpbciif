@@ -285,10 +285,10 @@
                                 <td
                                     class="datatable-cell datatable-cell-left text-center"
                                     header-class="'text-center'"
-                                    data-title="'LOAN NO.'"
+                                    data-title="'PN NO.'"
                                     sortable="'id'"
                                 >
-                                    <a href="#" ng-click="viewLoan(payment.loan)">LN{{ payment.loan }}</a>
+                                    <a href="#" ng-click="viewLoan(payment.loan)">{{ payment.pnNo }}</a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -296,7 +296,7 @@
                                     data-title="'BORROWER'"
                                     sortable="'borrower_name'"
                                 >
-                                    <a href="#" ng-click="viewBorrower(payment.borrower_id)">{{ payment.borrower_name }}</a>
+                                    <a href="#" ng-click="viewBorrower(payment.borrower_id)">{{ payment.borrowerName }}</a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"

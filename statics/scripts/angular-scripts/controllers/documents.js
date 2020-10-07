@@ -27,7 +27,7 @@ define(function () {
             $scope.tableDocuments = new NgTableParams(
                 {
                     page: 1,
-                    count: 10,
+                    count: 20,
                 },
                 {
                     counts: [10, 20, 30, 50, 100],
@@ -436,11 +436,10 @@ define(function () {
 
                                 $http.post(output.callBackLink, param).then(function (response) {
                                     console.log(response);
-                                   
+
                                     if ($scope.document.loan) {
                                         $state.go('app.loans.info', { loanId: $scope.document.loan.id });
-                                    }
-                                    else if ( $scope.document.creditLine) {
+                                    } else if ($scope.document.creditLine) {
                                         $state.go('app.creditline.info', { creditLineId: $scope.document.creditLine.id });
                                     }
                                 });

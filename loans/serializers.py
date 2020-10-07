@@ -1,8 +1,9 @@
-from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
+from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField, ListSerializer
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import *
 from payments.serializers import PaymentSerializer,CheckSerializer
+from borrowers.models import Branch
  
 # from documents.serializers import DocumentSerializer
 # from borrowers.serializers import BorrowerSerializer
@@ -261,6 +262,7 @@ class LoanSerializer(ModelSerializer):
     term_name = serializers.ReadOnlyField(source='term.name')
     interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
+    branch = serializers.CharField(read_only=True)
     totalAmortizationInterest = serializers.CharField(read_only=True) 
 
     totalAmortizationAccruedInterest = serializers.CharField(read_only=True) 
@@ -361,5 +363,3 @@ class LoanProgramSerializer(ModelSerializer):
     class Meta:
         model = LoanProgram        
         fields = '__all__'
-
-

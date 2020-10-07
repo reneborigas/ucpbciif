@@ -62,6 +62,7 @@ urlpatterns = [
     path('amortizations/maturing', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     #reports
     path('loan-reports', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path('loan-reports/<str:category>/<str:subcategory>', ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
 
     #Settings
     #committes

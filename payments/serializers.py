@@ -519,7 +519,8 @@ class PaymentSerializer(ModelSerializer):
     
 
     amortizationItem_total  = serializers.ReadOnlyField(source='amortizationItem.totalToPay')
-    borrower_name  = serializers.ReadOnlyField(source='borrower.business.tradeName')
+    borrowerName  = serializers.CharField(read_only=True)
+    pnNo  = serializers.CharField(read_only=True)
     borrower_id  = serializers.ReadOnlyField(source='loan.borrower.borrowerId')
     # loan_no  = serializers.ReadOnlyField(source='amortizationItem.total')
 

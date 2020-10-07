@@ -25,7 +25,7 @@ define(function () {
             $scope.tableTerms = new NgTableParams(
                 {
                     page: 1,
-                    count: 10,
+                    count: 20,
                 },
                 {
                     counts: [10, 20, 30, 50, 100],

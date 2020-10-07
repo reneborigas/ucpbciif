@@ -20,6 +20,7 @@ router.register(r'loanprogramdistribution',LoanProgramDistributionViewSet)
 
 
 
+
 urlpatterns =  [ 
         path('updatecreditline/', UpdateCreditLineView.as_view()),
         path('updateamortizationitem/', UpdateAmortizationItemView.as_view()),

@@ -45,8 +45,8 @@
                             template-pagination="statics/partials/customs/pagination.html"
                         >
                             <tr class="datatable-row" ng-repeat="loan in $data" ng-show="showTable" ng-click="addPayment(loan.id)">
-                                <td class="datatable-cell datatable-cell-center text-center" header-class="'text-center'" data-title="'LOAN NO.'">
-                                    LN{{ loan.id }}
+                                <td class="datatable-cell datatable-cell-center text-center" header-class="'text-center'" data-title="'PN NO.'">
+                                    {{ loan.pnNo }}
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'">
                                     {{ loan.borrower_name }}
