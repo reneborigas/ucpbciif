@@ -282,7 +282,7 @@ class LoanProgram(models.Model):
         
         loans = self.programLoans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),borrower=borrower) 
         totalAvailments = 0
-        print("loans")
+         
         for loan in loans:
             
             loan.totalAmortizationPrincipal = loan.getTotalAmortizationPrincipal() 

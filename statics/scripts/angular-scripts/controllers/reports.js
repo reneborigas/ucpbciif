@@ -21,21 +21,31 @@ define(function () {
                         name: 'Per Area',
                         filter: 'branch',
                         url: '/api/loans/loanreports/',
+                        params: {},
                     },
                     {
                         name: 'Per Window',
-                        filter: 'loanProgram_name',
+                        filter: 'window',
                         url: '/api/loans/loanreports/',
+                        params: {},
                     },
                     {
                         name: 'By Loan Term',
-                        filter: 'term_name',
+                        filter: 'loanTerm',
                         url: '/api/loans/loanreports/',
+                        params: {},
                     },
                     {
                         name: 'By Interest Rate',
                         filter: 'interestRate',
                         url: '/api/loans/loanreports/',
+                        params: {},
+                    },
+                    {
+                        name: 'By Month',
+                        filter: 'releaseMonth',
+                        url: '/api/loans/loanreports/',
+                        params: {},
                     },
                 ],
             },
@@ -45,22 +55,58 @@ define(function () {
                     {
                         name: 'Per Area',
                         filter: 'branch',
-                        url: '/api/loans/loanreports/',
+                        url: '/api/borrowers/borrowersreports/',
+                        params: {
+                            outstandingBalance: 'TRUE',
+                        },
                     },
                     {
                         name: 'Per Window',
-                        filter: 'loanProgram_name',
-                        url: '/api/loans/loanreports/',
+                        filter: 'window',
+                        url: '/api/loans/loanreportsoutstandingbalance/',
+                        params: {},
                     },
                     {
                         name: 'By Loan Term',
-                        filter: 'term_name',
-                        url: '/api/loans/loanreports/',
+                        filter: 'loanTerm',
+                        url: '/api/loans/loanreportsoutstandingbalance/',
+                        params: {},
                     },
                     {
                         name: 'By Interest Rate',
                         filter: 'interestRate',
-                        url: '/api/loans/loanreports/',
+                        url: '/api/loans/loanreportsoutstandingbalance/',
+                        params: {},
+                    },
+                ],
+            },
+
+            {
+                category: 'Maturing Amortizations',
+                subcategory: [
+                    {
+                        name: 'Per Area',
+                        filter: 'branch',
+                        url: '/api/loans/amortizationitemsreports/',
+                        params: {
+                            maturing: 'TRUE',
+                        },
+                    },
+                    {
+                        name: 'Per Window',
+                        filter: 'window',
+                        url: '/api/loans/amortizationitemsreports/',
+                        params: {
+                            maturing: 'TRUE',
+                        },
+                    },
+                    {
+                        name: 'By Month',
+                        filter: 'releaseMonth',
+                        url: '/api/loans/amortizationitemsreports/',
+                        params: {
+                            maturing: 'TRUE',
+                        },
                     },
                 ],
             },
@@ -70,48 +116,64 @@ define(function () {
                     {
                         name: 'Per Area',
                         filter: 'branch',
+                        url: '/api/loans/amortizationitemsreports/',
+                        params: {},
                     },
                     {
                         name: 'Per Window',
-                        filter: 'loanProgram_name',
+                        filter: 'window',
+                        url: '/api/loans/amortizationitemsreports/',
+                        params: {},
+                    },
+                    {
+                        name: 'By Month',
+                        filter: 'releaseMonth',
+                        url: '/api/loans/amortizationitemsreports/',
+                        params: {},
                     },
                 ],
             },
-            {
-                category: 'Schedules',
-                subcategory: [
-                    {
-                        name: 'Top Borrowers',
-                        filter: '',
-                    },
-                    {
-                        name: 'Loan Payments',
-                        filter: '',
-                    },
-                    {
-                        name: 'Secured Loans',
-                        filter: '',
-                    },
-                    {
-                        name: 'Unsecured Loans',
-                        filter: '',
-                    },
-                    {
-                        name: 'Pulled-out Checks',
-                        filter: '',
-                    },
-                    {
-                        name: 'Bounced Checks',
-                        filter: '',
-                    },
-                ],
-            },
+            // {
+            //     category: 'Schedules',
+            //     subcategory: [
+            //         {
+            //             name: 'Top Borrowers',
+            //             filter: '',
+            //         },
+            //         {
+            //             name: 'Loan Payments',
+            //             filter: '',
+            //         },
+            //         {
+            //             name: 'Secured Loans',
+            //             filter: '',
+            //         },
+            //         {
+            //             name: 'Unsecured Loans',
+            //             filter: '',
+            //         },
+            //         {
+            //             name: 'Pulled-out Checks',
+            //             filter: '',
+            //         },
+            //         {
+            //             name: 'Bounced Checks',
+            //             filter: '',
+            //         },
+            //     ],
+            // },
         ];
 
-        $scope.selectReport = function (category, subcategory, filter, url) {
+        $scope.selectReport = function (category, sub) {
             var slugCategory = appFactory.slugify(category);
-            var slugSubCategory = appFactory.slugify(subcategory);
-            $state.go('app.lms-reports.info', { category: slugCategory, subcategory: slugSubCategory, filter: filter, url: url });
+            var slugSubCategory = appFactory.slugify(sub.name);
+            $state.go('app.lms-reports.info', {
+                category: slugCategory,
+                subcategory: slugSubCategory,
+                filter: sub.filter,
+                url: sub.url,
+                params: sub.params,
+            });
         };
     });
 
@@ -131,6 +193,7 @@ define(function () {
                 $http({
                     url: $scope.url,
                     method: 'GET',
+                    params: $scope.params,
                 }).then(
                     function (response) {
                         $scope.response = response.data;
@@ -161,11 +224,19 @@ define(function () {
             var myArray = Object.keys(groups).map(function (key) {
                 return { parent: key, children: groups[key] };
             });
-            console.log(myArray);
             $scope.data = myArray;
+            $scope.getHeaders($scope.data[0].children[0]);
         };
 
         $scope.loadReport();
+
+        $scope.getHeaders = function (array) {
+            for (prop in this.reservation) {
+                if (typeof this.reservation[prop] === 'string') {
+                    console.log(prop + 'value ' + 'is a string');
+                }
+            }
+        };
 
         $scope.retrieveHeaders = function () {
             var headers = [];
@@ -194,7 +265,7 @@ define(function () {
             var ngTable = document.getElementById('tableReports');
             var rowLength = ngTable.rows.length;
 
-            for (var i = 2; i < rowLength; i++) {
+            for (var i = 0; i < rowLength; i++) {
                 var exclude = ngTable.rows.item(i).getAttribute('print-exclude');
                 if (!exclude) {
                     var ngCells = ngTable.rows.item(i).cells;
@@ -208,6 +279,7 @@ define(function () {
                     values.push(cells);
                 }
             }
+            console.log(values);
             return values;
         };
 
@@ -221,22 +293,9 @@ define(function () {
         };
 
         $scope.printDataTable = function () {
-            // var filters = [];
-            // angular.forEach($scope.filters, function (filter) {
-            //     if (filter.showFilter) {
-            //         var parameters = {};
-            //         angular.forEach(filter.params, function (param) {
-            //             parameters[param] = $scope.params[param];
-            //         });
-            //         filters.push({
-            //             name: filter.name,
-            //             filterFormat: filter.filterFormat,
-            //             params: parameters,
-            //         });
-            //     }
-            // });
             var $popup = $window.open('/print/reports', '_blank', 'directories=0,width=800,height=800');
             $popup.title = $scope.category + ' ' + $scope.subcategory;
+            $popup.dateToday = new Date();
             $popup.user = $scope.loadCurrentUserInfo();
             $popup.headers = $scope.retrieveHeaders();
             $popup.cellValues = $scope.retrieveCellValues();

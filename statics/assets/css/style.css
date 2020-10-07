@@ -7807,6 +7807,9 @@ button.bg-dark-75:hover {
         display: -ms-inline-flexbox !important;
         display: inline-flex !important;
     }
+    ::-webkit-scrollbar {
+        display: none;
+    }
 }
 .embed-responsive {
     position: relative;

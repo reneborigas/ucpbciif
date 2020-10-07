@@ -703,22 +703,18 @@ define(function () {
                         parent: 'app.loans.list',
                     },
                     resolve: {
-                        fetchLoan: function ($http, $q, $stateParams,appFactory) {
-
+                        fetchLoan: function ($http, $q, $stateParams, appFactory) {
                             return appFactory.getLoan($stateParams.subProcessName).then(function (data) {
                                 if (!data) {
                                     return $q.reject('Not Found');
                                 }
                                 return data;
                             });
-                            
-                            
                         },
                     },
-                    controller: function ($scope, $stateParams, appFactory,fetchLoan) {
+                    controller: function ($scope, $stateParams, appFactory, fetchLoan) {
                         $scope.loanId = $stateParams.loanId;
                         $scope.pnNo = fetchLoan.pnNo;
-                        
                     },
                 })
                 .state('app.loans.restructeamortization', {
@@ -732,20 +728,18 @@ define(function () {
                         parent: 'app.loans.info',
                     },
                     resolve: {
-                        fetchLoan: function ($http, $q, $stateParams,appFactory) {
-
+                        fetchLoan: function ($http, $q, $stateParams, appFactory) {
                             return appFactory.getLoan($stateParams.subProcessName).then(function (data) {
                                 if (!data) {
                                     return $q.reject('Not Found');
                                 }
                                 return data;
-                            }); 
-                            
+                            });
                         },
                     },
-                    controller: function ($scope, $stateParams, appFactory,fetchLoan) {
+                    controller: function ($scope, $stateParams, appFactory, fetchLoan) {
                         $scope.loanId = $stateParams.loanId;
-                        $scope.pnNo = fetchLoan.pnNo; 
+                        $scope.pnNo = fetchLoan.pnNo;
                     },
                 })
                 .state('app.loans.add', {
@@ -815,18 +809,16 @@ define(function () {
                         parent: 'app.loans.info',
                     },
                     resolve: {
-                        fetchLoan: function ($http, $q, $stateParams,appFactory) {
-
+                        fetchLoan: function ($http, $q, $stateParams, appFactory) {
                             return appFactory.getLoan($stateParams.subProcessName).then(function (data) {
                                 if (!data) {
                                     return $q.reject('Not Found');
                                 }
                                 return data;
-                            }); 
-                            
+                            });
                         },
                     },
-                    controller: function ($scope, $stateParams, appFactory,fetchLoan) {
+                    controller: function ($scope, $stateParams, appFactory, fetchLoan) {
                         $scope.loanId = $stateParams.loanId;
                         $scope.pnNo = fetchLoan.pnNo;
                     },
@@ -1039,10 +1031,12 @@ define(function () {
                     params: {
                         filter: null,
                         url: null,
+                        params: null,
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.filter = $stateParams.filter;
                         $scope.url = $stateParams.url;
+                        $scope.params = $stateParams.params;
                         $scope.category = appFactory.unSlugify($stateParams.category);
                         $scope.subcategory = appFactory.unSlugify($stateParams.subcategory);
                     },

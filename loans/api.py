@@ -504,118 +504,6 @@ class LoanViewSet(ModelViewSet):
 
         return queryset
 
-
-class LoanReportViewSet(ModelViewSet):
-    queryset = Loan.objects.all()
-    serializer_class = LoanReportSerializer 
-    permission_classes = (permissions.IsAuthenticated, )
-
-    def get_queryset(self):
-        queryset = Loan.objects.order_by('id').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
-        loanId = self.request.query_params.get('loanId', None)
-        creditLineId = self.request.query_params.get('creditLineId', None)
-        borrowerId = self.request.query_params.get('borrowerId', None)
-        status = self.request.query_params.get('status', None)
-        dateFrom = self.request.query_params.get('dateFrom', None)
-        dateTo = self.request.query_params.get('dateTo', None)
-        loanFrom = self.request.query_params.get('loanFrom', None)
-        loanTo = self.request.query_params.get('loanTo', None)
-        loanTo = self.request.query_params.get('loanTo', None)
-        loanProgram = self.request.query_params.get('loanProgram', None)
-        loanProgramName = self.request.query_params.get('loanProgramName', None)
-        
-        if loanId is not None:
-            queryset = queryset.filter(id=loanId)
-
-        if creditLineId is not None:
-            queryset = queryset.filter(creditLine__id=creditLineId)
-
-        if borrowerId is not None:
-            queryset = queryset.filter(borrower__borrowerId=borrowerId)
-
-        if status is not None:
-            queryset = queryset.filter( Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')) 
-
-        for loan in queryset:
-            loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
-            loan.totalAmortizationAccruedInterest = loan.getTotalAmortizationAccruedInterest
-              
-            loan.totalDraftAmortizationInterest = loan.getTotalDraftAmortizationInterest  
-
-            loan.loanTotalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
-            loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
-            loan.latestAmortization = loan.getLatestAmortization()
-            loan.dateReleasedFormatted =  loan.dateReleased.date()
-            loan.tsNo = ''
-            loan.address = ''
-            loan.doa  = ''
-            loan.notFee  = ''
-            loan.netPreceed  = ''
-            exemption   = ''
-            loan.edstSale   = ''
-            loan.edstTransaction  = ''
-
-            if loan.latestAmortization:
-                loan.latestAmortization.totalAmortizationPrincipal = loan.latestAmortization.getTotalAmortizationPrincipal()
-
-                for amortizationItem in loan.latestAmortization.amortizationItems.all() : 
-                    amortizationItem.latestCheck = amortizationItem.getPDC()
-                    
-                    print(amortizationItem.latestCheck)
-                
-
-            loan.latestDraftAmortization = loan.getLatestDraftAmortization()  
-
-            if loan.latestDraftAmortization:
-                loan.latestDraftAmortization.totalAmortizationPrincipal = loan.latestDraftAmortization.getTotalAmortizationPrincipal()
-                loan.latestDraftAmortization.totalAmortizationInterest = loan.latestDraftAmortization.getTotalAmortizationInterest()
-                loan.latestDraftAmortization.totalAmortizationAccruedInterest = loan.latestDraftAmortization.getTotalAmortizationAccruedInterest()
-                
-                
-            loan.outStandingBalance = loan.getOutstandingBalance
-            loan.currentAmortizationItem = loan.getCurrentAmortizationItem()
-            if loan.currentAmortizationItem:
-                loan.currentAmortizationItem.latestCheck =  loan.currentAmortizationItem.getPDC()
-            loan.lastAmortizationItem = loan.getLastAmortizationItem
-            loan.totalObligations = loan.getTotalObligations
-            loan.latestPayment = loan.getLatestPayment
-            loan.totalPayment = loan.getTotalPayment
-            loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
-            loan.totalInterestPayment = loan.getTotaInterestPayment()
-            loan.totalAccruedInterestPayment = loan.getTotalAccruedInterestPayment()
-            loan.totalTotalInterestPayment = loan.getTotalTotalInterestPayment()
-            loan.totalPenaltyPayment = loan.getTotalPenaltyPayment()
-            loan.totalAdditionalInterestPayment = loan.getTotalAdditionalInterestPayment()
-
-            loan.totalPrincipalBalance = loan.loanTotalAmortizationPrincipal  - loan.totalPrincipalPayment
-
-            
-            loan.interestBalance = loan.getInterestBalance
-
-            # for amortizationItem in loan.latestAmortization.amortizationItems:
-            #     amortizationItem.isItemPaid = amortizationItem.isPaid()
-
-            for amortization in loan.amortizations.all() : 
-
-                amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
-                amortization.totalAmortizationAccruedInterest = amortization.getTotalAmortizationAccruedInterest
-                
-                amortization.totalObligations = amortization.getTotalObligations
-                amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
-
-        if dateFrom is not None and dateTo is not None:
-            queryset=queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
-
-        if loanFrom is not None and loanTo is not None:
-            queryset=queryset.filter(amount__gte=loanFrom).filter(amount__lte=loanTo)
-
-        if loanProgram is not None:
-            queryset=queryset.filter(loanProgram=loanProgram)
-
-        if loanProgramName is not None:
-            queryset=queryset.filter(loanProgram__name=loanProgramName)
-
-        return queryset
 class AmortizationViewSet(ModelViewSet):
     queryset = Amortization.objects.all()
     serializer_class = AmortizationSerializer 
@@ -687,7 +575,6 @@ class AmortizationItemViewSet(ModelViewSet):
              
             queryset = queryset.filter(id__in=amortizationItems)
 
-
         for amortizationItem in queryset:
             amortizationItem.totalPayment = amortizationItem.getTotalPayment
             amortizationItem.latestCheck = amortizationItem.getPDC()
@@ -720,9 +607,7 @@ class AmortizationItemViewSet(ModelViewSet):
             queryset=queryset.filter(principalBalance__gte=principalBalanceFrom).filter(principalBalance__lte=principalBalanceTo)
 
         
-        return queryset
-
-            
+        return queryset 
 
 class CreditLineViewSet(ModelViewSet):
     
@@ -949,4 +834,315 @@ class StatusViewSet(ModelViewSet):
         if name is not None:
             queryset = queryset.filter(name=name)
 
+        return queryset
+
+class LoanReportViewSet(ModelViewSet):
+    queryset = Loan.objects.all()
+    serializer_class = LoanReportSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Loan.objects.order_by('dateReleased').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
+        loanId = self.request.query_params.get('loanId', None)
+        creditLineId = self.request.query_params.get('creditLineId', None)
+        borrowerId = self.request.query_params.get('borrowerId', None)
+        status = self.request.query_params.get('status', None)
+        dateFrom = self.request.query_params.get('dateFrom', None)
+        dateTo = self.request.query_params.get('dateTo', None)
+        loanFrom = self.request.query_params.get('loanFrom', None)
+        loanTo = self.request.query_params.get('loanTo', None)
+        loanTo = self.request.query_params.get('loanTo', None)
+        loanProgram = self.request.query_params.get('loanProgram', None)
+        loanProgramName = self.request.query_params.get('loanProgramName', None)
+        
+        if loanId is not None:
+            queryset = queryset.filter(id=loanId)
+
+        if creditLineId is not None:
+            queryset = queryset.filter(creditLine__id=creditLineId)
+
+        if borrowerId is not None:
+            queryset = queryset.filter(borrower__borrowerId=borrowerId)
+
+        if status is not None:
+            queryset = queryset.filter( Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')) 
+
+        for loan in queryset:
+            loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
+            loan.totalAmortizationAccruedInterest = loan.getTotalAmortizationAccruedInterest
+              
+            loan.totalDraftAmortizationInterest = loan.getTotalDraftAmortizationInterest  
+
+            loan.loanTotalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
+            loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
+            loan.latestAmortization = loan.getLatestAmortization()
+            loan.releaseMonth =  loan.dateReleased.strftime("%B")
+            loan.releaseDate =  loan.dateReleased.date()
+            loan.tsNo = ''
+            loan.address = ''
+            loan.doa  = ''
+            loan.notFee  = ''
+            loan.netPreceed  = ''
+            loan.exemption   = 'TAX EXEMPTED'
+            loan.edstSale   = ''
+            loan.edstTransaction  = ''
+
+            if loan.latestAmortization:
+                loan.latestAmortization.totalAmortizationPrincipal = loan.latestAmortization.getTotalAmortizationPrincipal()
+
+                for amortizationItem in loan.latestAmortization.amortizationItems.all() : 
+                    amortizationItem.latestCheck = amortizationItem.getPDC()
+                    
+                    print(amortizationItem.latestCheck)
+                
+
+            loan.latestDraftAmortization = loan.getLatestDraftAmortization()  
+
+            if loan.latestDraftAmortization:
+                loan.latestDraftAmortization.totalAmortizationPrincipal = loan.latestDraftAmortization.getTotalAmortizationPrincipal()
+                loan.latestDraftAmortization.totalAmortizationInterest = loan.latestDraftAmortization.getTotalAmortizationInterest()
+                loan.latestDraftAmortization.totalAmortizationAccruedInterest = loan.latestDraftAmortization.getTotalAmortizationAccruedInterest()
+                
+                
+            loan.outStandingBalance = loan.getOutstandingBalance
+            loan.currentAmortizationItem = loan.getCurrentAmortizationItem()
+            if loan.currentAmortizationItem:
+                loan.currentAmortizationItem.latestCheck =  loan.currentAmortizationItem.getPDC()
+            loan.lastAmortizationItem = loan.getLastAmortizationItem
+            loan.totalObligations = loan.getTotalObligations
+            loan.latestPayment = loan.getLatestPayment
+            loan.totalPayment = loan.getTotalPayment
+            loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
+            loan.totalInterestPayment = loan.getTotaInterestPayment()
+            loan.totalAccruedInterestPayment = loan.getTotalAccruedInterestPayment()
+            loan.totalTotalInterestPayment = loan.getTotalTotalInterestPayment()
+            loan.totalPenaltyPayment = loan.getTotalPenaltyPayment()
+            loan.totalAdditionalInterestPayment = loan.getTotalAdditionalInterestPayment()
+
+            loan.totalPrincipalBalance = loan.loanTotalAmortizationPrincipal  - loan.totalPrincipalPayment
+
+            
+            loan.interestBalance = loan.getInterestBalance
+
+            # for amortizationItem in loan.latestAmortization.amortizationItems:
+            #     amortizationItem.isItemPaid = amortizationItem.isPaid()
+
+            for amortization in loan.amortizations.all() : 
+
+                amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
+                amortization.totalAmortizationAccruedInterest = amortization.getTotalAmortizationAccruedInterest
+                
+                amortization.totalObligations = amortization.getTotalObligations
+                amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
+
+        if dateFrom is not None and dateTo is not None:
+            queryset=queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
+
+        if loanFrom is not None and loanTo is not None:
+            queryset=queryset.filter(amount__gte=loanFrom).filter(amount__lte=loanTo)
+
+        if loanProgram is not None:
+            queryset=queryset.filter(loanProgram=loanProgram)
+
+        if loanProgramName is not None:
+            queryset=queryset.filter(loanProgram__name=loanProgramName)
+
+
+        return queryset
+
+class LoanReportOutstandingBalanceViewSet(ModelViewSet):
+    queryset = Loan.objects.all()
+    serializer_class = LoanReportOutstandingBalanceSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Loan.objects.order_by('dateReleased').exclude(isDeleted=True).annotate(termName=F('term__name'),loanProgramName=F('loanProgram__name')).prefetch_related(Prefetch( 'amortizations',queryset=Amortization.objects.order_by('-id')),)
+        loanId = self.request.query_params.get('loanId', None)
+        creditLineId = self.request.query_params.get('creditLineId', None)
+        borrowerId = self.request.query_params.get('borrowerId', None)
+        status = self.request.query_params.get('status', None)
+        dateFrom = self.request.query_params.get('dateFrom', None)
+        dateTo = self.request.query_params.get('dateTo', None)
+        loanFrom = self.request.query_params.get('loanFrom', None)
+        loanTo = self.request.query_params.get('loanTo', None)
+        loanTo = self.request.query_params.get('loanTo', None)
+        loanProgram = self.request.query_params.get('loanProgram', None)
+        loanProgramName = self.request.query_params.get('loanProgramName', None)
+        
+        if loanId is not None:
+            queryset = queryset.filter(id=loanId)
+
+        if creditLineId is not None:
+            queryset = queryset.filter(creditLine__id=creditLineId)
+
+        if borrowerId is not None:
+            queryset = queryset.filter(borrower__borrowerId=borrowerId)
+
+        if status is not None:
+            queryset = queryset.filter( Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')) 
+
+        for loan in queryset:
+            loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
+            loan.totalAmortizationAccruedInterest = loan.getTotalAmortizationAccruedInterest
+              
+            loan.totalDraftAmortizationInterest = loan.getTotalDraftAmortizationInterest  
+
+            loan.loanTotalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
+            loan.totalAmortizationPayment = loan.getTotalAmortizationPayment
+            loan.latestAmortization = loan.getLatestAmortization()
+            loan.releaseMonth =  loan.dateReleased.strftime("%B")
+            loan.releaseDate =  loan.dateReleased.date()
+            loan.tsNo = ''
+            loan.address = ''
+            loan.doa  = ''
+            loan.notFee  = ''
+            loan.netPreceed  = ''
+            loan.exemption   = 'TAX EXEMPTED'
+            loan.edstSale   = ''
+            loan.edstTransaction  = ''
+
+            if loan.latestAmortization:
+                loan.latestAmortization.totalAmortizationPrincipal = loan.latestAmortization.getTotalAmortizationPrincipal()
+
+                for amortizationItem in loan.latestAmortization.amortizationItems.all() : 
+                    amortizationItem.latestCheck = amortizationItem.getPDC()
+                    
+                    print(amortizationItem.latestCheck)
+                
+
+            loan.latestDraftAmortization = loan.getLatestDraftAmortization()  
+
+            if loan.latestDraftAmortization:
+                loan.latestDraftAmortization.totalAmortizationPrincipal = loan.latestDraftAmortization.getTotalAmortizationPrincipal()
+                loan.latestDraftAmortization.totalAmortizationInterest = loan.latestDraftAmortization.getTotalAmortizationInterest()
+                loan.latestDraftAmortization.totalAmortizationAccruedInterest = loan.latestDraftAmortization.getTotalAmortizationAccruedInterest()
+                
+                
+            loan.outStandingBalance = loan.getOutstandingBalance
+            loan.currentAmortizationItem = loan.getCurrentAmortizationItem()
+            if loan.currentAmortizationItem:
+                loan.currentAmortizationItem.latestCheck =  loan.currentAmortizationItem.getPDC()
+            loan.lastAmortizationItem = loan.getLastAmortizationItem
+            loan.totalObligations = loan.getTotalObligations
+            loan.latestPayment = loan.getLatestPayment
+            loan.totalPayment = loan.getTotalPayment
+            loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
+            loan.totalInterestPayment = loan.getTotaInterestPayment()
+            loan.totalAccruedInterestPayment = loan.getTotalAccruedInterestPayment()
+            loan.totalTotalInterestPayment = loan.getTotalTotalInterestPayment()
+            loan.totalPenaltyPayment = loan.getTotalPenaltyPayment()
+            loan.totalAdditionalInterestPayment = loan.getTotalAdditionalInterestPayment()
+
+            loan.totalPrincipalBalance = loan.loanTotalAmortizationPrincipal  - loan.totalPrincipalPayment
+
+            
+            loan.interestBalance = loan.getInterestBalance
+
+            # for amortizationItem in loan.latestAmortization.amortizationItems:
+            #     amortizationItem.isItemPaid = amortizationItem.isPaid()
+
+            for amortization in loan.amortizations.all() : 
+
+                amortization.totalAmortizationInterest = amortization.getTotalAmortizationInterest
+                amortization.totalAmortizationAccruedInterest = amortization.getTotalAmortizationAccruedInterest
+                
+                amortization.totalObligations = amortization.getTotalObligations
+                amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
+
+        if dateFrom is not None and dateTo is not None:
+            queryset=queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
+
+        if loanFrom is not None and loanTo is not None:
+            queryset=queryset.filter(amount__gte=loanFrom).filter(amount__lte=loanTo)
+
+        if loanProgram is not None:
+            queryset=queryset.filter(loanProgram=loanProgram)
+
+        if loanProgramName is not None:
+            queryset=queryset.filter(loanProgram__name=loanProgramName)
+
+
+        return queryset
+
+class AmortizationItemReportViewSet(ModelViewSet):
+    queryset = AmortizationItem.objects.all()
+    serializer_class = AmortizationItemReportSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = AmortizationItem.objects.order_by('-id')
+        amortizationItemId = self.request.query_params.get('amortizationItemId', None)
+        maturing = self.request.query_params.get('maturing', None)
+
+        scheduleDateFrom = self.request.query_params.get('scheduleDateFrom',None)
+        scheduleDateTo = self.request.query_params.get('scheduleDateTo',None)
+        numberofDaysFrom = self.request.query_params.get('numberofDaysFrom',None)
+        numberofDaysTo = self.request.query_params.get('numberofDaysTo',None)
+        principalFrom = self.request.query_params.get('principalFrom',None)
+        principalTo = self.request.query_params.get('principalTo',None)
+
+        interestFrom = self.request.query_params.get('interestFrom',None)
+        interestTo = self.request.query_params.get('interestTo',None)
+        accruedInterestFrom = self.request.query_params.get('accruedInterestFrom',None)
+        accruedInterestTo = self.request.query_params.get('accruedInterestTo',None)
+
+        penaltyFrom = self.request.query_params.get('penaltyFrom',None)
+        penaltyTo = self.request.query_params.get('penaltyTo',None)
+        amortizationFrom = self.request.query_params.get('amortizationFrom',None)
+        amortizationTo = self.request.query_params.get('amortizationTo',None)
+        principalBalanceFrom = self.request.query_params.get('principalBalanceFrom',None)
+        principalBalanceTo = self.request.query_params.get('principalBalanceTo',None)
+        status = self.request.query_params.get('status',None)
+
+        amortizationItems = []
+        if amortizationItemId is not None:
+            queryset = queryset.filter(id=amortizationItemId)
+
+        for amortizationItem in queryset:
+            if(amortizationItem.isOnCurrentAmortization()):
+                amortizationItems.append(amortizationItem.id)
+
+        queryset = queryset.filter(id__in=amortizationItems)    
+         
+        if maturing:
+            amortizationItems=[]
+            for amortizationItem in queryset:
+                if(amortizationItem.isMaturingAmortizationItem()):
+                    amortizationItems.append(amortizationItem.id)
+             
+            queryset = queryset.filter(id__in=amortizationItems)
+
+
+        for amortizationItem in queryset:
+            amortizationItem.totalPayment = amortizationItem.getTotalPayment
+            amortizationItem.latestCheck = amortizationItem.getPDC()
+
+        if status is not None:
+            queryset = queryset.filter(status__name=status)
+
+        if scheduleDateFrom is not None and scheduleDateTo is not None:
+            queryset=queryset.filter(schedule__gte=scheduleDateFrom).filter(schedule__lte=scheduleDateTo)
+
+        if numberofDaysFrom is not None and numberofDaysTo is not None:
+            queryset=queryset.filter(days__gte=numberofDaysFrom).filter(days__lte=numberofDaysTo)
+
+        if principalFrom is not None and principalTo is not None:
+            queryset=queryset.filter(principal__gte=principalFrom).filter(principal__lte=principalTo)
+
+        if interestFrom is not None and interestTo is not None:
+            queryset=queryset.filter(interest__gte=interestFrom).filter(interest__lte=interestTo)
+
+        if accruedInterestFrom is not None and accruedInterestTo is not None:
+            queryset=queryset.filter(accruedInterest__gte=accruedInterestFrom).filter(accruedInterest__lte=accruedInterestTo)
+
+        if penaltyFrom is not None and penaltyTo is not None:
+            queryset=queryset.filter(penalty__gte=penaltyFrom).filter(penalty__lte=penaltyTo)
+
+        if amortizationFrom is not None and amortizationTo is not None:
+            queryset=queryset.filter(total__gte=amortizationFrom).filter(total__lte=amortizationTo)
+
+        if principalBalanceFrom is not None and principalBalanceTo is not None:
+            queryset=queryset.filter(principalBalance__gte=principalBalanceFrom).filter(principalBalance__lte=principalBalanceTo)
+
+        
         return queryset

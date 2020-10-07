@@ -353,3 +353,18 @@ class BranchSerializer(ModelSerializer):
     class Meta:
         model = Branch
         fields = '__all__'
+
+class BorrowerReportSerializer(ModelSerializer):
+    borrowerName = serializers.CharField(read_only=True)
+    branch = serializers.ReadOnlyField(source='branch.branchCode')
+    
+    window = serializers.ReadOnlyField(source='loans.loanProgram.name')
+    loanTerm = serializers.ReadOnlyField(source='loans.term.name')
+
+    totalAvailments = serializers.CharField(read_only=True)
+    totalOutstandingBalance = serializers.CharField(read_only=True)
+    totalPayments =  serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Borrower        
+        fields = ['borrowerName','branch','totalAvailments','totalOutstandingBalance','totalPayments','clientSince','window','loanTerm']

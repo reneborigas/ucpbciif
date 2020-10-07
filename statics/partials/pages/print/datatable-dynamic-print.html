@@ -5,6 +5,7 @@
                 <div class="text-center">
                     <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
                     <h2 class="text-uppercase">{{ title }}</h2>
+                    <span>as of {{ dateToday | date :'mediumDate' }}</span>
                 </div>
             </div>
         </div>
@@ -22,9 +23,7 @@
                             <span class="text-right" ng-repeat-start="(key,value) in filter.params">
                                 {{ value | dynamicFilter: filter.filterFormat }}
                             </span>
-                            <span class="px-2" ng-repeat-end ng-if="(filter.params | objectLength ) > 1 && $index == 0">
-                                to
-                            </span>
+                            <span class="px-2" ng-repeat-end ng-if="(filter.params | objectLength ) > 1 && $index == 0">to</span>
                         </div>
                     </div>
                 </div>
@@ -40,17 +39,10 @@
                 <div class="table-responsive text-right">
                     <table class="table table-borderless">
                         <thead>
-                            <tr
-                                style="
-                                    border-bottom: 1pt solid #464e5f !important;
-                                    border-top: 1pt solid #464e5f !important;
-                                "
-                            >
+                            <tr style="border-bottom: 1pt solid #464e5f !important; border-top: 1pt solid #464e5f !important">
                                 <th class="" ng-repeat="header in headers">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
-                                            {{ header }}
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder text-uppercase">{{ header }}</span>
                                     </div>
                                 </th>
                             </tr>
@@ -59,18 +51,14 @@
                             <tr ng-repeat="cellValue in cellValues track by $index">
                                 <td ng-repeat="cell in cellValue track by $index">
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            {{ cell}}
-                                        </span>
+                                        <span class="text-dark-75">{{ cell}}</span>
                                     </div>
                                 </td>
                             </tr>
-                            <tr style="border-top: 1pt solid #464e5f !important;">
+                            <tr style="border-top: 1pt solid #464e5f !important">
                                 <td class="text-center" colspan="{{colspan}}">
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            -- NOTHING FOLLOWS --
-                                        </span>
+                                        <span class="text-dark-75">-- NOTHING FOLLOWS --</span>
                                     </div>
                                 </td>
                             </tr>

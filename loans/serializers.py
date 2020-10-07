@@ -264,40 +264,29 @@ class LoanSerializer(ModelSerializer):
     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
     branch = serializers.CharField(read_only=True)
     totalAmortizationInterest = serializers.CharField(read_only=True) 
-
     totalAmortizationAccruedInterest = serializers.CharField(read_only=True) 
-
     loanTotalAmortizationPrincipal = serializers.CharField(read_only=True) 
-
     totalDraftAmortizationInterest = serializers.CharField(read_only=True)
     totalObligations = serializers.CharField(read_only=True)
     latestAmortization =  AmortizationSerializer(read_only=True)
-
     latestPayment =  PaymentSerializer(read_only=True)
-
     outStandingBalance = serializers.CharField(read_only=True)
     interestBalance= serializers.CharField(read_only=True)
-
     totalPayment = serializers.CharField(read_only=True)
-
     totalPrincipalPayment = serializers.CharField(read_only=True)
     totalInterestPayment = serializers.CharField(read_only=True)
     totalAccruedInterestPayment = serializers.CharField(read_only=True)
     totalPenaltyPayment  = serializers.CharField(read_only=True)
     totalAdditionalInterestPayment = serializers.CharField(read_only=True)
     totalTotalInterestPayment = serializers.CharField(read_only=True)
-
     totalPrincipalBalance = serializers.CharField(read_only=True)
-    currentAmortizationItem =   AmortizationItemSerializer(read_only=True)
-    lastAmortizationItem =   AmortizationItemSerializer(read_only=True)
-
-    latestDraftAmortization =   AmortizationSerializer(read_only=True)
+    currentAmortizationItem = AmortizationItemSerializer(read_only=True)
+    lastAmortizationItem = AmortizationItemSerializer(read_only=True)
+    latestDraftAmortization = AmortizationSerializer(read_only=True)
     # loanDocuments = DocumentSerializer(read_only=True,nany=True)
-    
     # status=StatusSerializer(read_only=True)
     term = TermSerializer(read_only=True)
     parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
-
     payments =   PaymentSerializer(many=True,read_only=True)
     # borrower = BorrowerSerializer(read_only=True)
     def create(self, validated_data):
@@ -318,40 +307,9 @@ class LoanSerializer(ModelSerializer):
     class Meta:
         model = Loan        
         fields = '__all__'
- 
-class LoanReportSerializer(ModelSerializer):
-    # termName = serializers.CharField(read_only=True) 
-    pnNo  = serializers.CharField(read_only=True)
-    dateReleasedFormatted  = serializers.CharField(read_only=True)
-    maturityDate = serializers.CharField(read_only=True)
-    borrower_name = serializers.ReadOnlyField(source='borrower.business.tradeName')
-    address  = serializers.CharField(read_only=True)
-    branch = serializers.ReadOnlyField(source='borrower.branch.branchCode')
-     
-    term_name = serializers.ReadOnlyField(source='term.name')
-    interestRate = serializers.ReadOnlyField(source='interestRate.interestRate') 
-    loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
-    docStamps = serializers.CharField(read_only=True)
-    tsNo = serializers.CharField(read_only=True)
-    doa = serializers.CharField(read_only=True)
-
-    notFee = serializers.CharField(read_only=True)
-    netPreceed = serializers.CharField(read_only=True)
-    exemption = serializers.CharField(read_only=True)
-    edstSale  = serializers.CharField(read_only=True)
-    edstTransaction  = serializers.CharField(read_only=True)
-
-
-    class Meta:
-        model = Loan        
-        fields = ['pnNo','dateReleasedFormatted','borrower_name','address','maturityDate','branch','amount','term_name','interestRate','loanProgram_name','tsNo','docStamps','doa','notFee','netPreceed','exemption','edstSale','edstTransaction']
- 
-
-        
+         
 
 class LoanProgramDistributionSerializer(ModelSerializer): 
-    
-    
     values = serializers.ListField(read_only=True)
     text = serializers.CharField(read_only=True)
 
@@ -360,8 +318,6 @@ class LoanProgramDistributionSerializer(ModelSerializer):
         return loanProgram
 
     def update(self, instance, validated_data):
-         
-
         return instance
     
     class Meta:
@@ -373,19 +329,77 @@ class LoanProgramSerializer(ModelSerializer):
     activeLoan = LoanSerializer(read_only=True)
     activeCreditLine = CreditLineSerializer(read_only=True)
     totalAvailments = serializers.CharField(read_only=True)
-
     overallLoan = serializers.CharField(read_only=True)
-
     overallLoanPercentage = serializers.CharField(read_only=True)
+
     def create(self, validated_data):
         loanProgram = LoanProgram.objects.create(**validated_data) 
         return loanProgram
 
     def update(self, instance, validated_data):
-         
-
         return instance
     
     class Meta:
         model = LoanProgram        
         fields = '__all__'
+
+class LoanReportSerializer(ModelSerializer):
+    pnNo  = serializers.CharField(read_only=True)
+    releaseDate  = serializers.CharField(read_only=True)
+    maturityDate = serializers.CharField(read_only=True)
+    borrowerName = serializers.ReadOnlyField(source='borrower.business.tradeName')
+    address  = serializers.CharField(read_only=True)
+    branch = serializers.ReadOnlyField(source='borrower.branch.branchCode')
+    loanTerm = serializers.ReadOnlyField(source='term.name')
+    interestRate = serializers.ReadOnlyField(source='interestRate.interestRate') 
+    window = serializers.ReadOnlyField(source='loanProgram.name')
+    docStamps = serializers.CharField(read_only=True)
+    tsNo = serializers.CharField(read_only=True)
+    doa = serializers.CharField(read_only=True)
+    notFee = serializers.CharField(read_only=True)
+    netPreceed = serializers.CharField(read_only=True)
+    exemption = serializers.CharField(read_only=True)
+    edstSale  = serializers.CharField(read_only=True)
+    edstTransaction  = serializers.CharField(read_only=True)
+    releaseMonth  = serializers.CharField(read_only=True)
+
+
+    class Meta:
+        model = Loan        
+        fields = ['releaseMonth','pnNo','releaseDate','borrowerName','address','maturityDate','branch','amount','loanTerm','interestRate','window','tsNo','docStamps','doa','notFee','netPreceed','exemption','edstSale','edstTransaction']
+
+class LoanReportOutstandingBalanceSerializer(ModelSerializer):
+    pnNo  = serializers.CharField(read_only=True)
+    releaseDate  = serializers.CharField(read_only=True)
+    borrowerName = serializers.ReadOnlyField(source='borrower.business.tradeName')
+    branch = serializers.ReadOnlyField(source='borrower.branch.branchCode')
+    loanTerm = serializers.ReadOnlyField(source='term.name')
+    interestRate = serializers.ReadOnlyField(source='interestRate.interestRate') 
+    window = serializers.ReadOnlyField(source='loanProgram.name')
+    releaseMonth  = serializers.CharField(read_only=True)
+
+    outStandingBalance = serializers.CharField(read_only=True)
+    interestBalance= serializers.CharField(read_only=True)
+    totalPrincipalBalance = serializers.CharField(read_only=True)
+
+
+    class Meta:
+        model = Loan        
+        fields = ['releaseMonth','pnNo','releaseDate','borrowerName','branch','loanTerm','interestRate','window','outStandingBalance','interestBalance','totalPrincipalBalance']
+ 
+class AmortizationItemReportSerializer(ModelSerializer):
+    pnNo  = serializers.CharField(read_only=True)
+    window = serializers.ReadOnlyField(source='amortization.loan.loanProgram.name')
+    loanTerm = serializers.ReadOnlyField(source='amortization.loan.term.name')
+    amortizationStatus = serializers.ReadOnlyField(source='amortizationStatus.name')
+    branch = serializers.ReadOnlyField(source='amortization.loan.borrower.branch.branchCode')
+    interest =  serializers.ReadOnlyField(source='deductAccruedInterest')
+    # loan_id = serializers.ReadOnlyField(source='amortization.loan.id')
+    # payments = PaymentSerializer(many=True,read_only=True)
+    # checks = CheckSerializer(many=True,read_only=True)
+    # totalPayment = serializers.CharField(read_only=True)
+    # latestCheck = CheckSerializer(read_only=True)
+
+    class Meta:
+        model = AmortizationItem        
+        fields = ['pnNo','branch','schedule','days','principal','interest','accruedInterest','total','principalBalance','amortizationStatus','window','loanTerm']

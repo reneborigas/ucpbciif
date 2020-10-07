@@ -7,6 +7,9 @@
                         <h3 class="card-label">{{ category}} {{ subcategory }}</h3>
                     </div>
                     <div class="card-toolbar">
+                        <button type="button" class="btn btn-secondary font-weight-bolder float-right mr-2" ui-sref="app.lms-reports.list">
+                            Back
+                        </button>
                         <div class="dropdown dropdown-inline mr-2">
                             <button
                                 type="button"
@@ -60,21 +63,29 @@
                 </div>
                 <div class="card-body" block-ui="loanListBlockUI">
                     <div class="datatable datatable-default datatable-subtable">
-                        <table class="table table-borderless" id="tableReports">
-                            <thead ng-repeat-start="obj in data">
+                        <table class="table table-borderless table-resposive" id="tableReports">
+                            <thead ng-repeat-start="obj in data"></thead>
+                            <tbody ng-repeat-end>
                                 <tr>
-                                    <th colspan="100%">
+                                    <td colspan="100%">
                                         <div class="">
-                                            <span class="text-dark-75 font-weight-bolder text-uppercase">{{ obj.parent }}</span>
+                                            <span class="text-dark-75 font-weight-bolder text-uppercase font-size-sm">
+                                                <strong>{{ obj.parent }}</strong>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th ng-repeat="(key,val) in obj.children[0]" ng-if="!!val">
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm">{{ key | splitCamelCase}}</span>
                                         </div>
                                     </th>
                                 </tr>
-                            </thead>
-                            <tbody ng-repeat-end>
                                 <tr ng-repeat="children in obj.children track by $index">
                                     <td ng-repeat="child in children" ng-if="!!child">
                                         <div class="">
-                                            <span class="text-dark-75">{{ child }}</span>
+                                            <span class="text-dark-75 font-size-sm">{{ child }}</span>
                                         </div>
                                     </td>
                                 </tr>

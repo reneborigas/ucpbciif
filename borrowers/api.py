@@ -170,3 +170,59 @@ class BranchViewSet(ModelViewSet):
         queryset = Branch.objects.order_by('id')
 
         return queryset
+
+class BorrowerReportViewSet(ModelViewSet):
+    queryset = Borrower.objects.all()
+    serializer_class = BorrowerReportSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Borrower.objects.prefetch_related(
+            'borrowerAttachments',  
+            Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
+            Prefetch( 'loans',queryset=Loan.objects.order_by('dateReleased')),
+                Prefetch( 'documents__documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated'))
+        ).annotate(
+            borrowerName=Case(
+                    When(Q(recordType='BD'),then=F('business__tradeName')),
+                    When(Q(recordType='ID'),then=Concat(F('individual__firstname'),V(' '),F('individual__middlename'),V(' '),F('individual__lastname')))
+                ),
+            branchCode=F('branch__branchCode')
+        ).exclude(isDeleted=True).order_by('borrowerId')
+        
+        loanProgramId = self.request.query_params.get('loanProgramId', None)
+        outstandingBalance = self.request.query_params.get('outstandingBalance', None)
+        
+        for borrower in queryset:
+            borrower.totalAvailments = borrower.getTotalAvailments()
+            borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+            borrower.payments = borrower.getPayments()
+            borrower.totalPayments = borrower.getTotalPayments()
+
+            for loan in borrower.loans.all():
+                loan.totalPayment = loan.getTotalPayment
+                loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
+                loan.totalInterestPayment = loan.getTotaInterestPayment()
+                loan.totalAccruedInterestPayment = loan.getTotalAccruedInterestPayment()
+                loan.totalTotalInterestPayment = loan.getTotalTotalInterestPayment()
+                loan.totalPenaltyPayment = loan.getTotalPenaltyPayment()
+                loan.totalAdditionalInterestPayment = loan.getTotalAdditionalInterestPayment()
+
+            if loanProgramId is not None: 
+                borrower.totalAvailmentPerProgram = borrower.getTotalAvailmentsPerProgram(loanProgramId)
+
+            if outstandingBalance:
+                borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+                exclude = []
+                if borrower.totalOutstandingBalance == 0:
+                   exclude.append(borrower.pk)
+                   
+                queryset = queryset.exclude(pk__in=exclude)
+
+        for borrower in queryset:
+            borrower.totalAvailments = borrower.getTotalAvailments()
+            borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+            borrower.payments = borrower.getPayments()
+            borrower.totalPayments = borrower.getTotalPayments()
+
+        return queryset

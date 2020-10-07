@@ -275,6 +275,7 @@ define(function () {
             }
             var $popup = $window.open('/print/amortizations', '_blank', 'directories=0,width=800,height=800');
             $popup.title = 'Amortization List';
+            $popup.dateToday = new Date();
             $popup.user = $scope.loadCurrentUserInfo();
             $popup.filters = filters;
             $popup.headers = $scope.retrieveHeaders();
@@ -557,6 +558,7 @@ define(function () {
             }
             var $popup = $window.open('/print/maturingamortizations', '_blank', 'directories=0,width=800,height=800');
             $popup.title = 'Maturing Amortization List';
+            $popup.dateToday = new Date();
             $popup.user = $scope.loadCurrentUserInfo();
             $popup.filters = filters;
             $popup.headers = $scope.retrieveHeaders();

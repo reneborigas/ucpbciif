@@ -255,6 +255,7 @@ define(function () {
             }
             var $popup = $window.open('/print/credit-line', '_blank', 'directories=0,width=800,height=800');
             $popup.title = 'Credit Line List';
+            $popup.dateToday = new Date();
             $popup.user = $scope.loadCurrentUserInfo();
             $popup.filters = filters;
             $popup.headers = $scope.retrieveHeaders();

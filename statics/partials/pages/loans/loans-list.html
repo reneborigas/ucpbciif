@@ -197,7 +197,7 @@
                                     data-title="'BORROWER'"
                                     sortable="'borrower_name'"
                                 >
-                                    <a href="" ng-click="viewBorrower(loan.borrower_id)">{{ loan.borrower_name }}</a>
+                                    <a href="" ng-click="viewBorrower(loan.borrower_id)">{{ loan.borrower_name | limitTo: 40 }}</a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -208,7 +208,7 @@
                                     {{ loan.loanProgram_name }}
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
-                                    {{ loan.term_name }}
+                                    {{ loan.term_name | limitTo: 40}}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"

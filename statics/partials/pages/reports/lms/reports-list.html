@@ -1,6 +1,6 @@
 <div class="animated fadeIn" ng-controller="LoanReportListController">
     <div class="row">
-        <div class="col-xxl-4 col-lg-6" ng-repeat="report in reports">
+        <div class="col-xxl-3 col-lg-4" ng-repeat="report in reports">
             <div class="card card-custom card-stretch gutter-b">
                 <div class="card-header border-0">
                     <h3 class="card-title font-weight-bolder text-dark">{{ report.category }}</h3>
@@ -8,10 +8,7 @@
                 <div class="card-body pt-0">
                     <div class="d-flex align-items-center mb-4 bg-gray-200 bg-hover-primary rounded p-5" ng-repeat="sub in report.subcategory">
                         <div class="d-flex flex-column flex-grow-1 mr-2">
-                            <a
-                                ng-click="selectReport(report.category,sub.name,sub.filter, sub.url)"
-                                class="font-weight-bold text-dark-75 text-hover-light font-size-lg"
-                            >
+                            <a ng-click="selectReport(report.category,sub)" class="font-weight-bold text-dark-75 text-hover-light font-size-lg">
                                 {{ sub.name }}
                             </a>
                         </div>

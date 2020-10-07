@@ -55,4 +55,16 @@ define(function () {
             return $sce.trustAsHtml(ss);
         };
     });
+
+    app.filter('splitCamelCase', [
+        function () {
+            return function (input) {
+                if (typeof input !== 'string') {
+                    return input;
+                }
+
+                return input.replace(/([A-Z])/g, (match) => ` ${match}`).replace(/^./, (match) => match.toUpperCase());
+            };
+        },
+    ]);
 });
