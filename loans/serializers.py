@@ -317,7 +317,33 @@ class LoanSerializer(ModelSerializer):
         model = Loan        
         fields = '__all__'
  
+class LoanReportSerializer(ModelSerializer):
+    # termName = serializers.CharField(read_only=True) 
+    pnNo  = serializers.CharField(read_only=True)
+    dateReleasedFormatted  = serializers.CharField(read_only=True)
+    maturityDate = serializers.CharField(read_only=True)
+    borrower_name = serializers.ReadOnlyField(source='borrower.business.tradeName')
+    address  = serializers.CharField(read_only=True)
+    branch = serializers.ReadOnlyField(source='borrower.branch.branchCode')
+     
+    term_name = serializers.ReadOnlyField(source='term.name')
+    interestRate = serializers.ReadOnlyField(source='interestRate.interestRate') 
+    loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
+    docStamps = serializers.CharField(read_only=True)
+    tsNo = serializers.CharField(read_only=True)
+    doa = serializers.CharField(read_only=True)
 
+    notFee = serializers.CharField(read_only=True)
+    netPreceed = serializers.CharField(read_only=True)
+    exemption = serializers.CharField(read_only=True)
+    edstSale  = serializers.CharField(read_only=True)
+    edstTransaction  = serializers.CharField(read_only=True)
+
+
+    class Meta:
+        model = Loan        
+        fields = ['pnNo','dateReleasedFormatted','borrower_name','address','maturityDate','branch','amount','term_name','interestRate','loanProgram_name','tsNo','docStamps','doa','notFee','netPreceed','exemption','edstSale','edstTransaction']
+ 
 
         
 

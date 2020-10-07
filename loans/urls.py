@@ -7,6 +7,8 @@ router.register(r'amortizationitems',AmortizationItemViewSet)
 router.register(r'amortizations',AmortizationViewSet) 
 router.register(r'creditlines',CreditLineViewSet) 
 router.register(r'loans',LoanViewSet)
+router.register(r'loanreports',LoanReportViewSet)
+
 router.register(r'terms',TermViewSet)
 router.register(r'crud-terms',CRUDTermViewSet)
 router.register(r'paymentperiods',PaymentPeriodViewSet)
