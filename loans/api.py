@@ -3,7 +3,7 @@ from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
 from django.db.models import Prefetch,F,Case,When,Value as V, Count, Sum, ExpressionWrapper,OuterRef, Subquery, Func, Q
-from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
+from django.db.models.functions import Coalesce, Cast, TruncDate, Concat, TruncMonth
 from datetime import datetime
 from borrowers.models import Borrower
 from payments.models import Payment
@@ -411,6 +411,7 @@ class LoanViewSet(ModelViewSet):
         creditLineId = self.request.query_params.get('creditLineId', None)
         borrowerId = self.request.query_params.get('borrowerId', None)
         status = self.request.query_params.get('status', None)
+        statusFilter = self.request.query_params.get('statusFilter', None)
         dateFrom = self.request.query_params.get('dateFrom', None)
         dateTo = self.request.query_params.get('dateTo', None)
         loanFrom = self.request.query_params.get('loanFrom', None)
@@ -431,6 +432,9 @@ class LoanViewSet(ModelViewSet):
         if status is not None:
             queryset = queryset.filter( Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED')) 
 
+        if statusFilter is not None:
+            queryset = queryset.filter(Q(loanStatus__name=statusFilter)) 
+
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
             loan.totalAmortizationAccruedInterest = loan.getTotalAmortizationAccruedInterest
@@ -447,7 +451,7 @@ class LoanViewSet(ModelViewSet):
 
                 for amortizationItem in loan.latestAmortization.amortizationItems.all() : 
                     amortizationItem.latestCheck = amortizationItem.getPDC()
-                    
+                     
                     print(amortizationItem.latestCheck)
                 
 
@@ -1073,7 +1077,6 @@ class AmortizationItemReportViewSet(ModelViewSet):
         queryset = AmortizationItem.objects.order_by('-id')
         amortizationItemId = self.request.query_params.get('amortizationItemId', None)
         maturing = self.request.query_params.get('maturing', None)
-
         scheduleDateFrom = self.request.query_params.get('scheduleDateFrom',None)
         scheduleDateTo = self.request.query_params.get('scheduleDateTo',None)
         numberofDaysFrom = self.request.query_params.get('numberofDaysFrom',None)
@@ -1116,6 +1119,7 @@ class AmortizationItemReportViewSet(ModelViewSet):
         for amortizationItem in queryset:
             amortizationItem.totalPayment = amortizationItem.getTotalPayment
             amortizationItem.latestCheck = amortizationItem.getPDC()
+            amortizationItem.releaseMonth = amortizationItem.schedule.strftime("%B")
 
         if status is not None:
             queryset = queryset.filter(status__name=status)

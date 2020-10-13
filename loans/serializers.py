@@ -394,6 +394,7 @@ class AmortizationItemReportSerializer(ModelSerializer):
     amortizationStatus = serializers.ReadOnlyField(source='amortizationStatus.name')
     branch = serializers.ReadOnlyField(source='amortization.loan.borrower.branch.branchCode')
     interest =  serializers.ReadOnlyField(source='deductAccruedInterest')
+    releaseMonth  = serializers.CharField(read_only=True)
     # loan_id = serializers.ReadOnlyField(source='amortization.loan.id')
     # payments = PaymentSerializer(many=True,read_only=True)
     # checks = CheckSerializer(many=True,read_only=True)
@@ -402,4 +403,4 @@ class AmortizationItemReportSerializer(ModelSerializer):
 
     class Meta:
         model = AmortizationItem        
-        fields = ['pnNo','branch','schedule','days','principal','interest','accruedInterest','total','principalBalance','amortizationStatus','window','loanTerm']
+        fields = ['pnNo','branch','schedule','days','principal','interest','accruedInterest','total','principalBalance','amortizationStatus','window','loanTerm','releaseMonth']

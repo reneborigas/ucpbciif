@@ -76,16 +76,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th ng-repeat="(key,val) in obj.children[0]" ng-if="!!val">
+                                    <th ng-repeat="(key,val) in obj.children[0]" ng-if="!!val && key != 'releaseMonth'">
                                         <div class="">
                                             <span class="text-dark-75 font-size-sm">{{ key | splitCamelCase}}</span>
                                         </div>
                                     </th>
                                 </tr>
                                 <tr ng-repeat="children in obj.children track by $index">
-                                    <td ng-repeat="child in children" ng-if="!!child">
+                                    <td ng-repeat="(key,val) in children" ng-if="!!val && key != 'releaseMonth'">
                                         <div class="">
-                                            <span class="text-dark-75 font-size-sm">{{ child }}</span>
+                                            <span class="text-dark-75 font-size-sm">{{ val }}</span>
                                         </div>
                                     </td>
                                 </tr>

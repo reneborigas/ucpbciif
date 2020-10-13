@@ -106,7 +106,7 @@ define(function () {
                 showFilter: false,
                 filterFormat: 'uppercase',
                 params: {
-                    param1: 'status',
+                    param1: 'statusFilter',
                 },
             },
         ];

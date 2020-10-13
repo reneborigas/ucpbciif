@@ -46,7 +46,7 @@
                             <tr>
                                 <td class="p-0">PN No./Loan No.:</td>
                                 <td class="p-0" colspan="2">
-                                    {{ loan.id}}
+                                    {{ loan.pnNo }}
                                 </td>
                                 <td class="p-0">Kind of Loan:</td>
                                 <td class="p-0">
@@ -112,28 +112,28 @@
                             >
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             No.
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             Schedule
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             Days
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             Principal
                                         </span>
                                     </div>
@@ -141,14 +141,14 @@
 
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             Interest
                                         </span>
                                     </div>
                                 </td>
                                 <!-- <td>
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             VAT
                                         </span>
                                     </div>
@@ -156,7 +156,7 @@
 
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             Total Amortization
                                         </span>
                                     </div>
@@ -164,7 +164,7 @@
 
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 text-uppercase font-weight-bolder">
+                                        <span class="text-dark text-uppercase font-weight-bolder">
                                             Principal Balance
                                         </span>
                                     </div>
@@ -173,46 +173,46 @@
                             <tr>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             0
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ loan.latestAmortization.dateReleased | date: 'mediumDate' }}
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                                 <!-- <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td> -->
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ loan.amount | currency :'₱'}}
                                         </span>
                                     </div>
@@ -221,50 +221,49 @@
                             <tr ng-repeat="item in amortization.amortizationItems">
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{$index+1}}
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ item.schedule | date: 'mediumDate' }}
                                         </span>
                                     </div>
                                 </td>
-
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ item.days}}
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ item.principal | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ item.interest | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
                                 <!-- <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ item.vat | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td> -->
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ item.total | currency :'₱'}}
                                         </span>
                                     </div>
@@ -272,7 +271,7 @@
 
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
+                                        <span class="text-dark">
                                             {{ item.principalBalance | currency :'₱'}}
                                         </span>
                                     </div>
@@ -286,48 +285,48 @@
                             >
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder text-uppercase">
+                                        <span class="text-dark font-weight-bolder text-uppercase">
                                             Total
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder">
+                                        <span class="text-dark font-weight-bolder">
                                             {{ loan.amount | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75 font-weight-bolder">
+                                        <span class="text-dark font-weight-bolder">
                                             {{ amortization.totalAmortizationInterest | currency :'₱'}}
                                         </span>
                                     </div>
                                 </td>
                                 <!-- <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td> -->
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75"></span>
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                             </tr>

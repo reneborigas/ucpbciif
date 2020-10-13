@@ -1576,16 +1576,16 @@ define(function () {
                     },
                 })
                 .state('print.documents.amortization_schedule', {
-                    url: '/files/amortization/:documentId',
+                    url: '/files/amortization/:loanId',
                     templateUrl: '/statics/partials/pages/documents/print/documents-amortization-schedule.html',
                     data: {
                         pageTitle: 'UCPB CIIF | Amortization Schedule Print',
                     },
                     controller: function ($scope, $stateParams, appFactory) {
-                        $scope.documentId = $stateParams.documentId;
-                        appFactory.getDocumentName($scope.documentId).then(function (data) {
-                            $scope.fileName = data;
-                        });
+                        $scope.loanId = $stateParams.loanId;
+                        // appFactory.getDocumentName($scope.documentId).then(function (data) {
+                        //     $scope.fileName = data;
+                        // });
                     },
                 })
                 .state('print.documents.amortization_history', {
