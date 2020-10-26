@@ -1,5 +1,5 @@
 <div class="row" ng-controller="BorrowerEditController">
-    <div class="col-lg-2">
+    <div class="col-lg-3">
         <div class="card card-custom gutter-b">
             <div class="card-body pt-5">
                 <a
@@ -7,14 +7,15 @@
                     class="btn btn-hover-light-primary font-weight-bold py-2 px-2 mb-1 text-center btn-block"
                     ng-repeat="template in templates"
                     ng-click="goToTemplate(template.templateNumber)"
+                    ng-class="{ 'active' : template.templateNumber == currentTemplate.templateNumber }"
                 >
                     {{ template.name }}
                 </a>
             </div>
         </div>
     </div>
-    <div class="col-lg-10">
-        <div class="card card-custom gutter-b">
+    <div class="col-lg-9">
+        <div class="card card-custom gutter-b" block-ui="borrowerBlockUI">
             <div class="card-header">
                 <div class="card-title">
                     <h3 class="card-label">
@@ -23,14 +24,12 @@
                     </h3>
                 </div>
                 <div class="card-toolbar">
-                    <button type="reset" class="btn btn-success mr-2" ng-click="update()">Save Changes</button>
-                    <button type="reset" class="btn btn-secondary" ng-click="cancel(borrower.borrowerId)">
-                        Cancel
-                    </button>
+                    <button type="reset" class="btn btn-success mr-2" ng-click="update()" ng-disabled="checkForm()">Save Changes</button>
+                    <button type="reset" class="btn btn-secondary" ng-click="cancel(borrower.borrowerId)">Cancel</button>
                 </div>
             </div>
             <div class="card-body">
-                <form name="editForm" class="form">
+                <form name="form.editForm" class="form">
                     <ng-include src="getTemplate()"></ng-include>
                 </form>
             </div>

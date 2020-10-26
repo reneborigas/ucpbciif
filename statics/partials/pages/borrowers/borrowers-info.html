@@ -10,17 +10,21 @@
                                     <h5 class="d-flex align-items-center text-dark font-weight-bold mr-3">{{ borrower.borrowerName }}</h5>
                                 </div>
                                 <div class="d-flex flex-wrap my-2">
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                    <a class="text-dark-75 font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                         <i class="fad fa-users"></i>
                                         {{ borrower.borrowerType }}
                                     </a>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                        <i class="fad fa-mobile-android-alt"></i>
-                                        {{ borrower.borrowerPhoneNumber }}
-                                    </a>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                    <a class="text-dark-75 font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                         <i class="fad fa-map-marker-alt"></i>
-                                        {{ borrower.borrowerAddress }}
+                                        {{ borrower.branchCode }}
+                                    </a>
+                                    <a class="text-dark-75 font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                        <i class="fad fa-calendar-day"></i>
+                                        {{ borrower.clientSince }}
+                                    </a>
+                                    <a class="text-dark-75 font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                        <i class="fad fa-id-card"></i>
+                                        {{ borrower.tin }}
                                     </a>
                                 </div>
                             </div>
@@ -1177,7 +1181,7 @@
                                 class="nav-link"
                                 data-toggle="tab"
                                 role="tab"
-                                ng-class="{ 'active' : template.templateNumber == currentTemplate }"
+                                ng-class="{ 'active' : template.templateNumber == currentTemplate.templateNumber }"
                                 ng-click="goToTemplate(template.templateNumber)"
                             >
                                 <span class="nav-icon mr-2"><i class="{{ template.icon }} icon-lg"></i></span>

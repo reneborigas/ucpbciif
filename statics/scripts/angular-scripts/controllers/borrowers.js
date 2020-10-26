@@ -740,9 +740,9 @@ define(function () {
                 department: '',
                 position: '',
                 educationalAttainment: '',
-                age: '',
-                yearsInCoop: '',
-                oSLoanWithCoop: '',
+                age: 0,
+                yearsInCoop: 0,
+                oSLoanWithCoop: 0,
                 status: '',
                 createdBy: appFactory.getCurrentUser(),
             });
@@ -757,11 +757,11 @@ define(function () {
                 name: '',
                 position: '',
                 educationalAttainment: '',
-                age: '',
-                yearsInCoop: '',
-                oSLoanWithCoop: '',
+                age: 0,
+                yearsInCoop: 0,
+                oSLoanWithCoop: 0,
                 status: '',
-                createdBy: '',
+                createdBy: appFactory.getCurrentUser(),
             });
         };
 
@@ -798,20 +798,20 @@ define(function () {
                         $http.post('/api/borrowers/business/', $scope.business).then(
                             function (responseBusiness) {
                                 $scope.borrower.business = responseBusiness.data.id;
-                                return $http.post('/api/borrowers/crud-borrowers/', $scope.borrower).then(
+                                return $http.post('/api/borrowers/create-borrower/', $scope.borrower).then(
                                     function (responseBorrower) {
                                         var user = JSON.parse(localStorage.getItem('currentUser'));
                                         var userLogs = {
                                             user: user['id'],
                                             action_type: 'Created', //String value of action i.e. Created, Updated, Approved, Complete etc.
                                             content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
-                                            object_id: responseBorrower.data.id, //ID of object created i.e. borrowerId, id etc.
+                                            object_id: responseBorrower.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
                                             object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
                                             apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
                                             valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
                                             logDetails: [
                                                 {
-                                                    action: 'Created ' + responseBorrower.data.name, //Details of Log
+                                                    action: 'Created ' + $scope.business.tradeName, //Details of Log
                                                 },
                                             ],
                                         };
@@ -877,7 +877,6 @@ define(function () {
                 $scope.getBorrowerAttachments($scope.borrowerId);
                 $scope.showAccomodations = false;
                 appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
-                    console.log(data);
                     $scope.windows = data;
                     $scope.showAccomodations = true;
                 });
@@ -1042,24 +1041,30 @@ define(function () {
             },
             {
                 templateNumber: 2,
-                name: 'Contact Details',
+                name: 'Contact Information',
+                icon: 'fad fa-id-card',
+                templateUrl: '/statics/partials/pages/borrowers/info/contact-information.html',
+            },
+            {
+                templateNumber: 3,
+                name: 'Contact Person',
                 icon: 'fad fa-address-book',
                 templateUrl: '/statics/partials/pages/borrowers/info/contact.html',
             },
             {
-                templateNumber: 3,
-                name: 'Background',
+                templateNumber: 4,
+                name: 'Directors & Standing Committee',
                 icon: 'fad fa-user-friends',
                 templateUrl: '/statics/partials/pages/borrowers/info/directorCommittee.html',
             },
             {
-                templateNumber: 4,
+                templateNumber: 5,
                 name: 'Grants',
                 icon: 'fad fa-coin',
                 templateUrl: '/statics/partials/pages/borrowers/info/grants.html',
             },
             {
-                templateNumber: 5,
+                templateNumber: 6,
                 name: 'History',
                 icon: 'fad fa-history',
                 templateUrl: '/statics/partials/pages/borrowers/info/history.html',
@@ -1213,27 +1218,28 @@ define(function () {
                 angular.forEach(newAttachment, function (value, key) {
                     formData.append(key, value);
                 });
-                promises.push($scope.uploadFile(formData));
+                console.log(newAttachment);
+                // promises.push($scope.uploadFile(formData));
             });
 
-            $q.all(promises).then(
-                function (response) {
-                    toastr.success('Success', 'All attachment successfully saved.');
-                    $scope.fileList.length = 0;
-                    $scope.newAttachment.attachmentDescription = '';
-                    $scope.getBorrowerAttachments($scope.borrowerId);
-                    angular.element('#attach-file').modal('hide');
-                    attachmentBlockUI.stop();
-                },
-                function (error) {
-                    toastr.error(
-                        'Error ' + error.status + ' ' + error.statusText,
-                        'Could not create upload attachments. Please contact System Administrator.'
-                    );
-                    angular.element('#attach-file').modal('hide');
-                    attachmentBlockUI.stop();
-                }
-            );
+            // $q.all(promises).then(
+            //     function (response) {
+            //         toastr.success('Success', 'All attachment successfully saved.');
+            //         $scope.fileList.length = 0;
+            //         $scope.newAttachment.attachmentDescription = '';
+            //         $scope.getBorrowerAttachments($scope.borrowerId);
+            //         angular.element('#attach-file').modal('hide');
+            //         attachmentBlockUI.stop();
+            //     },
+            //     function (error) {
+            //         toastr.error(
+            //             'Error ' + error.status + ' ' + error.statusText,
+            //             'Could not create upload attachments. Please contact System Administrator.'
+            //         );
+            //         angular.element('#attach-file').modal('hide');
+            //         attachmentBlockUI.stop();
+            //     }
+            // );
         };
 
         $scope.uploadFile = function (formData) {
@@ -1277,25 +1283,44 @@ define(function () {
         NgTableParams,
         appFactory,
         $state,
-        $timeout
+        $timeout,
+        blockUI
     ) {
+        $scope.form = {};
+        var staticData;
+        var objectsRemoved = [];
+
         $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
             function (response) {
                 $scope.borrower = response.data[0];
-                $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat($scope.borrower.cooperative.paidUpCapitalInitial);
-                $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized);
-                $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue);
-                $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp);
-                $scope.borrower.cooperative.cdaRegistrationDate = new Date($scope.borrower.cooperative.cdaRegistrationDate);
-                angular.forEach($scope.borrower.cooperative.directors, function (director) {
-                    director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop);
+                staticData = angular.copy(response.data[0]);
+                console.log(staticData);
+                $scope.borrower.clientSince = new Date($scope.borrower.clientSince);
+                $scope.borrower.business.termOfExistence = new Date($scope.borrower.business.termOfExistence);
+                $scope.borrower.business.registrationDate = new Date($scope.borrower.business.registrationDate);
+                $scope.borrower.business.businessGrossIncome = parseFloat($scope.borrower.business.businessGrossIncome);
+                $scope.borrower.business.netTaxableIncome = parseFloat($scope.borrower.business.netTaxableIncome);
+                $scope.borrower.business.monthlyExpenses = parseFloat($scope.borrower.business.monthlyExpenses);
+                angular.forEach($scope.borrower.business.businessAddress, function (address) {
+                    address.occupiedSince = new Date(address.occupiedSince);
                 });
-                angular.forEach($scope.borrower.cooperative.standingCommittees, function (standingCommittee) {
-                    standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop);
-                });
-                angular.forEach($scope.borrower.cooperative.grants, function (grant) {
-                    grant.amount = parseFloat(grant.amount);
-                });
+                // $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat($scope.borrower.cooperative.paidUpCapitalInitial);
+                // $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized);
+                // $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue);
+                // $scope.borrower.cooperative.paidUp = parseFloat($scope.borrower.cooperative.paidUp);
+                $scope.borrower.business.businessBackground[0].cdaRegistrationDate = new Date(
+                    $scope.borrower.business.businessBackground[0].cdaRegistrationDate
+                );
+
+                // angular.forEach($scope.borrower.cooperative.directors, function (director) {
+                //     director.oSLoanWithCoop = parseFloat(director.oSLoanWithCoop);
+                // });
+                // angular.forEach($scope.borrower.cooperative.standingCommittees, function (standingCommittee) {
+                //     standingCommittee.oSLoanWithCoop = parseFloat(standingCommittee.oSLoanWithCoop);
+                // });
+                // angular.forEach($scope.borrower.cooperative.grants, function (grant) {
+                //     grant.amount = parseFloat(grant.amount);
+                // });
             },
             function (error) {
                 toastr.error(
@@ -1314,18 +1339,24 @@ define(function () {
             },
             {
                 templateNumber: 2,
-                name: 'Background',
-                desc: 'Incorporation Details',
-                templateUrl: '/statics/partials/pages/borrowers/edit/background.html',
+                name: 'Additional Info',
+                desc: 'CIC Compliant Information',
+                templateUrl: '/statics/partials/pages/borrowers/edit/additionalinfo.html',
             },
             {
                 templateNumber: 3,
+                name: 'Structure',
+                desc: 'Incorporation Details',
+                templateUrl: '/statics/partials/pages/borrowers/edit/structure.html',
+            },
+            {
+                templateNumber: 4,
                 name: 'Directors and Committee',
                 desc: 'Director and Committee Information',
                 templateUrl: '/statics/partials/pages/borrowers/edit/directorCommittee.html',
             },
             {
-                templateNumber: 4,
+                templateNumber: 5,
                 name: 'Grants',
                 desc: 'Grant Info',
                 templateUrl: '/statics/partials/pages/borrowers/edit/grants.html',
@@ -1350,12 +1381,82 @@ define(function () {
             }
         };
 
-        appFactory.getCooperativeType().then(function (data) {
-            $scope.cooperativetypes = data;
+        appFactory.getTitleType().then(function (data) {
+            $scope.titles = data;
+        });
+        appFactory.getGenderType().then(function (data) {
+            $scope.genders = data;
+        });
+        appFactory.getCountryList().then(function (data) {
+            $scope.countries = data;
+        });
+        appFactory.getCivilStatusType().then(function (data) {
+            $scope.civilstatus = data;
+        });
+        appFactory.getIdentificationType().then(function (data) {
+            $scope.identificationTypes = data;
+        });
+        appFactory.getIDType().then(function (data) {
+            $scope.idTypes = data;
+        });
+        appFactory.getOwnerLesseeType().then(function (data) {
+            $scope.ownerLessee = data;
+        });
+        appFactory.getAddressType().then(function (data) {
+            $scope.addressTypes = data;
+        });
+        appFactory.getContactType().then(function (data) {
+            $scope.contactTypes = data;
+        });
+        appFactory.getPSICType().then(function (data) {
+            $scope.psics = data;
+        });
+        appFactory.getPSOCType().then(function (data) {
+            $scope.psocs = data;
+        });
+        appFactory.getIncomePeriodType().then(function (data) {
+            $scope.incomeperiods = data;
+        });
+        appFactory.getCurrencyList().then(function (data) {
+            $scope.currencies = data;
+        });
+        appFactory.getOccupationStatusType().then(function (data) {
+            $scope.occupationStatuses = data;
+        });
+        appFactory.getLegalFormType().then(function (data) {
+            $scope.legalFormTypes = data;
+        });
+        appFactory.getFirmSizeType().then(function (data) {
+            $scope.firmSizes = data;
+        });
+        appFactory.getBranches().then(function (data) {
+            $scope.branches = data;
         });
 
+        $scope.addIdentification = function () {
+            $scope.borrower.business.businessIdentification.push({
+                identificationType: '',
+                identificationNumber: '',
+            });
+        };
+
+        $scope.removeIdentification = function (index) {
+            $scope.borrower.business.businessIdentification.splice(index, 1);
+        };
+
+        $scope.addContact = function () {
+            $scope.borrower.business.businessContact.push({
+                contactType: '',
+                contactNumber: '',
+            });
+        };
+
+        $scope.removeContact = function (index) {
+            $scope.borrower.business.businessContact.splice(index, 1);
+        };
+
         $scope.addDirector = function () {
-            $scope.borrower.cooperative.directors.push({
+            $scope.borrower.business.businessDirectors.push({
                 name: '',
                 department: '',
                 position: '',
@@ -1369,82 +1470,216 @@ define(function () {
         };
 
         $scope.removeDirector = function (index) {
-            $scope.borrower.cooperative.directors.splice(index, 1);
+            $scope.borrower.business.businessDirectors.splice(index, 1);
         };
 
         $scope.addCommittee = function () {
-            $scope.borrower.cooperative.standingCommittees.push({
+            $scope.borrower.business.businessStandingCommittees.push({
                 name: '',
                 position: '',
                 educationalAttainment: '',
-                age: '',
-                yearsInCoop: '',
-                oSLoanWithCoop: '',
+                age: 0,
+                yearsInCoop: 0,
+                oSLoanWithCoop: 0,
                 status: '',
-                createdBy: '',
+                createdBy: appFactory.getCurrentUser(),
             });
         };
 
         $scope.removeCommittee = function (index) {
-            $scope.borrower.cooperative.standingCommittees.splice(index, 1);
+            $scope.borrower.business.businessStandingCommittees.splice(index, 1);
         };
 
-        $scope.update = function () {
-            $scope.borrower.cooperative.cdaRegistrationDate = appFactory.dateWithoutTime(
-                $scope.borrower.cooperative.cdaRegistrationDate,
-                'yyyy-MM-dd'
-            );
-            if ($scope.editForm.$valid) {
-                swal({
-                    title: 'Update Borrower',
-                    text: 'Do you want to update this borrower?',
-                    icon: 'info',
-                    buttons: {
-                        cancel: true,
-                        confirm: 'Update',
-                    },
-                }).then((isConfirm) => {
-                    if (isConfirm) {
-                        $http.patch('/api/borrowers/cooperatives/' + $scope.borrower.cooperative.id + '/', $scope.borrower.cooperative).then(
-                            function () {
-                                return $http
-                                    .patch('/api/borrowers/borrowers/' + $scope.borrower.contactPerson.id + '/', $scope.borrower.contactPerson)
-                                    .then(
-                                        function () {
-                                            return $http.patch('/api/borrowers/borrowers/' + $scope.borrower.borrowerId + '/', $scope.borrower).then(
-                                                function (response) {
-                                                    swal('Success!', 'Borrower Updated.', 'success');
-                                                    toastr.success('Success', 'Borrower Updated.');
-                                                    $state.go('app.borrowers.info', {
-                                                        borrowerId: response.data.borrowerId,
-                                                    });
-                                                },
-                                                function (error) {
-                                                    toastr.error(
-                                                        'Error ' + error.status + ' ' + error.statusText,
-                                                        'Could not update borrower. Please contact System Administrator.'
-                                                    );
-                                                }
-                                            );
-                                        },
-                                        function (error) {
-                                            toastr.error(
-                                                'Error ' + error.status + ' ' + error.statusText,
-                                                'Could not update contact person. Please contact System Administrator.'
-                                            );
-                                        }
-                                    );
-                            },
-                            function (error) {
-                                toastr.error(
-                                    'Error ' + error.status + ' ' + error.statusText,
-                                    'Could not update cooperative. Please contact System Administrator.'
-                                );
+        $scope.compareJSON = function (object1, object2) {
+            var objectsDiffering = [];
+            $scope.compareJSONRecursive(object1, object2, objectsDiffering);
+            return objectsDiffering;
+        };
+
+        $scope.compareJSONRecursive = function (object1, object2, objectsDiffering) {
+            for (var prop in object1) {
+                if (object2.hasOwnProperty(prop)) {
+                    switch (typeof object1[prop]) {
+                        case 'object':
+                            $scope.compareJSONRecursive(object1[prop], object2[prop], objectsDiffering);
+                            break;
+                        default:
+                            if (object1[prop] !== object2[prop]) {
+                                if (
+                                    prop !== '$$hashKey' &&
+                                    prop != 'nationality' &&
+                                    prop != 'legalForm' &&
+                                    prop != 'psic' &&
+                                    prop != 'firmSize' &&
+                                    prop != 'currency' &&
+                                    prop != 'addressType' &&
+                                    prop != 'country' &&
+                                    prop != 'ownerLessee' &&
+                                    prop != 'identificationType'
+                                ) {
+                                    if (!object2[prop]) {
+                                        objectsDiffering.push({
+                                            action: 'Changed ' + appFactory.normalizeString(prop) + ' from blank to ' + object1[prop],
+                                        });
+                                    } else {
+                                        objectsDiffering.push({
+                                            action: 'Changed ' + appFactory.normalizeString(prop) + ' from ' + object2[prop] + ' to ' + object1[prop],
+                                        });
+                                    }
+                                }
                             }
-                        );
+                            break;
                     }
-                });
+                } else {
+                    switch (typeof object1[prop]) {
+                        case 'object':
+                            for (var prop1 in object1[prop]) {
+                                if (prop1 == 'value') {
+                                    appFactory.normalizeString(prop1);
+                                    objectsDiffering.push({
+                                        action: 'Added ' + appFactory.normalizeString(prop1) + ' ' + object1[prop][prop1],
+                                    });
+                                } else if (prop1 == 'identificationNumber') {
+                                    objectsDiffering.push({
+                                        action: 'Added ' + appFactory.normalizeString(prop1) + ' ' + object1[prop][prop1],
+                                    });
+                                }
+                            }
+                            break;
+                        default:
+                            console.log(object2[prop]);
+                            if (prop !== '$$hashKey') {
+                                objectsDiffering.push({
+                                    action: 'Changed ' + appFactory.normalizeString(prop) + ' from ' + object2[prop] + ' to ' + object1[prop],
+                                });
+                            }
+                            break;
+                    }
+                }
             }
+        };
+
+        $scope.checkForm = function () {
+            var invalid;
+            if ($scope.form.editForm.$valid) {
+                invalid = false;
+            } else {
+                invalid = true;
+            }
+        };
+
+        var borrowerBlockUI = blockUI.instances.get('borrowerBlockUI');
+
+        $scope.update = function () {
+            console.log($scope.compareJSON($scope.borrower, staticData));
+            swal({
+                title: 'Update Borrower',
+                text: 'Do you want to update this borrower?',
+                icon: 'info',
+                buttons: {
+                    cancel: true,
+                    confirm: 'Update',
+                },
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    borrowerBlockUI.start('Updating Borrower...');
+                    $scope.borrower.dateUpdated = new Date();
+                    $scope.borrower.business.termOfExistence = appFactory.dateWithoutTime($scope.borrower.business.termOfExistence, 'yyyy-MM-dd');
+                    $scope.borrower.business.registrationDate = appFactory.dateWithoutTime($scope.borrower.business.registrationDate, 'yyyy-MM-dd');
+
+                    angular.forEach($scope.borrower.business.businessAddress, function (address) {
+                        address.occupiedSince = appFactory.dateWithoutTime(address.occupiedSince, 'yyyy-MM-dd');
+                    });
+
+                    $scope.borrower.business.businessBackground[0].cdaRegistrationDate = appFactory.dateWithoutTime(
+                        $scope.borrower.business.businessBackground[0].cdaRegistrationDate,
+                        'yyyy-MM-dd'
+                    );
+
+                    $scope.borrower.clientSince = appFactory.dateWithoutTime($scope.borrower.clientSince, 'yyyy-MM-dd');
+
+                    angular.forEach($scope.borrower.business.businessIdentification, function (identification, index) {
+                        if (!identification.name) {
+                            $scope.borrower.business.businessIdentification.splice(index, 1);
+                        }
+                    });
+
+                    angular.forEach($scope.borrower.business.businessContact, function (contact, index) {
+                        if (!contact.name) {
+                            $scope.borrower.business.businessContact.splice(index, 1);
+                        }
+                    });
+
+                    angular.forEach($scope.borrower.business.businessDirectors, function (director, index) {
+                        if (!director.name) {
+                            $scope.borrower.business.businessDirectors.splice(index, 1);
+                        }
+                    });
+
+                    angular.forEach($scope.borrower.business.businessStandingCommittees, function (committee, index) {
+                        if (!committee.name) {
+                            $scope.borrower.business.businessStandingCommittees.splice(index, 1);
+                        }
+                    });
+
+                    $http.patch('/api/borrowers/business/' + $scope.borrower.business.id + '/', $scope.borrower.business).then(
+                        function () {
+                            return $http.patch('/api/borrowers/update-borrower/' + $scope.borrower.borrowerId + '/', $scope.borrower).then(
+                                function (response) {
+                                    var user = JSON.parse(localStorage.getItem('currentUser'));
+                                    var userLogs = {
+                                        user: user['id'],
+                                        action_type: 'Edited', //String value of action i.e. Created, Updated, Approved, Complete etc.
+                                        content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
+                                        object_id: response.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
+                                        object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
+                                        apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
+                                        valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
+                                        logDetails: $scope.compareJSON($scope.borrower, staticData),
+                                    };
+                                    angular.forEach(objectsRemoved, function (objects) {
+                                        userLogs.logDetails.push(objects);
+                                    });
+                                    return appFactory.getContentTypeId('borrower').then(function (data) {
+                                        userLogs.content_type = data;
+                                        return $http.post('/api/users/userlogs/', userLogs).then(
+                                            function () {
+                                                borrowerBlockUI.stop();
+                                                swal('Success!', 'Borrower Updated.', 'success');
+                                                toastr.success('Success', 'Borrower Updated.');
+                                                $state.go('app.borrowers.info', {
+                                                    borrowerId: response.data.borrowerId,
+                                                });
+                                            },
+                                            function (error) {
+                                                borrowerBlockUI.stop();
+                                                toastr.error(
+                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                    'Could not record logs.  Please contact System Administrator'
+                                                );
+                                            }
+                                        );
+                                    });
+                                },
+                                function (error) {
+                                    borrowerBlockUI.stop();
+                                    toastr.error(
+                                        'Error ' + error.status + ' ' + error.statusText,
+                                        'Could not update borrower. Please contact System Administrator.'
+                                    );
+                                }
+                            );
+                        },
+                        function (error) {
+                            borrowerBlockUI.stop();
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update cooperative. Please contact System Administrator.'
+                            );
+                        }
+                    );
+                }
+            });
         };
 
         $scope.cancel = function (id) {

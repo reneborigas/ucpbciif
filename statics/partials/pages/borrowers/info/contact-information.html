@@ -1,0 +1,58 @@
+<h3 class="font-size-lg text-dark font-weight-bold mb-2">Address:</h3>
+<div class="table-responsive mb-6">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Full Address</th>
+                <th scope="col">Occupied Since</th>
+                <th scope="col">Owned/Leased</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="address in borrower.business.businessAddress">
+                <td>{{ address.addressTypeName }}</td>
+                <td>
+                    {{ address.streetNo }} {{ address.subdivision }} {{ address.barangay }} {{ address.city }} {{ address.province }} {{
+                    address.countryName }}
+                </td>
+                <td>{{ address.occupiedSince | date : 'mediumDate' }}</td>
+                <td>{{ address.ownerLesseeName }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h3 class="font-size-lg text-dark font-weight-bold mb-2">Identifications:</h3>
+<div class="table-responsive mb-6">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="identification in borrower.business.businessIdentification">
+                <td>{{ identification.identificationTypeName }}</td>
+                <td>{{ identification.identificationNumber }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h3 class="font-size-lg text-dark font-weight-bold mb-2">Contacts:</h3>
+<div class="table-responsive mb-6">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="contact in borrower.business.businessContact">
+                <td>{{ contact.contactTypeName }}</td>
+                <td>{{ contact.contactNumber }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

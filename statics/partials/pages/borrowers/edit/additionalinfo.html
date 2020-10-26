@@ -1,0 +1,185 @@
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <h3 class="font-size-h6 mb-3">Address:</h3>
+    </div>
+</div>
+<div class="pb-5" ng-repeat="address in borrower.business.businessAddress">
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Address Type</label>
+        <div class="col-lg-9 col-xl-6">
+            <select
+                class="form-control"
+                id="addressType"
+                name="addressType"
+                ng-model="address.addressType"
+                ng-options="address.id as address.description for address in addressTypes"
+            ></select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Street Number</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="streetNo" name="streetNo" placeholder="Street Number" ng-model="address.streetNo" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Postal Code</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="Postal Code" ng-model="address.postalCode" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Barangay</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="barangay" name="barangay" placeholder="Barangay" ng-model="address.barangay" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">City</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="city" name="city" placeholder="City" ng-model="address.city" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Province</label>
+        <div class="col-lg-9 col-xl-6">
+            <input type="text" class="form-control" id="province" name="province" placeholder="Province" ng-model="address.province" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Country</label>
+        <div class="col-lg-9 col-xl-6">
+            <select
+                class="form-control"
+                id="country"
+                name="country"
+                ng-model="address.country"
+                ng-options="country.id as country.description for country in countries"
+            ></select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Owner/Lessee</label>
+        <div class="col-lg-9 col-xl-6">
+            <select
+                class="form-control"
+                id="ownerLessee"
+                name="ownerLessee"
+                ng-model="address.ownerLessee"
+                ng-options="ol.id as ol.description for ol in ownerLessee"
+            ></select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Occupied Since</label>
+        <div class="col-lg-9 col-xl-6">
+            <input
+                type="date"
+                class="form-control"
+                id="occupiedSince"
+                name="occupiedSince"
+                placeholder="Occupied Since"
+                ng-model="address.occupiedSince"
+            />
+        </div>
+    </div>
+</div>
+<div class="separator separator-dashed my-5"></div>
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <h3 class="font-size-h6 mb-3">Identification:</h3>
+    </div>
+</div>
+<div class="pb-7" ng-repeat="identification in borrower.business.businessIdentification">
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Identification Type</label>
+        <div class="col-lg-9 col-xl-6">
+            <select
+                class="form-control"
+                id="identificationType"
+                name="identificationType"
+                ng-model="identification.identificationType"
+                ng-options="id.id as id.description for id in identificationTypes"
+            ></select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Identification Number</label>
+        <div class="col-lg-9 col-xl-6">
+            <input
+                type="text"
+                class="form-control"
+                id="identificationNumber"
+                name="identificationNumber"
+                placeholder="Identification Number"
+                ng-model="identification.identificationNumber"
+            />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9 col-xl-6 offset-xl-3">
+            <button class="btn btn-sm btn-outline-warning" type="button" ng-click="removeIdentification($index)">
+                <i class="fal fa-minus mr-2"></i>
+                Remove Identification
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addIdentification()">
+            <i class="fal fa-plus mr-2"></i>
+            Add Identification
+        </button>
+    </div>
+</div>
+
+<div class="separator separator-dashed my-5"></div>
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <h3 class="font-size-h6 mb-3">Contact:</h3>
+    </div>
+</div>
+<div class="pb-7" ng-repeat="contact in borrower.business.businessContact">
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Contact Type</label>
+        <div class="col-lg-9 col-xl-6">
+            <select
+                class="form-control"
+                id="contactType"
+                name="contactType"
+                ng-model="contact.contactType"
+                ng-options="contactType.id as contactType.description for contactType in contactTypes"
+            ></select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 col-form-label text-right">Contact Number</label>
+        <div class="col-lg-9 col-xl-6">
+            <input
+                type="text"
+                class="form-control"
+                id="contactNumber"
+                name="contactNumber"
+                placeholder="Contact Number"
+                ng-model="contact.contactNumber"
+            />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9 col-xl-6 offset-xl-3">
+            <button class="btn btn-sm btn-outline-warning" type="button" ng-click="removeContact($index)">
+                <i class="fal fa-minus mr-2"></i>
+                Remove Contact
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-9 col-xl-6 offset-xl-3">
+        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addContact()">
+            <i class="fal fa-plus mr-2"></i>
+            Add Contact
+        </button>
+    </div>
+</div>

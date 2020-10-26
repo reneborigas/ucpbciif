@@ -689,7 +689,13 @@
                 <div class="col-xl-4">
                     <div class="form-group">
                         <label for="country">Country</label>
-                        <input type="text" class="form-control" id="country" name="country" placeholder="Country" ng-model="address.country" />
+                        <select
+                            class="form-control"
+                            id="country"
+                            name="country"
+                            ng-model="address.country"
+                            ng-options="country.id as country.description for country in countries"
+                        ></select>
                     </div>
                 </div>
                 <div class="col-xl-4">

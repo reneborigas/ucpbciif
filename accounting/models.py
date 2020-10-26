@@ -39,20 +39,20 @@ class Vendor(models.Model):
         return "%s" % (self.vendorName)
 
 class Contact(models.Model):
-    borrower = models.OneToOneField(
-        'borrowers.Borrower',
-        on_delete=models.SET_NULL,
-        related_name="contactBorrower",
-        null = True,
-        blank=True,
-    )
-    vendor = models.OneToOneField(
-        Vendor,
-        on_delete=models.SET_NULL,
-        related_name="contactVendor",
-        null = True,
-        blank=True,
-    )
+    # borrower = models.OneToOneField(
+    #     'borrowers.Borrower',
+    #     on_delete=models.SET_NULL,
+    #     related_name="contactBorrower",
+    #     null = True,
+    #     blank=True,
+    # )
+    # vendor = models.OneToOneField(
+    #     Vendor,
+    #     on_delete=models.SET_NULL,
+    #     related_name="contactVendor",
+    #     null = True,
+    #     blank=True,
+    # )
     accountTypeChoice = (
         ('Vendor', 'Vendor'),
         ('Borrower', 'Borrower'),
@@ -415,11 +415,11 @@ class TransactionActions(models.Model):
         blank = True,
         null = True,
     )
-    committee = models.ForeignKey(
-        'committees.Committee',
-        on_delete=models.CASCADE,
-        related_name="transactionActionsCommitee",
-    )
+    # committee = models.ForeignKey(
+    #     'committees.Committee',
+    #     on_delete=models.CASCADE,
+    #     related_name="transactionActionsCommitee",
+    # )
     verified = models.BooleanField(
         default=False,
     )

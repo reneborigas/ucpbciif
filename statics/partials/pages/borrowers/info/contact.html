@@ -1,7 +1,10 @@
 <div class="form-group form-group-xs row">
     <label class="col-4 col-form-label">Name:</label>
     <div class="col-8">
-        <span class="form-control-plaintext">{{ borrower.business.businessContactPerson[0].firstname }} {{ borrower.business.businessContactPerson[0].middlename }} {{ borrower.business.businessContactPerson[0].lastname }}</span>
+        <span class="form-control-plaintext">
+            {{ borrower.business.businessContactPerson[0].firstname }} {{ borrower.business.businessContactPerson[0].middlename }} {{
+            borrower.business.businessContactPerson[0].lastname }}
+        </span>
     </div>
 </div>
 <div class="form-group form-group-xs row">

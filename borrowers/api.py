@@ -10,19 +10,27 @@ from payments.models import Payment
 
 
 
-class CRUDBorrowerViewSet(ModelViewSet):
+class CreateBorrowerViewSet(ModelViewSet):
     queryset = Borrower.objects.all()
-    serializer_class = CRUDBorrowerSerializer 
+    serializer_class = CreateBorrowerSerializer 
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Borrower.objects.annotate(
-            # contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
-            # cooperativeName=F('cooperative__name'),
-            # tin=F('cooperative__tin'),
-            # address=F('cooperative__address'),
-            # phoneNo=F('cooperative__phoneNo'),
-        ).exclude(isDeleted=True).order_by('borrowerId')
+        queryset = Borrower.objects.exclude(isDeleted=True).order_by('borrowerId')
+        borrowerId = self.request.query_params.get('borrowerId', None)
+
+        if borrowerId is not None:
+            queryset = queryset.filter(borrowerId=borrowerId)
+
+        return queryset
+
+class UpdateBorrowerViewSet(ModelViewSet):
+    queryset = Borrower.objects.all()
+    serializer_class = UpdateBorrowerSerializer 
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        queryset = Borrower.objects.exclude(isDeleted=True).order_by('borrowerId')
         borrowerId = self.request.query_params.get('borrowerId', None)
 
         if borrowerId is not None:
@@ -36,12 +44,29 @@ class BorrowerViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = Borrower.objects.prefetch_related('borrowerAttachments',  Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
-        Prefetch( 'loans',queryset=Loan.objects.order_by('dateReleased')),
-            # Prefetch('cooperative',Cooperative.objects.annotate(
-            #     cooperativeTypeText=F('cooperativeType__name')
-            # ).all()),
-            Prefetch( 'documents__documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated'))
+        queryset = Borrower.objects.prefetch_related(
+            Prefetch('business',queryset=Business.objects.prefetch_related(
+                Prefetch('businessAddress',queryset=Address.objects.annotate(
+                    addressTypeName=F('addressType__description'),
+                    countryName=F('country__description'),
+                    ownerLesseeName=F('ownerLessee__description'),
+                ).all()),
+                Prefetch('businessIdentification',queryset=Identification.objects.annotate(
+                    identificationTypeName=F('identificationType__description'),
+                ).all()),
+                Prefetch('businessContact',queryset=Contact.objects.annotate(
+                    contactTypeName=F('contactType__description'),
+                ).all()),
+            ).annotate(
+                nationalityName=F('nationality__description'),
+                legalFormName=F('legalForm__description'),
+                psicName=F('psic__description'),
+                firmSizeName=F('firmSize__description'),
+            ).all()),
+            'borrowerAttachments',  
+            Prefetch( 'documents',queryset=Document.objects.order_by('dateCreated')),
+            Prefetch( 'loans',queryset=Loan.objects.order_by('dateReleased')),
+            Prefetch( 'documents__documentMovements',queryset=DocumentMovement.objects.order_by('-dateCreated')),
         ).annotate(
             borrowerName=Case(
                     When(Q(recordType='BD'),then=F('business__tradeName')),
@@ -52,10 +77,14 @@ class BorrowerViewSet(ModelViewSet):
                 When(recordType='ID',then=V('Individual')),
                 output_field=models.CharField()
             ),
-            branchCode=F('branch__branchCode')
+            branchCode=F('branch__branchCode'),
             # contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
             # cooperativeName=F('cooperative__name'),
             # tin=F('cooperative__tin'),
+            tin=Case(
+                    When(Q(recordType='BD') & Q(business__businessIdentification__identificationType__value='10'),then=F('business__businessIdentification__identificationNumber')),
+                    When(Q(recordType='ID') & Q(individual__individualIdentification__identificationType__value='10'),then=F('individual__individualIdentification__identificationNumber'))
+                ),
             # address=F('cooperative__address'),
             # phoneNo=F('cooperative__phoneNo'),
         ).exclude(isDeleted=True).order_by('borrowerId')
@@ -73,14 +102,11 @@ class BorrowerViewSet(ModelViewSet):
         clientSinceFrom = self.request.query_params.get('clientSinceFrom', None)
         clientSinceTo = self.request.query_params.get('clientSinceTo', None)
 
-
-# .filter(status__name='RELEASED')
         if borrowerId is not None:
             queryset = queryset.filter(borrowerId=borrowerId)
 
         if branch is not None:
             queryset = queryset.filter(branch=branch)
-
         
         if totalAvailmentsFrom is not None and totalAvailmentsTo is not None:
             borrowers = []
@@ -117,7 +143,6 @@ class BorrowerViewSet(ModelViewSet):
             borrower.totalAvailments = borrower.getTotalAvailments()
             borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
 
-            
 
             borrower.payments = borrower.getPayments()
             borrower.totalPayments = borrower.getTotalPayments()

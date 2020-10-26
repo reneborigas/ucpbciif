@@ -55,14 +55,12 @@ class Branch(models.Model):
     def __str__(self):
         return "%s - %s" % (self.name, self.branchCode)
 
-
 class Business(models.Model):
     tradeName = models.CharField(
         max_length=255,
         null=True,
         blank=True
     )
-   
     officialRegisteredTradeName = models.CharField(
         max_length=255,
         null=True,
@@ -306,7 +304,7 @@ class Address(models.Model):
     addressType = models.ForeignKey(
         'settings.AddressType',
         on_delete=models.SET_NULL,
-        related_name="individualAddress",
+        related_name="addressAddressType",
         null=True,
         blank=True
     )
@@ -380,7 +378,7 @@ class Identification(models.Model):
     identificationType = models.ForeignKey(
         'settings.IdentificationType',
         on_delete=models.SET_NULL,
-        related_name="individualIdentificationType",
+        related_name="identificationIdentificationType",
         null = True,
     )
     identificationNumber = models.CharField(
@@ -454,7 +452,7 @@ class Contact(models.Model):
     contactType = models.ForeignKey(
         'settings.ContactType',
         on_delete=models.SET_NULL,
-        related_name="individualContact",
+        related_name="contactContactType",
         null=True,
         blank=True
     )
@@ -673,12 +671,7 @@ class ContactPerson(models.Model):
     def __str__(self):
         return "%s %s %s" % (self.firstname,self.middlename,self.lastname)
     
-class Background(models.Model):     
-    # name = models.CharField(
-    #     max_length=255,
-    #     blank = False,
-    #     null = False, 
-    # )
+class Background(models.Model):
     business = models.ForeignKey(
         Business,
         on_delete=models.SET_NULL,
@@ -691,11 +684,6 @@ class Background(models.Model):
         blank = True,
         null = True, 
     )
-    # tin = models.CharField(
-    #     max_length=255,
-    #     blank = True,
-    #     null = True, 
-    # )
     #ncorporations  
     cdaRegistrationDate  = models.DateField(
         null=True,

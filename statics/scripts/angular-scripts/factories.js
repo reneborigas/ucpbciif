@@ -711,6 +711,33 @@ define(function () {
                         return str.toUpperCase();
                     });
             },
+            convertSnakeCase: function (snakeCase) {
+                return snakeCase
+                    .replace(/([_])/g, function ($1) {
+                        return ' ';
+                    })
+                    .replace(/\s[a-z]/g, function ($1) {
+                        return $1.toUpperCase();
+                    })
+                    .replace(/^./, function (str) {
+                        return str.toUpperCase();
+                    });
+            },
+            normalizeString: function (string) {
+                return string
+                    .replace(/([A-Z])/g, function ($1) {
+                        return ' ' + $1.toUpperCase();
+                    })
+                    .replace(/([_])/g, function ($1) {
+                        return ' ';
+                    })
+                    .replace(/\s[a-z]/g, function ($1) {
+                        return $1.toUpperCase();
+                    })
+                    .replace(/^./, function (str) {
+                        return str.toUpperCase();
+                    });
+            },
             slugify: function (text) {
                 var slug = text.toLowerCase().trim();
                 slug = slug.replace(/[^a-z0-9\s-]/g, ' ');

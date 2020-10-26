@@ -204,7 +204,7 @@ class IdentificationType(models.Model):
     )
 
     def __str__(self):
-        return "%s" % (self.value)
+        return "%s - %s" % (self.value,self.description)
 
     class Meta:
         verbose_name = "Identification Type (System Essential - CIC)"
@@ -239,7 +239,7 @@ class IDType(models.Model):
     )
 
     def __str__(self):
-        return "%s" % (self.value)
+        return "%s - %s" % (self.value,self.description)
 
     class Meta:
         verbose_name = "ID Type (System Essential - CIC)"

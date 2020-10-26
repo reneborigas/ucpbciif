@@ -1,1 +1,56 @@
-director committee
+<h3 class="font-size-lg text-dark font-weight-bold mb-2">Directors:</h3>
+<div class="table-responsive mb-6">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Position</th>
+                <th scope="col">Educational Attainment</th>
+                <th scope="col">Age</th>
+                <th scope="col">Years in Cooperative</th>
+                <th scope="col">OS Laon with Coop</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="director in borrower.business.businessDirectors">
+                <td>{{ director.name }}</td>
+                <td>{{ director.position }}</td>
+                <td>{{ director.educationalAttainment }}</td>
+                <td>{{ director.age }}</td>
+                <td>{{ director.yearsInCoop }}</td>
+                <td>{{ director.oSLoanWithCoop | currency :'₱' }}</td>
+                <td>{{ director.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h3 class="font-size-lg text-dark font-weight-bold mb-2">Standing Committee:</h3>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Department</th>
+                <th scope="col">Position</th>
+                <th scope="col">Educational Attainment</th>
+                <th scope="col">Age</th>
+                <th scope="col">Years in Cooperative</th>
+                <th scope="col">OS Laon with Coop</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="committee in borrower.business.businessStandingCommittees">
+                <td>{{ committee.name }}</td>
+                <td>{{ committee.department }}</td>
+                <td>{{ committee.position }}</td>
+                <td>{{ committee.educationalAttainment }}</td>
+                <td>{{ committee.age }}</td>
+                <td>{{ committee.yearsInCoop }}</td>
+                <td>{{ committee.oSLoanWithCoop | currency :'₱' }}</td>
+                <td>{{ committee.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

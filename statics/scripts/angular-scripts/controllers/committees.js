@@ -289,6 +289,7 @@ define(function () {
         $scope.createCommittee = function (committee) {
             angular.element('#new-committee').modal('hide');
             committee.position = $scope.currentCommitteePosition;
+            console.log(committee);
             swal({
                 title: 'Create Committee Member',
                 text: 'Do you want to save and create this committee member?',
@@ -312,7 +313,8 @@ define(function () {
                                 valueToDisplay: 'committeeName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
                                 logDetails: [
                                     {
-                                        action: 'Created ' + $scope.currentCommitteePositionName + ' ' + response.data.committeeName, //Details of Log
+                                        action:
+                                            'Created ' + $scope.currentCommitteePositionName + ' ' + committee.firstname + ' ' + committee.lastname, //Details of Log
                                     },
                                 ],
                             };
