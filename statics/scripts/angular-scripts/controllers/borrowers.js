@@ -889,34 +889,58 @@ define(function () {
                             $scope.subProcessCurrentPage[subprocess.name] = 0;
                         });
 
-                        $http
+                        return $http
                             .get('/api/loans/loans/', {
-                                // params: { borrowerId: $scope.borrowerId, status: 'CURRENT' },
                                 params: { borrowerId: $scope.borrowerId, status: 'CURRENT' },
                             })
                             .then(
                                 function (response) {
                                     $scope.loans = response.data;
+                                    return $http
+                                        .get('/api/loans/creditlines/', {
+                                            params: { borrowerId: $scope.borrowerId, status: 'APPROVED' },
+                                        })
+                                        .then(
+                                            function (response) {
+                                                $scope.creditLines = response.data;
+                                                return appFactory.getContentTypeId('borrower').then(function (data) {
+                                                    return $http
+                                                        .get('/api/users/userlogs/', { params: { content_type: data, object_id: $scope.borrowerId } })
+                                                        .then(
+                                                            function (response) {
+                                                                $scope.logs = response.data;
+                                                                $scope.totalLogCount = $scope.logs.length;
+                                                                var data = [];
+                                                                angular.forEach($scope.logs, function (logs) {
+                                                                    angular.forEach(logs.logDetails, function (details) {
+                                                                        data.push(details.action);
+                                                                    });
+                                                                    logs.details = data.join(', ');
+                                                                    data.length = 0;
+                                                                });
+                                                                $scope.logLength = $scope.logs.length;
+                                                            },
+                                                            function (error) {
+                                                                toastr.error(
+                                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                                    'Could not retrieve Log Information. Please contact System Administrator.'
+                                                                );
+                                                            }
+                                                        );
+                                                });
+                                            },
+                                            function (error) {
+                                                toastr.error(
+                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                    'Could not retrieve Credit Line Information. Please contact System Administrator.'
+                                                );
+                                            }
+                                        );
                                 },
                                 function (error) {
                                     toastr.error(
                                         'Error ' + error.status + ' ' + error.statusText,
                                         'Could not retrieve Loans Information. Please contact System Administrator.'
-                                    );
-                                }
-                            );
-                        $http
-                            .get('/api/loans/creditlines/', {
-                                params: { borrowerId: $scope.borrowerId, status: 'APPROVED' },
-                            })
-                            .then(
-                                function (response) {
-                                    $scope.creditLines = response.data;
-                                },
-                                function (error) {
-                                    toastr.error(
-                                        'Error ' + error.status + ' ' + error.statusText,
-                                        'Could not retrieve Credit Line Information. Please contact System Administrator.'
                                     );
                                 }
                             );
