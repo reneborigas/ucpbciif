@@ -1595,7 +1595,7 @@ define(function () {
         var borrowerBlockUI = blockUI.instances.get('borrowerBlockUI');
 
         $scope.update = function () {
-            console.log($scope.compareJSON($scope.borrower, staticData));
+            // console.log($scope.compareJSON($scope.borrower, staticData));
             swal({
                 title: 'Update Borrower',
                 text: 'Do you want to update this borrower?',
@@ -1659,11 +1659,16 @@ define(function () {
                                         object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
                                         apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
                                         valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
-                                        logDetails: $scope.compareJSON($scope.borrower, staticData),
+                                        logDetails: [
+                                            {
+                                                action: 'Edited ' + $scope.borrower.borrowerName, //Details of Log
+                                            },
+                                        ],
+                                        // logDetails: $scope.compareJSON($scope.borrower, staticData),
                                     };
-                                    angular.forEach(objectsRemoved, function (objects) {
-                                        userLogs.logDetails.push(objects);
-                                    });
+                                    // angular.forEach(objectsRemoved, function (objects) {
+                                    //     userLogs.logDetails.push(objects);
+                                    // });
                                     return appFactory.getContentTypeId('borrower').then(function (data) {
                                         userLogs.content_type = data;
                                         return $http.post('/api/users/userlogs/', userLogs).then(
