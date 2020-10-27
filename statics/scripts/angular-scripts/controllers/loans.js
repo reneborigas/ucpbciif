@@ -581,6 +581,35 @@ define(function () {
                     }
                 );
         };
+        $scope.editApprovalDate = function (id, dateApproved) {
+            $scope.update.id = id;
+            $scope.update.dateApproved = new Date(dateApproved);
+            angular.element('#edit-approval-date').modal('show');
+        };
+
+        $scope.updateApprovalDate = function () {
+             
+            $http
+                .post('/api/loans/updateloanview/', {
+                    loanId: $scope.update.id,
+                    dateApproved: $scope.update.dateApproved,
+                })
+                .then(
+                    function (response) {
+                        angular.element('#edit-approval-date').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        $state.reload();
+                        toastr.success('Success', 'Approval Date updated.');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update date released. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
 
         $http.get('/api/payments/checkstatuses/').then(
             function (response) {

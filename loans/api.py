@@ -166,7 +166,12 @@ class UpdateCreditLineView(views.APIView):
                 creditLine.security = security
                 new_value = security
             creditLine.save()
-
+            dateApproved = request.data.get("dateApproved")  
+             
+            if dateApproved: 
+                creditLine.dateApproved = dateApproved 
+                new_value = dateApproved
+                creditLine.save()
             return Response({
                 'message': 'Credit Line Updated', 
                 'creditLine': creditLine.id,
@@ -177,36 +182,36 @@ class UpdateCreditLineView(views.APIView):
         return Response({'error':'Error on updating creditline'},status.HTTP_400_BAD_REQUEST)
 
 
-class UpdateCreditLineView(views.APIView):
+# class UpdateCreditLineView(views.APIView):
     
-    # @method_decorator(csrf_protect) 
-    def post(self,request):
-        creditLineId = request.data.get("creditLineId") 
-        new_value =''
-        if creditLineId:  
-            creditLine = CreditLine.objects.get(pk=creditLineId)
+#     # @method_decorator(csrf_protect) 
+#     def post(self,request):
+#         creditLineId = request.data.get("creditLineId") 
+#         new_value =''
+#         if creditLineId:  
+#             creditLine = CreditLine.objects.get(pk=creditLineId)
            
-            purpose = request.data.get("purpose")  
-            if purpose: 
-                creditLine.purpose = purpose
-                new_value = purpose
-                creditLine.save()
+#             purpose = request.data.get("purpose")  
+#             if purpose: 
+#                 creditLine.purpose = purpose
+#                 new_value = purpose
+#                 creditLine.save()
 
-            security = request.data.get("security")  
-            if security: 
-                creditLine.security = security
-                new_value = security
+#             security = request.data.get("security")  
+#             if security: 
+#                 creditLine.security = security
+#                 new_value = security
 
-                creditLine.save()
+#                 creditLine.save()
            
 
-            return Response({
-                'message': 'Credit LIne Updated', 
-                'creditLine': creditLine.id,
-                'new_value': new_value
-            },status= status.HTTP_202_ACCEPTED) 
+#             return Response({
+#                 'message': 'Credit LIne Updated', 
+#                 'creditLine': creditLine.id,
+#                 'new_value': new_value
+#             },status= status.HTTP_202_ACCEPTED) 
 
-        return Response({'error':'Error on updating credit line'},status.HTTP_400_BAD_REQUEST)
+#         return Response({'error':'Error on updating credit line'},status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateAmortizationItemView(views.APIView):
@@ -353,6 +358,14 @@ class UpdateLoanView(views.APIView):
                     else:
                         generateUnevenAmortizationSchedule(loan,request)
 
+            dateApproved = request.data.get("dateApproved")  
+             
+            if dateApproved: 
+                loan.dateApproved = dateApproved
+                loan.creditLine.dateApproved = dateApproved
+                loan.creditLine.save()
+                new_value = dateApproved
+                loan.save()
 
             dateReleased = request.data.get("dateReleased")  
             if dateReleased: 

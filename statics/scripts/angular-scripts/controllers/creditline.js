@@ -498,6 +498,35 @@ define(function () {
             $scope.modalTitle = title;
             $scope.update.note = value;
         };
+        $scope.editApprovalDate = function (id, dateApproved) {
+            $scope.update.id = id;
+            $scope.update.dateApproved = new Date(dateApproved);
+            angular.element('#edit-approval-date').modal('show');
+        };
+
+        $scope.updateApprovalDate = function () {
+             
+            $http
+                .post('/api/loans/updatecreditlineview/', {
+                    creditLineId: $scope.update.id,
+                    dateApproved: $scope.update.dateApproved,
+                })
+                .then(
+                    function (response) {
+                        angular.element('#edit-approval-date').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        $state.reload();
+                        toastr.success('Success', 'Approval Date updated.');
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not update date released. Please contact System Administrator.'
+                        );
+                    }
+                );
+        };
 
         $scope.editReleaseDate = function (id, dateReleased) {
             $scope.update.id = id;
