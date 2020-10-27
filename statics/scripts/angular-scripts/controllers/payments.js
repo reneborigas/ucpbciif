@@ -773,7 +773,7 @@ define(function () {
             }
         };
 
-        $scope.addPayment = function (id) {
+        $scope.addPayment = function (id, pnNo) {
             swal({
                 title: 'Process Payment',
                 text: 'Process Payment for ' + pnNo + '?',

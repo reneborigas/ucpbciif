@@ -324,22 +324,13 @@
                             template-pagination="statics/partials/customs/pagination.html"
                         >
                             <tr class="datatable-row" ng-repeat="amortizationitem in $data">
-                                <!-- <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'NO'"
-                                    sortable="'id'"
-                                >
-                                    {{ amortizationitem.id }}
-                                </td> -->
-
                                 <td
                                     class="datatable-cell datatable-cell-right text-right"
                                     header-class="'text-right'"
                                     data-title="'LOAN'"
                                     sortable="'loan_id'"
                                 >
-                                    <a href="" ng-click="view(amortizationitem.loan_id)">LN{{ amortizationitem.loan_id }}</a>
+                                    <a href="" ng-click="view(amortizationitem.loan_id)">{{ amortizationitem.pnNo }}</a>
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"

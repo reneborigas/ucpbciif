@@ -156,9 +156,7 @@ class InterestRateSerializer(ModelSerializer):
         fields = '__all__'
 
 class AmortizationItemSerializer(ModelSerializer):
-    # termName = serializers.CharField(read_only=True) 
-
-    # isItemPaid = serializers.CharField(read_only=True)
+    pnNo  = serializers.CharField(read_only=True)
     amortizationStatus_name = serializers.ReadOnlyField(source='amortizationStatus.name')
     loan_id = serializers.ReadOnlyField(source='amortization.loan.id')
     payments = PaymentSerializer(many=True,read_only=True)
@@ -184,7 +182,7 @@ class AmortizationItemSerializer(ModelSerializer):
         fields = '__all__'
 
 class AmortizationSerializer(ModelSerializer):
-    # termName = serializers.CharField(read_only=True) 
+    pnNo  = serializers.CharField(read_only=True)
     amortizationItems = AmortizationItemSerializer(many=True,read_only=True)
     totalAmortizationInterest = serializers.CharField(read_only=True)
     totalAmortizationAccruedInterest = serializers.CharField(read_only=True)

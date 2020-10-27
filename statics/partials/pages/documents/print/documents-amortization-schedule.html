@@ -8,18 +8,12 @@
                     <h2>MAKATI CITY</h2>
                 </div>
             </div>
-            <div 
-                class="col-md-12 my-4" 
-                style="border-bottom: 1pt solid #464e5f !important;"
-            >
+            <div class="col-md-12 my-4" style="border-bottom: 1pt solid #464e5f !important">
                 <div class="text-center">
                     <h4>Amortization Schedule</h4>
                 </div>
             </div>
-            <div 
-                class="col-md-12"
-                style="border-bottom: 1pt solid #464e5f !important;"
-            >
+            <div class="col-md-12" style="border-bottom: 1pt solid #464e5f !important">
                 <div class="text-left">
                     <table class="table table-borderless">
                         <tbody>
@@ -29,9 +23,7 @@
                                     <strong>{{ loan.borrower_name }}</strong>
                                 </td>
                                 <td class="p-0">Emp No:</td>
-                                <td class="p-0"colspan="2">
-                                    {{}}
-                                </td>
+                                <td class="p-0" colspan="2">{{}}</td>
                             </tr>
                             <tr>
                                 <td class="p-0" rowspan="2">Address:</td>
@@ -39,61 +31,37 @@
                                     <strong>{{ borrower.address }}</strong>
                                 </td>
                                 <td class="p-0">Granted:</td>
-                                <td class="p-0"colspan="2">
-                                    {{ loan.dateReleased | date: 'mediumDate' }}
-                                </td>
+                                <td class="p-0" colspan="2">{{ loan.dateReleased | date: 'mediumDate' }}</td>
                             </tr>
                             <tr>
                                 <td class="p-0">Maturity:</td>
-                                <td class="p-0" colspan="2">
-                                    {{ loan.lastAmortizationItem.schedule | date: 'mediumDate' }}
-                                </td>
+                                <td class="p-0" colspan="2">{{ loan.lastAmortizationItem.schedule | date: 'mediumDate' }}</td>
                             </tr>
                             <tr>
                                 <td class="p-0">PN No./Loan No.:</td>
-                                <td class="p-0" colspan="2">
-                                    {{ loan.id}} 
-                                </td>
+                                <td class="p-0" colspan="2">{{ loan.pnNo }}</td>
                                 <td class="p-0">Kind of Loan:</td>
-                                <td class="p-0">
-                                    {{ loan.loanProgram_name }}
-                                </td>
+                                <td class="p-0">{{ loan.loanProgram_name }}</td>
                                 <td class="p-0">Province:</td>
-                                <td class="p-0" colspan="2">
-                                    {{}}
-                                </td>
+                                <td class="p-0" colspan="2">{{}}</td>
                             </tr>
                             <tr>
                                 <td class="p-0">Amount of Loan:</td>
-                                <td class="p-0" colspan="2">
-                                    {{ loan.amount | currency :'₱'}}
-                                </td>
+                                <td class="p-0" colspan="2">{{ loan.amount | currency :'₱'}}</td>
                                 <td class="p-0">Loan Term:</td>
-                                <td class="p-0">
-                                    {{ loan.term.days }} days
-                                </td>
+                                <td class="p-0">{{ loan.term.days }} days</td>
                                 <td class="p-0">Mode of Payment:</td>
-                                <td class="p-0" >
-                                    {{loan.term.principalPaymentPeriod.name }}
-                                </td>
-                            </tr> 
+                                <td class="p-0">{{loan.term.principalPaymentPeriod.name }}</td>
+                            </tr>
                             <tr>
                                 <td class="p-0" width="10%">Interest Amount:</td>
-                                <td class="p-0" >
-                                    {{ loan.totalAmortizationInterest | currency :'₱'}}
-                                </td>
+                                <td class="p-0">{{ loan.totalAmortizationInterest | currency :'₱'}}</td>
                                 <td class="p-0" width="10%">Adv Interest:</td>
-                                <td class="p-0" >
-                                    0.00
-                                </td>
+                                <td class="p-0">0.00</td>
                                 <td class="p-0" width="10%">Interest Rate:</td>
-                                <td class="p-0" >
-                                    {{ loan.interestRate_amount  }}
-                                </td>
+                                <td class="p-0">{{ loan.interestRate_amount }}</td>
                                 <td class="p-0" width="10%">S/A #:</td>
-                                <td class="p-0" >
-                                    {{}}
-                                </td>
+                                <td class="p-0">{{}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -102,196 +70,141 @@
         </div>
         <div class="row p-0">
             <div class="col-md-12">
-                <div 
-                    class="table-responsive text-right" >
-                    <table
-                        class="table table-borderless"
-                    >
+                <div class="table-responsive text-right">
+                    <table class="table table-borderless">
                         <tbody>
-                            <tr 
-                            style="border-bottom: 1pt solid #464e5f !important;">
+                            <tr style="border-bottom: 1pt solid #464e5f !important">
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            No.
-                                        </span>
+                                        <span class="text-dark">No.</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            Schedule
-                                        </span>
+                                        <span class="text-dark">Schedule</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            Days
-                                        </span>
+                                        <span class="text-dark">Days</span>
                                     </div>
                                 </td>
                                 <td class="">
                                     <div class="">
-                                        <span class="text-dark-75">
-                                            Principal
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            Interest
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            VAT
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            Total Amortization
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            Principal Balance
-                                        </span>
-                                    </div>
-                                </td>
-    
-                            </tr>
-                            <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems">
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{$index+1}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ amortization.schedule | date: 'mediumDate' }}
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ amortization.days}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ amortization.principal | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ amortization.interest | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ amortization.vat | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ amortization.total | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ amortization.principalBalance | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr
-                                style="border-bottom: 1pt solid #464e5f !important;border-top: 1pt solid #464e5f !important;"
-                            >
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            Total
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.amortizations.length}}
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span
-                                            class="text-dark-75"
-                                        ></span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.amount | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.totalAmortizationInterest | currency :'₱'}}
-                                        </span>
-                                    </div>
-                                </td>
-    
-                                <td class="">
-                                    <div class="">
-                                        <span
-                                            class="text-dark-75"
-                                        ></span>
-                                    </div>
-                                </td>
-                                <td class="">
-                                    <div class="">
-                                        <span class="text-dark-75">
-                                            {{ loan.totalAmortizationPayment | currency :'₱'}}
-                                        </span>
+                                        <span class="text-dark">Principal</span>
                                     </div>
                                 </td>
 
                                 <td class="">
                                     <div class="">
-                                        <span
-                                            class="text-dark-75"
-                                        ></span>
+                                        <span class="text-dark">Interest</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <span class="text-dark">VAT</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">Total Amortization</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">Principal Balance</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems">
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{$index+1}}</span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ amortization.schedule | date: 'mediumDate' }}</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ amortization.days}}</span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ amortization.principal | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ amortization.interest | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ amortization.vat | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ amortization.total | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ amortization.principalBalance | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1pt solid #464e5f !important; border-top: 1pt solid #464e5f !important">
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">Total</span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ loan.amortizations.length}}</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ loan.amount | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ loan.totalAmortizationInterest | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark"></span>
+                                    </div>
+                                </td>
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark">{{ loan.totalAmortizationPayment | currency :'₱'}}</span>
+                                    </div>
+                                </td>
+
+                                <td class="">
+                                    <div class="">
+                                        <span class="text-dark"></span>
                                     </div>
                                 </td>
                             </tr>

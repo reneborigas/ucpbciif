@@ -106,24 +106,22 @@ class GetAmortizationItemsCalendarView(views.APIView):
 
 
         for amortizationItem in queryset:
-            amortizationItem.start =  amortizationItem.schedule  
-            # amortizationItem.start =  amortizationItem.schedule + timezone.timedelta(days=1)
-            # amortizationItem.className =  'fc-event-solid-danger fc-event-light'
-            amortizationItem.description  = 'Due for LN' + str(amortizationItem.amortization.loan.id)
-            amortizationItem.url = '/loans/' + str(amortizationItem.amortization.loan.id)
+            amortizationItem.start =  amortizationItem.schedule
+            amortizationItem.description  = 'Due for ' + str(amortizationItem.amortization.loan.pnNo)
+            amortizationItem.url = '/loans/' + str(amortizationItem.amortization.loan.pnNo)
             amortizationItem.backgroundColor = '#0073e9'
-            amortizationItem.title = 'Amortization: LN' + str(amortizationItem.amortization.loan.id)
+            amortizationItem.title = 'Amortization: ' + str(amortizationItem.amortization.loan.pnNo)
             
             if amortizationItem.amortizationStatus.id == 1:
                 amortizationItem.backgroundColor = '#ff0000'
-                amortizationItem.title = 'Unpaid Amortization: LN' + str(amortizationItem.amortization.loan.id)
-                amortizationItem.url = '/payments/' + str(amortizationItem.amortization.loan.id)
+                amortizationItem.title = 'Unpaid Amortization: ' + str(amortizationItem.amortization.loan.pnNo)
+                amortizationItem.url = '/payments/' + str(amortizationItem.amortization.loan.pnNo)
 
 
             if amortizationItem.amortizationStatus.id == 3: #Partiall
                 amortizationItem.backgroundColor = '#ff0000'
-                amortizationItem.title = 'Unpaid Balance for Amortization: LN' + str(amortizationItem.amortization.loan.id)
-                amortizationItem.url = '/payments/' + str(amortizationItem.amortization.loan.id)
+                amortizationItem.title = 'Unpaid Balance for Amortization: ' + str(amortizationItem.amortization.loan.pnNo)
+                amortizationItem.url = '/payments/' + str(amortizationItem.amortization.loan.pnNo)
 
 
             
@@ -539,8 +537,6 @@ class AmortizationViewSet(ModelViewSet):
             amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
             # for amortizationItem in amortization.amortizationItems:
             #     amortizationItem.isItemPaid = amortizationItem.isPaid()
-
-
         return queryset
 
 
@@ -550,7 +546,9 @@ class AmortizationItemViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
-        queryset = AmortizationItem.objects.order_by('-id')
+        queryset = AmortizationItem.objects.annotate(
+            pnNo=F('amortization__loan__pnNo')
+        ).order_by('-id')
         amortizationItemId = self.request.query_params.get('amortizationItemId', None)
         maturing = self.request.query_params.get('maturing', None)
 
