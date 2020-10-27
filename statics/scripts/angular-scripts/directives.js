@@ -17,7 +17,8 @@ angular
     .directive('pagination', pagination)
     .directive('datepickerLocaldate', datepickerLocaldate)
     .directive('ngEnter', ngEnter)
-    .directive('tooltip', tooltip);
+    .directive('tooltip', tooltip)
+    .directive('numericInput', numericInput);
 
 function includeReplace() {
     var directive = {
@@ -315,8 +316,7 @@ function price($filter) {
                 displayValue = valStr[0];
             } else if (valStr.length === 1 && valStr[0] === '0') {
                 displayValue = '0.0';
-            } 
-            else {
+            } else {
                 displayValue = $filter('number')(displayValue);
             }
 
@@ -364,6 +364,30 @@ function price($filter) {
             }
             return modelNum;
         }
+    }
+}
+
+function numericInput() {
+    var directive = {
+        require: 'ngModel',
+        link: link,
+    };
+    return directive;
+
+    function link(scope, element, attr, ngModel) {
+        function fromUser(text) {
+            if (text) {
+                var transformedInput = text.replace(/[^0-9]/g, '');
+
+                if (transformedInput !== text) {
+                    ngModel.$setViewValue(transformedInput);
+                    ngModel.$render();
+                }
+                return transformedInput;
+            }
+            return undefined;
+        }
+        ngModel.$parsers.push(fromUser);
     }
 }
 

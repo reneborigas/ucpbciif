@@ -6,7 +6,6 @@
                 <label for="initialMembershipSize">Initial Membership Size</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="initialMembershipSize"
                     name="initialMembershipSize"
@@ -14,7 +13,7 @@
                     ng-model="background.initialMembershipSize"
                     ng-class="{'is-invalid' : form.wizardForm.initialMembershipSize.$invalid && form.wizardForm.initialMembershipSize.$touched, 'is-valid' : form.wizardForm.initialMembershipSize.$valid && form.wizardForm.initialMembershipSize.$touched }"
                     required
-                    price
+                    numeric-input
                 />
                 <span
                     class="form-text text-muted"
@@ -29,7 +28,6 @@
                 <label for="membershipSize">Current Membership Size</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="membershipSize"
                     name="membershipSize"
@@ -37,7 +35,7 @@
                     ng-model="background.membershipSize"
                     ng-class="{'is-invalid' : form.wizardForm.membershipSize.$invalid && form.wizardForm.membershipSize.$touched, 'is-valid' : form.wizardForm.membershipSize.$valid && form.wizardForm.membershipSize.$touched }"
                     required
-                    price
+                    numeric-input
                 />
                 <span class="form-text text-muted" ng-show="form.wizardForm.membershipSize.$touched && form.wizardForm.membershipSize.$invalid">
                     Please enter Current Membership Size.
@@ -49,7 +47,6 @@
                 <label for="noOfCooperators">Number of Cooperators</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="noOfCooperators"
                     name="noOfCooperators"
@@ -57,7 +54,7 @@
                     ng-model="background.noOfCooperators"
                     ng-class="{'is-invalid' : form.wizardForm.noOfCooperators.$invalid && form.wizardForm.noOfCooperators.$touched, 'is-valid' : form.wizardForm.noOfCooperators.$valid && form.wizardForm.noOfCooperators.$touched }"
                     required
-                    price
+                    numeric-input
                 />
                 <span class="form-text text-muted" ng-show="form.wizardForm.noOfCooperators.$touched && form.wizardForm.noOfCooperators.$invalid">
                     Please enter Number of Cooperators.
@@ -106,8 +103,6 @@
                 <label for="paidUpCapitalInitial">Initial Paid Up Capital</label>
                 <input
                     type="text"
-                    min="0"
-                    step=".01"
                     class="form-control"
                     id="paidUpCapitalInitial"
                     name="paidUpCapitalInitial"
@@ -132,7 +127,6 @@
                 <label for="coconutFarmers">Coconut Farmer</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="coconutFarmers"
                     name="coconutFarmers"
@@ -140,7 +134,7 @@
                     ng-model="background.coconutFarmers"
                     ng-class="{'is-invalid' : form.wizardForm.coconutFarmers.$invalid && form.wizardForm.coconutFarmers.$touched, 'is-valid' : form.wizardForm.coconutFarmers.$valid && form.wizardForm.coconutFarmers.$touched }"
                     required
-                    price
+                    numeric-input
                 />
                 <span class="form-text text-muted" ng-show="form.wizardForm.coconutFarmers.$touched && form.wizardForm.coconutFarmers.$invalid">
                     Please enter Coconut Farmer.
@@ -152,8 +146,6 @@
                 <label for="authorized">Authorized</label>
                 <input
                     type="text"
-                    min="0"
-                    step=".01"
                     class="form-control"
                     id="authorized"
                     name="authorized"
@@ -175,7 +167,6 @@
                 <label for="fullyPaidSharesNo">Fully Paid Shares No</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="fullyPaidSharesNo"
                     name="fullyPaidSharesNo"
@@ -195,7 +186,6 @@
                 <label for="bookValue">Book Value</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="bookValue"
                     name="bookValue"
@@ -217,8 +207,6 @@
                 <label for="parValue">Par Value</label>
                 <input
                     type="text"
-                    min="0"
-                    step=".01"
                     class="form-control"
                     id="parValue"
                     name="parValue"
@@ -238,8 +226,6 @@
                 <label for="paidUp">Paid Up</label>
                 <input
                     type="text"
-                    min="0"
-                    step=".01"
                     class="form-control"
                     id="paidUp"
                     name="paidUp"
@@ -261,7 +247,6 @@
                 <label for="fullyPaidPercent">Fully Paid Percent</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="fullyPaidPercent"
                     name="fullyPaidPercent"
@@ -281,7 +266,6 @@
                 <label for="initialPaidUpShare">Initial Paid Up Share</label>
                 <input
                     type="text"
-                    min="0"
                     class="form-control"
                     id="initialPaidUpShare"
                     name="initialPaidUpShare"

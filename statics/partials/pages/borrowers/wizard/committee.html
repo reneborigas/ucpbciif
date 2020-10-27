@@ -47,7 +47,15 @@
             <div class="col-xl-6">
                 <div class="form-group">
                     <label for="directorAge">Age</label>
-                    <input type="text" class="form-control" id="directorAge" name="directorAge" placeholder="Age" ng-model="director.age" />
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorAge"
+                        name="directorAge"
+                        placeholder="Age"
+                        ng-model="director.age"
+                        numeric-input
+                    />
                 </div>
             </div>
             <div class="col-xl-6">
@@ -60,6 +68,7 @@
                         name="directorYearsInCoop"
                         placeholder="Years in Cooperative"
                         ng-model="director.yearsInCoop"
+                        numeric-input
                     />
                 </div>
             </div>
@@ -184,6 +193,7 @@
                         name="committeeAge"
                         placeholder="Age"
                         ng-model="standingCommittee.age"
+                        numeric-input
                     />
                 </div>
             </div>
@@ -197,6 +207,7 @@
                         name="committeeYearsInCoop"
                         placeholder="Years in Cooperative"
                         ng-model="standingCommittee.yearsInCoop"
+                        numeric-input
                     />
                 </div>
             </div>

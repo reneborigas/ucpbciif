@@ -109,17 +109,26 @@ class Business(models.Model):
         null=True,
         blank=True
     )
-    grossIncome = models.IntegerField(
-        null=True,
-        blank=True
+    grossIncome = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
     )
-    netTaxableIncome = models.IntegerField(
-        null=True,
-        blank=True
+    netTaxableIncome = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
     )
-    monthlyExpenses = models.IntegerField(
-        null=True,
-        blank=True
+    monthlyExpenses = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
     )
     currency = models.ForeignKey(
         'settings.Currency',
@@ -495,9 +504,12 @@ class Employment(models.Model):
         null=True,
         blank=True
     )
-    grossIncome = models.IntegerField(
-        null=True,
-        blank=True
+    grossIncome = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
     )
     incomeIndicator = models.ForeignKey(
         'settings.IncomePeriod',
@@ -720,13 +732,19 @@ class Background(models.Model):
         blank = True,
         null = True
     )
-    fullyPaidSharesNo = models.IntegerField(
-        null=True,
-        blank=True
-    )    
-    bookValue = models.IntegerField(
-        null=True,
-        blank=True
+    fullyPaidSharesNo = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
+    )
+    bookValue = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
     )
     parValue =  models.DecimalField(
         default = 0,
@@ -742,14 +760,20 @@ class Background(models.Model):
         blank = True,
         null = True
     )
-    fullyPaidPercent  = models.IntegerField(
-        null=True,
-        blank=True
-    )    
-    initialPaidUpShare = models.IntegerField(
-        null=True,
-        blank=True
-    )    
+    fullyPaidPercent = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
+    )
+    initialPaidUpShare = models.DecimalField(
+        default = 0,
+        decimal_places = 2,
+        max_digits = 20,
+        blank = True,
+        null = True
+    )
     # financials, financial statemnts - will be a file attachment
     # address = models.TextField(
     #     blank = True,
