@@ -45732,7 +45732,7 @@ button {
 .dropdown-toggle.btn:after,
 .dropdown-toggle.nav-link:after {
     margin-left: 0.5rem;
-    font-family: Ki;
+    font-family: 'Font Awesome 5 Pro';
     font-style: normal;
     font-weight: 400;
     font-variant: normal;

@@ -1,0 +1,313 @@
+<div class="row mt-10">
+    <div class="col">
+        <div class="card card-custom gutter-b" ng-init="showExistingAccomodations = true">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="font-weight-bolder text-dark">Credit Line Per Window</span>
+                </h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="slide" ng-show="showExistingAccomodations">
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-striped mb-0" align="center" ng-show="showAccomodations">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="text-center px-7">
+                                            <span class="text-dark-75 text-uppercase font-size-lg"></span>
+                                        </div>
+                                    </th>
+                                    <th ng-repeat="window in windows">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">{{ window.name }}</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">TOTAL</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="headers in obligationsHeaders">
+                                    <th class="px-7">{{ headers.header }}</th>
+                                    <td class="text-center" ng-repeat="window in windows">
+                                        <span
+                                            class="text-dark-75 font-weight-normal font-size-lg"
+                                            ng-bind="window[headers.field] ? (window[headers.field] | dynamicFilter: headers.filterFormat) : 'N/A'"
+                                        ></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span
+                                            class="text-dark-75 font-weight-bolder font-weight-normal font-size-lg"
+                                            ng-bind="headers.total ? (borrower[headers.total] | currency :'₱') : ''"
+                                        ></span>
+                                    </td>
+                                </tr>
+                                <!-- <tr>
+                                    <td class="p-0" width="18%">
+                                        <div class="py-3 pl-16 bg-secondary">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Loan Window</a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-light">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Credit Line Amount</a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-secondary">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Approval Date</a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-light">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Expiry Date</a>
+                                        </div>
+                                        <div class="py-3 pl-16 bg-secondary">
+                                            <a href="#" class="text-dark-75 font-weight-bolder font-size-lg">Total Availments</a>
+                                        </div>
+                                    </td>
+                                    <td class="p-0" ng-repeat="window in windows">
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">{{ window.name}}</span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span
+                                                class="text-dark-75 font-weight-normal font-size-lg"
+                                                ng-bind="window.activeCreditLine ? (window.activeCreditLine.amount | currency :'₱') : '₱0.00'"
+                                            ></span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span
+                                                class="text-dark-75 font-weight-normal font-size-lg"
+                                                ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateApproved | date : 'mediumDate') : 'N/A'"
+                                            ></span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span
+                                                class="text-dark-75 font-weight-normal font-size-lg"
+                                                ng-bind="window.activeCreditLine ? (window.activeCreditLine.dateExpired | date : 'mediumDate') : 'N/A'"
+                                            ></span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ window.totalAvailments | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="p-0 text-right">
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">Total</span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">&nbsp;</span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">&nbsp;</span>
+                                        </div>
+                                        <div class="text-center py-3 bg-light">
+                                            <span class="text-dark-75 font-weight-normal font-size-lg">&nbsp;</span>
+                                        </div>
+                                        <div class="text-center py-3 bg-secondary">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ borrower.totalAvailments | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-center p-0">
+                <a class="btn btn-icon" ng-click="showExistingAccomodations = !showExistingAccomodations">
+                    <i class="wide text-warning" ng-class=" showExistingAccomodations ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card card-custom gutter-b" ng-init="showCredit = true">
+            <div class="card-header align-items-center border-0">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="font-weight-bolder text-dark">Credit Lines</span>
+                </h3>
+                <div class="card-toolbar">
+                    <a
+                        href="#"
+                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                        ng-click="previewBorrowerCreditLines(borrower.borrowerId)"
+                    >
+                        Print
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="slide" ng-show="showCredit">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0">
+                            <thead class="table-active">
+                                <tr>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">NO.</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">WINDOW</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">DATE APPROVED</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">TOTAL CREDIT LINE</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">BALANCE AVAILABLE</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">EXPIRY DATE</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">STATUS</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">ACTION</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="creditline in creditLines">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                <a href="#" ng-click="viewCreditLine(creditline.id)">{{ creditline.id }}</a>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ creditline.loanProgram_name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ creditline.dateApproved | date:'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ creditline.amount | currency :'₱'}}</span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ creditline.remainingCreditLine | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ creditline.dateExpired | date:'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">{{ creditline.status_name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <a
+                                                href=""
+                                                class="btn btn-sm btn-light-success"
+                                                ng-click="newLoanAvailment(borrower.borrowerId,creditline.id )"
+                                            >
+                                                <i class="fad fa-file-plus mr-2"></i>
+                                                New Loan Availment
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- <tr class="table-success">
+                                        <td>
+                                            <div class="text-center px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right px-2">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right">
+                                                <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            </div>
+                                        </td>
+                                    </tr> -->
+                            </tbody>
+                            <tbody ng-if="creditLines.length == 0">
+                                <tr>
+                                    <td class="py-8" colspan="8" align="center">No records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-if="creditLines">
+                            <pagination data="creditLines" page-size="pageSize.creditLines" currentpage="currentPage.creditLines"></pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-center p-0">
+                <a class="btn btn-icon" ng-click="showCredit = !showCredit">
+                    <i class="wide text-warning" ng-class=" showCredit ? 'fal fa-angle-up' : 'fal fa-angle-down' "></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

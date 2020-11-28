@@ -27,11 +27,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="navi flex-column navi-hover py-2">
-                                    <li
-                                        class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-                                    >
-                                        Choose an option:
-                                    </li>
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
                                     <li class="navi-item">
                                         <a href="#" class="navi-link" ng-click="printDataTable()">
                                             <span class="navi-icon">
@@ -74,12 +70,7 @@
                         <div class="d-flex justify-content-start align-items-center flex-wrap">
                             <div class="d-flex flex-wrap py-2 mr-3">
                                 <div class="input-icon">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        ng-model="searchTermAuto.keyword"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
                                     <span><i class="far fa-search"></i></span>
                                 </div>
                                 <div class="dropdown dropdown-inline ml-4">
@@ -94,12 +85,7 @@
                                         Add Filter
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a
-                                            href=""
-                                            ng-click="showFilter(filter)"
-                                            class="dropdown-item"
-                                            ng-repeat="filter in filters"
-                                        >
+                                        <a href="" ng-click="showFilter(filter)" class="dropdown-item" ng-repeat="filter in filters">
                                             <i
                                                 class="mr-2"
                                                 ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
@@ -245,11 +231,7 @@
                         >
                             <tr class="datatable-row" ng-repeat-start="borrower in $data">
                                 <td class="datatable-cell-sorted datatable-cell datatable-cell-center">
-                                    <a
-                                        href=""
-                                        ng-click="contact.$hideRows = !contact.$hideRows"
-                                        ng-init="group.$hideRows = false"
-                                    >
+                                    <a href="" ng-click="contact.$hideRows = !contact.$hideRows" ng-init="group.$hideRows = false">
                                         <i
                                             class="fas fa-chevron-right m-r-10"
                                             ng-class="{ ' fa-chevron-right': !contact.$hideRows, ' fa-chevron-down': contact.$hideRows }"
@@ -297,7 +279,7 @@
                                     {{ borrower.totalPayments | currency :'₱' }}
                                 </td>
                                 <td
-                                    class="datatable-cell datatable-cell-left text-center"
+                                    class="datatable-cell datatable-cell-left text-right"
                                     header-class="'text-center'"
                                     data-title="'CLIENT SINCE'"
                                     sortable="'clientSince'"
@@ -305,23 +287,11 @@
                                     {{ borrower.clientSince | date : 'longDate'}}
                                 </td>
 
-                                <td
-                                    class="datatable-cell datatable-cell-left"
-                                    header-class="'text-left'"
-                                    data-title="'ACTIONS'"
-                                >
-                                    <a
-                                        href=""
-                                        class="btn btn-sm btn-clean btn-icon mr-2"
-                                        ng-click="view(borrower.borrowerId)"
-                                    >
+                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
+                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(borrower.borrowerId)">
                                         <i class="fad fa-eye"></i>
                                     </a>
-                                    <a
-                                        href=""
-                                        class="btn btn-sm btn-clean btn-icon mr-2"
-                                        ng-click="edit(borrower.borrowerId)"
-                                    >
+                                    <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="edit(borrower.borrowerId)">
                                         <i class="fad fa-edit"></i>
                                     </a>
                                     <!-- <a
@@ -347,12 +317,8 @@
                                                 borrower.business.businessContactPerson[0].middlename }} {{
                                                 borrower.business.businessContactPerson[0].lastname }}
                                             </td>
-                                            <td style="width: 18%">
-                                                {{ borrower.business.businessContactPerson[0].phoneNo }}
-                                            </td>
-                                            <td style="width: 18%">
-                                                {{ borrower.business.businessContactPerson[0].emailAddress }}
-                                            </td>
+                                            <td style="width: 18%">{{ borrower.business.businessContactPerson[0].phoneNo }}</td>
+                                            <td style="width: 18%">{{ borrower.business.businessContactPerson[0].emailAddress }}</td>
                                         </tr>
                                     </table>
                                 </td>

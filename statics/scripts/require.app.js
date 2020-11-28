@@ -25,8 +25,6 @@ require.config({
         services: 'scripts/angular-scripts/services',
         filters: 'scripts/angular-scripts/filters',
         animations: 'scripts/angular-scripts/animations',
-
-        // 'ngDatepicker': 'libs/ui-datepicker/datetime-picker.min',
         ngTouch: 'libs/angular/angular-touch.min',
         ngBootstrap: 'libs/angular/angular-ui-bootstrap-tpls.min',
 
@@ -38,6 +36,11 @@ require.config({
         sweetalert: 'libs/sweetalert/sweetalert.min',
         ngSweetalert: 'libs/sweetalert/SweetAlert',
         ngBlock: 'libs/ngBlock/angular-block-ui.min',
+        ngMoment: 'libs/ngMoment/ng-moment',
+
+        datepicker: 'libs/bootstrap-datepicker/bootstrap-datepicker.min',
+        ngDatepicker: 'libs/ngDatepicker/ng-datepicker',
+        // 'ngDatepicker': 'libs/ui-datepicker/datetime-picker.min',
     },
     shim: {
         angular: {
@@ -89,6 +92,12 @@ require.config({
         ngIdle: {
             deps: ['angular'],
         },
+        ngMoment: {
+            deps: ['angular', 'moment'],
+        },
+        ngDatepicker: {
+            deps: ['angular', 'moment', 'ngMoment', 'datepicker'],
+        },
         app: {
             deps: [
                 'jquery',
@@ -108,6 +117,8 @@ require.config({
                 'ngBootstrap',
                 'ngIdle',
                 'ngCharts',
+                'ngMoment',
+                'ngDatepicker',
             ],
         },
         routes: {
@@ -134,7 +145,7 @@ require.config({
     },
 });
 
-require(['jquery', 'popper', 'moment', 'fullcalendar', 'bootstrap'], function () {});
+require(['jquery', 'popper', 'moment', 'fullcalendar', 'bootstrap', 'datepicker'], function () {});
 
 require(['app', 'routes', 'directives', 'factories', 'services', 'filters', 'animations'], function () {
     angular.bootstrap(document, ['app']);

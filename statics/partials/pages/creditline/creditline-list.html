@@ -107,13 +107,25 @@
                             </div> -->
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
                                 <label>{{$parent.filters[1].name}}:</label>
-                                <select
-                                    class="form-control"
-                                    ng-model="params[$parent.filters[1].params.param1]"
-                                    ng-options="term.id as term.name for term in terms"
-                                >
-                                    <option value="" disabled selected>Select Term</option>
-                                </select>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[1].params.param1]"
+                                        price
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">to</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="0"
+                                        ng-model="params[$parent.filters[1].params.param2]"
+                                        price
+                                    />
+                                </div>
                             </div>
                             <div class="col-lg-6 mb-2 mb-6" ng-if="filters[2].showFilter">
                                 <label>{{$parent.filters[2].name}}:</label>
@@ -163,21 +175,19 @@
                                 <label>{{$parent.filters[4].name}}:</label>
                                 <div class="input-group">
                                     <input
-                                        type="text"
+                                        type="date"
                                         class="form-control"
-                                        placeholder="0"
                                         ng-model="params[$parent.filters[4].params.param1]"
-                                        price
+                                        datepicker-localdate
                                     />
                                     <div class="input-group-append">
                                         <span class="input-group-text">to</span>
                                     </div>
                                     <input
-                                        type="text"
+                                        type="date"
                                         class="form-control"
-                                        placeholder="0"
                                         ng-model="params[$parent.filters[4].params.param2]"
-                                        price
+                                        datepicker-localdate
                                     />
                                 </div>
                             </div>
@@ -221,6 +231,16 @@
                                     />
                                 </div>
                             </div>
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[7].showFilter">
+                                <label>{{$parent.filters[7].name}}:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[7].params.param1]"
+                                    ng-options="status.id as status.name for status in creditlinestatus"
+                                >
+                                    <option value="" disabled selected>Select Credit Line Status</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="row my-4" ng-if="showFilterButton">
                             <div class="col-lg-12">
@@ -238,7 +258,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="datatable datatable-default datatable-subtable">
+                    <div class="datatable datatable-default datatable-subtable table-responsive">
                         <table
                             class="table table-vertical-center datatable-table"
                             ng-table="tableCreditLine"
@@ -255,34 +275,15 @@
                                     data-title="'BORROWER'"
                                     sortable="'borrowerName'"
                                 >
-                                    {{ creditline.borrower_name }}
-                                </td>
-                                <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
-                                    {{ creditline.term_name }}
+                                    {{ creditline.borrowerName }}
                                 </td>
                                 <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'CREDIT LINE AMOUNT'"
-                                    sortable="'phoneNo'"
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'DATE CREATED'"
+                                    sortable="'dateCreated'"
                                 >
-                                    {{ creditline.amount | currency :'₱'}}
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-right"
-                                    header-class="'text-right'"
-                                    data-title="'TOTAL AVAILMENT'"
-                                    sortable="'totalAvailment'"
-                                >
-                                    {{ creditline.totalAvailment | currency :'₱'}}
-                                </td>
-                                <td
-                                    class="datatable-cell datatable-cell-left text-center"
-                                    header-class="'text-center'"
-                                    data-title="'INTEREST RATE'"
-                                    sortable="'interestRate_amount'"
-                                >
-                                    {{ creditline.interestRate_amount }}
+                                    {{ creditline.dateCreated | date : 'mediumDate' }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"
@@ -300,7 +301,38 @@
                                 >
                                     {{ creditline.dateExpired | date : 'mediumDate' }}
                                 </td>
-
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'CREDIT LINE AMOUNT'"
+                                    sortable="'amount'"
+                                >
+                                    {{ creditline.amount | currency :'₱'}}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'TOTAL AVAILMENTS'"
+                                    sortable="'totalAvailment'"
+                                >
+                                    {{ creditline.totalAvailment | currency :'₱'}}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
+                                    data-title="'BALANCE'"
+                                    sortable="'totalCreditLineBalance'"
+                                >
+                                    {{ creditline.totalCreditLineBalance | currency :'₱'}}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'STATUS'"
+                                    sortable="'statusName'"
+                                >
+                                    {{ creditline.statusName }}
+                                </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
                                     <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(creditline.id)">
                                         <i class="fad fa-eye"></i>

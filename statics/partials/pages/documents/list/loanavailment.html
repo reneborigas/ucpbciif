@@ -1,0 +1,105 @@
+<div class="datatable datatable-default datatable-subtable table-responsive">
+    <table
+        class="table table-vertical-center datatable-table"
+        ng-table="tableDocuments"
+        id="tableDocuments"
+        template-pagination="statics/partials/customs/pagination.html"
+    >
+        <tr class="datatable-row" ng-repeat-start="document in $data">
+            <td class="datatable-cell-sorted datatable-cell-center datatable-cell">
+                <a
+                    class="datatable-cell-subtable"
+                    href=""
+                    ng-click="documentMovement.$hideRows = !documentMovement.$hideRows"
+                    ng-init="group.$hideRows = false"
+                >
+                    <i
+                        class="fas fa-caret-right"
+                        ng-class="{ ' fa-caret-right': !documentMovement.$hideRows, ' fa-caret-down': documentMovement.$hideRows }"
+                    ></i>
+                </a>
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'FILE NAME'" sortable="'name'">
+                <a href="" ng-click="view(document.subProcessName,document.id)">{{ document.name }}</a>
+            </td>
+            <td class="datatable-cell datatable-cell-center" header-class="'text-center'" data-title="'DATE CREATED'" sortable="'dateCreated'">
+                {{ document.dateCreated | date : 'mediumDate' }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'" sortable="'borrowerName'">
+                {{ document.borrowerName }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
+                {{ document.loan.term_name }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'WINDOW'" sortable="'loanProgram_name'">
+                {{ document.loan.loanProgram_name }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PURPOSE'" sortable="'purpose'">
+                {{ document.loan.purpose }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'AREA'" sortable="'area'">
+                {{ document.loan.area }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'AO/LS'" sortable="'committee'">
+                {{ document.loan.committee }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'INTEREST'" sortable="'interestRate_amount'">
+                {{ document.loan.interestRate_amount | staticPercentage }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PAYMENT TERM'" sortable="'paymentTerm_name'">
+                {{ document.loan.paymentTerm_name }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'AMOUNT'" sortable="'amount'">
+                {{ document.loan.amount | currency :'₱' }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'DOC STAMPS'" sortable="'docStamps'">
+                {{ document.loan.docStamps | currency :'₱' }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'NOTARIAL FEES'" sortable="'notarialFees'">
+                {{ document.loan.notarialFees | currency :'₱' }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'OTHERS'" sortable="'otherFees'">
+                {{ document.loan.otherFees | currency :'₱' }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'NET PROCEEDS'" sortable="'netProceeds'">
+                {{ document.loan.netProceeds | currency :'₱' }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'SECURITY'" sortable="'security'">
+                {{ document.loan.security }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'SECURED/UNSECURED'" sortable="'secured'">
+                {{ document.loan.secured }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'remarks'">
+                {{ document.loan.remarks }}
+            </td>
+            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'STATUS'" sortable="'status'">
+                {{ document.creditLine.status_name }}
+            </td>
+        </tr>
+        <tr ng-hide="!documentMovement.$hideRows" ng-repeat-end align="center" print-exclude="true">
+            <td colspan="9">
+                <table class="table table-vertical-center table-light table-borderless">
+                    <thead>
+                        <th style="width: 28%">Activity</th>
+                        <th style="width: 18%">Committee</th>
+                        <th style="width: 18%">Status</th>
+                        <th style="width: 18%">Description</th>
+                        <th style="width: 18%">Date</th>
+                    </thead>
+                    <tr ng-repeat="documentmovement in document.documentMovements | orderBy:'-' " align="center">
+                        <td style="width: 28%">
+                            {{ documentmovement.name }}
+                            <span ng-if=" documentmovement.outputName">-</span>
+                            {{ documentmovement.outputName }}
+                        </td>
+                        <td style="width: 18%">{{ documentmovement.committeeName }}</td>
+                        <td style="width: 18%">{{ documentmovement.statusName }}</td>
+                        <td style="width: 18%">{{ documentmovement.description }}</td>
+                        <td style="width: 18%">{{ documentmovement.dateCreated | date: 'mediumDate' }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

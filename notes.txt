@@ -27,3 +27,20 @@ Interest Rate interval by 0.25 - Done
 Release Date Amortization Bug
 
 
+
+DONE - Borrower Info Layout to Tabs
+DONE - Layout for Credit Line Per Window
+DONE - Layout for Credit Line Summary
+DONE - Added and Edited Payment Types to Format Given
+PARTIAL DONE - Format for Outstanding Loan; Still Missing Fields  
+PARTIAL DONE - Format for Payment History; Still Missing Fields  
+DONE - Export to Excel
+DONE - Character set on Excel Export
+DONE - Added Sorting on Reports based on Parent Field - Ascending or Descending
+DONE - Added Sorting on Reports based on Date Range Field
+DONE - Changed Static Documents List Field to Dynamic based on SubProcess Selected. Fields were based on Excel File Sent
+
+Bugs to fix:
+Error on Credit Line 97 and Associated Borrower 928
+
+

@@ -467,7 +467,10 @@ define(function () {
                 $scope.terms = response.data;
             },
             function (error) {
-                toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve Loan Terms List. Please contact System Administrator.');
+                toastr.error(
+                    'Error ' + error.status + ' ' + error.statusText,
+                    'Could not retrieve Loan Terms List. Please contact System Administrator.'
+                );
             }
         );
 
@@ -512,7 +515,7 @@ define(function () {
             },
             function (error) {
                 toastr.error(
-                    'Error ' + error.status + error.statusText,
+                    'Error ' + error.status + ' ' + error.statusText,
                     'Could not retrieve Interest Rates List. Please contact System Administrator.'
                 );
             }
@@ -588,7 +591,6 @@ define(function () {
         };
 
         $scope.updateApprovalDate = function () {
-             
             $http
                 .post('/api/loans/updateloanview/', {
                     loanId: $scope.update.id,
@@ -617,7 +619,7 @@ define(function () {
             },
             function (error) {
                 toastr.error(
-                    'Error ' + error.status + error.statusText,
+                    'Error ' + error.status + ' ' + error.statusText,
                     'Could not retrieve Check Status List. Please contact System Administrator.'
                 );
             }
@@ -656,7 +658,7 @@ define(function () {
                         },
                         function (error) {
                             toastr.error(
-                                'Error ' + error.status + error.statusText,
+                                'Error ' + error.status + ' ' + error.statusText,
                                 'Could not add post dated check. Please contact System Administrator.'
                             );
                         }
@@ -681,7 +683,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Check Information. Please contact System Administrator.'
                         );
                     }
@@ -1094,7 +1096,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not calculate restructured amortization. Please contact System Administrator.'
                         );
                     }
@@ -1128,7 +1130,7 @@ define(function () {
                             },
                             function (error) {
                                 toastr.error(
-                                    'Error ' + error.status + error.statusText,
+                                    'Error ' + error.status + ' ' + error.statusText,
                                     'Could not apply restructured amortization. Please contact System Administrator.'
                                 );
                             }

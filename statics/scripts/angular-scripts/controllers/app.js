@@ -100,9 +100,12 @@ define(function () {
                 };
             }
         });
+
         $scope.logout = appLoginService.logout;
         $scope.showHeader = false;
-        $scope.showHeader = appLoginService.isLoggedIn();
+        appLoginService.isLoggedIn().then(function (data) {
+            $scope.showHeader = data;
+        });
 
         $scope.loadNotifications = function (user) {
             $scope.notifClick = true;
@@ -203,7 +206,10 @@ define(function () {
                 });
             },
             function (error) {
-                toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve Sub Processes. Please contact System Administrator.');
+                toastr.error(
+                    'Error ' + error.status + ' ' + error.statusText,
+                    'Could not retrieve Sub Processes. Please contact System Administrator.'
+                );
             }
         );
         var app = JSON.parse(localStorage.getItem('selectedApp'));

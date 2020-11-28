@@ -5,12 +5,14 @@ from django.urls import path
 
 router = DefaultRouter()
 
-router.register(r'documents',DocumentViewSet) 
-router.register(r'documentmovements',DocumentMovementViewSet) 
+router.register(r"documents", DocumentViewSet)
+router.register(r"documentslist", DocumentListViewSet)
 
-urlpatterns =  [ path('getdocumentfilename/', GetDocumentFileName.as_view()),
-        ]
+router.register(r"documentmovements", DocumentMovementViewSet)
+
+urlpatterns = [
+    path("getdocumentfilename/", GetDocumentFileName.as_view()),
+]
 
 
 urlpatterns += router.urls
-

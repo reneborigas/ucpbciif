@@ -50,6 +50,8 @@ define(function () {
         },
     ]);
 
+    
+
     app.filter('trustedHTML', function ($sce) {
         return function (ss) {
             return $sce.trustAsHtml(ss);
@@ -64,6 +66,30 @@ define(function () {
                 }
 
                 return input.replace(/([A-Z])/g, (match) => ` ${match}`).replace(/^./, (match) => match.toUpperCase());
+            };
+        },
+    ]);
+
+    app.filter('normalizeString', [
+        function () {
+            return function (input) {
+                if (typeof input !== 'string') {
+                    return input;
+                }
+
+                return input
+                    .replace(/([A-Z])/g, function ($1) {
+                        return ' ' + $1.toUpperCase();
+                    })
+                    .replace(/([_])/g, function ($1) {
+                        return ' ';
+                    })
+                    .replace(/\s[a-z]/g, function ($1) {
+                        return $1.toUpperCase();
+                    })
+                    .replace(/^./, function (str) {
+                        return str.toUpperCase();
+                    });
             };
         },
     ]);

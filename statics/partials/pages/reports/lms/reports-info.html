@@ -27,19 +27,18 @@
                                     <li class="navi-item">
                                         <a href="#" class="navi-link" ng-click="printDataTable()">
                                             <span class="navi-icon">
-                                                <i class="la la-print"></i>
+                                                <i class="fa fa-print"></i>
                                             </span>
                                             <span class="navi-text">Print</span>
                                         </a>
-                                    </li>
-                                    <!-- <li class="navi-item">
-                                        <a href="#" class="navi-link">
+                                        <a href="#" class="navi-link" ng-click="exportToExcel('#tableReports')">
                                             <span class="navi-icon">
-                                                <i class="la la-file-excel-o"></i>
+                                                <i class="fa fa-file-excel"></i>
                                             </span>
                                             <span class="navi-text">Excel</span>
                                         </a>
                                     </li>
+                                    <!-- 
                                     <li class="navi-item">
                                         <a href="#" class="navi-link">
                                             <span class="navi-icon">
@@ -62,8 +61,44 @@
                     </div>
                 </div>
                 <div class="card-body" block-ui="loanListBlockUI">
-                    <div class="datatable datatable-default datatable-subtable">
-                        <table class="table table-borderless table-resposive" id="tableReports">
+                    <div class="d-flex align-items-center mb-4" ng-class="dateFilter ? 'justify-content-between' : 'justify-content-end'">
+                        <div class="d-flex justify-content-start align-items-end flex-wrap" ng-if="dateFilter">
+                            <div>
+                                <span class="px-2">Date Range:</span>
+                                <input
+                                    date-range-picker
+                                    class="form-control date-picker"
+                                    type="text"
+                                    id="dateRangePicker"
+                                    ng-model="dateRange.date"
+                                    options="dateRangeOptions"
+                                />
+                            </div>
+                            <div class="px-2">
+                                <button type="button" class="btn btn-success" ng-click="setDateRange(dateRange.date)">Filter</button>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="px-2">Sort By:</span>
+                            <div class="dropdown">
+                                <button
+                                    class="btn btn-secondary dropdown-toggle"
+                                    type="button"
+                                    id="sortButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                >
+                                    {{ currentSort.name }}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="sortButton">
+                                    <a class="dropdown-item" ng-click="sortData(sort)" ng-repeat="sort in sorts">{{ sort.name }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="datatable datatable-default datatable-subtable table-responsive">
+                        <table class="table table-borderless" id="tableReports">
                             <thead ng-repeat-start="obj in data"></thead>
                             <tbody ng-repeat-end>
                                 <tr>
@@ -76,18 +111,23 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th ng-repeat="(key,val) in obj.children[0]" ng-if="!!val && key != 'releaseMonth'">
+                                    <th ng-repeat="(key,val) in obj.children[0]" ng-if="!!val &&  hideFields(key)">
                                         <div class="">
-                                            <span class="text-dark-75 font-size-sm">{{ key | splitCamelCase}}</span>
+                                            <span class="text-dark-75 font-size-sm">{{ key | normalizeString }}</span>
                                         </div>
                                     </th>
                                 </tr>
                                 <tr ng-repeat="children in obj.children track by $index">
-                                    <td ng-repeat="(key,val) in children" ng-if="!!val && key != 'releaseMonth'">
+                                    <td ng-repeat="(key,val) in children" ng-if="!!val && hideFields(key)">
                                         <div class="">
-                                            <span class="text-dark-75 font-size-sm">{{ val }}</span>
+                                            <span class="text-dark-75 font-size-sm">{{ interpolateField(val) }}</span>
                                         </div>
                                     </td>
+                                </tr>
+                            </tbody>
+                            <tbody ng-if="data.length == 0">
+                                <tr>
+                                    <td class="py-8" align="center">No records Found</td>
                                 </tr>
                             </tbody>
                         </table>

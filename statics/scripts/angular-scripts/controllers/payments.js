@@ -393,7 +393,7 @@ define(function () {
                                         },
                                         function (error) {
                                             toastr.error(
-                                                'Error ' + error.status + error.statusText,
+                                                'Error ' + error.status + ' ' + error.statusText,
                                                 'Could not calculate amortization. Please contact System Administrator.'
                                             );
                                         }

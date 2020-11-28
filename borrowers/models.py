@@ -1118,7 +1118,7 @@ class Borrower(models.Model):
         return self.loans.filter(Q(loanStatus__name='CURRENT') | Q(loanStatus__name='RESTRUCTURED CURRENT') | Q(loanStatus__name='RESTRUCTURED'),loanProgram_id=loanProgramId).aggregate(totalAvailments=Sum(F('amount') ))['totalAvailments'] 
 
     def getPayments(self):
-        return Payment.objects.filter(loan__borrower=self).exclude(isDeleted=True).order_by('-id')
+        return Payment.objects.filter(loan__borrower=self).annotate(pnNo=F('loan__pnNo')).exclude(isDeleted=True).order_by('-id')
     
     def getTotalPayments(self): 
         return Payment.objects.filter(loan__borrower=self,paymentStatus__name='TENDERED').exclude(isDeleted=True).aggregate(totalPayments=Coalesce(Sum(F('total')),0))['totalPayments']

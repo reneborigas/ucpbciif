@@ -878,6 +878,14 @@ define(function () {
                 $scope.showAccomodations = false;
                 appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                     $scope.windows = data;
+                    var totalCurrentCreditLineBalance = 0;
+                    var totalCurrentCreditLineAmount = 0;
+                    angular.forEach($scope.windows, function (window) {
+                        totalCurrentCreditLineAmount += parseFloat(window.creditLineAmount || 0);
+                        totalCurrentCreditLineBalance += parseFloat(window.availableBalance);
+                    });
+                    $scope.borrower.totalCurrentCreditLineBalance = totalCurrentCreditLineBalance;
+                    $scope.borrower.totalCurrentCreditLineAmount = totalCurrentCreditLineAmount;
                     $scope.showAccomodations = true;
                 });
 
@@ -903,6 +911,7 @@ define(function () {
                                         .then(
                                             function (response) {
                                                 $scope.creditLines = response.data;
+                                                console.log($scope.creditLines);
                                                 return appFactory.getContentTypeId('borrower').then(function (data) {
                                                     return $http
                                                         .get('/api/users/userlogs/', { params: { content_type: data, object_id: $scope.borrowerId } })
@@ -1032,6 +1041,7 @@ define(function () {
         $scope.edit = function (id) {
             $state.go('app.borrowers.edit', { borrowerId: id });
         };
+
         $scope.viewLoan = function (id) {
             $state.go('app.loans.info', { loanId: id });
         };
@@ -1039,6 +1049,7 @@ define(function () {
         $scope.viewCreditLine = function (id) {
             $state.go('app.creditline.info', { creditLineId: id });
         };
+
         $scope.goToFile = function (subProcessName, id) {
             console.log(subProcessName);
             var subProcessNameSlug = appFactory.slugify(subProcessName);
@@ -1059,36 +1070,30 @@ define(function () {
         $scope.templates = [
             {
                 templateNumber: 1,
-                name: 'Basic Information',
-                icon: 'fad fa-info-square',
-                templateUrl: '/statics/partials/pages/borrowers/info/basic.html',
+                name: 'Credit Line',
+                icon: 'fad fa-file-invoice',
+                templateUrl: '/statics/partials/pages/borrowers/info/creditlines.html',
             },
             {
                 templateNumber: 2,
-                name: 'Contact Information',
-                icon: 'fad fa-id-card',
-                templateUrl: '/statics/partials/pages/borrowers/info/contact-information.html',
+                name: 'Loans',
+                icon: 'fad fa-coins',
+                templateUrl: '/statics/partials/pages/borrowers/info/loans.html',
             },
             {
                 templateNumber: 3,
-                name: 'Contact Person',
-                icon: 'fad fa-address-book',
-                templateUrl: '/statics/partials/pages/borrowers/info/contact.html',
+                name: 'Payments',
+                icon: 'fad fa-cash-register',
+                templateUrl: '/statics/partials/pages/borrowers/info/payments.html',
             },
             {
                 templateNumber: 4,
-                name: 'Directors & Standing Committee',
-                icon: 'fad fa-user-friends',
-                templateUrl: '/statics/partials/pages/borrowers/info/directorCommittee.html',
+                name: 'Files',
+                icon: 'fad fa-folders',
+                templateUrl: '/statics/partials/pages/borrowers/info/files.html',
             },
             {
                 templateNumber: 5,
-                name: 'Grants',
-                icon: 'fad fa-coin',
-                templateUrl: '/statics/partials/pages/borrowers/info/grants.html',
-            },
-            {
-                templateNumber: 6,
                 name: 'History',
                 icon: 'fad fa-history',
                 templateUrl: '/statics/partials/pages/borrowers/info/history.html',
@@ -1097,7 +1102,7 @@ define(function () {
 
         $scope.currentTemplate = $scope.templates[0];
 
-        $scope.getTemplate = function () {
+        $scope.getInfoTemplate = function () {
             for (var i = 0; i < $scope.templates.length; i++) {
                 if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
                     return $scope.templates[i].templateUrl;
@@ -1112,6 +1117,72 @@ define(function () {
                 }
             }
         };
+
+        $scope.obligationsHeaders = [
+            { header: 'Approval Date', field: 'dateApproved', filterFormat: "date : 'mediumDate'" },
+            { header: 'Expiry Date', field: 'dateExpired', filterFormat: "date : 'mediumDate'" },
+            { header: 'Loan Window', field: 'name', filterFormat: 'uppercase', total: false },
+            { header: 'Amount', field: 'creditLineAmount', filterFormat: "currency :'₱'", total: 'totalCurrentCreditLineAmount' },
+            { header: 'Availments', field: 'totalAvailments', filterFormat: "currency :'₱'", total: 'totalAvailments' },
+            { header: 'Available Balance', field: 'availableBalance', filterFormat: "currency :'₱'", total: 'totalCurrentCreditLineBalance' },
+        ];
+
+        // $scope.templates = [
+        //     {
+        //         templateNumber: 1,
+        //         name: 'Basic Information',
+        //         icon: 'fad fa-info-square',
+        //         templateUrl: '/statics/partials/pages/borrowers/info/basic.html',
+        //     },
+        //     {
+        //         templateNumber: 2,
+        //         name: 'Contact Information',
+        //         icon: 'fad fa-id-card',
+        //         templateUrl: '/statics/partials/pages/borrowers/info/contact-information.html',
+        //     },
+        //     {
+        //         templateNumber: 3,
+        //         name: 'Contact Person',
+        //         icon: 'fad fa-address-book',
+        //         templateUrl: '/statics/partials/pages/borrowers/info/contact.html',
+        //     },
+        //     {
+        //         templateNumber: 4,
+        //         name: 'Directors & Standing Committee',
+        //         icon: 'fad fa-user-friends',
+        //         templateUrl: '/statics/partials/pages/borrowers/info/directorCommittee.html',
+        //     },
+        //     {
+        //         templateNumber: 5,
+        //         name: 'Grants',
+        //         icon: 'fad fa-coin',
+        //         templateUrl: '/statics/partials/pages/borrowers/info/grants.html',
+        //     },
+        //     {
+        //         templateNumber: 6,
+        //         name: 'History',
+        //         icon: 'fad fa-history',
+        //         templateUrl: '/statics/partials/pages/borrowers/info/history.html',
+        //     },
+        // ];
+
+        // $scope.currentTemplate = $scope.templates[0];
+
+        // $scope.getTemplate = function () {
+        //     for (var i = 0; i < $scope.templates.length; i++) {
+        //         if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
+        //             return $scope.templates[i].templateUrl;
+        //         }
+        //     }
+        // };
+
+        // $scope.goToTemplate = function (templateNumber) {
+        //     for (var i = 0; i < $scope.templates.length; i++) {
+        //         if ($scope.templates[i].templateNumber == templateNumber) {
+        //             $scope.currentTemplate = $scope.templates[i];
+        //         }
+        //     }
+        // };
 
         $scope.getBorrowerAttachments = function (borrowerId) {
             $http

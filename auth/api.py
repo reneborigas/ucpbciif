@@ -29,6 +29,15 @@ from .serializers import UserSerializer
 
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class CheckAuthentication(views.APIView):
+
+    @method_decorator(csrf_protect)
+    def get(self, request):
+        if self.request.user.id:
+            return Response(data={'message':'User Authenticated'},status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(data={'message':'User Not Authenticated'},status=status.HTTP_401_UNAUTHORIZED)
+
 class LoginView(views.APIView):
     
     @method_decorator(csrf_protect)

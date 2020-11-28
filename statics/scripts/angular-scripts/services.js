@@ -3,15 +3,7 @@ define(function () {
 
     var app = angular.module('app');
 
-    app.service('appLoginService', function appLoginService(
-        $http,
-        $location,
-        $window,
-        $timeout,
-        toastr,
-        appFactory,
-        $state
-    ) {
+    app.service('appLoginService', function appLoginService($http, $location, $window, $timeout, toastr, appFactory, $state, $q) {
         this.login = login;
         this.isLoggedIn = isLoggedIn;
         this.logout = logout;
@@ -19,16 +11,41 @@ define(function () {
         this.setTitle = setTitle;
 
         function login(credentials) {
-            return $http
-                .post('/api/auth/login/', credentials)
-                .then(function (response) {
-                    localStorage.currentUser = JSON.stringify(response.data);
-                });
+            return $http.post('/api/auth/login/', credentials).then(function (response) {
+                localStorage.currentUser = JSON.stringify(response.data);
+            });
         }
 
         function isLoggedIn() {
-            return !!localStorage.currentUser;
+            if (localStorage.currentUser) {
+                return $http.get('/api/auth/checkauth/').then(
+                    function (response) {
+                        return true;
+                    },
+                    function (error) {
+                        return false;
+                    }
+                );
+            } else {
+                return false;
+            }
         }
+
+        // function isLoggedIn() {
+        //     if (localStorage.currentUser) {
+        //         return $http.get('/api/auth/checkauth/').then(
+        //             function (response) {
+        //                 $q.defer().resolve(response);
+        //             },
+        //             function (error) {
+        //                 $q.defer().reject('Unauthorized');
+        //             }
+        //         );
+        //     } else {
+        //         $q.defer().reject('Unauthorized');
+        //     }
+        //     return $q.defer().promise;
+        // }
 
         function logout() {
             var user = JSON.parse(localStorage.getItem('currentUser'));
@@ -47,32 +64,21 @@ define(function () {
                     },
                 ],
             };
-            return appFactory
-                .getContentTypeId('customuser')
-                .then(function (data) {
-                    userLogs.content_type = data;
-                    return $http.post('/api/users/userlogs/', userLogs).then(
-                        function () {
-                            var baseUrl = new $window.URL($location.absUrl())
-                                .origin;
-                            delete localStorage.currentUser;
-                            $http
-                                .get(baseUrl + '/api/auth/logout/')
-                                .then(function () {
-                                    window.location.href = '/login';
-                                });
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' +
-                                    error.status +
-                                    ' ' +
-                                    error.statusText,
-                                'Could not record logs.  Please contact System Administrator'
-                            );
-                        }
-                    );
-                });
+            return appFactory.getContentTypeId('customuser').then(function (data) {
+                userLogs.content_type = data;
+                return $http.post('/api/users/userlogs/', userLogs).then(
+                    function () {
+                        var baseUrl = new $window.URL($location.absUrl()).origin;
+                        delete localStorage.currentUser;
+                        $http.get(baseUrl + '/api/auth/logout/').then(function () {
+                            window.location.href = '/login';
+                        });
+                    },
+                    function (error) {
+                        toastr.error('Error ' + error.status + ' ' + error.statusText, 'Could not record logs. Please contact System Administrator');
+                    }
+                );
+            });
         }
 
         function redirectIfNotLoggedIn() {

@@ -1,0 +1,195 @@
+<div class="row mt-10">
+    <div class="col">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="card card-custom card-stretch gutter-b">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3 class="card-label font-weight-bolder">Files</h3>
+                        </div>
+                    </div>
+                    <div class="card-header border-0 pt-1" ng-repeat-start="subProcess in subprocesses">
+                        <div class="card-title">
+                            <span class="card-label text-dark">{{ subProcess.name }}</span>
+                        </div>
+                        <div class="card-toolbar">
+                            <a
+                                href="#"
+                                class="btn btn-success font-weight-bolder font-size-sm"
+                                ng-if="subProcess.canCreateNewFile == 'True'"
+                                ng-click="newLoanApplication(borrower.borrowerId,subProcess.id)"
+                            >
+                                <i class="fad fa-layer-plus"></i>
+                                Create
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0 pb-0" ng-repeat-end>
+                        <div class="table-responsive">
+                            <table class="table table-vertical-center table-head-custom table-head-bgtable-borderless">
+                                <thead>
+                                    <tr class="bg-gray-100 text-left">
+                                        <th style="min-width: 120px" class="pl-7">
+                                            <span class="text-dark-75">File Name</span>
+                                        </th>
+                                        <th style="min-width: 120px">Created</th>
+                                        <th style="min-width: 120px">Approved</th>
+                                        <th style="min-width: 120px">Program</th>
+                                        <th style="min-width: 120px">File Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    ng-repeat="document in borrower.documents | orderBy: 'id' : true | filter: {subProcess:{id:subProcess.id}} | startFrom:currentPageDocument(subProcess)*pageSizeDocument | limitTo: pageSizeDocument"
+                                >
+                                    <tr>
+                                        <td class="py-2 pl-7">
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    <a
+                                                        href="#"
+                                                        class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
+                                                        ng-click="goToFile(subProcess.name,document.id)"
+                                                    >
+                                                        {{document.name}}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                {{ document.dateCreated | date: 'mediumDate' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-if="document.dateApproved">
+                                                {{ document.dateApproved | date: 'mediumDate' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" ng-if="document.loan">
+                                                {{ document.loan.loanProgram_name }}
+                                            </span>
+
+                                            <span
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg"
+                                                ng-if="document.creditLine && !document.loan"
+                                            >
+                                                {{ document.creditLine.loanProgram_name }}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span
+                                                class="label label-lg label-inline font-weight-bold py-4"
+                                                ng-class="{ 
+                                            'label-light-primary' : document.documentMovements[0].status.name == 'Processing',
+                                            'label-light-success' : document.documentMovements[0].status.isNegativeResult == false && document.documentMovements[0].status.isFinalStatus == true,
+                                            'label-light-danger' : document.documentMovements[0].status.isNegativeResult == true  && document.documentMovements[0].status.isFinalStatus == true }"
+                                            >
+                                                {{document.documentMovements[0].status.name}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody ng-if="(borrower.documents | filter: {subProcess:{id:subProcess.id}}).length == 0">
+                                    <tr>
+                                        <td class="py-8" colspan="4" align="center">No records Found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div
+                                class="d-flex justify-content-center align-items-center flex-wrap"
+                                ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
+                            >
+                                <div class="d-flex flex-wrap py-2 mr-3">
+                                    <button
+                                        href="#"
+                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                        ng-disabled="currentPageDocument(subProcess) == 0"
+                                        ng-click="gotoPrevDocument(subProcess)"
+                                    >
+                                        <i class="fas fa-chevron-left icon-sm"></i>
+                                    </button>
+                                    <button
+                                        href="#"
+                                        class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
+                                        ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
+                                        ng-repeat="n in pageRangeDocument(borrower.documents.length)"
+                                        ng-click="jumpToPageDocument(n,subProcess)"
+                                    >
+                                        <small>{{n}}</small>
+                                    </button>
+                                    <button
+                                        href="#"
+                                        class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
+                                        ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
+                                        ng-click="gotoNextDocument(subProcess)"
+                                    >
+                                        <i class="fas fa-chevron-right icon-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="card card-custom card-stretch gutter-b">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3 class="card-label font-weight-bolder">Attachments</h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <a href="#" class="btn btn-success font-weight-bolder font-size-sm" data-toggle="modal" data-target="#attach-file">
+                                <i class="fal fa-paperclip"></i>
+                                Attach
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body" block-ui="attachmentBlockUI">
+                        <div class="pb-5">
+                            <div
+                                class="mb-5"
+                                ng-repeat="borrowerAttachment in borrowerAttachments | orderBy:'':true | startFrom:currentPage.attachments * pageSize.attachments | limitTo: pageSize.attachments"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <a href="" class="" ng-click="downloadFile(borrowerAttachment.fileAttachment,borrowerAttachment.fileName)">
+                                        <div class="symbol symbol-45 symbol-hover mr-5">
+                                            <span class="symbol-label btn btn-hover-primary">
+                                                <i class="fad fa-file-alt icon-xl text-hover-white"></i>
+                                            </span>
+                                        </div>
+                                    </a>
+                                    <div class="d-flex flex-column flex-grow-1">
+                                        <span class="font-weight-bold">{{ borrowerAttachment.fileName | trimStringWithExtension: 20 }}</span>
+                                        <span class="text-muted font-weight-bold">{{ borrowerAttachment.dateCreated | date : 'mediumDate' }}</span>
+                                    </div>
+                                </div>
+                                <p class="text-dark-50 m-0 pt-3 font-weight-normal">
+                                    {{ borrowerAttachment.description }}
+                                    <span ng-if="borrowerAttachment.createdBy">-</span>
+                                    <span
+                                        class="font-italic text-muted"
+                                        ng-if="borrowerAttachment.createdBy"
+                                        ng-bind="borrowerAttachment.createdBy"
+                                    ></span>
+                                </p>
+                            </div>
+                            <div ng-if="borrowerAttachments">
+                                <pagination
+                                    data="borrowerAttachments"
+                                    page-size="pageSize.attachments"
+                                    currentpage="currentPage.attachments"
+                                ></pagination>
+                            </div>
+                        </div>
+
+                        <div class="text-center" ng-if="borrowerAttachments.length == 0">
+                            <h6 class="font-size-sm">No attachment found</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

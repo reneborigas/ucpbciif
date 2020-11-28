@@ -16,6 +16,8 @@ define(function () {
         'ui.bootstrap',
         'ngIdle',
         'zingchart-angularjs',
+        'angularMoment',
+        'daterangepicker',
     ]);
 
     app.config([
@@ -47,20 +49,26 @@ define(function () {
         '$uibModal',
         '$uibModalStack',
         'Idle',
-        function ($rootScope, $state, $stateParams, $http, appLoginService, $transitions, $uibModal, $uibModalStack, Idle) {
+        '$q',
+        function ($rootScope, $state, $stateParams, $http, appLoginService, $transitions, $uibModal, $uibModalStack, Idle, $q) {
             $http.defaults.xsrfHeaderName = 'X-CSRFToken';
             $http.defaults.xsrfCookieName = 'csrftoken';
 
             $transitions.onBefore({}, function (transition) {
-                if (transition.to().name !== 'simple.login' && !appLoginService.isLoggedIn()) {
-                    return transition.router.stateService.target('simple.login');
-                }
-                if (transition.to().name == 'simple.login' && appLoginService.isLoggedIn()) {
-                    return transition.router.stateService.target('main.menu');
-                }
+                return appLoginService.isLoggedIn().then(function (data) {
+                    if (transition.to().name !== 'simple.login' && !data) {
+                        return transition.router.stateService.target('simple.login');
+                    }
+                    if (transition.to().name == 'simple.login' && data) {
+                        return transition.router.stateService.target('main.menu');
+                    }
+                });
             });
 
             $transitions.onError({}, function (transition) {
+                if (transition.error().detail === 'Unauthenticated') {
+                    $state.go('simple.login');
+                }
                 if (transition.error().detail === 'Unauthorized') {
                     $state.go('app.unauthorized');
                 }

@@ -47,9 +47,24 @@ class PaymentStatus(models.Model):
         return "%s" % (self.name  )
   
 class PaymentType(models.Model):
+    code = models.CharField(
+        max_length=255,
+        blank = True,
+        null = False, 
+    )
+    transactionType = models.CharField(
+        max_length=255,
+        blank = True,
+        null = False, 
+    )
     name = models.CharField(
         max_length=255,
         blank = False,
+        null = False, 
+    )
+    transactionDescription = models.CharField(
+        max_length=255,
+        blank = True,
         null = False, 
     )
     createdBy = models.ForeignKey(

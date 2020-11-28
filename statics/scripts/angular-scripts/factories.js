@@ -12,7 +12,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Branch List. Please contact System Administrator.'
                         );
                     }
@@ -25,7 +25,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Title Type List. Please contact System Administrator.'
                         );
                     }
@@ -38,7 +38,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Gender Type List. Please contact System Administrator.'
                         );
                     }
@@ -51,7 +51,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Countries List. Please contact System Administrator.'
                         );
                     }
@@ -64,7 +64,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve CivilStatus Type List. Please contact System Administrator.'
                         );
                     }
@@ -77,7 +77,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Identification Type List. Please contact System Administrator.'
                         );
                     }
@@ -90,7 +90,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve ID Type List. Please contact System Administrator.'
                         );
                     }
@@ -103,7 +103,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Owner Lessee Type List. Please contact System Administrator.'
                         );
                     }
@@ -116,7 +116,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Address Type List. Please contact System Administrator.'
                         );
                     }
@@ -129,7 +129,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Contact Type List. Please contact System Administrator.'
                         );
                     }
@@ -142,7 +142,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve PSIC Type List. Please contact System Administrator.'
                         );
                     }
@@ -155,7 +155,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve PSOC Type List. Please contact System Administrator.'
                         );
                     }
@@ -168,7 +168,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Income Period Type List. Please contact System Administrator.'
                         );
                     }
@@ -181,7 +181,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Currency List. Please contact System Administrator.'
                         );
                     }
@@ -194,7 +194,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Occupation Status Type List. Please contact System Administrator.'
                         );
                     }
@@ -207,7 +207,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Legal Form Type List. Please contact System Administrator.'
                         );
                     }
@@ -220,7 +220,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Firm Size Type List. Please contact System Administrator.'
                         );
                     }
@@ -233,7 +233,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Notifications. Please contact System Administrator.'
                         );
                     }
@@ -246,7 +246,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Borrower Name. Please contact System Administrator.'
                         );
                     }
@@ -259,7 +259,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Borrower Name. Please contact System Administrator.'
                         );
                     }
@@ -272,7 +272,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not checking permissions Please contact System Administrator.'
                         );
                     }
@@ -285,7 +285,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Borrower Name. Please contact System Administrator.'
                         );
                     }
@@ -298,7 +298,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Borrower Name. Please contact System Administrator.'
                         );
                     }
@@ -311,7 +311,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Office ID. Please contact System Administrator.'
                         );
                     }
@@ -324,7 +324,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Document Sub Process ID. Please contact System Administrator.'
                         );
                     }
@@ -337,7 +337,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Document Sub Process ID. Please contact System Administrator.'
                         );
                     }
@@ -350,7 +350,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Sub Process. Please contact System Administrator.'
                         );
                     }
@@ -363,8 +363,21 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Credit Line. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getCreditLineStatus: function () {
+                return $http.get('/api/loans/status/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Credit Line Status list. Please contact System Administrator.'
                         );
                     }
                 );
@@ -375,7 +388,10 @@ define(function () {
                         return response.data[0];
                     },
                     function (error) {
-                        toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve Loan. Please contact System Administrator.');
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Loan. Please contact System Administrator.'
+                        );
                     }
                 );
             },
@@ -391,7 +407,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve current user information. Please contact System Administrator.'
                         );
                     }
@@ -404,7 +420,10 @@ define(function () {
                         return response.data[0].installedApps;
                     },
                     function (error) {
-                        toastr.error('Error ' + error.status + error.statusText, 'Could not retrieve App List. Please contact System Administrator.');
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve App List. Please contact System Administrator.'
+                        );
                     }
                 );
             },
@@ -416,7 +435,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve App List Permitted. Please contact System Administrator.'
                         );
                     }
@@ -429,7 +448,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve User Account types. Please contact System Administrator.'
                         );
                     }
@@ -442,7 +461,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Content Type Id. Please contact System Administrator.'
                         );
                     }
@@ -455,7 +474,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Committee list. Please contact System Administrator.'
                         );
                     }
@@ -468,7 +487,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Payment Status list. Please contact System Administrator.'
                         );
                     }
@@ -481,7 +500,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Payment Type list. Please contact System Administrator.'
                         );
                     }
@@ -494,7 +513,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Amortization Status list. Please contact System Administrator.'
                         );
                     }
@@ -507,7 +526,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Term Information. Please contact System Administrator.'
                         );
                     }
@@ -520,7 +539,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Committee Information. Please contact System Administrator.'
                         );
                     }
@@ -533,7 +552,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Term list. Please contact System Administrator.'
                         );
                     }
@@ -546,7 +565,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Interest Rate list. Please contact System Administrator.'
                         );
                     }
@@ -559,7 +578,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Loan Program list. Please contact System Administrator.'
                         );
                     }
@@ -573,13 +592,12 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Documents list. Please contact System Administrator.'
                         );
                     }
                 );
             },
-
             getLoanPrograms: function (borrowerId) {
                 return $http.get('/api/loans/loanprograms/').then(
                     function (response) {
@@ -587,7 +605,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Loan Program list. Please contact System Administrator.'
                         );
                     }
@@ -600,7 +618,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Loan Status list. Please contact System Administrator.'
                         );
                     }
@@ -614,7 +632,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Loan Program list. Please contact System Administrator.'
                         );
                     }
@@ -629,7 +647,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Last Activity list. Please contact System Administrator.'
                         );
                     }
@@ -643,7 +661,7 @@ define(function () {
                     },
                     function (error) {
                         toastr.error(
-                            'Error ' + error.status + error.statusText,
+                            'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Last Activity list. Please contact System Administrator.'
                         );
                     }
@@ -818,6 +836,28 @@ define(function () {
                     for (var ld = query + 1; ld < dv; ld++) str += myappdang[n[ld]] + ' ';
                 }
                 return str.replace(/\s+/g, ' ');
+            },
+        };
+    });
+
+    app.factory('Excel', function ($window) {
+        var uri = 'data:application/vnd.ms-excel;base64;,',
+            template =
+                '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+            base64 = function (s) {
+                return $window.btoa(unescape(encodeURIComponent(s)));
+            },
+            format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                });
+            };
+        return {
+            tableToExcel: function (tableId, worksheetName) {
+                var table = $(tableId),
+                    ctx = { worksheet: worksheetName || 'Worksheet', table: table.html() },
+                    href = uri + base64(format(template, ctx));
+                return href;
             },
         };
     });

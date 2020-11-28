@@ -165,6 +165,11 @@ define(function () {
                                     },
                                     {
                                         serie: true,
+                                        name: 'Datepicker Styles',
+                                        files: ['/statics/libs/bootstrap-datepicker/bootstrap-datepicker.min.css'],
+                                    },
+                                    {
+                                        serie: true,
                                         name: 'App Styles',
                                         files: ['/statics/assets/css/style.css'],
                                     },
@@ -1032,11 +1037,17 @@ define(function () {
                         filter: null,
                         url: null,
                         params: null,
+                        order: null,
+                        dateFilter: null,
+                        hiddenFields: null,
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.filter = $stateParams.filter;
                         $scope.url = $stateParams.url;
                         $scope.params = $stateParams.params;
+                        $scope.order = $stateParams.order;
+                        $scope.dateFilter = $stateParams.dateFilter;
+                        $scope.hiddenFields = $stateParams.hiddenFields;
                         $scope.category = appFactory.unSlugify($stateParams.category);
                         $scope.subcategory = appFactory.unSlugify($stateParams.subcategory);
                     },
