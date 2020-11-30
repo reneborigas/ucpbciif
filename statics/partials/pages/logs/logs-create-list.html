@@ -1,0 +1,209 @@
+<div class="animated fadeIn" ng-controller="LogCreateListController">
+    <div class="row">
+        <div class="col">
+            <div class="card card-custom">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon">
+                            <i class="fad fa-users-class"></i>
+                        </span>
+                        <h3 class="card-label">User Create History</h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <div class="dropdown dropdown-inline mr-2">
+                            <button
+                                type="button"
+                                class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i class="fad fa-file-export"></i>
+                                Export
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="navi flex-column navi-hover py-2">
+                                    <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link" ng-click="printDataTable()">
+                                            <span class="navi-icon">
+                                                <i class="la la-print"></i>
+                                            </span>
+                                            <span class="navi-text">Print</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-excel-o"></i>
+                                            </span>
+                                            <span class="navi-text">Excel</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-text-o"></i>
+                                            </span>
+                                            <span class="navi-text">CSV</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="la la-file-pdf-o"></i>
+                                            </span>
+                                            <span class="navi-text">PDF</span>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" block-ui="logListBlockUI">
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div class="d-flex flex-wrap py-2 mr-3">
+                                <div class="input-icon">
+                                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchTermAuto.keyword" />
+                                    <span><i class="far fa-search"></i></span>
+                                </div>
+                                <div class="dropdown dropdown-inline ml-4">
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-success"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
+                                        <i class="fal fa-plus mr-1"></i>
+                                        Add Filter
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a href="" ng-click="showFilter(filter)" class="dropdown-item" ng-repeat="filter in filters">
+                                            <i
+                                                class="mr-2"
+                                                ng-class="filter.showFilter ?  'fal fa-times text-danger' : 'fal fa-check text-success'"
+                                            ></i>
+                                            {{ filter.name }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="row">
+                            <!-- <div class="col-lg-6 mb-2 mb-6" ng-if="filters[0].showFilter">
+                                <label>{{$parent.filters[0].name}}:</label>
+                                <select
+                                    class="form-control"
+                                    ng-model="params[$parent.filters[0].params.param1]"
+                                    ng-options="loanProgram.id as loanProgram.name for loanProgram in loanPrograms"
+                                >
+                                    <option value="" disabled selected>Select Borrower</option>
+                                </select>
+                            </div> -->
+                            <div class="col-lg-6 mb-2 mb-6" ng-if="filters[1].showFilter">
+                                <label>{{$parent.filters[1].name}}:</label>
+                                <div class="input-group">
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param1]"
+                                        datepicker-localdate
+                                    />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">to</span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        ng-model="params[$parent.filters[1].params.param2]"
+                                        datepicker-localdate
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row my-4" ng-if="showFilterButton">
+                            <div class="col-lg-12">
+                                <button class="btn btn-primary btn-primary-icon mr-2" ng-click="applyFilter()">
+                                    <span>
+                                        <i class="fal fa-filter"></i>
+                                        <span>Apply</span>
+                                    </span>
+                                </button>
+                                <button class="btn btn-secondary btn-secondary-icon" ng-click="resetFilter()">
+                                    <span>
+                                        <span>Clear Filters</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="datatable datatable-default datatable-subtable table-responsive">
+                        <table
+                            class="table table-vertical-center datatable-table"
+                            ng-table="tableLogs"
+                            id="tableLogs"
+                            template-pagination="statics/partials/customs/pagination.html"
+                        >
+                            <tr class="datatable-row" ng-repeat-start="logs in $data">
+                                <td class="datatable-cell-sorted datatable-cell-center datatable-cell">
+                                    <a
+                                        class="datatable-cell-subtable"
+                                        href=""
+                                        ng-click="logDetails.$hideRows = !logDetails.$hideRows"
+                                        ng-init="group.$hideRows = false"
+                                    >
+                                        <i
+                                            class="fas fa-caret-right"
+                                            ng-class="{ ' fa-caret-right': !logDetails.$hideRows, ' fa-caret-down': logDetails.$hideRows }"
+                                        ></i>
+                                    </a>
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left px-8"
+                                    header-class="'text-left px-8'"
+                                    data-title="'USER'"
+                                    sortable="'userName'"
+                                >
+                                    {{ logs.userName }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-center text-center"
+                                    header-class="'text-center'"
+                                    data-title="'ACTION'"
+                                    sortable="'action_type'"
+                                >
+                                    {{ logs.action_type }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-center text-center"
+                                    header-class="'text-center'"
+                                    data-title="'ACTION TIME'"
+                                    sortable="'action_time'"
+                                >
+                                    {{ logs.action_time | date : 'mediumDate' }}
+                                </td>
+                            </tr>
+                            <tr ng-hide="!logDetails.$hideRows" ng-repeat-end align="center" print-exclude="true">
+                                <td colspan="4">
+                                    <table class="table table-vertical-center table-light table-borderless">
+                                        <thead>
+                                            <th>Action</th>
+                                        </thead>
+                                        <tr ng-repeat="detail in logs.logDetails" align="center">
+                                            <td>{{ detail.action }}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

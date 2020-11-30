@@ -35,6 +35,7 @@ define(function () {
                                     return page;
                                 },
                                 function (error) {
+                                    creditLineListBlockUI.stop();
                                     toastr.error(
                                         'Error ' + error.status + ' ' + error.statusText,
                                         'Could not load Credit Line Lists. Please contact System Administrator.'

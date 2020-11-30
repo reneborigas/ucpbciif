@@ -974,6 +974,55 @@ define(function () {
                         label: 'Amortizations',
                     },
                 })
+                .state('app.checks', {
+                    url: '/checks',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Checks',
+                        skip: true,
+                    },
+                    resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/checks.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.checks.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/checks/checks-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Postdated Checks List',
+                        stateTitle: 'Postdated Checks',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Postdated Checks',
+                    },
+                })
+
                 .state('app.lms-reports', {
                     url: '/loan-reports',
                     template: '<ui-view></ui-view>',
@@ -1345,6 +1394,87 @@ define(function () {
                             $scope.committeeName = data;
                         });
                         $scope.officeName = appFactory.unSlugify($stateParams.officeName);
+                    },
+                })
+                .state('app.logs', {
+                    url: '/user-logs',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Audit Trails',
+                        skip: true,
+                    },
+                    resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Settings').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/logs.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.logs.access', {
+                    url: '/access',
+                    templateUrl: '/statics/partials/pages/logs/logs-access-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Audit Trails - Log In/Log Out',
+                        stateTitle: 'Audit Trails - Log In/Log Out',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Audit Trails Log In/Log Out',
+                    },
+                })
+                .state('app.logs.create', {
+                    url: '/create',
+                    templateUrl: '/statics/partials/pages/logs/logs-create-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Audit Trails - Create',
+                        stateTitle: 'Audit Trails - Create',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Audit Trails Create',
+                    },
+                })
+                .state('app.logs.edit', {
+                    url: '/edit',
+                    templateUrl: '/statics/partials/pages/logs/logs-edit-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Audit Trails - Edit',
+                        stateTitle: 'Audit Trails - Edit',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Audit Trails Edit',
+                    },
+                })
+                .state('app.logs.delete', {
+                    url: '/delete',
+                    templateUrl: '/statics/partials/pages/logs/logs-delete-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Audit Trails - Delete',
+                        stateTitle: 'Audit Trails - Delete',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Audit Trails Delete',
                     },
                 })
 

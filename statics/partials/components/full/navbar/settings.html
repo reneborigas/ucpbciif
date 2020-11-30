@@ -1,13 +1,5 @@
 <nav class="sidebar-nav">
     <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link" ui-sref-active="active" ui-sref="app.dashboard">
-                <i class="icon-speedometer"></i>
-                Dashboard
-                <span class="badge badge-info">NEW</span>
-            </a>
-        </li>
-        <li class="divider"></li>
         <li class="nav-title">Settings</li>
         <li class="nav-item">
             <a class="nav-link" ng-class="{active: $state.includes('app.terms')}" ui-sref="app.terms.list">
@@ -20,6 +12,46 @@
                 <i class="fad fa-users-class"></i>
                 Committee
             </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-title">Logs</li>
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.logs')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.logs')}" href="#">
+                <i class="fad fa-desktop"></i>
+                Audit Trail
+            </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.logs.access">
+                        <i class="fad fa-sign-in-alt"></i>
+                        Log In/Log Out
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.logs.create">
+                        <i class="fad fa-file-plus"></i>
+                        Created
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.logs.edit">
+                        <i class="fad fa-file-edit"></i>
+                        Edited
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.logs.delete">
+                        <i class="fad fa-file-minus"></i>
+                        Deleted
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
+                        <i class="fad fa-handshake"></i>
+                        Collaterals
+                    </a>
+                </li> -->
+            </ul>
         </li>
     </ul>
 </nav>

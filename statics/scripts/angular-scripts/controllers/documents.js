@@ -88,6 +88,7 @@ define(function () {
                                     return page;
                                 },
                                 function (error) {
+                                    documentListBlockUI.stop();
                                     toastr.error(
                                         'Error ' + error.status + ' ' + error.statusText,
                                         'Could not Load Documents. Please contact System Administrator.'

@@ -87,8 +87,8 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.creditline')}">
-            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.creditline')}" href="#">
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.creditline') || $state.includes('app.checks')}">
+            <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.creditline') || $state.includes('app.checks')}" href="#">
                 <i class="fad fa-desktop"></i>
                 Monitoring
             </a>
@@ -99,12 +99,12 @@
                         Credit Line
                     </a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.checks.list">
                         <i class="fad fa-money-check"></i>
                         Postdated Checks
                     </a>
-                </li> -->
+                </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
                         <i class="fad fa-handshake"></i>

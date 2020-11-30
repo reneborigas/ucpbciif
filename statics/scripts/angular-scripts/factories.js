@@ -382,6 +382,19 @@ define(function () {
                     }
                 );
             },
+            getCheckStatuses: function () {
+                return $http.get('/api/payments/checkstatuses/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Check Status list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getLoan: function (loanId) {
                 return $http.get('/api/loans/loans/', { params: { loanId: loanId } }).then(
                     function (response) {
