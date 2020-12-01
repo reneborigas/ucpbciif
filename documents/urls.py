@@ -8,6 +8,8 @@ router = DefaultRouter()
 router.register(r"documents", DocumentViewSet)
 router.register(r"documentslist", DocumentListViewSet)
 
+router.register(r"documentsloanapplicationreport", DocumentLoanApplicationReportViewSet)
+
 router.register(r"documentmovements", DocumentMovementViewSet)
 
 urlpatterns = [

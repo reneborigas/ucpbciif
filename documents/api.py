@@ -27,6 +27,7 @@ from rest_framework import status, views
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from re import search
 
 
 class GetDocumentFileName(views.APIView):
@@ -207,6 +208,57 @@ class DocumentListViewSet(ModelViewSet):
                 document.loan.latestAmortization = document.loan.getLatestAmortization
             if document.creditLine:
                 document.creditLine.remainingCreditLine = document.creditLine.getRemainingCreditLine()
+
+        return queryset
+
+
+class DocumentLoanApplicationReportViewSet(ModelViewSet):
+    queryset = Document.objects.all()
+    serializer_class = DocumentLoanApplicationReportSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = (
+            Document.objects.annotate(
+                borrowerName=Case(
+                    When(Q(borrower__recordType="BD"), then=F("borrower__business__tradeName")),
+                    When(
+                        Q(borrower__recordType="ID"),
+                        then=Concat(
+                            F("borrower__individual__firstname"),
+                            V(" "),
+                            F("borrower__individual__middlename"),
+                            V(" "),
+                            F("borrower__individual__lastname"),
+                        ),
+                    ),
+                ),
+                loanNo=F("loan__pnNo"),
+                window=F("loan__loanProgram__name"),
+                purpose=F("loan__purpose"),
+                paymentTerm=F("loan__term__name"),
+            )
+            .filter(subProcess__id=2)
+            .exclude(isDeleted=True)
+            .order_by("-id")
+        )
+
+        status = self.request.query_params.get("status", None)
+
+        if status is not None:
+            documents = []
+            for document in queryset:
+                document.status = document.getCurrentStatus()
+                if search(status, str(document.status)):
+                    documents.append(document.id)
+
+            queryset = queryset.filter(id__in=documents)
+
+        for document in queryset:
+            document.dateCreated = document.dateCreated.strftime("%B %-m %Y")
+            document.interestRate = str(document.loan.interestRate) + "%"
+            document.loanAmount = str(document.loan.amount) + " | currency :'₱'"
+            document.status = document.getCurrentStatus()
 
         return queryset
 

@@ -490,3 +490,82 @@ class AmortizationItemReportSerializer(ModelSerializer):
             "loanTerm",
             "amortizationSchedule",
         ]
+
+
+class CreditLineOutstandingReportSerializer(ModelSerializer):
+    borrowerName = serializers.CharField(read_only=True)
+    _status = serializers.CharField(read_only=True)
+    window = serializers.ReadOnlyField(source="loanProgram.name")
+    paymentTerm = serializers.ReadOnlyField(source="term.name")
+    totalAmount = serializers.CharField(read_only=True)
+    creditLineInterestRate = serializers.CharField(read_only=True)
+    dateCreated = serializers.CharField(read_only=True)
+    dateExpired = serializers.CharField(read_only=True)
+    dateApproved = serializers.CharField(read_only=True)
+    totalAvailment = serializers.CharField(read_only=True)
+    totalCreditLineBalance = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = CreditLine
+        fields = [
+            "dateCreated",
+            "borrowerName",
+            "window",
+            "dateApproved",
+            "dateExpired",
+            "purpose",
+            "creditLineInterestRate",
+            "paymentTerm",
+            "totalAmount",
+            "_status",
+            "totalAvailment",
+            "totalCreditLineBalance",
+        ]
+
+
+class CreditLineProcessingReportSerializer(ModelSerializer):
+    borrowerName = serializers.CharField(read_only=True)
+    _status = serializers.CharField(read_only=True)
+    window = serializers.ReadOnlyField(source="loanProgram.name")
+    paymentTerm = serializers.ReadOnlyField(source="term.name")
+    totalAmount = serializers.CharField(read_only=True)
+    creditLineInterestRate = serializers.CharField(read_only=True)
+    dateCreated = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = CreditLine
+        fields = [
+            "dateCreated",
+            "borrowerName",
+            "window",
+            "purpose",
+            "creditLineInterestRate",
+            "paymentTerm",
+            "totalAmount",
+            "_status",
+        ]
+
+
+class CreditLineApprovedReportSerializer(ModelSerializer):
+    borrowerName = serializers.CharField(read_only=True)
+    _status = serializers.ReadOnlyField(source="status.name")
+    window = serializers.ReadOnlyField(source="loanProgram.name")
+    paymentTerm = serializers.ReadOnlyField(source="term.name")
+    totalAmount = serializers.CharField(read_only=True)
+    creditLineInterestRate = serializers.CharField(read_only=True)
+    dateCreated = serializers.CharField(read_only=True)
+    dateExpired = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = CreditLine
+        fields = [
+            "dateCreated",
+            "borrowerName",
+            "window",
+            "purpose",
+            "creditLineInterestRate",
+            "paymentTerm",
+            "totalAmount",
+            "dateExpired",
+            "_status",
+        ]

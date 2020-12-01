@@ -115,7 +115,7 @@ class BorrowerViewSet(ModelViewSet):
                     When(recordType="ID", then=V("Individual")),
                     output_field=models.CharField(),
                 ),
-                branchCode=F("branch__branchCode"),
+                branch=F("area__branchCode"),
                 # contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
                 # cooperativeName=F('cooperative__name'),
                 # tin=F('cooperative__tin'),
@@ -133,7 +133,7 @@ class BorrowerViewSet(ModelViewSet):
                 # phoneNo=F('cooperative__phoneNo'),
             )
             .exclude(isDeleted=True)
-            .order_by("borrowerId")
+            .order_by("-borrowerId")
         )
 
         borrowerId = self.request.query_params.get("borrowerId", None)
@@ -153,7 +153,7 @@ class BorrowerViewSet(ModelViewSet):
             queryset = queryset.filter(borrowerId=borrowerId)
 
         if branch is not None:
-            queryset = queryset.filter(branch=branch)
+            queryset = queryset.filter(area=branch)
 
         if totalAvailmentsFrom is not None and totalAvailmentsTo is not None:
             borrowers = []
@@ -228,6 +228,12 @@ class BusinessViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
 
+class IndividualViewSet(ModelViewSet):
+    queryset = Individual.objects.all()
+    serializer_class = IndividualSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+
 class BorrowerAttachmentViewSet(ModelViewSet):
     queryset = BorrowerAttachment.objects.all()
     serializer_class = BorrowerAttachmentSerializer
@@ -286,7 +292,7 @@ class BorrowerReportViewSet(ModelViewSet):
                         ),
                     ),
                 ),
-                branchCode=F("branch__branchCode"),
+                branchCode=F("area__branchCode"),
             )
             .exclude(isDeleted=True)
             .order_by("borrowerId")

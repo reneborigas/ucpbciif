@@ -8,6 +8,146 @@ define(function () {
         function LoanReportListController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, $interpolate) {
             $scope.reports = [
                 {
+                    category: 'Credit Lines',
+                    subcategory: [
+                        {
+                            name: 'In Process',
+                            filter: 'statusName',
+                            url: '/api/loans/creditlineprocessingreport/',
+                            params: {
+                                status: 'REQUESTING',
+                            },
+                            order: {
+                                name: 'Borrower',
+                                expression: 'borrowerName',
+                                reverse: false,
+                            },
+                            dateFilter: true,
+                            hiddenFields: [],
+                        },
+                        {
+                            name: 'Approved',
+                            filter: 'statusName',
+                            url: '/api/loans/creditlineapprovedreport/',
+                            params: {},
+                            order: {
+                                name: 'Borrower',
+                                expression: 'borrowerName',
+                                reverse: false,
+                            },
+                            dateFilter: true,
+                            hiddenFields: [],
+                        },
+                        {
+                            name: 'Denied',
+                            filter: 'statusName',
+                            url: '/api/loans/creditlineprocessingreport/',
+                            params: {
+                                status: 'DENIED',
+                            },
+                            order: {
+                                name: 'Borrower',
+                                expression: 'borrowerName',
+                                reverse: false,
+                            },
+                            dateFilter: true,
+                            hiddenFields: [],
+                        },
+                    ],
+                },
+                {
+                    category: 'Outstanding Credit Lines',
+                    subcategory: [
+                        {
+                            name: 'Per Borrower',
+                            filter: 'borrowerName',
+                            url: '/api/loans/creditlineoutstandingreport/',
+                            params: {},
+                            order: {
+                                name: 'Borrower',
+                                expression: 'borrowerName',
+                                reverse: false,
+                            },
+                            dateFilter: true,
+                            hiddenFields: [],
+                        },
+                        {
+                            name: 'Per Area',
+                            filter: 'branch',
+                            url: '/api/loans/creditlineoutstandingreport/',
+                            params: {
+                                outstandingBalance: 'TRUE',
+                            },
+                            order: {
+                                name: 'Area',
+                                expression: 'branch',
+                                reverse: false,
+                            },
+                            dateFilter: true,
+                            hiddenFields: [],
+                        },
+                        {
+                            name: 'Per Window',
+                            filter: 'loanProgram_name',
+                            url: '/api/loans/creditlineoutstandingreport/',
+                            params: {},
+                            order: {
+                                name: 'Loan Category',
+                                expression: 'loanProgram_name',
+                                reverse: false,
+                            },
+                            dateFilter: true,
+                            hiddenFields: [],
+                        },
+                    ],
+                },
+                {
+                    category: 'Loan Applications',
+                    subcategory: [
+                        // {
+                        //     name: 'Processed',
+                        //     filter: 'statusName',
+                        //     url: '/api/documents/documentsloanapplicationreport/',
+                        //     params: {},
+                        //     order: {
+                        //         name: 'Borrower',
+                        //         expression: 'borrowerName',
+                        //         reverse: false,
+                        //     },
+                        //     dateFilter: true,
+                        //     hiddenFields: [],
+                        // },
+                        // {
+                        //     name: 'In Process',
+                        //     filter: 'statusName',
+                        //     url: '/api/documents/documentsloanapplicationreport/',
+                        //     params: {},
+                        //     order: {
+                        //         name: 'Borrower',
+                        //         expression: 'borrowerName',
+                        //         reverse: false,
+                        //     },
+                        //     dateFilter: true,
+                        //     hiddenFields: [],
+                        // },
+                        {
+                            name: 'Approved',
+                            filter: 'status',
+                            url: '/api/documents/documentsloanapplicationreport/',
+                            params: {
+                                status: 'Approved',
+                            },
+                            order: {
+                                name: 'Borrower',
+                                expression: 'borrowerName',
+                                reverse: false,
+                            },
+                            dateFilter: true,
+                            hiddenFields: [],
+                        },
+                    ],
+                },
+                {
                     category: 'Loan Releases',
                     subcategory: [
                         {

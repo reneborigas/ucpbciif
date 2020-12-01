@@ -25,6 +25,9 @@ router.register(r"loanstatus", LoanStatusViewSet)
 
 router.register(r"loanprogramdistribution", LoanProgramDistributionViewSet)
 
+router.register(r"creditlineprocessingreport", CreditLineProcessingReportViewSet)
+router.register(r"creditlineapprovedreport", CreditLineApprovedReportViewSet)
+router.register(r"creditlineoutstandingreport", CreditLineOutstandingViewSet)
 
 urlpatterns = [
     path("updatecreditline/", UpdateCreditLineView.as_view()),

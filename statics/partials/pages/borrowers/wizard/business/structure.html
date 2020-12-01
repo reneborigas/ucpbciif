@@ -1,0 +1,466 @@
+<div>
+    <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Structure and Organization</div>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="background in business.businessBackground">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="initialMembershipSize">Initial Membership Size</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="initialMembershipSize"
+                        name="initialMembershipSize"
+                        placeholder="Initial Membership Size"
+                        ng-model="background.initialMembershipSize"
+                        numeric-input
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="membershipSize">Current Membership Size</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="membershipSize"
+                        name="membershipSize"
+                        placeholder="Current Membership Size"
+                        ng-model="background.membershipSize"
+                        numeric-input
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="noOfCooperators">Number of Cooperators</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="noOfCooperators"
+                        name="noOfCooperators"
+                        placeholder="Number of Cooperators"
+                        ng-model="background.noOfCooperators"
+                        numeric-input
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="cdaRegistrationDate">CDA Registration Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="cdaRegistrationDate"
+                        name="cdaRegistrationDate"
+                        placeholder="Registration Date of Background Development Authority "
+                        ng-model="background.cdaRegistrationDate"
+                    />
+                    <span
+                        class="form-text text-muted"
+                        ng-show="form.wizardForm.cdaRegistrationDate.$touched && form.wizardForm.cdaRegistrationDate.$invalid"
+                    >
+                        Please enter CDA Registration Date.
+                    </span>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="icRiskRating">IC Risk Rating</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="icRiskRating"
+                        name="icRiskRating"
+                        placeholder="IC Risk Rating"
+                        ng-model="background.icRiskRating"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="paidUpCapitalInitial">Initial Paid Up Capital</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="paidUpCapitalInitial"
+                        name="paidUpCapitalInitial"
+                        placeholder="Capital of Initial Paid Up"
+                        ng-model="background.paidUpCapitalInitial"
+                        price
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="coconutFarmers">Coconut Farmer</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="coconutFarmers"
+                        name="coconutFarmers"
+                        placeholder="Coconut Farmer"
+                        ng-model="background.coconutFarmers"
+                        numeric-input
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="authorized">Authorized</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="authorized"
+                        name="authorized"
+                        placeholder="Authorized"
+                        ng-model="background.authorized"
+                        price
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="fullyPaidSharesNo">Fully Paid Shares No</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="fullyPaidSharesNo"
+                        name="fullyPaidSharesNo"
+                        placeholder="Number of Fully Paid Shares"
+                        ng-model="background.fullyPaidSharesNo"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="bookValue">Book Value</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="bookValue"
+                        name="bookValue"
+                        placeholder="Book Value"
+                        ng-model="background.bookValue"
+                        price
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="parValue">Par Value</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="parValue"
+                        name="parValue"
+                        placeholder="Par Value"
+                        ng-model="background.parValue"
+                        price
+                    />
+                    <span class="form-text text-muted" ng-show="form.wizardForm.parValue.$touched && form.wizardForm.parValue.$invalid">
+                        Please enter Par Value.
+                    </span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="paidUp">Paid Up</label>
+                    <input type="text" class="form-control" id="paidUp" name="paidUp" placeholder="Paid Up" ng-model="background.paidUp" price />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="fullyPaidPercent">Fully Paid Percent</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="fullyPaidPercent"
+                        name="fullyPaidPercent"
+                        placeholder="Fully Paid Percent"
+                        ng-model="background.fullyPaidPercent"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="initialPaidUpShare">Initial Paid Up Share</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="initialPaidUpShare"
+                        name="initialPaidUpShare"
+                        placeholder="Initial Paid Up Share"
+                        ng-model="background.initialPaidUpShare"
+                        price
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Directors</div>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="director in business.businessDirectors">
+        <div class="form-group">
+            <label for="directorName">Name</label>
+            <input type="text" class="form-control" id="directorName" name="directorName" placeholder="Name of Director" ng-model="director.name" />
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorPosition">Cooperative Position</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorPosition"
+                        name="directorPosition"
+                        placeholder="Cooperative Position"
+                        ng-model="director.position"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorEducationalAttainment">Educational Attainment</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorEducationalAttainment"
+                        name="directorEducationalAttainment"
+                        placeholder="Educational Attainment"
+                        ng-model="director.educationalAttainment"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorAge">Age</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorAge"
+                        name="directorAge"
+                        placeholder="Age"
+                        ng-model="director.age"
+                        numeric-input
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorYearsInCoop">Years in Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorYearsInCoop"
+                        name="directorYearsInCoop"
+                        placeholder="Years in Cooperative"
+                        ng-model="director.yearsInCoop"
+                        numeric-input
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorOsLoanWithCoop">OS Loan with Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorOsLoanWithCoop"
+                        name="directorOsLoanWithCoop"
+                        placeholder="OS Loan with Cooperative"
+                        ng-model="director.oSLoanWithCoop"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="directorStatus">Status</label>
+                    <span>*</span>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="directorStatus"
+                        name="directorStatus"
+                        placeholder="Status"
+                        ng-model="director.status"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeDirector($index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove Director
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-outline-primary btn-sm" type="button" ng-click="addDirector()">
+            <i class="fal fa-plus mr-2"></i>
+            Add Director
+        </button>
+    </div>
+    <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Standing Committee</div>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="standingCommittee in business.businessStandingCommittees">
+        <div class="form-group">
+            <label for="committeeName">Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="committeeName"
+                name="committeeName"
+                placeholder="Name of Standing Committee"
+                ng-model="standingCommittee.name"
+            />
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeeDepartment">Cooperative Department</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeDepartment"
+                        name="committeeDepartment"
+                        placeholder="Cooperative Department"
+                        ng-model="standingCommittee.department"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeePosition">Cooperative Position</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeePosition"
+                        name="committeePosition"
+                        placeholder="Cooperative Position"
+                        ng-model="standingCommittee.position"
+                    />
+                    <span
+                        class="form-text text-muted"
+                        ng-show="form.wizardForm.committeePosition.$touched && form.wizardForm.committeePosition.$invalid"
+                    >
+                        Please enter Committee's Position in Cooperative.
+                    </span>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="committeeEducationalAttainment">Educational Attainment</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeEducationalAttainment"
+                        name="committeeEducationalAttainment"
+                        placeholder="Educational Attainment"
+                        ng-model="standingCommittee.educationalAttainment"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeAge">Age</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeAge"
+                        name="committeeAge"
+                        placeholder="Age"
+                        ng-model="standingCommittee.age"
+                        numeric-input
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeYearsInCoop">Years in Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeYearsInCoop"
+                        name="committeeYearsInCoop"
+                        placeholder="Years in Cooperative"
+                        ng-model="standingCommittee.yearsInCoop"
+                        numeric-input
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeAddress">OS Loan with Cooperative</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeAddress"
+                        name="committeeAddress"
+                        placeholder="Standing Committee Address"
+                        ng-model="standingCommittee.address"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="committeeStatus">Status</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="committeeStatus"
+                        name="committeeStatus"
+                        placeholder="Status"
+                        ng-model="standingCommittee.status"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeCommittee($index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove Committee
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-outline-primary btn-sm" type="button" ng-click="addCommittee()">
+            <i class="fal fa-plus mr-2"></i>
+            Add Committee
+        </button>
+    </div>
+</div>

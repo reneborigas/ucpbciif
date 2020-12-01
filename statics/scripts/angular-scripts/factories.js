@@ -226,6 +226,19 @@ define(function () {
                     }
                 );
             },
+            getReligionType: function () {
+                return $http.get('/api/settings/religiontype/').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Religion Type List. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getNotifications: function (userId, committeeId) {
                 return $http.get('/api/notifications/notifications/', { params: { userId: userId, committeeId: committeeId } }).then(
                     function (response) {

@@ -26,10 +26,8 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
-from processes.api import (
-    generateAmortizationSchedule,
-    generateUnevenAmortizationSchedule,
-)
+from processes.api import generateAmortizationSchedule, generateUnevenAmortizationSchedule
+
 from decimal import Decimal
 
 
@@ -1352,5 +1350,154 @@ class AmortizationItemReportViewSet(ModelViewSet):
             amortization.accruedInterest = str(amortization.accruedInterest) + " | currency :'₱'"
             amortization.total = str(amortization.total) + " | currency :'₱'"
             amortization.principalBalance = str(amortization.principalBalance) + " | currency :'₱'"
+
+        return queryset
+
+
+class CreditLineOutstandingViewSet(ModelViewSet):
+    queryset = CreditLine.objects.all()
+    serializer_class = CreditLineOutstandingReportSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = (
+            CreditLine.objects.order_by("id")
+            .annotate(
+                borrowerName=Case(
+                    When(
+                        Q(borrower__recordType="BD"),
+                        then=F("borrower__business__tradeName"),
+                    ),
+                    When(
+                        Q(borrower__recordType="ID"),
+                        then=Concat(
+                            F("borrower__individual__firstname"),
+                            V(" "),
+                            F("borrower__individual__middlename"),
+                            V(" "),
+                            F("borrower__individual__lastname"),
+                        ),
+                    ),
+                ),
+            )
+            .filter(status__name="APPROVED")
+        )
+
+        startDate = self.request.query_params.get("startDate", None)
+        endDate = self.request.query_params.get("endDate", None)
+
+        if startDate is not None and endDate is not None:
+            queryset = queryset.filter(
+                Q(dateApproved__gte=datetime.strptime(startDate, "%Y-%m-%dT%H:%M:%S.%fZ").date())
+                & Q(dateApproved__lte=datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S.%fZ").date())
+            )
+
+        for creditLine in queryset:
+            creditLine.totalAmount = str(creditLine.amount) + " | currency :'₱'"
+            creditLine.creditLineInterestRate = str(creditLine.interestRate.interestRate) + "%"
+            creditLine.dateCreated = creditLine.dateCreated.strftime("%B %-m %Y")
+            creditLine.dateExpired = creditLine.dateExpired.strftime("%B %-m %Y")
+            creditLine.dateApproved = creditLine.dateApproved.strftime("%B %-m %Y")
+            creditLine.totalCreditLineBalance = str(creditLine.getRemainingCreditLine()) + " | currency :'₱'"
+            creditLine.totalAvailment = str(creditLine.getTotalAvailment()) + " | currency :'₱'"
+            creditLine._status = creditLine.status.name
+
+        return queryset
+
+
+class CreditLineProcessingReportViewSet(ModelViewSet):
+    queryset = CreditLine.objects.all()
+    serializer_class = CreditLineProcessingReportSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = CreditLine.objects.order_by("-id").annotate(
+            borrowerName=Case(
+                When(
+                    Q(borrower__recordType="BD"),
+                    then=F("borrower__business__tradeName"),
+                ),
+                When(
+                    Q(borrower__recordType="ID"),
+                    then=Concat(
+                        F("borrower__individual__firstname"),
+                        V(" "),
+                        F("borrower__individual__middlename"),
+                        V(" "),
+                        F("borrower__individual__lastname"),
+                    ),
+                ),
+            ),
+        )
+        status = self.request.query_params.get("status", None)
+        startDate = self.request.query_params.get("startDate", None)
+        endDate = self.request.query_params.get("endDate", None)
+
+        if startDate is not None and endDate is not None:
+            queryset = queryset.filter(
+                Q(dateCreated__gte=datetime.strptime(startDate, "%Y-%m-%dT%H:%M:%S.%fZ").date())
+                & Q(dateCreated__lte=datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S.%fZ").date())
+            )
+
+        if status is not None:
+            queryset = queryset.filter(status__name=status)
+
+        for creditLine in queryset:
+            creditLine.dateCreated = creditLine.dateCreated.strftime("%B %-m %Y")
+            creditLine.creditLineInterestRate = str(creditLine.interestRate.interestRate) + "%"
+            creditLine.totalAmount = str(creditLine.amount) + " | currency :'₱'"
+            creditLine._status = creditLine.status.name
+
+        return queryset
+
+
+class CreditLineApprovedReportViewSet(ModelViewSet):
+    queryset = CreditLine.objects.all()
+    serializer_class = CreditLineApprovedReportSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = (
+            CreditLine.objects.order_by("-id")
+            .annotate(
+                borrowerName=Case(
+                    When(
+                        Q(borrower__recordType="BD"),
+                        then=F("borrower__business__tradeName"),
+                    ),
+                    When(
+                        Q(borrower__recordType="ID"),
+                        then=Concat(
+                            F("borrower__individual__firstname"),
+                            V(" "),
+                            F("borrower__individual__middlename"),
+                            V(" "),
+                            F("borrower__individual__lastname"),
+                        ),
+                    ),
+                ),
+            )
+            .filter(status__name="APPROVED")
+        )
+
+        status = self.request.query_params.get("status", None)
+        startDate = self.request.query_params.get("startDate", None)
+        endDate = self.request.query_params.get("endDate", None)
+
+        if startDate is not None and endDate is not None:
+            queryset = queryset.filter(
+                Q(dateCreated__gte=datetime.strptime(startDate, "%Y-%m-%dT%H:%M:%S.%fZ").date())
+                & Q(dateCreated__lte=datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S.%fZ").date())
+            )
+
+        if status is not None:
+            queryset = queryset.filter(status__name=status)
+
+        for creditLine in queryset:
+            creditLine.dateCreated = creditLine.dateCreated.strftime("%B %-m %Y")
+            creditLine.dateExpired = creditLine.dateExpired.strftime("%B %-m %Y")
+            creditLine.creditLineInterestRate = str(creditLine.interestRate.interestRate) + "%"
+            creditLine.totalAmount = str(creditLine.amount) + " | currency :'₱'"
+            creditLine._status = creditLine.status.name
 
         return queryset

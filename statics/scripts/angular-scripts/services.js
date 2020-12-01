@@ -17,18 +17,20 @@ define(function () {
         }
 
         function isLoggedIn() {
+            var defer = $q.defer();
             if (localStorage.currentUser) {
-                return $http.get('/api/auth/checkauth/').then(
+                $http.get('/api/auth/checkauth/').then(
                     function (response) {
-                        return true;
+                        defer.resolve(true);
                     },
                     function (error) {
-                        return false;
+                        defer.resolve(false);
                     }
                 );
             } else {
-                return false;
+                defer.resolve(false);
             }
+            return defer.promise;
         }
 
         // function isLoggedIn() {

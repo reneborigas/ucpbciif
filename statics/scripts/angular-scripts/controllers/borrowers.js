@@ -255,6 +255,41 @@ define(function () {
         function BorrowerAddController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, blockUI) {
             $scope.form = {};
 
+            // $scope.steps = [
+            //     {
+            //         step: 1,
+            //         name: 'Basic Info',
+            //         desc: 'Borrower Information',
+            //         templateUrl: '/statics/partials/pages/borrowers/wizard/basic.html',
+            //     },
+            //     {
+            //         step: 2,
+            //         name: 'Additional Info',
+            //         desc: 'CIC Compliant Information',
+            //         templateUrl: '/statics/partials/pages/borrowers/wizard/additionalinfo.html',
+            //     },
+            //     {
+            //         step: 3,
+            //         name: 'Structure',
+            //         desc: 'Incorporation Details',
+            //         templateUrl: '/statics/partials/pages/borrowers/wizard/structure.html',
+            //     },
+            //     {
+            //         step: 4,
+            //         name: 'Committee',
+            //         desc: 'Director & Committee Info',
+            //         templateUrl: '/statics/partials/pages/borrowers/wizard/committee.html',
+            //     },
+            //     {
+            //         step: 5,
+            //         name: 'Grants',
+            //         desc: 'Grant Info',
+            //         templateUrl: '/statics/partials/pages/borrowers/wizard/grants.html',
+            //     },
+            // ];
+
+            $scope.currentStep = 1;
+
             $scope.steps = [
                 {
                     step: 1,
@@ -262,85 +297,67 @@ define(function () {
                     desc: 'Borrower Information',
                     templateUrl: '/statics/partials/pages/borrowers/wizard/basic.html',
                 },
-                {
-                    step: 2,
-                    name: 'Additional Info',
-                    desc: 'CIC Compliant Information',
-                    templateUrl: '/statics/partials/pages/borrowers/wizard/additionalinfo.html',
-                },
-                {
-                    step: 3,
-                    name: 'Structure',
-                    desc: 'Incorporation Details',
-                    templateUrl: '/statics/partials/pages/borrowers/wizard/structure.html',
-                },
-                {
-                    step: 4,
-                    name: 'Committee',
-                    desc: 'Director & Committee Info',
-                    templateUrl: '/statics/partials/pages/borrowers/wizard/committee.html',
-                },
-                {
-                    step: 5,
-                    name: 'Grants',
-                    desc: 'Grant Info',
-                    templateUrl: '/statics/partials/pages/borrowers/wizard/grants.html',
-                },
             ];
 
-            $scope.currentStep = 1;
-
-            // $scope.checkBorrowerType = function (recordType) {
-            //     if (recordType == 'ID') {
-            //         $scope.steps = [
-            //             {
-            //                 step: 1,
-            //                 name: 'Basic Info',
-            //                 desc: 'Borrower Information',
-            //                 templateUrl: '/statics/partials/pages/borrowers/wizard/basic.html',
-            //             },
-            //             {
-            //                 step: 2,
-            //                 name: 'Additional Info',
-            //                 desc: 'CIC Compliant Information',
-            //                 templateUrl: '/statics/partials/pages/borrowers/wizard/additionalinfo.html',
-            //             },
-            //         ];
-            //     } else {
-            //         $scope.steps = [
-            //             {
-            //                 step: 1,
-            //                 name: 'Basic Info',
-            //                 desc: 'Borrower Information',
-            //                 templateUrl: '/statics/partials/pages/borrowers/wizard/basic.html',
-            //             },
-            //             {
-            //                 step: 2,
-            //                 name: 'Structure',
-            //                 desc: 'Incorporation Details',
-            //                 templateUrl: '/statics/partials/pages/borrowers/wizard/structure.html',
-            //             },
-            //             {
-            //                 step: 3,
-            //                 name: 'Committee',
-            //                 desc: 'Director and Committee Info',
-            //                 templateUrl: '/statics/partials/pages/borrowers/wizard/committee.html',
-            //             },
-            //             {
-            //                 step: 4,
-            //                 name: 'Grants',
-            //                 desc: 'Grant Info',
-            //                 templateUrl: '/statics/partials/pages/borrowers/wizard/grants.html',
-            //             },
-            //             {
-            //                 step: 5,
-            //                 name: 'Additional Info',
-            //                 desc: 'CIC Compliant Information',
-            //                 templateUrl: '/statics/partials/pages/borrowers/wizard/additionalinfo.html',
-            //             },
-            //         ];
-            //     }
-            // };
+            $scope.checkBorrowerType = function (recordType) {
+                if (recordType == 'ID') {
+                    $scope.steps = [
+                        {
+                            step: 1,
+                            name: 'Background',
+                            desc: 'Individual Information',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/basic.html',
+                        },
+                        {
+                            step: 2,
+                            name: 'Contact Info',
+                            desc: 'Address/Contact Number',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/individual/contactinfo.html',
+                        },
+                        {
+                            step: 3,
+                            name: 'Employment',
+                            desc: 'Employment/Occupation',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/individual/occupation.html',
+                        },
+                        {
+                            step: 4,
+                            name: 'Collaterals',
+                            desc: 'Collaterals/Documents',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/documents.html',
+                        },
+                    ];
+                    $scope.basicInfoTemplate = '/statics/partials/pages/borrowers/wizard/individual/info.html';
+                } else {
+                    $scope.steps = [
+                        {
+                            step: 1,
+                            name: 'Background',
+                            desc: 'Business Information',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/basic.html',
+                        },
+                        {
+                            step: 2,
+                            name: 'Contact Info',
+                            desc: 'Address/Contact Number',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/individual/contactinfo.html',
+                        },
+                        {
+                            step: 3,
+                            name: 'Structure',
+                            desc: 'Business Structure',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/business/structure.html',
+                        },
+                        {
+                            step: 4,
+                            name: 'Collaterals',
+                            desc: 'Collaterals/Documents',
+                            templateUrl: '/statics/partials/pages/borrowers/wizard/documents.html',
+                        },
+                    ];
+                    $scope.basicInfoTemplate = '/statics/partials/pages/borrowers/wizard/business/info.html';
+                }
+            };
 
             $scope.getStepTemplate = function () {
                 for (var i = 0; i < $scope.steps.length; i++) {
@@ -445,6 +462,32 @@ define(function () {
             appFactory.getBranches().then(function (data) {
                 $scope.branches = data;
             });
+            appFactory.getReligionType().then(function (data) {
+                $scope.religions = data;
+            });
+
+            $scope.resident = [
+                {
+                    text: 'Resident',
+                    value: true,
+                },
+                {
+                    text: 'Non-Resident',
+                    value: false,
+                },
+            ];
+
+            $scope.attainment = ['Elementary', 'High School', 'College Undergraduate', 'College Graduate', 'Post Graduate', 'Vocational'];
+            $scope.grossincome = ['250,000 and below', 'More than 250,000 to 500,000', 'More than 500,000 to 999,999', 'More than 1 Million'];
+            $scope.documentTypes = [
+                'Original Transfer Certificate of Title (TCT)',
+                'Chattel Mortgage (CHM) - Asset Description',
+                'Tax Declaration',
+                'Deed of Assignment',
+                'Appraisal Report - Property/Location',
+                'Others',
+            ];
+            $scope.entities = ['SEC', 'CDA', 'Others'];
 
             $scope.individual = {
                 title: '',
@@ -455,15 +498,24 @@ define(function () {
                 nickname: '',
                 previousLastName: '',
                 gender: '',
-                dateOfBirth: '',
+                dateOfBirth: new Date(),
                 placeOfBirth: '',
                 countryOfBirth: '',
                 nationality: '',
-                resident: '',
+                resident: true,
+                alienCertificateRegistrationNumber: '',
                 maritalStatus: '',
+                dateOfMarriage: new Date(),
+                religion: '',
                 numberOfDependents: 0,
                 carsOwned: 0,
-                family: [
+                sss: '',
+                gsis: '',
+                tin: '',
+                numberOfChildren: 0,
+                educationalAttainment: '',
+                grossSalary: '',
+                individualFamily: [
                     {
                         spouseFirstName: '',
                         spouseLastName: '',
@@ -477,7 +529,7 @@ define(function () {
                         fatherSuffix: '',
                     },
                 ],
-                address: [
+                individualAddress: [
                     {
                         addressType: '',
                         streetNo: '',
@@ -488,32 +540,32 @@ define(function () {
                         province: '',
                         country: '',
                         ownerLessee: '',
-                        occupiedSince: '',
+                        occupiedSince: new Date(),
                     },
                 ],
-                identification: [
+                individualIdentification: [
                     {
                         identificationType: '',
                         identificationNumber: '',
                     },
                 ],
-                idIndividual: [
+                individualID: [
                     {
                         idType: '',
                         idNumber: '',
-                        idIssueDate: '',
+                        idIssueDate: new Date(),
                         idIssueCountry: '',
-                        idExpiryDate: '',
+                        idExpiryDate: new Date(),
                         isIssuedBy: '',
                     },
                 ],
-                contact: [
+                individualContact: [
                     {
                         contactType: '',
                         contactNumber: '',
                     },
                 ],
-                employment: [
+                individualEmployment: [
                     {
                         tradeName: '',
                         tin: '',
@@ -523,12 +575,31 @@ define(function () {
                         incomeIndicator: '',
                         currency: '',
                         occupationStatus: '',
-                        dateHiredFrom: '',
-                        dateHiredTo: '',
+                        dateHiredFrom: new Date(),
+                        dateHiredTo: new Date(),
                         occupation: '',
+                        natureOfBusiness: '',
+                        jobTitle: '',
                     },
                 ],
-                soleTrader: [
+                individualIndividualBusiness: [
+                    {
+                        nameOfBusiness: '',
+                        natureOfBusiness: '',
+                        yearsInBusiness: '',
+                        grossIncome: 0,
+                        telNo: '',
+                        faxNo: '',
+                        streetNo: '',
+                        postalCode: '',
+                        subdivision: '',
+                        barangay: '',
+                        city: '',
+                        province: '',
+                        country: '',
+                    },
+                ],
+                individualSoleTrader: [
                     {
                         tradeName: '',
                         addressType: '',
@@ -540,7 +611,7 @@ define(function () {
                         province: '',
                         country: '',
                         ownerLessee: '',
-                        occupiedSince: '',
+                        occupiedSince: new Date(),
                     },
                 ],
             };
@@ -551,9 +622,14 @@ define(function () {
                 nationality: '',
                 resident: true,
                 legalForm: '',
+                entitityRegistered: '',
+                sss: '',
+                gsis: '',
+                tin: '',
                 termOfExistence: new Date(),
                 psic: '',
                 registrationDate: new Date(),
+                reRegistrationDate: new Date(),
                 numberOfEmployees: 0,
                 firmSize: '',
                 grossIncome: 0,
@@ -595,6 +671,13 @@ define(function () {
                         telNo: '',
                         emailAddress: '',
                         phoneNo: '',
+                        streetNo: '',
+                        postalCode: '',
+                        subdivision: '',
+                        barangay: '',
+                        city: '',
+                        province: '',
+                        country: '',
                         createdBy: appFactory.getCurrentUser(),
                     },
                 ],
@@ -636,17 +719,8 @@ define(function () {
                         educationalAttainment: '',
                         age: 0,
                         yearsInCoop: 0,
-                        oSLoanWithCoop: 0,
+                        address: '',
                         status: '',
-                        createdBy: appFactory.getCurrentUser(),
-                    },
-                ],
-                businessGrants: [
-                    {
-                        donor: '',
-                        projectType: '',
-                        amount: 0,
-                        projectStatus: '',
                         createdBy: appFactory.getCurrentUser(),
                     },
                 ],
@@ -667,15 +741,50 @@ define(function () {
                 individual: '',
                 business: '',
                 recordType: '',
-                providerCode: '',
-                branch: '',
-                subjectReferenceDate: new Date(),
-                providerSubjectNumber: '',
+                area: '',
                 status: '',
-                clientSince: new Date(),
+                accreditationDate: new Date(),
+                reasonForBorrowing: '',
                 description: '',
                 remarks: '',
                 createdBy: appFactory.getCurrentUser(),
+                borrowerDocuments: [
+                    {
+                        dateReceived: new Date(),
+                        referenceNumber: '',
+                        documentType: '',
+                        nameOfDocument: '',
+                        documentNumber: '',
+                        propertyDescription: '',
+                        propertyLocation: '',
+                        landArea: '',
+                        zonalValue: 0,
+                        appraisalDate: new Date(),
+                        appraisalValue: 0,
+                        otherRemarks: '',
+                        remarks: '',
+                    },
+                ],
+            };
+
+            $scope.checkIfResident = function (resident) {
+                var show = false;
+                if (resident == true) {
+                    show = false;
+                } else {
+                    show = true;
+                }
+                return show;
+            };
+
+            $scope.checkIfMarried = function (civilStatus) {
+                var show = false;
+                if (civilStatus == 2) {
+                    show = true;
+                } else {
+                    show = false;
+                }
+                return show;
             };
 
             $scope.addAddress = function (object) {
@@ -769,73 +878,155 @@ define(function () {
                     }).then((isConfirm) => {
                         if (isConfirm) {
                             borrowerBlockUI.start('Saving Borrower...');
-                            angular.forEach($scope.business.businessAddress, function (businessAddress) {
-                                businessAddress.occupiedSince = appFactory.dateWithoutTime(businessAddress.occupiedSince, 'yyyy-MM-dd');
+                            $scope.borrower.accreditationDate = appFactory.dateWithoutTime($scope.borrower.accreditationDate, 'yyyy-MM-dd');
+                            angular.forEach($scope.borrower.borrowerDocuments, function (documents) {
+                                documents.appraisalDate = appFactory.dateWithoutTime(documents.appraisalDate, 'yyyy-MM-dd');
                             });
-                            $scope.business.registrationDate = appFactory.dateWithoutTime($scope.business.registrationDate, 'yyyy-MM-dd');
-                            $scope.business.termOfExistence = appFactory.dateWithoutTime($scope.business.termOfExistence, 'yyyy-MM-dd');
-                            $scope.business.businessBackground[0].cdaRegistrationDate = appFactory.dateWithoutTime(
-                                $scope.business.businessBackground[0].cdaRegistrationDate,
-                                'yyyy-MM-dd'
-                            );
-                            $scope.borrower.subjectReferenceDate = appFactory.dateWithoutTime($scope.borrower.subjectReferenceDate, 'yyyy-MM-dd');
-                            $scope.borrower.clientSince = appFactory.dateWithoutTime($scope.borrower.clientSince, 'yyyy-MM-dd');
-                            $http.post('/api/borrowers/business/', $scope.business).then(
-                                function (responseBusiness) {
-                                    $scope.borrower.business = responseBusiness.data.id;
-                                    return $http.post('/api/borrowers/create-borrower/', $scope.borrower).then(
-                                        function (responseBorrower) {
-                                            var user = JSON.parse(localStorage.getItem('currentUser'));
-                                            var userLogs = {
-                                                user: user['id'],
-                                                action_type: 'Created', //String value of action i.e. Created, Updated, Approved, Complete etc.
-                                                content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
-                                                object_id: responseBorrower.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
-                                                object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
-                                                apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
-                                                valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
-                                                logDetails: [
-                                                    {
-                                                        action: 'Created ' + $scope.business.tradeName, //Details of Log
-                                                    },
-                                                ],
-                                            };
-                                            return appFactory.getContentTypeId('borrower').then(function (data) {
-                                                userLogs.content_type = data;
-                                                return $http.post('/api/users/userlogs/', userLogs).then(
-                                                    function () {
-                                                        borrowerBlockUI.stop();
-                                                        swal('Success!', 'New Borrower Created.', 'success');
-                                                        toastr.success('Success', 'New Borrower Updated.');
-                                                        $state.go('app.borrowers.list');
-                                                    },
-                                                    function (error) {
-                                                        borrowerBlockUI.stop();
-                                                        toastr.error(
-                                                            'Error ' + error.status + ' ' + error.statusText,
-                                                            'Could not record logs.  Please contact System Administrator'
-                                                        );
-                                                    }
+
+                            if ($scope.borrower.recordType == 'ID') {
+                                $scope.individual.dateOfBirth = appFactory.dateWithoutTime($scope.individual.dateOfBirth, 'yyyy-MM-dd');
+                                $scope.individual.dateOfMarriage = appFactory.dateWithoutTime($scope.individual.dateOfMarriage, 'yyyy-MM-dd');
+                                angular.forEach($scope.individual.individualAddress, function (individualAddress) {
+                                    individualAddress.occupiedSince = appFactory.dateWithoutTime(individualAddress.occupiedSince, 'yyyy-MM-dd');
+                                });
+                                angular.forEach($scope.individual.individualID, function (individualID) {
+                                    individualID.idIssueDate = appFactory.dateWithoutTime(individualID.idIssueDate, 'yyyy-MM-dd');
+                                    individualID.idExpiryDate = appFactory.dateWithoutTime(individualID.idExpiryDate, 'yyyy-MM-dd');
+                                });
+                                angular.forEach($scope.individual.individualSoleTrader, function (individualSoleTrader) {
+                                    individualSoleTrader.occupiedSince = appFactory.dateWithoutTime(individualSoleTrader.occupiedSince, 'yyyy-MM-dd');
+                                });
+                                angular.forEach($scope.individual.individualEmployment, function (individualEmployment) {
+                                    individualEmployment.dateHiredFrom = appFactory.dateWithoutTime(individualEmployment.dateHiredFrom, 'yyyy-MM-dd');
+                                    individualEmployment.dateHiredTo = appFactory.dateWithoutTime(individualEmployment.dateHiredTo, 'yyyy-MM-dd');
+                                });
+
+                                $http.post('/api/borrowers/individual/', $scope.individual).then(
+                                    function (responseIndividual) {
+                                        $scope.borrower.individual = responseIndividual.data.id;
+                                        return $http.post('/api/borrowers/create-borrower/', $scope.borrower).then(
+                                            function (responseBorrower) {
+                                                var user = JSON.parse(localStorage.getItem('currentUser'));
+                                                var userLogs = {
+                                                    user: user['id'],
+                                                    action_type: 'Created', //String value of action i.e. Created, Updated, Approved, Complete etc.
+                                                    content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
+                                                    object_id: responseBorrower.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
+                                                    object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
+                                                    apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
+                                                    valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
+                                                    logDetails: [
+                                                        {
+                                                            action: 'Created ' + $scope.individual.firstname + ' ' + $scope.individual.lastname, //Details of Log
+                                                        },
+                                                    ],
+                                                };
+                                                return appFactory.getContentTypeId('borrower').then(function (data) {
+                                                    userLogs.content_type = data;
+                                                    return $http.post('/api/users/userlogs/', userLogs).then(
+                                                        function () {
+                                                            borrowerBlockUI.stop();
+                                                            swal('Success!', 'New Borrower Created.', 'success');
+                                                            toastr.success('Success', 'New Borrower Updated.');
+                                                            $state.go('app.borrowers.list');
+                                                        },
+                                                        function (error) {
+                                                            borrowerBlockUI.stop();
+                                                            toastr.error(
+                                                                'Error ' + error.status + ' ' + error.statusText,
+                                                                'Could not record logs.  Please contact System Administrator'
+                                                            );
+                                                        }
+                                                    );
+                                                });
+                                            },
+                                            function (error) {
+                                                borrowerBlockUI.stop();
+                                                toastr.error(
+                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                    'Could not create new borrower. Please contact System Administrator.'
                                                 );
-                                            });
-                                        },
-                                        function (error) {
-                                            borrowerBlockUI.stop();
-                                            toastr.error(
-                                                'Error ' + error.status + ' ' + error.statusText,
-                                                'Could not create new borrower. Please contact System Administrator.'
-                                            );
-                                        }
-                                    );
-                                },
-                                function (error) {
-                                    borrowerBlockUI.stop();
-                                    toastr.error(
-                                        'Error ' + error.status + ' ' + error.statusText,
-                                        'Could not create new business borrower. Please contact System Administrator.'
-                                    );
-                                }
-                            );
+                                            }
+                                        );
+                                    },
+                                    function (error) {
+                                        borrowerBlockUI.stop();
+                                        toastr.error(
+                                            'Error ' + error.status + ' ' + error.statusText,
+                                            'Could not create new individual borrower. Please contact System Administrator.'
+                                        );
+                                    }
+                                );
+                            } else {
+                                $scope.business.termOfExistence = appFactory.dateWithoutTime($scope.business.termOfExistence, 'yyyy-MM-dd');
+                                $scope.business.registrationDate = appFactory.dateWithoutTime($scope.business.registrationDate, 'yyyy-MM-dd');
+                                $scope.business.reRegistrationDate = appFactory.dateWithoutTime($scope.business.reRegistrationDate, 'yyyy-MM-dd');
+                                angular.forEach($scope.business.businessAddress, function (businessAddress) {
+                                    businessAddress.occupiedSince = appFactory.dateWithoutTime(businessAddress.occupiedSince, 'yyyy-MM-dd');
+                                });
+                                $scope.business.businessBackground[0].cdaRegistrationDate = appFactory.dateWithoutTime(
+                                    $scope.business.businessBackground[0].cdaRegistrationDate,
+                                    'yyyy-MM-dd'
+                                );
+                                $scope.borrower.subjectReferenceDate = appFactory.dateWithoutTime($scope.borrower.subjectReferenceDate, 'yyyy-MM-dd');
+                                $scope.borrower.clientSince = appFactory.dateWithoutTime($scope.borrower.clientSince, 'yyyy-MM-dd');
+                                $http.post('/api/borrowers/business/', $scope.business).then(
+                                    function (responseBusiness) {
+                                        $scope.borrower.business = responseBusiness.data.id;
+                                        return $http.post('/api/borrowers/create-borrower/', $scope.borrower).then(
+                                            function (responseBorrower) {
+                                                var user = JSON.parse(localStorage.getItem('currentUser'));
+                                                var userLogs = {
+                                                    user: user['id'],
+                                                    action_type: 'Created', //String value of action i.e. Created, Updated, Approved, Complete etc.
+                                                    content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
+                                                    object_id: responseBorrower.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
+                                                    object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
+                                                    apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
+                                                    valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
+                                                    logDetails: [
+                                                        {
+                                                            action: 'Created ' + $scope.business.tradeName, //Details of Log
+                                                        },
+                                                    ],
+                                                };
+                                                return appFactory.getContentTypeId('borrower').then(function (data) {
+                                                    userLogs.content_type = data;
+                                                    return $http.post('/api/users/userlogs/', userLogs).then(
+                                                        function () {
+                                                            borrowerBlockUI.stop();
+                                                            swal('Success!', 'New Borrower Created.', 'success');
+                                                            toastr.success('Success', 'New Borrower Updated.');
+                                                            $state.go('app.borrowers.list');
+                                                        },
+                                                        function (error) {
+                                                            borrowerBlockUI.stop();
+                                                            toastr.error(
+                                                                'Error ' + error.status + ' ' + error.statusText,
+                                                                'Could not record logs.  Please contact System Administrator'
+                                                            );
+                                                        }
+                                                    );
+                                                });
+                                            },
+                                            function (error) {
+                                                borrowerBlockUI.stop();
+                                                toastr.error(
+                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                    'Could not create new borrower. Please contact System Administrator.'
+                                                );
+                                            }
+                                        );
+                                    },
+                                    function (error) {
+                                        borrowerBlockUI.stop();
+                                        toastr.error(
+                                            'Error ' + error.status + ' ' + error.statusText,
+                                            'Could not create new business borrower. Please contact System Administrator.'
+                                        );
+                                    }
+                                );
+                            }
                         }
                     });
                 }
@@ -1351,7 +1542,7 @@ define(function () {
 
     app.controller(
         'BorrowerEditController',
-        function BorrowerEditController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, blockUI) {
+        function BorrowerEditController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, blockUI, $q) {
             $scope.form = {};
             var staticData;
             var objectsRemoved = [];
@@ -1359,6 +1550,9 @@ define(function () {
             $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
                 function (response) {
                     $scope.borrower = response.data[0];
+                    $scope.checkBorrowerType($scope.borrower.recordType).then(function (data) {
+                        $scope.currentTemplate = data[0];
+                    });
                     staticData = angular.copy(response.data[0]);
                     console.log(staticData);
                     $scope.borrower.clientSince = new Date($scope.borrower.clientSince);
@@ -1396,45 +1590,74 @@ define(function () {
                 }
             );
 
-            $scope.templates = [
-                {
-                    templateNumber: 1,
-                    name: 'Borrower Information',
-                    desc: 'Basic Information',
-                    templateUrl: '/statics/partials/pages/borrowers/edit/basic.html',
-                },
-                {
-                    templateNumber: 2,
-                    name: 'Additional Info',
-                    desc: 'CIC Compliant Information',
-                    templateUrl: '/statics/partials/pages/borrowers/edit/additionalinfo.html',
-                },
-                {
-                    templateNumber: 3,
-                    name: 'Structure',
-                    desc: 'Incorporation Details',
-                    templateUrl: '/statics/partials/pages/borrowers/edit/structure.html',
-                },
-                {
-                    templateNumber: 4,
-                    name: 'Directors and Committee',
-                    desc: 'Director and Committee Information',
-                    templateUrl: '/statics/partials/pages/borrowers/edit/directorCommittee.html',
-                },
-                {
-                    templateNumber: 5,
-                    name: 'Grants',
-                    desc: 'Grant Info',
-                    templateUrl: '/statics/partials/pages/borrowers/edit/grants.html',
-                },
-            ];
-
-            $scope.currentTemplate = $scope.templates[0];
+            $scope.checkBorrowerType = function (recordType) {
+                var defer = $q.defer();
+                if (recordType == 'ID') {
+                    $scope.templates = [
+                        {
+                            templateNumber: 1,
+                            name: 'Background',
+                            desc: 'Business Information',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/individual/info.html',
+                        },
+                        {
+                            templateNumber: 2,
+                            name: 'Contact Info',
+                            desc: 'Address/Contact Number',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/individual/contactinfo.html',
+                        },
+                        {
+                            templateNumber: 3,
+                            name: 'Structure',
+                            desc: 'Business Structure',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/business/structure.html',
+                        },
+                        {
+                            templateNumber: 4,
+                            name: 'Collaterals',
+                            desc: 'Collaterals/Documents',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/documents.html',
+                        },
+                    ];
+                    defer.resolve($scope.templates);
+                } else {
+                    $scope.templates = [
+                        {
+                            templateNumber: 1,
+                            name: 'Background',
+                            desc: 'Business Information',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/business/info.html',
+                        },
+                        {
+                            templateNumber: 2,
+                            name: 'Contact Info',
+                            desc: 'Address/Contact Number',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/business/contactinfo.html',
+                        },
+                        {
+                            templateNumber: 3,
+                            name: 'Structure',
+                            desc: 'Business Structure',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/business/structure.html',
+                        },
+                        {
+                            templateNumber: 4,
+                            name: 'Collaterals',
+                            desc: 'Collaterals/Documents',
+                            templateUrl: '/statics/partials/pages/borrowers/edit/documents.html',
+                        },
+                    ];
+                    defer.resolve($scope.templates);
+                }
+                return defer.promise;
+            };
 
             $scope.getTemplate = function () {
-                for (var i = 0; i < $scope.templates.length; i++) {
-                    if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
-                        return $scope.templates[i].templateUrl;
+                if ($scope.templates) {
+                    for (var i = 0; i < $scope.templates.length; i++) {
+                        if ($scope.currentTemplate.templateNumber == $scope.templates[i].templateNumber) {
+                            return $scope.templates[i].templateUrl;
+                        }
                     }
                 }
             };

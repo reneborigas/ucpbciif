@@ -1,25 +1,26 @@
 from django.db import models
 
+
 class ChartOfAccountType(models.Model):
     title = models.CharField(
         max_length=255,
     )
     toIncrease = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
-    )    
+        blank=True,
+        null=True,
+    )
     isDeleted = models.BooleanField(
         default=False,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="chartOfAccountTypesCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -32,49 +33,47 @@ class ChartOfAccountType(models.Model):
         verbose_name = "Chart of Accounts Type (System Essential)"
         verbose_name_plural = "Chart of Accounts Types (System Essential)"
 
+
 class ChartOfAccount(models.Model):
     account = models.CharField(
         max_length=255,
     )
     description = models.TextField(
         max_length=255,
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
-    accountType = models.ForeignKey(
-        ChartOfAccountType,
-        on_delete=models.CASCADE,
-        related_name="chartOfAccountType"
-    )
+    accountType = models.ForeignKey(ChartOfAccountType, on_delete=models.CASCADE, related_name="chartOfAccountType")
     accountCode = models.CharField(
         max_length=255,
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     isDeleted = models.BooleanField(
         default=False,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="chartOfAccountCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
 
     def __str__(self):
-        return "%s  %s : %s" % (self.accountCode,self.accountType,self.account)
+        return "%s  %s : %s" % (self.accountCode, self.accountType, self.account)
 
     class Meta:
         verbose_name = "Chart of Account (System Essential)"
         verbose_name_plural = "Chart of Accounts (System Essential)"
-        ordering = ['accountCode']
+        ordering = ["accountCode"]
+
 
 class Vendor(models.Model):
     vendorName = models.CharField(
@@ -82,27 +81,27 @@ class Vendor(models.Model):
     )
     tinNumber = models.CharField(
         max_length=255,
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     status = models.CharField(
         max_length=255,
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="vendorCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -114,36 +113,37 @@ class Vendor(models.Model):
     def __str__(self):
         return "%s" % (self.vendorName)
 
-class Contact(models.Model):
-    borrower = models.OneToOneField(
-        'borrowers.Borrower',
-        on_delete=models.SET_NULL,
-        related_name="contactBorrower",
-        null = True,
-        blank=True,
-    )
-    vendor = models.OneToOneField(
-        Vendor,
-        on_delete=models.SET_NULL,
-        related_name="contactVendor",
-        null = True,
-        blank=True,
-    )
-    accountTypeChoice = (
-        ('Vendor', 'Vendor'),
-        ('Borrower', 'Borrower'),
-    )
-    accountType = models.CharField(
-        max_length=10,
-        choices = accountTypeChoice,
-        default='Borrower',
-    )
 
-    def __str__(self):
-        if (self.borrower):
-            return "%s - %s" % (self.borrower, self.accountType)
-        else:
-            return "%s - %s" % (self.vendor, self.accountType)
+# class Contact(models.Model):
+#     borrower = models.OneToOneField(
+#         'borrowers.Borrower',
+#         on_delete=models.SET_NULL,
+#         related_name="contactBorrower",
+#         null = True,
+#         blank=True,
+#     )
+#     vendor = models.OneToOneField(
+#         Vendor,
+#         on_delete=models.SET_NULL,
+#         related_name="contactVendor",
+#         null = True,
+#         blank=True,
+#     )
+#     accountTypeChoice = (
+#         ('Vendor', 'Vendor'),
+#         ('Borrower', 'Borrower'),
+#     )
+#     accountType = models.CharField(
+#         max_length=10,
+#         choices = accountTypeChoice,
+#         default='Borrower',
+#     )
+
+#     def __str__(self):
+#         if (self.borrower):
+#             return "%s - %s" % (self.borrower, self.accountType)
+#         else:
+#             return "%s - %s" % (self.vendor, self.accountType)
 
 # class Taxes(models.Model):
 #     title = models.CharField(
@@ -165,7 +165,7 @@ class Contact(models.Model):
 #     dateCreated = models.DateTimeField(
 #         auto_now_add=True,
 #     )
-#     isDeleted = models.BooleanField( 
+#     isDeleted = models.BooleanField(
 #         default=False,
 #     )
 
@@ -187,7 +187,7 @@ class Contact(models.Model):
 #         null = True,
 #     )
 #     taxRate = models.DecimalField(
-#         max_digits=12, 
+#         max_digits=12,
 #         decimal_places=2
 #     )
 #     typeOfTaxChoice = (
@@ -227,7 +227,7 @@ class Contact(models.Model):
 #         on_delete=models.SET_NULL,
 #         related_name="transactionTypeCreatedBy",
 #         null = True,
-#     ) 
+#     )
 #     isDeleted = models.BooleanField(
 #         default=False,
 #     )
@@ -241,7 +241,7 @@ class Contact(models.Model):
 
 #     def __str__(self):
 #         return "%s" % (self.title)
-    
+
 #     class Meta:
 #         verbose_name = "Transaction Type (System Essential)"
 #         verbose_name_plural = "Transaction Types (System Essential)"
@@ -271,7 +271,7 @@ class Contact(models.Model):
 #         blank=True
 #     )
 #     transactionAmount = models.DecimalField(
-#         max_digits=12, 
+#         max_digits=12,
 #         decimal_places=2,
 #     )
 #     transactionTax = models.TextField(
@@ -291,7 +291,7 @@ class Contact(models.Model):
 #     checkNo = models.CharField(
 #         max_length=255,
 #         blank = True,
-#         null = True, 
+#         null = True,
 #     )
 #     createdBy = models.ForeignKey(
 #         'users.CustomUser',
@@ -302,7 +302,7 @@ class Contact(models.Model):
 #     dateCreated = models.DateTimeField(
 #         auto_now_add=True,
 #     )
-#     isDeleted = models.BooleanField( 
+#     isDeleted = models.BooleanField(
 #         default=False,
 #     )
 
@@ -339,7 +339,7 @@ class Contact(models.Model):
 #         null = True,
 #     )
 #     amount = models.DecimalField(
-#         max_digits=12, 
+#         max_digits=12,
 #         decimal_places=2
 #     )
 #     discountRate = models.IntegerField(
@@ -367,7 +367,7 @@ class Contact(models.Model):
 #         default='Debit',
 #     )
 #     totalAmount = models.DecimalField(
-#         max_digits=12, 
+#         max_digits=12,
 #         decimal_places=2
 #     )
 
@@ -392,7 +392,7 @@ class Contact(models.Model):
 #         blank=True,
 #     )
 #     amount = models.DecimalField(
-#         max_digits=12, 
+#         max_digits=12,
 #         decimal_places=2
 #     )
 #     allocationDate = models.DateField(

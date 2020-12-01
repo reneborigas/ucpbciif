@@ -231,7 +231,12 @@
                         >
                             <tr class="datatable-row" ng-repeat-start="borrower in $data">
                                 <td class="datatable-cell-sorted datatable-cell datatable-cell-center">
-                                    <a href="" ng-click="contact.$hideRows = !contact.$hideRows" ng-init="group.$hideRows = false">
+                                    <a
+                                        href=""
+                                        ng-click="contact.$hideRows = !contact.$hideRows"
+                                        ng-init="group.$hideRows = false"
+                                        ng-if="borrower.business"
+                                    >
                                         <i
                                             class="fas fa-chevron-right m-r-10"
                                             ng-class="{ ' fa-chevron-right': !contact.$hideRows, ' fa-chevron-down': contact.$hideRows }"
@@ -245,6 +250,14 @@
                                     sortable="'borrowerName'"
                                 >
                                     {{ borrower.borrowerName }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left"
+                                    header-class="'text-left'"
+                                    data-title="'TYPE'"
+                                    sortable="'borrowerType'"
+                                >
+                                    {{ borrower.borrowerType }}
                                 </td>
                                 <td
                                     class="datatable-cell datatable-cell-left"

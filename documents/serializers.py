@@ -236,3 +236,32 @@ class DocumentListSerializer(ModelSerializer):
             "creditLine",
             "documentMovements",
         ]
+
+
+class DocumentLoanApplicationReportSerializer(ModelSerializer):
+    dateCreated = serializers.CharField(read_only=True)
+    borrowerName = serializers.CharField(read_only=True)
+    loanNo = serializers.CharField(read_only=True)
+    window = serializers.CharField(read_only=True)
+    purpose = serializers.CharField(read_only=True)
+    area = serializers.CharField(read_only=True)
+    interestRate = serializers.CharField(read_only=True)
+    paymentTerm = serializers.CharField(read_only=True)
+    loanAmount = serializers.CharField(read_only=True)
+    status = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Document
+        fields = [
+            "id",
+            "dateCreated",
+            "borrowerName",
+            "loanNo",
+            "window",
+            "purpose",
+            "area",
+            "interestRate",
+            "paymentTerm",
+            "loanAmount",
+            "status",
+        ]

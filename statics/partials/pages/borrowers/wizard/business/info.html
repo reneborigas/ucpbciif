@@ -1,0 +1,305 @@
+<div>
+    <div class="pb-5">
+        <div class="my-2 font-weight-bold text-dark">Borrower Business Information</div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="officialRegisteredTradeName">Company Name (Registered Business Name)</label>
+                    <span>*</span>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="officialRegisteredTradeName"
+                        name="officialRegisteredTradeName"
+                        placeholder="Company Name"
+                        ng-model="business.officialRegisteredTradeName"
+                        ng-class="{'is-invalid' : form.wizardForm.officialRegisteredTradeName.$invalid && form.wizardForm.officialRegisteredTradeName.$touched, 'is-valid' : form.wizardForm.officialRegisteredTradeName.$valid && form.wizardForm.officialRegisteredTradeName.$touched }"
+                        required
+                    />
+                    <span
+                        class="form-text text-muted"
+                        ng-show="form.wizardForm.officialRegisteredTradeName.$touched && form.wizardForm.officialRegisteredTradeName.$invalid"
+                    >
+                        Please enter Company Name.
+                    </span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="businessTradeName">Trade Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="businessTradeName"
+                        name="businessTradeName"
+                        placeholder="Trade Name"
+                        ng-model="business.tradeName"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="legalForm">Legal Form</label>
+                    <select
+                        class="form-control"
+                        id="legalForm"
+                        name="legalForm"
+                        ng-model="business.legalForm"
+                        ng-options="legalFormType.id as legalFormType.description for legalFormType in legalFormTypes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="entitityRegistered">Entity Registered</label>
+                    <select
+                        class="form-control"
+                        id="entitityRegistered"
+                        name="entitityRegistered"
+                        ng-model="business.entitityRegistered"
+                        ng-options="entity for entity in entities"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="registrationDate">Registration Date</label>
+                    <input type="date" class="form-control" id="registrationDate" name="registrationDate" ng-model="business.registrationDate" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="reRegistrationDate">Re-Registration Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="reRegistrationDate"
+                        name="reRegistrationDate"
+                        ng-model="business.reRegistrationDate"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessNationality">Nationality</label>
+                    <select
+                        class="form-control"
+                        id="businessNationality"
+                        name="businessNationality"
+                        ng-model="business.nationality"
+                        ng-options="country.id as country.description for country in countries"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessResident">Resident</label>
+                    <select
+                        class="form-control"
+                        id="businessResident"
+                        name="businessResident"
+                        ng-model="business.resident"
+                        ng-options="res.value as res.text for res in resident"
+                    ></select>
+                </div>
+            </div>
+
+            <!-- <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="termOfExistence">Term of Existence</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="termOfExistence"
+                        name="termOfExistence"
+                        placeholder="Term of Existence"
+                        ng-model="business.termOfExistence"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="psic">PSIC</label>
+                    <select
+                        class="form-control"
+                        id="psic"
+                        name="psic"
+                        ng-model="business.psic"
+                        ng-options="psic.id as psic.description for psic in psics"
+                    ></select>
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="numberOfEmployees">Number of Employees</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="numberOfEmployees"
+                        name="numberOfEmployees"
+                        placeholder="Number of Employees"
+                        ng-model="business.numberOfEmployees"
+                        numeric-input
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="firmSize">Firm Size</label>
+                    <select
+                        class="form-control"
+                        id="firmSize"
+                        name="firmSize"
+                        ng-model="business.firmSize"
+                        ng-options="firmSize.id as firmSize.description for firmSize in firmSizes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessGrossIncome">Gross Income</label>
+                    <input
+                        type="text"
+                        min="0"
+                        class="form-control"
+                        id="businessGrossIncome"
+                        name="businessGrossIncome"
+                        placeholder="Gross Income"
+                        ng-model="business.grossIncome"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="netTaxableIncome">Net Taxable Income</label>
+                    <input
+                        type="text"
+                        min="0"
+                        class="form-control"
+                        id="netTaxableIncome"
+                        name="netTaxableIncome"
+                        placeholder="Net Taxable Income"
+                        ng-model="business.netTaxableIncome"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="monthlyExpenses">Monthly Expenses</label>
+                    <input
+                        type="text"
+                        min="0"
+                        class="form-control"
+                        id="monthlyExpenses"
+                        name="monthlyExpenses"
+                        placeholder="Monthly Expenses"
+                        ng-model="business.monthlyExpenses"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessCurrency">Currency</label>
+                    <select
+                        class="form-control"
+                        id="businessCurrency"
+                        name="businessCurrency"
+                        ng-model="business.currency"
+                        ng-options="currency.id as currency.description for currency in currencies"
+                    ></select>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="pb-5">
+        <div ng-repeat="businessContactPerson in business.businessContactPerson">
+            <div class="mb-3 font-weight-bold text-dark">Contact Person Information</div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="firstname"
+                            name="firstname"
+                            placeholder="First Name"
+                            ng-model="businessContactPerson.firstname"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="middlename">Middle Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="middlename"
+                            name="middlename"
+                            placeholder="Middle Name"
+                            ng-model="businessContactPerson.middlename"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="lastname"
+                            name="lastname"
+                            placeholder="Last Name"
+                            ng-model="businessContactPerson.lastname"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="contactPersonAddress">Address</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="contactPersonAddress"
+                    name="contactPersonAddress"
+                    placeholder="Complete Address"
+                    ng-model="businessContactPerson.address"
+                />
+            </div>
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="form-group">
+                        <label for="contactPersonPhoneNo">Phone Number</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="contactPersonPhoneNo"
+                            name="contactPersonPhoneNo"
+                            placeholder="Phone Number"
+                            ng-model="businessContactPerson.phoneNo"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="form-group">
+                        <label for="contactPersonEmailAddress">Email Address</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="contactPersonEmailAddress"
+                            name="contactPersonEmailAddress"
+                            placeholder="user@example.com"
+                            ng-model="businessContactPerson.emailAddress"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

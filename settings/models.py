@@ -1,28 +1,29 @@
 from django.db import models
 
+
 class AppName(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
     iconAsHTML = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     navDirectory = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="appNameCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -35,23 +36,24 @@ class AppName(models.Model):
         verbose_name = "App Name (System Essential)"
         verbose_name_plural = "App Names (System Essential)"
 
+
 class TitleType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="titleTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -70,23 +72,24 @@ class TitleType(models.Model):
         verbose_name = "Title Type (System Essential - CIC)"
         verbose_name_plural = "Title Types (System Essential - CIC)"
 
+
 class GenderType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="genderTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -105,23 +108,24 @@ class GenderType(models.Model):
         verbose_name = "Gender Type (System Essential - CIC)"
         verbose_name_plural = "Gender Types (System Essential - CIC)"
 
+
 class Country(models.Model):
     code = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="countryCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -140,23 +144,24 @@ class Country(models.Model):
         verbose_name = "Country (System Essential - CIC)"
         verbose_name_plural = "Countries (System Essential - CIC)"
 
+
 class CivilStatusType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="civilStatusTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -175,23 +180,24 @@ class CivilStatusType(models.Model):
         verbose_name = "Civil Status Type (System Essential - CIC)"
         verbose_name_plural = "Civil Status Types (System Essential - CIC)"
 
+
 class IdentificationType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="identificationTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -204,29 +210,30 @@ class IdentificationType(models.Model):
     )
 
     def __str__(self):
-        return "%s - %s" % (self.value,self.description)
+        return "%s - %s" % (self.value, self.description)
 
     class Meta:
         verbose_name = "Identification Type (System Essential - CIC)"
         verbose_name_plural = "Identification Types (System Essential - CIC)"
+
 
 class IDType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="idCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -239,29 +246,30 @@ class IDType(models.Model):
     )
 
     def __str__(self):
-        return "%s - %s" % (self.value,self.description)
+        return "%s - %s" % (self.value, self.description)
 
     class Meta:
         verbose_name = "ID Type (System Essential - CIC)"
         verbose_name_plural = "ID Types (System Essential - CIC)"
+
 
 class HouseOwnerLesseeType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="houseOwnerLesseeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -280,23 +288,24 @@ class HouseOwnerLesseeType(models.Model):
         verbose_name = "House Owner Lessee Type (System Essential - CIC)"
         verbose_name_plural = "House Owner Lessee Types (System Essential - CIC)"
 
+
 class AddressType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="addressCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -315,23 +324,24 @@ class AddressType(models.Model):
         verbose_name = "Address Type (System Essential - CIC)"
         verbose_name_plural = "Address Types (System Essential - CIC)"
 
+
 class ContactType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="contactTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -350,23 +360,24 @@ class ContactType(models.Model):
         verbose_name = "Contact Type (System Essential - CIC)"
         verbose_name_plural = "Contact Types (System Essential - CIC)"
 
+
 class PSIC(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="psicCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -385,23 +396,24 @@ class PSIC(models.Model):
         verbose_name = "PSIC Type (System Essential - CIC)"
         verbose_name_plural = "PSIC Types (System Essential - CIC)"
 
+
 class PSOC(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="psocCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -420,23 +432,24 @@ class PSOC(models.Model):
         verbose_name = "PSOC Type (System Essential - CIC)"
         verbose_name_plural = "PSOC Types (System Essential - CIC)"
 
+
 class IncomePeriod(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="incomePeriodCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -455,23 +468,24 @@ class IncomePeriod(models.Model):
         verbose_name = "Income Period Type (System Essential - CIC)"
         verbose_name_plural = "Income Period Types (System Essential - CIC)"
 
+
 class Currency(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="currencyCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -488,25 +502,26 @@ class Currency(models.Model):
 
     class Meta:
         verbose_name = "Currency Type (System Essential - CIC)"
-        verbose_name_plural = "Currency Types (System Essential - CIC)" 
+        verbose_name_plural = "Currency Types (System Essential - CIC)"
+
 
 class OccupationStatusType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="occupationStatusTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -525,23 +540,24 @@ class OccupationStatusType(models.Model):
         verbose_name = "Occupation Status Type (System Essential - CIC)"
         verbose_name_plural = "Occupation Status Types (System Essential - CIC)"
 
+
 class LegalFormType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="legalFormTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -560,23 +576,24 @@ class LegalFormType(models.Model):
         verbose_name = "Legal Form Type (System Essential - CIC)"
         verbose_name_plural = "Legal Form Types (System Essential - CIC)"
 
+
 class FirmSizeType(models.Model):
     value = models.CharField(
         max_length=255,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="firmSizeTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -595,25 +612,26 @@ class FirmSizeType(models.Model):
         verbose_name = "Firm Size Type (System Essential - CIC)"
         verbose_name_plural = "Firm Size Types (System Essential - CIC)"
 
-class CooperativeType(models.Model):    
+
+class CooperativeType(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
-    ) 
+        blank=True,
+        null=True,
+    )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="cooperativeTypeCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
@@ -631,3 +649,79 @@ class CooperativeType(models.Model):
     class Meta:
         verbose_name = "Cooperative Type (System Essential)"
         verbose_name_plural = "Cooperative Types (System Essential)"
+
+
+class ReligionType(models.Model):
+    name = models.CharField(
+        max_length=255,
+        blank=False,
+        null=False,
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
+    remarks = models.TextField(
+        blank=True,
+        null=True,
+    )
+    createdBy = models.ForeignKey(
+        "users.CustomUser",
+        on_delete=models.SET_NULL,
+        related_name="religionTypeCreatedBy",
+        null=True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+    class Meta:
+        verbose_name = "Religion Type (System Essential)"
+        verbose_name_plural = "Religion Types (System Essential)"
+
+
+class BorrowerDocumentType(models.Model):
+    name = models.CharField(
+        max_length=255,
+        blank=False,
+        null=False,
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
+    remarks = models.TextField(
+        blank=True,
+        null=True,
+    )
+    createdBy = models.ForeignKey(
+        "users.CustomUser",
+        on_delete=models.SET_NULL,
+        related_name="borrowerDocumentTypeCreatedBy",
+        null=True,
+    )
+    dateCreated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    dateUpdated = models.DateTimeField(
+        auto_now_add=True,
+    )
+    isDeleted = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+    class Meta:
+        verbose_name = "Borrower Document Type (System Essential)"
+        verbose_name_plural = "Borrower Document Types (System Essential)"
