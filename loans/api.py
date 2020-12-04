@@ -422,7 +422,7 @@ class LoanViewSet(ModelViewSet):
             Loan.objects.order_by("id")
             .exclude(isDeleted=True)
             .annotate(
-                branch=F("borrower__branch__branchCode"),
+                branch=F("borrower__area__branchCode"),
                 termName=F("term__name"),
                 loanProgramName=F("loanProgram__name"),
             )

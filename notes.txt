@@ -42,5 +42,5 @@ DONE - Changed Static Documents List Field to Dynamic based on SubProcess Select
 
 Bugs to fix:
 Error on Credit Line 97 and Associated Borrower 928
-
+Verification Code to Franchise Activation PIN
 

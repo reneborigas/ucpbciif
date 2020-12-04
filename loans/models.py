@@ -256,21 +256,24 @@ class LoanProgram(models.Model):
     def getActiveCreditlineDateApproved(self, borrower):
 
         if self.programLoans.all().last():
-            return self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last().dateApproved
+            if self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last() is not None:
+                return self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last().dateApproved
 
         return None
 
     def getActiveCreditlineDateExpired(self, borrower):
 
         if self.programLoans.all().last():
-            return self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last().dateExpired
+            if self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last() is not None:
+                return self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last().dateExpired
 
         return None
 
     def getActiveCreditlineAmount(self, borrower):
 
         if self.programLoans.all().last():
-            return self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last().amount
+            if self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last() is not None:
+                return self.programCreditLines.filter(status__name="APPROVED", borrower=borrower).last().amount
 
         return None
 
