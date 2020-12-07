@@ -14,7 +14,7 @@
                         id="addressType"
                         name="addressType"
                         ng-model="address.addressType"
-                        ng-options="address.id as address.remarks for address in addressTypes | filter : { $: 'Business' }"
+                        ng-options="address.id as address.remarks for address in addressTypes | filter : { $: 'Company' }"
                     ></select>
                 </div>
             </div>
@@ -164,7 +164,7 @@
         </div>
     </div>
     <div>
-        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addContact(individual.contact)">
+        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addContact(business.businessContact)">
             <i class="fal fa-plus mr-2"></i>
             Add Contact
         </button>

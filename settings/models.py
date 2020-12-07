@@ -59,7 +59,7 @@ class TitleType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -95,7 +95,7 @@ class GenderType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -131,7 +131,7 @@ class Country(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -167,7 +167,7 @@ class CivilStatusType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -203,7 +203,7 @@ class IdentificationType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -239,7 +239,7 @@ class IDType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -275,7 +275,7 @@ class HouseOwnerLesseeType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -311,7 +311,7 @@ class AddressType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -347,7 +347,7 @@ class ContactType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -383,7 +383,7 @@ class PSIC(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -419,7 +419,7 @@ class PSOC(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -455,7 +455,7 @@ class IncomePeriod(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -491,7 +491,7 @@ class Currency(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -527,7 +527,7 @@ class OccupationStatusType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -563,7 +563,7 @@ class LegalFormType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -599,7 +599,7 @@ class FirmSizeType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -637,7 +637,7 @@ class CooperativeType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -675,7 +675,7 @@ class ReligionType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -713,7 +713,7 @@ class BorrowerDocumentType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,

@@ -242,7 +242,7 @@ class IndividualSerializer(ModelSerializer):
 
             for family in instance.individualFamily.all():
                 if family.id not in keep_individualFamily:
-                    individualFamily.delete()
+                    family.delete()
 
         keep_individualAddress = []
         if individualAddress:
@@ -271,7 +271,7 @@ class IndividualSerializer(ModelSerializer):
 
             for address in instance.individualAddress.all():
                 if address.id not in keep_individualAddress:
-                    individualAddress.delete()
+                    address.delete()
 
         keep_individualIdentification = []
         if individualIdentification:
@@ -292,7 +292,7 @@ class IndividualSerializer(ModelSerializer):
 
             for identification in instance.individualIdentification.all():
                 if identification.id not in keep_individualIdentification:
-                    individualIdentification.delete()
+                    identification.delete()
 
         keep_individualID = []
         if individualID:
@@ -317,7 +317,7 @@ class IndividualSerializer(ModelSerializer):
 
             for ind in instance.individualID.all():
                 if ind.id not in keep_individualID:
-                    individualID.delete()
+                    ind.delete()
 
         keep_individualContact = []
         if individualContact:
@@ -337,7 +337,7 @@ class IndividualSerializer(ModelSerializer):
 
             for contact in instance.individualContact.all():
                 if contact.id not in keep_individualContact:
-                    individualContact.delete()
+                    contact.delete()
 
         keep_individualEmployment = []
         if individualEmployment:
@@ -369,7 +369,7 @@ class IndividualSerializer(ModelSerializer):
 
             for employment in instance.individualEmployment.all():
                 if employment.id not in keep_individualEmployment:
-                    individualEmployment.delete()
+                    employment.delete()
 
         keep_individualIndividualBusiness = []
         if individualIndividualBusiness:
@@ -400,7 +400,7 @@ class IndividualSerializer(ModelSerializer):
 
             for business in instance.individualIndividualBusiness.all():
                 if business.id not in keep_individualIndividualBusiness:
-                    individualIndividualBusiness.delete()
+                    business.delete()
 
         keep_individualSoleTrader = []
         if individualSoleTrader:
@@ -430,7 +430,7 @@ class IndividualSerializer(ModelSerializer):
 
             for soleTrader in instance.individualSoleTrader.all():
                 if soleTrader.id not in keep_individualSoleTrader:
-                    individualSoleTrader.delete()
+                    soleTrader.delete()
 
         return instance
 
@@ -544,7 +544,7 @@ class BusinessSerializer(ModelSerializer):
 
             for address in instance.businessAddress.all():
                 if address.id not in keep_businessAddress:
-                    businessAddress.delete()
+                    address.delete()
 
         keep_businessIdentification = []
         if businessIdentification:
@@ -565,7 +565,7 @@ class BusinessSerializer(ModelSerializer):
 
             for identification in instance.businessIdentification.all():
                 if identification.id not in keep_businessIdentification:
-                    businessIdentification.delete()
+                    identification.delete()
 
         keep_businessContact = []
         if businessContact:
@@ -586,7 +586,7 @@ class BusinessSerializer(ModelSerializer):
 
             for contact in instance.businessContact.all():
                 if contact.id not in keep_businessContact:
-                    businessContact.delete()
+                    contact.delete()
 
         keep_businessContactPerson = []
         if businessContactPerson:
@@ -618,7 +618,7 @@ class BusinessSerializer(ModelSerializer):
 
             for contactPerson in instance.businessContactPerson.all():
                 if contactPerson.id not in keep_businessContactPerson:
-                    businessContactPerson.delete()
+                    contactPerson.delete()
 
         keep_businessBackground = []
         if businessBackground:
@@ -651,7 +651,7 @@ class BusinessSerializer(ModelSerializer):
 
             for background in instance.businessBackground.all():
                 if background.id not in keep_businessBackground:
-                    businessBackground.delete()
+                    background.delete()
 
         keep_businessDirectors = []
         if businessDirectors:
@@ -678,7 +678,7 @@ class BusinessSerializer(ModelSerializer):
 
             for director in instance.businessDirectors.all():
                 if director.id not in keep_businessDirectors:
-                    businessDirectors.delete()
+                    director.delete()
 
         keep_businessStandingCommittees = []
         if businessStandingCommittees:
@@ -708,7 +708,7 @@ class BusinessSerializer(ModelSerializer):
 
             for standingCommittee in instance.businessStandingCommittees.all():
                 if standingCommittee.id not in keep_businessStandingCommittees:
-                    businessStandingCommittees.delete()
+                    standingCommittee.delete()
 
         return instance
 
@@ -756,6 +756,7 @@ class BorrowerSerializer(ModelSerializer):
     business = BusinessSerializer()
     documents = DocumentSerializer(many=True)
     borrowerAttachments = BorrowerAttachmentSerializer(many=True)
+    borrowerDocuments = BorrowerDocumentsSerializer(many=True, required=False)
     totalAvailments = serializers.CharField(read_only=True)
     totalAvailmentPerProgram = serializers.CharField(read_only=True)
     totalOutstandingBalance = serializers.CharField(read_only=True)
@@ -820,21 +821,20 @@ class UpdateBorrowerSerializer(ModelSerializer):
     individualName = serializers.CharField(read_only=True)
     businessTradeName = serializers.CharField(read_only=True)
     borrowerName = serializers.CharField(read_only=True)
-    individual = IndividualSerializer()
-    business = BusinessSerializer()
+    borrowerDocuments = BorrowerDocumentsSerializer(many=True, required=False)
 
     def update(self, instance, validated_data):
         instance.recordType = validated_data.get("recordType", instance.recordType)
-        instance.providerCode = validated_data.get("providerCode", instance.providerCode)
-        instance.branch = validated_data.get("branch", instance.branch)
-        instance.subjectReferenceDate = validated_data.get("subjectReferenceDate", instance.subjectReferenceDate)
-        instance.providerSubjectNumber = validated_data.get("providerSubjectNumber", instance.providerSubjectNumber)
+        instance.area = validated_data.get("area", instance.area)
+        instance.committee = validated_data.get("committee", instance.committee)
         instance.status = validated_data.get("status", instance.status)
-        instance.clientSince = validated_data.get("clientSince", instance.clientSince)
+        instance.accreditationDate = validated_data.get("accreditationDate", instance.accreditationDate)
+        instance.reasonForBorrowing = validated_data.get("reasonForBorrowing", instance.reasonForBorrowing)
         instance.description = validated_data.get("description", instance.description)
         instance.remarks = validated_data.get("remarks", instance.remarks)
         instance.dateUpdated = validated_data.get("dateUpdated", instance.dateUpdated)
         instance.isDeleted = validated_data.get("isDeleted", instance.isDeleted)
+
         instance.save()
 
         return instance

@@ -65,7 +65,7 @@ class Branch(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -106,7 +106,7 @@ class Business(models.Model):
         "settings.Currency", on_delete=models.SET_NULL, related_name="businessCurrency", null=True, blank=True
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
     def __str__(self):
@@ -182,7 +182,7 @@ class Individual(models.Model):
     educationalAttainment = models.CharField(max_length=255, null=True, blank=True)
     grossSalary = models.CharField(max_length=255, null=True, blank=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
     def __str__(self):
@@ -205,7 +205,7 @@ class Family(models.Model):
     fatherMiddleName = models.CharField(max_length=255, null=True, blank=True)
     fatherSuffix = models.CharField(max_length=255, null=True, blank=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
 
@@ -246,7 +246,7 @@ class Address(models.Model):
     )
     occupiedSince = models.DateField(null=True, blank=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
 
@@ -274,7 +274,7 @@ class Identification(models.Model):
     )
     identificationNumber = models.CharField(max_length=255, null=True, blank=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
 
@@ -294,7 +294,7 @@ class ID(models.Model):
     idExpiryDate = models.DateField(null=True, blank=True)
     isIssuedBy = models.CharField(max_length=255, null=True, blank=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
 
@@ -319,7 +319,7 @@ class Contact(models.Model):
     )
     contactNumber = models.CharField(max_length=255, null=True, blank=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
 
@@ -362,7 +362,7 @@ class Employment(models.Model):
         "settings.PSOC", on_delete=models.SET_NULL, related_name="individualEmploymentPSOC", null=True, blank=True
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     natureOfBusiness = models.CharField(max_length=255, null=True, blank=True)
     jobTitle = models.CharField(max_length=255, null=True, blank=True)
@@ -397,7 +397,7 @@ class SoleTrader(models.Model):
     )
     occupiedSince = models.DateField(null=True, blank=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
 
@@ -462,7 +462,7 @@ class ContactPerson(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -505,7 +505,7 @@ class Background(models.Model):
     fullyPaidPercent = models.DecimalField(default=0, decimal_places=2, max_digits=20, blank=True, null=True)
     initialPaidUpShare = models.DecimalField(default=0, decimal_places=2, max_digits=20, blank=True, null=True)
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
 
     def __str__(self):
@@ -543,7 +543,7 @@ class Director(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -581,7 +581,7 @@ class StandingCommittee(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -652,7 +652,7 @@ class Borrower(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -828,7 +828,7 @@ class BorrowerAttachment(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,

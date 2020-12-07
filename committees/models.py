@@ -29,7 +29,7 @@ class Office(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -67,7 +67,7 @@ class Position(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -141,7 +141,7 @@ class Committee(models.Model):
         auto_now_add=True,
     ) 
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,

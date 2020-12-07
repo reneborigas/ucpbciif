@@ -28,7 +28,7 @@ class DocumentType(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -68,7 +68,7 @@ class Signatory(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -132,7 +132,7 @@ class Document(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -205,7 +205,7 @@ class DocumentMovement(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,

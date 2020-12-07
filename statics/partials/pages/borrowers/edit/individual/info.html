@@ -1,0 +1,365 @@
+<div>
+    <div class="my-2 font-weight-bold text-dark">Borrower Individual Information</div>
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <span>*</span>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="lastname"
+                    name="lastname"
+                    placeholder="Last Name"
+                    ng-model="borrower.individual.lastname"
+                    ng-class="{'is-invalid' : form.wizardForm.lastname.$invalid && form.wizardForm.lastname.$touched , 'is-valid' : form.wizardForm.lastname.$valid && form.wizardForm.lastname.$touched }"
+                    required
+                />
+                <span class="form-text text-muted" ng-show="form.wizardForm.lastname.$touched && form.wizardForm.lastname.$invalid">
+                    Please enter Last Name.
+                </span>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <span>*</span>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="firstname"
+                    name="firstname"
+                    placeholder="First Name"
+                    ng-model="borrower.individual.firstname"
+                    ng-class="{'is-invalid' : form.wizardForm.firstname.$invalid && form.wizardForm.firstname.$touched , 'is-valid' : form.wizardForm.firstname.$valid && form.wizardForm.firstname.$touched }"
+                    required
+                />
+                <span class="form-text text-muted" ng-show="form.wizardForm.firstname.$touched && form.wizardForm.firstname.$invalid">
+                    Please enter First Name.
+                </span>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="middlename">Middle Name</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="middlename"
+                    name="middlename"
+                    placeholder="Middle Name"
+                    ng-model="borrower.individual.middlename"
+                />
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <select
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    ng-model="borrower.individual.title"
+                    ng-options="title.id as title.description for title in titles"
+                ></select>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="suffix">Suffix</label>
+                <input type="text" class="form-control" id="suffix" name="suffix" placeholder="Suffix" ng-model="borrower.individual.suffix" />
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="previousLastName">Previous Last Name</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="previousLastName"
+                    name="previousLastName"
+                    placeholder="Previous Last Name"
+                    ng-model="borrower.individual.previousLastName"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select
+                    class="form-control"
+                    id="gender"
+                    name="gender"
+                    ng-model="borrower.individual.gender"
+                    ng-options="gender.id as gender.description for gender in genders"
+                ></select>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input
+                    type="date"
+                    class="form-control"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    placeholder="Date of Birth"
+                    ng-model="borrower.individual.dateOfBirthFormatted"
+                />
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="placeOfBirth">Place of Birth</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="placeOfBirth"
+                    name="placeOfBirth"
+                    placeholder="Place of Birth"
+                    ng-model="borrower.individual.placeOfBirth"
+                />
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="countryOfBirth">Country of Birth</label>
+                <select
+                    class="form-control"
+                    id="countryOfBirth"
+                    name="countryOfBirth"
+                    ng-model="borrower.individual.countryOfBirth"
+                    ng-options="country.id as country.description for country in countries"
+                ></select>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="individualNationality">Nationality</label>
+                <select
+                    class="form-control"
+                    id="individualNationality"
+                    name="individualNationality"
+                    ng-model="borrower.individual.nationality"
+                    ng-options="country.id as country.description for country in countries"
+                ></select>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="individualResident">Resident</label>
+                <select
+                    class="form-control"
+                    id="individualResident"
+                    name="individualResident"
+                    ng-model="borrower.individual.resident"
+                    ng-options="res.value as res.text for res in resident"
+                ></select>
+            </div>
+        </div>
+        <div class="col-xl-4" ng-if="checkIfResident(individual.resident)">
+            <div class="form-group">
+                <label for="alienCertificateRegistrationNumber">Alien Certificate Registration Number</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="alienCertificateRegistrationNumber"
+                    name="alienCertificateRegistrationNumber"
+                    placeholder="Alien Certificate Registration Number"
+                    ng-model="borrower.individual.alienCertificateRegistrationNumber"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="civilStatus">Civil Status</label>
+                <select
+                    class="form-control"
+                    id="civilStatus"
+                    name="civilStatus"
+                    ng-model="borrower.individual.civilStatus"
+                    ng-options="status.id as status.description for status in civilstatus"
+                ></select>
+            </div>
+        </div>
+        <div class="col-xl-4" ng-if="checkIfMarried(individual.civilStatus)">
+            <div class="form-group">
+                <label for="dateOfMarriage">Date of Marriage</label>
+                <input type="date" class="form-control" id="dateOfMarriage" name="dateOfMarriage" ng-model="borrower.individual.dateOfMarriage" />
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="numberOfDependents">Number of Dependents</label>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="numberOfDependents"
+                    name="numberOfDependents"
+                    placeholder="Number of Dependents"
+                    ng-model="borrower.individual.numberOfDependents"
+                    numeric-input
+                />
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="numberOfChildren">Number of Children</label>
+                <input
+                    type="text"
+                    min="0"
+                    class="form-control"
+                    id="numberOfChildren"
+                    name="numberOfChildren"
+                    placeholder="Number of Children"
+                    ng-model="borrower.individual.numberOfChildren"
+                    numeric-input
+                />
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="educationalAttainment">Educational Attainment</label>
+                <select
+                    class="form-control"
+                    id="educationalAttainment"
+                    name="educationalAttainment"
+                    ng-model="borrower.individual.educationalAttainment"
+                    ng-options="att for att in attainment"
+                ></select>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-group">
+                <label for="civilStatus">Religion</label>
+                <select
+                    class="form-control"
+                    id="civilStatus"
+                    name="civilStatus"
+                    ng-model="borrower.individual.civilStatus"
+                    ng-options="religion.id as religion.name for religion in religions"
+                ></select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="tin">TIN Number</label>
+                <input type="text" class="form-control" id="tin" name="tin" placeholder="TIN Number" ng-model="borrower.individual.tin" />
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="sss">SSS Number</label>
+                <input type="text" class="form-control" id="sss" name="sss" placeholder="SSS Number" ng-model="borrower.individual.sss" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="reasonForBorrowing">Reason for Borrowing with Cocofinance</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="reasonForBorrowing"
+                    name="reasonForBorrowing"
+                    placeholder="Project Type"
+                    ng-model="borrower.reasonForBorrowing"
+                />
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="family in borrower.individual.individualFamily">
+        <div class="my-2 font-weight-bold text-dark">Spouse (Maiden)</div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="spouseFirstName">Spouse First Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="spouseFirstName"
+                        name="spouseFirstName"
+                        placeholder="Spouse First Name"
+                        ng-model="family.spouseFirstName"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="spouseMiddleName">Spouse Middle Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="spouseMiddleName"
+                        name="spouseMiddleName"
+                        placeholder="Spouse Middle Name"
+                        ng-model="family.spouseMiddleName"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="spouseLastName">Spouse Last Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="spouseLastName"
+                        name="spouseLastName"
+                        placeholder="Spouse Last Name"
+                        ng-model="family.spouseLastName"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="my-2 font-weight-bold text-dark">Mother (Maiden)</div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="motherFirstName">Mother First Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="motherFirstName"
+                        name="motherFirstName"
+                        placeholder="Mother First Name"
+                        ng-model="family.motherFirstName"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="motherMiddleName">Mother Middle Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="motherMiddleName"
+                        name="motherMiddleName"
+                        placeholder="Mother Middle Name"
+                        ng-model="family.motherMiddleName"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="motherLastName">Mother Last Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="motherLastName"
+                        name="motherLastName"
+                        placeholder="Mother Last Name"
+                        ng-model="family.motherLastName"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

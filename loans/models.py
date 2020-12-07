@@ -31,7 +31,7 @@ class Status(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -72,7 +72,7 @@ class AmortizationStatus(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -107,7 +107,7 @@ class LoanStatus(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -140,7 +140,7 @@ class PaymentPeriod(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -183,7 +183,7 @@ class Term(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -225,7 +225,7 @@ class LoanProgram(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -391,7 +391,7 @@ class InterestRate(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -450,7 +450,7 @@ class CreditLine(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -568,7 +568,7 @@ class Loan(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -910,7 +910,7 @@ class Amortization(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -976,7 +976,7 @@ class AmortizationItem(models.Model):
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,

@@ -1,356 +1,392 @@
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Official Registered Trade Name</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="text"
-            class="form-control"
-            id="officialRegisteredTradeName"
-            name="officialRegisteredTradeName"
-            placeholder="Official Registered Trade Name"
-            ng-model="borrower.business.officialRegisteredTradeName"
-            ng-class="{'is-invalid' : editForm.officialRegisteredTradeName.$invalid && editForm.officialRegisteredTradeName.$touched, 'is-valid' : editForm.officialRegisteredTradeName.$valid && editForm.officialRegisteredTradeName.$touched }"
-        />
-        <span class="form-text text-muted" ng-show="editForm.officialRegisteredTradeName.$touched && editForm.officialRegisteredTradeName.$invalid">
-            Please enter Official Registered Trade Name.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">
-        Trade Name
-        <span>*</span>
-    </label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="text"
-            class="form-control"
-            id="businessTradeName"
-            name="businessTradeName"
-            placeholder="Trade Name"
-            ng-model="borrower.business.tradeName"
-            ng-class="{'is-invalid' : editForm.businessTradeName.$invalid && editForm.businessTradeName.$touched, 'is-valid' : editForm.businessTradeName.$valid && editForm.businessTradeName.$touched }"
-            required
-        />
-        <span class="form-text text-muted" ng-show="editForm.businessTradeName.$touched && editForm.businessTradeName.$invalid">
-            Please enter Trade Name.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Client Since</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="date"
-            class="form-control"
-            id="clientSince"
-            name="clientSince"
-            ng-model="borrower.clientSince"
-            ng-class="{'is-invalid' : editForm.clientSince.$invalid && editForm.clientSince.$touched, 'is-valid' : editForm.clientSince.$valid && editForm.clientSince.$touched }"
-        />
-        <span class="form-text text-muted" ng-show="editForm.clientSince.$touched && editForm.clientSince.$invalid">
-            Please enter Client Since Date.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Nationality</label>
-    <div class="col-lg-9 col-xl-6">
-        <select
-            class="form-control"
-            id="businessNationality"
-            name="businessNationality"
-            ng-options="country.id as country.description for country in countries"
-            ng-model="borrower.business.nationality"
-            ng-class="{'is-invalid' : editForm.businessNationality.$invalid && editForm.businessNationality.$touched, 'is-valid' : editForm.businessNationality.$valid && editForm.businessNationality.$touched }"
-        ></select>
-        <span class="form-text text-muted" ng-show="editForm.businessNationality.$touched && editForm.businessNationality.$invalid">
-            Please enter Business Nationality.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Resident</label>
-    <div class="col-lg-9 col-xl-6">
-        <select
-            class="form-control"
-            id="businessResident"
-            name="businessResident"
-            ng-model="borrower.business.resident"
-            ng-class="{'is-invalid' : editForm.businessResident.$invalid && editForm.businessResident.$touched, 'is-valid' : editForm.businessResident.$valid && editForm.businessResident.$touched }"
-        >
-            <option value="true">Resident</option>
-            <option value="false">Non-Resident</option>
-        </select>
-        <span class="form-text text-muted" ng-show="editForm.businessResident.$touched && editForm.businessResident.$invalid">
-            Please enter Resident.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Legal Form</label>
-    <div class="col-lg-9 col-xl-6">
-        <select
-            class="form-control"
-            id="legalForm"
-            name="legalForm"
-            ng-options="legalFormType.id as legalFormType.description for legalFormType in legalFormTypes"
-            ng-model="borrower.business.legalForm"
-            ng-class="{'is-invalid' : editForm.legalForm.$invalid && editForm.legalForm.$touched, 'is-valid' : editForm.legalForm.$valid && editForm.legalForm.$touched }"
-        ></select>
-        <span class="form-text text-muted" ng-show="editForm.legalForm.$touched && editForm.legalForm.$invalid">
-            Please enter Business Legal Form.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Term of Existence</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="date"
-            class="form-control"
-            id="termOfExistence"
-            name="termOfExistence"
-            ng-model="borrower.business.termOfExistence"
-            ng-class="{'is-invalid' : editForm.termOfExistence.$invalid && editForm.termOfExistence.$touched, 'is-valid' : editForm.termOfExistence.$valid && editForm.termOfExistence.$touched }"
-        />
-        <span class="form-text text-muted" ng-show="editForm.termOfExistence.$touched && editForm.termOfExistence.$invalid">
-            Please enter Business Term of Existence.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">PSIC</label>
-    <div class="col-lg-9 col-xl-6">
-        <select
-            class="form-control"
-            id="psic"
-            name="psic"
-            ng-options="psic.id as psic.description for psic in psics"
-            ng-model="borrower.business.psic"
-            ng-class="{'is-invalid' : editForm.psic.$invalid && editForm.psic.$touched, 'is-valid' : editForm.psic.$valid && editForm.psic.$touched }"
-        ></select>
-        <span class="form-text text-muted" ng-show="editForm.psic.$touched && editForm.psic.$invalid">Please enter Business PSIC.</span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Registration Date</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="date"
-            class="form-control"
-            id="registrationDate"
-            name="registrationDate"
-            ng-model="borrower.business.registrationDate"
-            ng-class="{'is-invalid' : editForm.registrationDate.$invalid && editForm.registrationDate.$touched, 'is-valid' : editForm.registrationDate.$valid && editForm.registrationDate.$touched }"
-        />
-        <span class="form-text text-muted" ng-show="editForm.registrationDate.$touched && editForm.registrationDate.$invalid">
-            Please enter Business Term of Existence.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Number of Employees</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="text"
-            min="0"
-            class="form-control"
-            id="numberOfEmployees"
-            name="numberOfEmployees"
-            placeholder="Number of Employees"
-            ng-model="borrower.business.numberOfEmployees"
-            ng-class="{'is-invalid' : editForm.numberOfEmployees.$invalid && editForm.numberOfEmployees.$touched, 'is-valid' : editForm.numberOfEmployees.$valid && editForm.numberOfEmployees.$touched }"
-            price
-        />
-        <span class="form-text text-muted" ng-show="editForm.numberOfEmployees.$touched && editForm.numberOfEmployees.$invalid">
-            Please enter Business Number of Employees.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Firm Size</label>
-    <div class="col-lg-9 col-xl-6">
-        <select
-            class="form-control"
-            id="firmSize"
-            name="firmSize"
-            ng-options="firmSize.id as firmSize.description for firmSize in firmSizes"
-            ng-model="borrower.business.firmSize"
-            ng-class="{'is-invalid' : editForm.firmSize.$invalid && editForm.firmSize.$touched, 'is-valid' : editForm.firmSize.$valid && editForm.firmSize.$touched }"
-        ></select>
-        <span class="form-text text-muted" ng-show="editForm.firmSize.$touched && editForm.firmSize.$invalid">Please enter Business Firm Size.</span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Gross Income</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="text"
-            min="0"
-            class="form-control"
-            id="businessGrossIncome"
-            name="businessGrossIncome"
-            placeholder="Number of Employees"
-            ng-model="borrower.business.businessGrossIncome"
-            ng-class="{'is-invalid' : editForm.businessGrossIncome.$invalid && editForm.businessGrossIncome.$touched, 'is-valid' : editForm.businessGrossIncome.$valid && editForm.businessGrossIncome.$touched }"
-            price
-        />
-        <span class="form-text text-muted" ng-show="editForm.businessGrossIncome.$touched && editForm.businessGrossIncome.$invalid">
-            Please enter Business Gross Income.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Net Taxable Income</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="text"
-            min="0"
-            class="form-control"
-            id="netTaxableIncome"
-            name="netTaxableIncome"
-            placeholder="Number of Employees"
-            ng-model="borrower.business.netTaxableIncome"
-            ng-class="{'is-invalid' : editForm.netTaxableIncome.$invalid && editForm.netTaxableIncome.$touched, 'is-valid' : editForm.netTaxableIncome.$valid && editForm.netTaxableIncome.$touched }"
-            price
-        />
-        <span class="form-text text-muted" ng-show="editForm.netTaxableIncome.$touched && editForm.netTaxableIncome.$invalid">
-            Please enter Business Net Taxable Income.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Monthly Expenses</label>
-    <div class="col-lg-9 col-xl-6">
-        <input
-            type="text"
-            min="0"
-            class="form-control"
-            id="monthlyExpenses"
-            name="monthlyExpenses"
-            placeholder="Number of Employees"
-            ng-model="borrower.business.monthlyExpenses"
-            ng-class="{'is-invalid' : editForm.monthlyExpenses.$invalid && editForm.monthlyExpenses.$touched, 'is-valid' : editForm.monthlyExpenses.$valid && editForm.monthlyExpenses.$touched }"
-            price
-        />
-        <span class="form-text text-muted" ng-show="editForm.monthlyExpenses.$touched && editForm.monthlyExpenses.$invalid">
-            Please enter Business Monthly Expenses.
-        </span>
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-xl-3 col-lg-3 col-form-label text-right">Currency</label>
-    <div class="col-lg-9 col-xl-6">
-        <select
-            class="form-control"
-            id="businessCurrency"
-            name="businessCurrency"
-            ng-options="currency.id as currency.description for currency in currencies"
-            ng-model="borrower.business.currency"
-            ng-class="{'is-invalid' : editForm.businessCurrency.$invalid && editForm.businessCurrency.$touched, 'is-valid' : editForm.businessCurrency.$valid && editForm.businessCurrency.$touched }"
-        ></select>
-        <span class="form-text text-muted" ng-show="editForm.businessCurrency.$touched && editForm.businessCurrency.$invalid">
-            Please enter Business Currency.
-        </span>
-    </div>
-</div>
-<div class="separator separator-dashed my-5"></div>
-<div class="row">
-    <div class="col-lg-9 col-xl-6 offset-xl-3">
-        <h3 class="font-size-h6 mb-3">Contact Person:</h3>
-    </div>
-</div>
-<div ng-repeat="contactPerson in borrower.business.businessContactPerson">
-    <div class="form-group row">
-        <label class="col-xl-3 col-lg-3 col-form-label text-right">First Name</label>
-        <div class="col-lg-9 col-xl-6">
-            <input
-                type="text"
-                class="form-control"
-                id="firstname"
-                name="firstname"
-                placeholder="First Name"
-                ng-model="contactPerson.firstname"
-                ng-class="{'is-invalid' : editForm.firstname.$invalid && editForm.firstname.$touched , 'is-valid' : editForm.firstname.$valid && editForm.firstname.$touched }"
-                required
-            />
-            <span class="form-text text-muted" ng-show="editForm.firstname.$touched && editForm.firstname.$invalid">Please enter First Name.</span>
+<div>
+    <div class="pb-5">
+        <div class="my-2 font-weight-bold text-dark">Borrower Business Information</div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="accreditationDate">Accreditation Date</label>
+                    <span>*</span>
+                    <input type="date" class="form-control" id="accreditationDate" name="accreditationDate" ng-model="borrower.accreditationDate" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="officialRegisteredTradeName">Company Name (Registered Business Name)</label>
+                    <span>*</span>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="officialRegisteredTradeName"
+                        name="officialRegisteredTradeName"
+                        placeholder="Company Name"
+                        ng-model="borrower.business.officialRegisteredTradeName"
+                        ng-class="{'is-invalid' : form.wizardForm.officialRegisteredTradeName.$invalid && form.wizardForm.officialRegisteredTradeName.$touched, 'is-valid' : form.wizardForm.officialRegisteredTradeName.$valid && form.wizardForm.officialRegisteredTradeName.$touched }"
+                        required
+                    />
+                    <span
+                        class="form-text text-muted"
+                        ng-show="form.wizardForm.officialRegisteredTradeName.$touched && form.wizardForm.officialRegisteredTradeName.$invalid"
+                    >
+                        Please enter Company Name.
+                    </span>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="businessTradeName">Trade Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="businessTradeName"
+                        name="businessTradeName"
+                        placeholder="Trade Name"
+                        ng-model="borrower.business.tradeName"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="legalForm">Legal Form</label>
+                    <select
+                        class="form-control"
+                        id="legalForm"
+                        name="legalForm"
+                        ng-model="borrower.business.legalForm"
+                        ng-options="legalFormType.id as legalFormType.description for legalFormType in legalFormTypes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="entitityRegistered">Entity Registered</label>
+                    <select
+                        class="form-control"
+                        id="entitityRegistered"
+                        name="entitityRegistered"
+                        ng-model="borrower.business.entitityRegistered"
+                        ng-options="entity for entity in entities"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="registrationDate">Registration Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="registrationDate"
+                        name="registrationDate"
+                        ng-model="borrower.business.registrationDate"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="reRegistrationDate">Re-Registration Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="reRegistrationDate"
+                        name="reRegistrationDate"
+                        ng-model="borrower.business.reRegistrationDate"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessNationality">Nationality</label>
+                    <select
+                        class="form-control"
+                        id="businessNationality"
+                        name="businessNationality"
+                        ng-model="borrower.business.nationality"
+                        ng-options="country.id as country.description for country in countries"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessResident">Resident</label>
+                    <select
+                        class="form-control"
+                        id="businessResident"
+                        name="businessResident"
+                        ng-model="borrower.business.resident"
+                        ng-options="res.value as res.text for res in resident"
+                    ></select>
+                </div>
+            </div>
+
+            <!-- <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="termOfExistence">Term of Existence</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="termOfExistence"
+                        name="termOfExistence"
+                        placeholder="Term of Existence"
+                        ng-model="borrower.business.termOfExistence"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="psic">PSIC</label>
+                    <select
+                        class="form-control"
+                        id="psic"
+                        name="psic"
+                        ng-model="borrower.business.psic"
+                        ng-options="psic.id as psic.description for psic in psics"
+                    ></select>
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="numberOfEmployees">Number of Employees</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="numberOfEmployees"
+                        name="numberOfEmployees"
+                        placeholder="Number of Employees"
+                        ng-model="borrower.business.numberOfEmployees"
+                        numeric-input
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="firmSize">Firm Size</label>
+                    <select
+                        class="form-control"
+                        id="firmSize"
+                        name="firmSize"
+                        ng-model="borrower.business.firmSize"
+                        ng-options="firmSize.id as firmSize.description for firmSize in firmSizes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessGrossIncome">Gross Income</label>
+                    <input
+                        type="text"
+                        min="0"
+                        class="form-control"
+                        id="businessGrossIncome"
+                        name="businessGrossIncome"
+                        placeholder="Gross Income"
+                        ng-model="borrower.business.grossIncome"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="netTaxableIncome">Net Taxable Income</label>
+                    <input
+                        type="text"
+                        min="0"
+                        class="form-control"
+                        id="netTaxableIncome"
+                        name="netTaxableIncome"
+                        placeholder="Net Taxable Income"
+                        ng-model="borrower.business.netTaxableIncome"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="monthlyExpenses">Monthly Expenses</label>
+                    <input
+                        type="text"
+                        min="0"
+                        class="form-control"
+                        id="monthlyExpenses"
+                        name="monthlyExpenses"
+                        placeholder="Monthly Expenses"
+                        ng-model="borrower.business.monthlyExpenses"
+                        price
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="businessCurrency">Currency</label>
+                    <select
+                        class="form-control"
+                        id="businessCurrency"
+                        name="businessCurrency"
+                        ng-model="borrower.business.currency"
+                        ng-options="currency.id as currency.description for currency in currencies"
+                    ></select>
+                </div>
+            </div> -->
         </div>
     </div>
-    <div class="form-group row">
-        <label class="col-xl-3 col-lg-3 col-form-label text-right">Middle Name</label>
-        <div class="col-lg-9 col-xl-6">
-            <input type="text" class="form-control" placeholder="Middle Name" ng-model="contactPerson.middlename" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-xl-3 col-lg-3 col-form-label text-right">Last Name</label>
-        <div class="col-lg-9 col-xl-6">
-            <input
-                type="text"
-                class="form-control"
-                id="lastname"
-                name="lastname"
-                placeholder="Last Name"
-                ng-model="contactPerson.lastname"
-                ng-class="{'is-invalid' : editForm.lastname.$invalid && editForm.lastname.$touched , 'is-valid' : editForm.lastname.$valid && editForm.lastname.$touched }"
-                required
-            />
-            <span class="form-text text-muted" ng-show="editForm.lastname.$touched && editForm.lastname.$invalid">Please enter Last Name.</span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-xl-3 col-lg-3 col-form-label text-right">Address</label>
-        <div class="col-lg-9 col-xl-6">
-            <input
-                type="text"
-                class="form-control"
-                id="contactPersonAddress"
-                name="contactPersonAddress"
-                placeholder="Complete Address"
-                ng-model="contactPerson.address"
-                ng-class="{'is-invalid' : editForm.contactPersonAddress.$invalid && editForm.contactPersonAddress.$touched, 'is-valid' : editForm.contactPersonAddress.$valid && editForm.contactPersonAddress.$touched }"
-                required
-            />
-            <span class="form-text text-muted" ng-show="editForm.contactPersonAddress.$touched && editForm.contactPersonAddress.$invalid">
-                Please enter Address.
-            </span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-xl-3 col-lg-3 col-form-label text-right">Phone Number</label>
-        <div class="col-lg-9 col-xl-6">
-            <input
-                type="text"
-                class="form-control"
-                id="contactPersonPhoneNo"
-                name="contactPersonPhoneNo"
-                placeholder="Phone Number"
-                ng-model="contactPerson.phoneNo"
-                ng-class="{'is-invalid' : editForm.contactPersonPhoneNo.$invalid && editForm.contactPersonPhoneNo.$touched, 'is-valid' : editForm.contactPersonPhoneNo.$valid && editForm.contactPersonPhoneNo.$touched }"
-                required
-            />
-            <span class="form-text text-muted" ng-show="editForm.contactPersonPhoneNo.$touched && editForm.contactPersonPhoneNo.$invalid">
-                Please enter Phone Number.
-            </span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-xl-3 col-lg-3 col-form-label text-right">Email Address</label>
-        <div class="col-lg-9 col-xl-6">
-            <input
-                type="text"
-                class="form-control"
-                id="contactPersonEmailAddress"
-                name="contactPersonEmailAddress"
-                placeholder="user@example.com"
-                ng-model="contactPerson.emailAddress"
-                ng-class="{'is-invalid' : editForm.contactPersonEmailAddress.$invalid && editForm.contactPersonEmailAddress.$touched, 'is-valid' : editForm.contactPersonEmailAddress.$valid && editForm.contactPersonEmailAddress.$touched }"
-                required
-            />
-            <span class="form-text text-muted" ng-show="editForm.contactPersonEmailAddress.$touched && editForm.contactPersonEmailAddress.$invalid">
-                Please enter Email Address.
-            </span>
+    <div class="pb-5">
+        <div ng-repeat="businessContactPerson in borrower.business.businessContactPerson">
+            <div class="mb-3 font-weight-bold text-dark">Contact Person Information</div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="firstname"
+                            name="firstname"
+                            placeholder="First Name"
+                            ng-model="businessContactPerson.firstname"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="middlename">Middle Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="middlename"
+                            name="middlename"
+                            placeholder="Middle Name"
+                            ng-model="businessContactPerson.middlename"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="lastname"
+                            name="lastname"
+                            placeholder="Last Name"
+                            ng-model="businessContactPerson.lastname"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="streetNo">Street Number</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="streetNo"
+                            name="streetNo"
+                            placeholder="Street Number"
+                            ng-model="businessContactPerson.streetNo"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="postalCode">Postal Code</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="postalCode"
+                            name="postalCode"
+                            placeholder="Postal Code"
+                            ng-model="address.postalCode"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="subdivision">Subdivision</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="subdivision"
+                            name="subdivision"
+                            placeholder="Subdivision"
+                            ng-model="businessContactPerson.subdivision"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="barangay">Barangay</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="barangay"
+                            name="barangay"
+                            placeholder="Barangay"
+                            ng-model="businessContactPerson.barangay"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="city">Town/City</label>
+                        <input type="text" class="form-control" id="city" name="city" placeholder="City" ng-model="businessContactPerson.city" />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="province"
+                            name="province"
+                            placeholder="Province"
+                            ng-model="businessContactPerson.province"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select
+                            class="form-control"
+                            id="country"
+                            name="country"
+                            ng-model="businessContactPerson.country"
+                            ng-options="country.id as country.description for country in countries"
+                        ></select>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="contactPersonPhoneNo">Phone Number</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="contactPersonPhoneNo"
+                            name="contactPersonPhoneNo"
+                            placeholder="Phone Number"
+                            ng-model="businessContactPerson.phoneNo"
+                        />
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="form-group">
+                        <label for="contactPersonEmailAddress">Email Address</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="contactPersonEmailAddress"
+                            name="contactPersonEmailAddress"
+                            placeholder="user@example.com"
+                            ng-model="businessContactPerson.emailAddress"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
