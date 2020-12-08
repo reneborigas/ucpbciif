@@ -6,7 +6,13 @@
                 <div class="form-group">
                     <label for="accreditationDate">Accreditation Date</label>
                     <span>*</span>
-                    <input type="date" class="form-control" id="accreditationDate" name="accreditationDate" ng-model="borrower.accreditationDate" />
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="accreditationDate"
+                        name="accreditationDate"
+                        ng-model="borrower.accreditationDateFormatted"
+                    />
                 </div>
             </div>
         </div>
@@ -62,12 +68,12 @@
             </div>
             <div class="col-xl-4">
                 <div class="form-group">
-                    <label for="entitityRegistered">Entity Registered</label>
+                    <label for="entityRegistered">Entity Registered</label>
                     <select
                         class="form-control"
-                        id="entitityRegistered"
-                        name="entitityRegistered"
-                        ng-model="borrower.business.entitityRegistered"
+                        id="entityRegistered"
+                        name="entityRegistered"
+                        ng-model="borrower.business.entityRegistered"
                         ng-options="entity for entity in entities"
                     ></select>
                 </div>
@@ -80,7 +86,7 @@
                         class="form-control"
                         id="registrationDate"
                         name="registrationDate"
-                        ng-model="borrower.business.registrationDate"
+                        ng-model="borrower.business.registrationDateFormatted"
                     />
                 </div>
             </div>
@@ -92,7 +98,7 @@
                         class="form-control"
                         id="reRegistrationDate"
                         name="reRegistrationDate"
-                        ng-model="borrower.business.reRegistrationDate"
+                        ng-model="borrower.business.reRegistrationDateFormatted"
                     />
                 </div>
             </div>

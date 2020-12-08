@@ -36,6 +36,55 @@ class CreateBorrowerViewSet(ModelViewSet):
         return queryset
 
 
+class FetchBorrowerViewSet(ModelViewSet):
+    queryset = Borrower.objects.all()
+    serializer_class = FetchBorrowerSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = (
+            Borrower.objects.annotate(
+                borrowerName=Case(
+                    When(Q(recordType="BD"), then=F("business__tradeName")),
+                    When(
+                        Q(recordType="ID"),
+                        then=Concat(
+                            F("individual__firstname"),
+                            V(" "),
+                            F("individual__middlename"),
+                            V(" "),
+                            F("individual__lastname"),
+                        ),
+                    ),
+                ),
+                borrowerType=Case(
+                    When(recordType="BD", then=V("Business")),
+                    When(recordType="ID", then=V("Individual")),
+                    output_field=models.CharField(),
+                ),
+                branch=F("area__branchCode"),
+                tin=Case(
+                    When(
+                        Q(recordType="BD") & Q(business__businessIdentification__identificationType__value="10"),
+                        then=F("business__businessIdentification__identificationNumber"),
+                    ),
+                    When(
+                        Q(recordType="ID") & Q(individual__individualIdentification__identificationType__value="10"),
+                        then=F("individual__individualIdentification__identificationNumber"),
+                    ),
+                ),
+            )
+            .exclude(isDeleted=True)
+            .order_by("-borrowerId")
+        )
+        borrowerId = self.request.query_params.get("borrowerId", None)
+
+        if borrowerId is not None:
+            queryset = queryset.filter(borrowerId=borrowerId)
+
+        return queryset
+
+
 class UpdateBorrowerViewSet(ModelViewSet):
     queryset = Borrower.objects.all()
     serializer_class = UpdateBorrowerSerializer
@@ -60,36 +109,24 @@ class BorrowerViewSet(ModelViewSet):
         queryset = (
             Borrower.objects.prefetch_related(
                 Prefetch(
+                    "individual",
+                    queryset=Individual.objects.annotate(
+                        _titleName=F("title__description"),
+                        _genderName=F("gender__description"),
+                        _countryOfBirthName=F("countryOfBirth__description"),
+                        _nationalityName=F("nationality__description"),
+                        _maritalStatusName=F("maritalStatus__description"),
+                        _religionName=F("religion__name"),
+                    ).all(),
+                ),
+                Prefetch(
                     "business",
-                    queryset=Business.objects.prefetch_related(
-                        Prefetch(
-                            "businessAddress",
-                            queryset=Address.objects.annotate(
-                                addressTypeName=F("addressType__description"),
-                                countryName=F("country__description"),
-                                ownerLesseeName=F("ownerLessee__description"),
-                            ).all(),
-                        ),
-                        Prefetch(
-                            "businessIdentification",
-                            queryset=Identification.objects.annotate(
-                                identificationTypeName=F("identificationType__description"),
-                            ).all(),
-                        ),
-                        Prefetch(
-                            "businessContact",
-                            queryset=Contact.objects.annotate(
-                                contactTypeName=F("contactType__description"),
-                            ).all(),
-                        ),
-                    )
-                    .annotate(
-                        nationalityName=F("nationality__description"),
-                        legalFormName=F("legalForm__description"),
-                        psicName=F("psic__description"),
-                        firmSizeName=F("firmSize__description"),
-                    )
-                    .all(),
+                    queryset=Business.objects.annotate(
+                        _nationalityName=F("nationality__description"),
+                        _legalFormName=F("legalForm__description"),
+                        _psicName=F("psic__description"),
+                        _firmSizeName=F("firmSize__description"),
+                    ).all(),
                 ),
                 "borrowerAttachments",
                 Prefetch("documents", queryset=Document.objects.order_by("dateCreated")),
@@ -116,9 +153,6 @@ class BorrowerViewSet(ModelViewSet):
                     output_field=models.CharField(),
                 ),
                 branch=F("area__branchCode"),
-                # contactPersonName=Concat(F('contactPerson__firstname'),V(' '),F('contactPerson__middlename'),V(' '),F('contactPerson__lastname')),
-                # cooperativeName=F('cooperative__name'),
-                # tin=F('cooperative__tin'),
                 tin=Case(
                     When(
                         Q(recordType="BD") & Q(business__businessIdentification__identificationType__value="10"),
@@ -129,8 +163,6 @@ class BorrowerViewSet(ModelViewSet):
                         then=F("individual__individualIdentification__identificationNumber"),
                     ),
                 ),
-                # address=F('cooperative__address'),
-                # phoneNo=F('cooperative__phoneNo'),
             )
             .exclude(isDeleted=True)
             .order_by("-borrowerId")

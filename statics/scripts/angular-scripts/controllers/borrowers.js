@@ -1095,7 +1095,6 @@ define(function () {
                                             .then(
                                                 function (response) {
                                                     $scope.creditLines = response.data;
-                                                    console.log($scope.creditLines);
                                                     return appFactory.getContentTypeId('borrower').then(function (data) {
                                                         return $http
                                                             .get('/api/users/userlogs/', {
@@ -1564,15 +1563,14 @@ define(function () {
             var staticData;
             var objectsRemoved = [];
 
-            $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
+            $http.get('/api/borrowers/fetch-borrower/', { params: { borrowerId: $scope.borrowerId } }).then(
                 function (response) {
                     $scope.borrower = response.data[0];
                     $scope.checkBorrowerType($scope.borrower.recordType).then(function (data) {
                         $scope.currentTemplate = data[0];
                     });
                     staticData = angular.copy(response.data[0]);
-                    console.log(staticData);
-                    $scope.borrower.accreditationDate = new Date($scope.borrower.accreditationDate);
+                    $scope.borrower.accreditationDateFormatted = new Date($scope.borrower.accreditationDate);
                     angular.forEach($scope.borrower.borrowerDocuments, function (documents) {
                         documents.dateReceived = new Date(documents.dateReceived);
                         documents.appraisalDate = new Date(documents.appraisalDate);
@@ -1596,8 +1594,8 @@ define(function () {
                         });
                     } else {
                         $scope.borrower.business.termOfExistence = new Date($scope.borrower.business.termOfExistence);
-                        $scope.borrower.business.registrationDate = new Date($scope.borrower.business.registrationDate);
-                        $scope.borrower.business.reRegistrationDate = new Date($scope.borrower.business.reRegistrationDate);
+                        $scope.borrower.business.registrationDateFormatted = new Date($scope.borrower.business.registrationDate);
+                        $scope.borrower.business.reRegistrationDateFormatted = new Date($scope.borrower.business.reRegistrationDate);
 
                         angular.forEach($scope.borrower.business.businessAddress, function (businessAddress) {
                             businessAddress.occupiedSince = new Date(businessAddress.occupiedSince);
@@ -1798,7 +1796,15 @@ define(function () {
             };
 
             $scope.removeAddress = function (object, index) {
-                object.splice(index, 1);
+                angular.forEach(object, function (address, addressIndex) {
+                    if (index == addressIndex) {
+                        var add = address.streetNo + ' ' + address.subdivision + ' ' + address.barangay + ' ' + address.city + ' ' + address.province;
+                        objectsRemoved.push({
+                            action: 'Removed Address ' + add.replace(/\s+/g, ' ').trim(),
+                        });
+                        object.splice(index, 1);
+                    }
+                });
             };
 
             $scope.addIdentification = function (object) {
@@ -1809,7 +1815,14 @@ define(function () {
             };
 
             $scope.removeIdentification = function (object, index) {
-                object.splice(index, 1);
+                angular.forEach(object, function (identification, identificationIndex) {
+                    if (index == identificationIndex) {
+                        objectsRemoved.push({
+                            action: 'Removed Identification ' + identification.identificationNumber,
+                        });
+                        object.splice(index, 1);
+                    }
+                });
             };
 
             $scope.addContact = function (object) {
@@ -1820,7 +1833,14 @@ define(function () {
             };
 
             $scope.removeContact = function (object, index) {
-                object.splice(index, 1);
+                angular.forEach(object, function (contact, contactIndex) {
+                    if (index == contactIndex) {
+                        objectsRemoved.push({
+                            action: 'Removed Contact ' + contact.contactNumber,
+                        });
+                        object.splice(index, 1);
+                    }
+                });
             };
 
             $scope.addDirector = function () {
@@ -1838,7 +1858,14 @@ define(function () {
             };
 
             $scope.removeDirector = function (index) {
-                $scope.borrower.business.businessDirectors.splice(index, 1);
+                angular.forEach($scope.borrower.business.businessDirectors, function (director, directorIndex) {
+                    if (index == directorIndex) {
+                        objectsRemoved.push({
+                            action: 'Removed Director ' + director.name,
+                        });
+                        $scope.borrower.business.businessDirectors.splice(index, 1);
+                    }
+                });
             };
 
             $scope.addCommittee = function () {
@@ -1855,7 +1882,14 @@ define(function () {
             };
 
             $scope.removeCommittee = function (index) {
-                $scope.borrower.business.businessStandingCommittees.splice(index, 1);
+                angular.forEach($scope.borrower.business.businessStandingCommittees, function (committee, committeeIndex) {
+                    if (index == committeeIndex) {
+                        objectsRemoved.push({
+                            action: 'Removed Standing Committee ' + committee.name,
+                        });
+                        $scope.borrower.business.businessStandingCommittees.splice(index, 1);
+                    }
+                });
             };
 
             $scope.compareJSON = function (object1, object2) {
@@ -1874,25 +1908,42 @@ define(function () {
                             default:
                                 if (object1[prop] !== object2[prop]) {
                                     if (
-                                        prop !== '$$hashKey' &&
-                                        prop != 'nationality' &&
-                                        prop != 'legalForm' &&
-                                        prop != 'psic' &&
-                                        prop != 'firmSize' &&
-                                        prop != 'currency' &&
+                                        prop != 'dateUpdated' &&
                                         prop != 'addressType' &&
                                         prop != 'country' &&
                                         prop != 'ownerLessee' &&
-                                        prop != 'identificationType'
+                                        prop != 'identificationType' &&
+                                        prop != 'idIssueCountry' &&
+                                        prop != 'contactType' &&
+                                        prop != 'psic' &&
+                                        prop != 'incomeIndicator' &&
+                                        prop != 'currency' &&
+                                        prop != 'occupationStatus' &&
+                                        prop != 'occupation' &&
+                                        prop != 'title' &&
+                                        prop != 'gender' &&
+                                        prop != 'countryOfBirth' &&
+                                        prop != 'nationality' &&
+                                        prop != 'maritalStatus' &&
+                                        prop != 'religion' &&
+                                        prop != 'nationality' &&
+                                        prop != 'legalForm' &&
+                                        prop != 'psic' &&
+                                        prop != 'firmSize'
                                     ) {
                                         if (!object2[prop]) {
                                             objectsDiffering.push({
-                                                action: 'Changed ' + appFactory.normalizeString(prop) + ' from blank to ' + object1[prop],
+                                                action: 'Changed ' + appFactory.normalizeDerivedField(prop) + ' from blank to ' + object1[prop],
                                             });
                                         } else {
                                             objectsDiffering.push({
                                                 action:
-                                                    'Changed ' + appFactory.normalizeString(prop) + ' from ' + object2[prop] + ' to ' + object1[prop],
+                                                    'Changed ' +
+                                                    appFactory.normalizeDerivedField(prop) +
+                                                    ' from ' +
+                                                    object2[prop] +
+                                                    ' to ' +
+                                                    object1[prop],
                                             });
                                         }
                                     }
@@ -1906,20 +1957,20 @@ define(function () {
                                     if (prop1 == 'value') {
                                         appFactory.normalizeString(prop1);
                                         objectsDiffering.push({
-                                            action: 'Added ' + appFactory.normalizeString(prop1) + ' ' + object1[prop][prop1],
+                                            action: 'Added ' + appFactory.normalizeDerivedField(prop1) + ' ' + object1[prop][prop1],
                                         });
                                     } else if (prop1 == 'identificationNumber') {
                                         objectsDiffering.push({
-                                            action: 'Added ' + appFactory.normalizeString(prop1) + ' ' + object1[prop][prop1],
+                                            action: 'Added ' + appFactory.normalizeDerivedField(prop1) + ' ' + object1[prop][prop1],
                                         });
                                     }
                                 }
                                 break;
                             default:
-                                console.log(object2[prop]);
-                                if (prop !== '$$hashKey') {
+                                if (prop !== '$$hashKey' && prop != 'individual' && prop != 'business') {
                                     objectsDiffering.push({
-                                        action: 'Changed ' + appFactory.normalizeString(prop) + ' from ' + object2[prop] + ' to ' + object1[prop],
+                                        action:
+                                            'Changed ' + appFactory.normalizeDerivedField(prop) + ' from ' + object2[prop] + ' to ' + object1[prop],
                                     });
                                 }
                                 break;
@@ -1940,7 +1991,6 @@ define(function () {
             var borrowerBlockUI = blockUI.instances.get('borrowerBlockUI');
 
             $scope.update = function () {
-                // console.log($scope.compareJSON($scope.borrower, staticData));
                 swal({
                     title: 'Update Borrower',
                     text: 'Do you want to update this borrower?',
@@ -1953,7 +2003,7 @@ define(function () {
                     if (isConfirm) {
                         borrowerBlockUI.start('Updating Borrower...');
                         $scope.borrower.dateUpdated = new Date();
-                        $scope.borrower.accreditationDate = appFactory.dateWithoutTime($scope.borrower.accreditationDate, 'yyyy-MM-dd');
+                        $scope.borrower.accreditationDate = appFactory.dateWithoutTime($scope.borrower.accreditationDateFormatted, 'yyyy-MM-dd');
                         angular.forEach($scope.borrower.borrowerDocuments, function (documents) {
                             documents.appraisalDate = appFactory.dateWithoutTime(documents.appraisalDate, 'yyyy-MM-dd');
                         });
@@ -1983,29 +2033,27 @@ define(function () {
                                 individualEmployment.dateHiredTo = appFactory.dateWithoutTime(individualEmployment.dateHiredTo, 'yyyy-MM-dd');
                             });
                             $http.patch('/api/borrowers/individual/' + $scope.borrower.individual.id + '/', $scope.borrower.individual).then(
-                                function () {
+                                function (responseIndividual) {
+                                    var userLogDetails = $scope.compareJSON(responseIndividual.data, staticData.individual);
                                     delete $scope.borrower.individual;
                                     return $http.patch('/api/borrowers/update-borrower/' + $scope.borrower.borrowerId + '/', $scope.borrower).then(
-                                        function (response) {
+                                        function (responseBorrower) {
+                                            delete staticData.individual;
+                                            userLogDetails.concat($scope.compareJSON(responseBorrower.data, staticData));
                                             var user = JSON.parse(localStorage.getItem('currentUser'));
                                             var userLogs = {
                                                 user: user['id'],
                                                 action_type: 'Edited', //String value of action i.e. Created, Updated, Approved, Complete etc.
                                                 content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
-                                                object_id: response.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
+                                                object_id: responseBorrower.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
                                                 object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
                                                 apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
                                                 valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
-                                                logDetails: [
-                                                    {
-                                                        action: 'Edited ' + $scope.borrower.borrowerName, //Details of Log
-                                                    },
-                                                ],
-                                                // logDetails: $scope.compareJSON($scope.borrower, staticData),
+                                                logDetails: userLogDetails,
                                             };
-                                            // angular.forEach(objectsRemoved, function (objects) {
-                                            //     userLogs.logDetails.push(objects);
-                                            // });
+                                            angular.forEach(objectsRemoved, function (objects) {
+                                                userLogs.logDetails.push(objects);
+                                            });
                                             return appFactory.getContentTypeId('borrower').then(function (data) {
                                                 userLogs.content_type = data;
                                                 return $http.post('/api/users/userlogs/', userLogs).then(
@@ -2014,7 +2062,7 @@ define(function () {
                                                         swal('Success!', 'Borrower Updated.', 'success');
                                                         toastr.success('Success', 'Borrower Updated.');
                                                         $state.go('app.borrowers.info', {
-                                                            borrowerId: response.data.borrowerId,
+                                                            borrowerId: responseBorrower.data.borrowerId,
                                                         });
                                                     },
                                                     function (error) {
@@ -2050,13 +2098,14 @@ define(function () {
                                 'yyyy-MM-dd'
                             );
                             $scope.borrower.business.registrationDate = appFactory.dateWithoutTime(
-                                $scope.borrower.business.registrationDate,
+                                $scope.borrower.business.registrationDateFormatted,
                                 'yyyy-MM-dd'
                             );
                             $scope.borrower.business.reRegistrationDate = appFactory.dateWithoutTime(
-                                $scope.borrower.business.reRegistrationDate,
+                                $scope.borrower.business.reRegistrationDateFormatted,
                                 'yyyy-MM-dd'
                             );
+
                             angular.forEach($scope.borrower.business.businessAddress, function (businessAddress) {
                                 businessAddress.occupiedSince = appFactory.dateWithoutTime(businessAddress.occupiedSince, 'yyyy-MM-dd');
                             });
@@ -2090,29 +2139,27 @@ define(function () {
                             });
 
                             $http.patch('/api/borrowers/business/' + $scope.borrower.business.id + '/', $scope.borrower.business).then(
-                                function () {
+                                function (responseBusiness) {
+                                    var userLogDetails = $scope.compareJSON(responseBusiness.data, staticData.business);
                                     delete $scope.borrower.business;
                                     return $http.patch('/api/borrowers/update-borrower/' + $scope.borrower.borrowerId + '/', $scope.borrower).then(
-                                        function (response) {
+                                        function (responseBorrower) {
+                                            delete staticData.business;
+                                            userLogDetails.concat($scope.compareJSON(responseBorrower.data, staticData));
                                             var user = JSON.parse(localStorage.getItem('currentUser'));
                                             var userLogs = {
                                                 user: user['id'],
                                                 action_type: 'Edited', //String value of action i.e. Created, Updated, Approved, Complete etc.
                                                 content_type: '', //value return by appFactory, model name i.e. committee, documentmovement, steps etc.
-                                                object_id: response.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
+                                                object_id: responseBorrower.data.borrowerId, //ID of object created i.e. borrowerId, id etc.
                                                 object_type: 'Borrower', //String value to display on viewing i.e. Committee Member, Document etc
                                                 apiLink: '/api/borrowers/borrowers', //api link to access object_id. if object_id = borrowerId, then apiLInk = /api/borrowers/borrowers
                                                 valueToDisplay: 'borrowerName', //field value on api link to display. if object_id = borrowerId, apiLInk = /api/borrowers/borrowers, then  borrowerName
-                                                logDetails: [
-                                                    {
-                                                        action: 'Edited ' + $scope.borrower.borrowerName, //Details of Log
-                                                    },
-                                                ],
-                                                // logDetails: $scope.compareJSON($scope.borrower, staticData),
+                                                logDetails: userLogDetails,
                                             };
-                                            // angular.forEach(objectsRemoved, function (objects) {
-                                            //     userLogs.logDetails.push(objects);
-                                            // });
+                                            angular.forEach(objectsRemoved, function (objects) {
+                                                userLogs.logDetails.push(objects);
+                                            });
                                             return appFactory.getContentTypeId('borrower').then(function (data) {
                                                 userLogs.content_type = data;
                                                 return $http.post('/api/users/userlogs/', userLogs).then(
@@ -2121,7 +2168,7 @@ define(function () {
                                                         swal('Success!', 'Borrower Updated.', 'success');
                                                         toastr.success('Success', 'Borrower Updated.');
                                                         $state.go('app.borrowers.info', {
-                                                            borrowerId: response.data.borrowerId,
+                                                            borrowerId: responseBorrower.data.borrowerId,
                                                         });
                                                     },
                                                     function (error) {
@@ -2156,8 +2203,20 @@ define(function () {
                 });
             };
 
-            $scope.cancel = function (id) {
-                $state.go('app.borrowers.info', { borrowerId: id });
+            $scope.cancel = function (data) {
+                swal({
+                    title: 'Cancel Changes',
+                    text: 'Do you want to cancel Borrower Edit?',
+                    icon: 'info',
+                    buttons: {
+                        cancel: true,
+                        confirm: 'Cancel',
+                    },
+                }).then((isConfirm) => {
+                    if (isConfirm) {
+                        $state.go('app.borrowers.info', { borrowerId: data.borrowerId });
+                    }
+                });
             };
         }
     );

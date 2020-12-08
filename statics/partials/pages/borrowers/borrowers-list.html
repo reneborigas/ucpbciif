@@ -234,8 +234,8 @@
                                     <a
                                         href=""
                                         ng-click="contact.$hideRows = !contact.$hideRows"
-                                        ng-init="group.$hideRows = false"
-                                        ng-if="borrower.business"
+                                        ng-init="contact.$hideRows = false"
+                                        ng-show="borrower.business"
                                     >
                                         <i
                                             class="fas fa-chevron-right m-r-10"
@@ -299,7 +299,6 @@
                                 >
                                     {{ borrower.clientSince | date : 'longDate'}}
                                 </td>
-
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
                                     <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(borrower.borrowerId)">
                                         <i class="fad fa-eye"></i>
@@ -317,7 +316,7 @@
                                 </td>
                             </tr>
                             <tr ng-hide="!contact.$hideRows" ng-repeat-end align="center" print-exclude="true">
-                                <td colspan="7">
+                                <td colspan="8">
                                     <table class="table table-vertical-center table-light table-borderless">
                                         <thead>
                                             <th style="width: 28%">Full Name</th>

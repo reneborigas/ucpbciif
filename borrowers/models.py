@@ -75,6 +75,20 @@ class Branch(models.Model):
         return "%s - %s" % (self.name, self.branchCode)
 
 
+class AnnotatedBusinessManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                _borrowerBusinessNationalityName=F("nationality__description"),
+                _borrowerBusinessLegalFormName=F("legalForm__description"),
+                _borrowerBusinessPsicName=F("psic__description"),
+                _borrowerBusinessFirmSizeName=F("firmSize__description"),
+            )
+        )
+
+
 # CIC Compliance
 class Business(models.Model):
     tradeName = models.CharField(max_length=255, null=True, blank=True)
@@ -111,6 +125,22 @@ class Business(models.Model):
 
     def __str__(self):
         return "%s" % (self.tradeName)
+
+
+class AnnotatedIndividualManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                _borrowerIndividualTitleName=F("title__description"),
+                _borrowerIndividualGenderName=F("gender__description"),
+                _borrowerIndividualCountryOfBirthName=F("countryOfBirth__description"),
+                _borrowerIndividualNationalityName=F("nationality__description"),
+                _borrowerIndividualMaritalStatusName=F("maritalStatus__description"),
+                _borrowerIndividualReligionName=F("religion__name"),
+            )
+        )
 
 
 # CIC Compliance
@@ -184,6 +214,7 @@ class Individual(models.Model):
     dateUpdated = models.DateTimeField(
         auto_now=True,
     )
+    objects = AnnotatedIndividualManager()
 
     def __str__(self):
         return "%s %s" % (self.firstname, self.lastname)
@@ -387,7 +418,9 @@ class SoleTrader(models.Model):
     barangay = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
     province = models.CharField(max_length=255, null=True, blank=True)
-    country = models.CharField(max_length=255, null=True, blank=True)
+    country = models.ForeignKey(
+        "settings.Country", on_delete=models.SET_NULL, related_name="individualSoleTraderAddress", null=True, blank=True
+    )
     ownerLessee = models.ForeignKey(
         "settings.HouseOwnerLesseeType",
         on_delete=models.SET_NULL,

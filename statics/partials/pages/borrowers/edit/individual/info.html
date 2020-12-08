@@ -1,6 +1,21 @@
 <div>
     <div class="my-2 font-weight-bold text-dark">Borrower Individual Information</div>
     <div class="row">
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="accreditationDate">Accreditation Date</label>
+                <span>*</span>
+                <input
+                    type="date"
+                    class="form-control"
+                    id="accreditationDate"
+                    name="accreditationDate"
+                    ng-model="borrower.accreditationDateFormatted"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="lastname">Last Name</label>
@@ -236,12 +251,12 @@
         </div>
         <div class="col-xl-4">
             <div class="form-group">
-                <label for="civilStatus">Religion</label>
+                <label for="religion">Religion</label>
                 <select
                     class="form-control"
-                    id="civilStatus"
-                    name="civilStatus"
-                    ng-model="borrower.individual.civilStatus"
+                    id="religion"
+                    name="religion"
+                    ng-model="borrower.individual.religion"
                     ng-options="religion.id as religion.name for religion in religions"
                 ></select>
             </div>

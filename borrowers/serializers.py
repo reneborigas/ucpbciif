@@ -6,6 +6,92 @@ from documents.serializers import DocumentSerializer
 from processes.serializers import SubProcessSerializer
 from loans.serializers import LoanSerializer, CreditLineSerializer
 from payments.serializers import PaymentSerializer
+from django.db.models import (
+    Prefetch,
+    F,
+    Case,
+    When,
+    Value as V,
+    Count,
+    Sum,
+    ExpressionWrapper,
+    OuterRef,
+    Subquery,
+    Func,
+)
+from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
+
+# List Serializer Class
+class FilteredAddressSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _addressTypeName=F("addressType__description"),
+            _addressCountryName=F("country__description"),
+            _addressOwnerLesseeName=F("ownerLessee__description"),
+        ).order_by("id")
+        return super(FilteredAddressSerializer, self).to_representation(data)
+
+
+class FilteredIdentificationSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _identificationTypeName=F("identificationType__description"),
+        ).order_by("id")
+        return super(FilteredIdentificationSerializer, self).to_representation(data)
+
+
+class FilteredIDSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _idIssueCountryName=F("idIssueCountry__description"),
+        ).order_by("id")
+        return super(FilteredIDSerializer, self).to_representation(data)
+
+
+class FilteredContactSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _contactTypeName=F("contactType__description"),
+        ).order_by("id")
+        return super(FilteredContactSerializer, self).to_representation(data)
+
+
+class FilteredEmploymentSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _employmentPsicName=F("psic__description"),
+            _employmentIncomeIndicatorName=F("incomeIndicator__description"),
+            _employmentCurrencyName=F("currency__description"),
+            _employmentOccupationStatusName=F("occupationStatus__description"),
+            _employmentOccupationName=F("occupation__description"),
+        ).order_by("id")
+        return super(FilteredEmploymentSerializer, self).to_representation(data)
+
+
+class FilteredSoleTraderSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _soleTraderAddressTypeName=F("addressType__description"),
+            _soleTraderCountryName=F("country__description"),
+            _soleTraderOwnerLesseeName=F("ownerLessee__description"),
+        ).order_by("id")
+        return super(FilteredSoleTraderSerializer, self).to_representation(data)
+
+
+class FilteredIndividualBusinessSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _individualBusinessCountryName=F("country__description"),
+        ).order_by("id")
+        return super(FilteredIndividualBusinessSerializer, self).to_representation(data)
+
+
+class FilteredContactPersonSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.annotate(
+            _contactPersonCountryName=F("country__description"),
+        ).order_by("id")
+        return super(FilteredContactPersonSerializer, self).to_representation(data)
 
 
 class FamilySerializer(ModelSerializer):
@@ -19,11 +105,12 @@ class FamilySerializer(ModelSerializer):
 
 class AddressSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
-    addressTypeName = serializers.CharField(read_only=True)
-    countryName = serializers.CharField(read_only=True)
-    ownerLesseeName = serializers.CharField(read_only=True)
+    _addressTypeName = serializers.CharField(read_only=True)
+    _addressCountryName = serializers.CharField(read_only=True)
+    _addressOwnerLesseeName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredAddressSerializer
         model = Address
         fields = "__all__"
         read_only_fields = (
@@ -34,9 +121,10 @@ class AddressSerializer(ModelSerializer):
 
 class IdentificationSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
-    identificationTypeName = serializers.CharField(read_only=True)
+    _identificationTypeName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredIdentificationSerializer
         model = Identification
         fields = "__all__"
         read_only_fields = (
@@ -47,8 +135,10 @@ class IdentificationSerializer(ModelSerializer):
 
 class IDSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
+    _idIssueCountryName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredIDSerializer
         model = ID
         fields = "__all__"
         read_only_fields = ("individual",)
@@ -56,9 +146,10 @@ class IDSerializer(ModelSerializer):
 
 class ContactSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
-    contactTypeName = serializers.CharField(read_only=True)
+    _contactTypeName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredContactSerializer
         model = Contact
         fields = "__all__"
         read_only_fields = ("individual", "business")
@@ -66,8 +157,14 @@ class ContactSerializer(ModelSerializer):
 
 class EmploymentSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
+    _employmentPsicName = serializers.CharField(read_only=True)
+    _employmentIncomeIndicatorName = serializers.CharField(read_only=True)
+    _employmentCurrencyName = serializers.CharField(read_only=True)
+    _employmentOccupationStatusName = serializers.CharField(read_only=True)
+    _employmentOccupationName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredEmploymentSerializer
         model = Employment
         fields = "__all__"
         read_only_fields = ("individual",)
@@ -75,8 +172,12 @@ class EmploymentSerializer(ModelSerializer):
 
 class SoleTraderSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
+    _soleTraderAddressTypeName = serializers.CharField(read_only=True)
+    _soleTraderCountryName = serializers.CharField(read_only=True)
+    _soleTraderOwnerLesseeName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredSoleTraderSerializer
         model = SoleTrader
         fields = "__all__"
         read_only_fields = ("individual",)
@@ -84,8 +185,10 @@ class SoleTraderSerializer(ModelSerializer):
 
 class IndividualBusinessSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
+    _individualBusinessCountryName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredIndividualBusinessSerializer
         model = IndividualBusiness
         fields = "__all__"
         read_only_fields = ("individual",)
@@ -93,8 +196,10 @@ class IndividualBusinessSerializer(ModelSerializer):
 
 class ContactPersonSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
+    _contactPersonCountryName = serializers.CharField(read_only=True)
 
     class Meta:
+        list_serializer_class = FilteredContactPersonSerializer
         model = ContactPerson
         fields = "__all__"
         read_only_fields = ("business",)
@@ -137,7 +242,12 @@ class IndividualSerializer(ModelSerializer):
     individualIndividualBusiness = IndividualBusinessSerializer(many=True, required=False)
     individualSoleTrader = SoleTraderSerializer(many=True, required=False)
 
-    nationalityName = serializers.CharField(read_only=True)
+    _borrowerIndividualTitleName = serializers.CharField(source="title.description", read_only=True)
+    _borrowerIndividualGenderName = serializers.CharField(source="gender.description", read_only=True)
+    _borrowerIndividualCountryOfBirthName = serializers.CharField(source="countryOfBirth.description", read_only=True)
+    _borrowerIndividualNationalityName = serializers.CharField(source="nationality.description", read_only=True)
+    _borrowerIndividualMaritalStatusName = serializers.CharField(source="maritalStatus.description", read_only=True)
+    _borrowerIndividualReligionName = serializers.CharField(source="religion.name", read_only=True)
 
     def create(self, validated_data):
         individualFamily = validated_data.pop("individualFamily")
@@ -448,10 +558,10 @@ class BusinessSerializer(ModelSerializer):
     businessDirectors = DirectorSerializer(many=True, required=False)
     businessStandingCommittees = StandingCommitteeSerializer(many=True, required=False)
 
-    nationalityName = serializers.CharField(read_only=True)
-    legalFormName = serializers.CharField(read_only=True)
-    psicName = serializers.CharField(read_only=True)
-    firmSizeName = serializers.CharField(read_only=True)
+    _borrowerBusinessNationalityName = serializers.CharField(source="nationality.description", read_only=True)
+    _borrowerBusinessLegalFormName = serializers.CharField(source="legalForm.description", read_only=True)
+    _borrowerBusinessPsicName = serializers.CharField(source="psic.description", read_only=True)
+    _borrowerBusinessFirmSizeName = serializers.CharField(source="firmSize.description", read_only=True)
 
     def create(self, validated_data):
         businessAddress = validated_data.pop("businessAddress")
@@ -748,12 +858,13 @@ class BorrowerSerializer(ModelSerializer):
     borrowerName = serializers.CharField(read_only=True)
     borrowerType = serializers.CharField(read_only=True)
     branch = serializers.CharField(read_only=True)
-
     tin = serializers.CharField(read_only=True)
     address = serializers.CharField(read_only=True)
     phoneNo = serializers.CharField(read_only=True)
-    individual = IndividualSerializer()
-    business = BusinessSerializer()
+
+    individual = IndividualSerializer(many=False, required=False)
+    business = BusinessSerializer(many=False, required=False)
+
     documents = DocumentSerializer(many=True)
     borrowerAttachments = BorrowerAttachmentSerializer(many=True)
     borrowerDocuments = BorrowerDocumentsSerializer(many=True, required=False)
@@ -811,6 +922,20 @@ class CreateBorrowerSerializer(ModelSerializer):
             BorrowerDocuments.objects.create(**documents, borrower=borrower)
 
         return borrower
+
+    class Meta:
+        model = Borrower
+        fields = "__all__"
+
+
+class FetchBorrowerSerializer(ModelSerializer):
+    borrowerName = serializers.CharField(read_only=True)
+    borrowerType = serializers.CharField(read_only=True)
+    individual = IndividualSerializer(many=False, required=False)
+    business = BusinessSerializer(many=False, required=False)
+    borrowerDocuments = BorrowerDocumentsSerializer(many=True, required=False)
+
+    _borrowerArea = serializers.CharField(source="area.name", read_only=True)
 
     class Meta:
         model = Borrower
