@@ -496,6 +496,12 @@ define(function () {
                 angular.element('#edit-approval-date').modal('show');
             };
 
+            $scope.editExpiryDate = function (id, dateExpired) {
+                $scope.update.id = id;
+                $scope.update.dateExpired = new Date(dateExpired);
+                angular.element('#edit-expiry-date').modal('show');
+            };
+
             $scope.updateApprovalDate = function () {
                 $http
                     .post('/api/loans/updatecreditlineview/', {
@@ -509,6 +515,28 @@ define(function () {
                             $('.modal-backdrop').remove();
                             $state.reload();
                             toastr.success('Success', 'Approval Date updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update date released. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            };
+            $scope.updateExpiryDate = function () {
+                $http 
+                    .post('/api/loans/updatecreditlineview/', {
+                        creditLineId: $scope.update.id,
+                        dateExpired: $scope.update.dateExpired,
+                    })
+                    .then(
+                        function (response) {
+                            angular.element('#edit-expiry-date').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $state.reload();
+                            toastr.success('Success', 'Expiry Date updated.');
                         },
                         function (error) {
                             toastr.error(

@@ -596,6 +596,36 @@ define(function () {
                     );
             };
 
+            $scope.editExpiryDate = function (id, dateExpired) {
+                $scope.update.id = id;
+                $scope.update.dateExpired = new Date(dateExpired);
+                angular.element('#edit-expiry-date').modal('show');
+            };
+
+            $scope.updateExpiryDate = function () {
+                $http
+                    .post('/api/loans/updateloanview/', {
+                        loanId: $scope.update.id,
+                        dateExpired: $scope.update.dateExpired,
+                    })
+                    .then( 
+                        function (response) {
+                            angular.element('#edit-expiry-date').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $state.reload();
+                            toastr.success('Success', 'Expiry Date updated.');
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not update date released. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            };
+
+
             $http.get('/api/payments/checkstatuses/').then(
                 function (response) {
                     $scope.checkStatuses = response.data;

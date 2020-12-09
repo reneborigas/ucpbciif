@@ -116,11 +116,23 @@
                                             data-toggle="tooltip"
                                             data-placement="top" 
                                             ng-click="editApprovalDate(creditLine.id,creditLine.dateApproved)" 
-                                        >
+                                        > 
                                             {{ creditLine.dateApproved | date: 'mediumDate' }}
                                         </button>
-                                    </div>
+                                    </div> 
                                     <div class="mr-6">
+                                        <div class="font-weight-bold mb-2">Expiry Date</div>
+                                        <button
+                                            class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold"
+                                            title="Edit Expiry Date"
+                                            data-toggle="tooltip"
+                                            data-placement="top" 
+                                            ng-click="editExpiryDate(creditLine.id,creditLine.dateExpired)" 
+                                        >
+                                            {{ creditLine.dateExpired | date: 'mediumDate' }}
+                                        </button>
+                                    </div>
+                                    <!-- <div class="mr-6">
                                         <div class="font-weight-bold mb-2">Expiry Date</div>
                                         <span
                                             class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold"
@@ -128,7 +140,7 @@
                                             {{ creditLine.dateExpired | date: 'mediumDate' }}
                                         </span>
                                     </div>
-                                     
+                                      -->
                                 </div>
                             </div>
                         </div>
@@ -283,7 +295,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody>  
                                     <tr
                                         ng-repeat="loan in loans | startFrom:currentPage.loans * pageSize.loans | limitTo: pageSize.loans"
                                     >
@@ -512,7 +524,48 @@
             </div>
         </div>
     </div>
+    <!-- End Modal Edit Approval Date --> 
+
+    <!-- Start Modal Edit Expiry Date -->
+    <div
+        id="edit-expiry-date"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Expiry Date</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="pb-1">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="date" class="form-control form-control-solid" ng-model="update.dateExpired" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="updateExpiryDate(update.dateExpired)"
+                    >
+                        Update
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- End Modal Edit Approval Date -->
+
     <!-- Start Modal Edit Release Date -->
     <div
         id="edit-release-date"

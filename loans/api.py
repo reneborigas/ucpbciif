@@ -158,16 +158,24 @@ class UpdateCreditLineView(views.APIView):
                 creditLine.purpose = purpose
                 new_value = purpose
             security = request.data.get("security")
-            if security:
+            if security: 
                 creditLine.security = security
                 new_value = security
             creditLine.save()
             dateApproved = request.data.get("dateApproved")
 
-            if dateApproved:
+            if dateApproved: 
                 creditLine.dateApproved = dateApproved
                 new_value = dateApproved
                 creditLine.save()
+
+            dateExpired = request.data.get("dateExpired")
+
+            if dateExpired:
+                creditLine.dateExpired = dateExpired
+                new_value = dateExpired
+                creditLine.save()
+
             return Response(
                 {
                     "message": "Credit Line Updated",
@@ -368,6 +376,16 @@ class UpdateLoanView(views.APIView):
                 loan.creditLine.save()
                 new_value = dateApproved
                 loan.save()
+
+            dateExpired = request.data.get("dateExpired")
+
+            if dateExpired:
+                # loan.dateApproved = dateApproved
+                loan.creditLine.dateExpired = dateExpired
+                loan.creditLine.save()
+                new_value = dateExpired
+                loan.save()
+
 
             dateReleased = request.data.get("dateReleased")
             if dateReleased:
