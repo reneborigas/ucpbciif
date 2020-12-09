@@ -782,6 +782,40 @@ define(function () {
                         return str.toUpperCase();
                     });
             },
+            normalizeDerivedField: function (string) {
+                if (string.charAt(0) == '_') {
+                    var normalizedString = string.replace('_', '');
+                    return normalizedString
+                        .replace(/([A-Z])/g, function ($1) {
+                            return ' ' + $1.toUpperCase();
+                        })
+                        .replace(/([_])/g, function ($1) {
+                            return ' ';
+                        })
+                        .replace(/\s[a-z]/g, function ($1) {
+                            return $1.toUpperCase();
+                        })
+                        .replace(/^./, function (str) {
+                            return str.toUpperCase();
+                        })
+                        .replace('Name', '')
+                        .trim();
+                } else {
+                    return string
+                        .replace(/([A-Z])/g, function ($1) {
+                            return ' ' + $1.toUpperCase();
+                        })
+                        .replace(/([_])/g, function ($1) {
+                            return ' ';
+                        })
+                        .replace(/\s[a-z]/g, function ($1) {
+                            return $1.toUpperCase();
+                        })
+                        .replace(/^./, function (str) {
+                            return str.toUpperCase();
+                        });
+                }
+            },
             slugify: function (text) {
                 var slug = text.toLowerCase().trim();
                 slug = slug.replace(/[^a-z0-9\s-]/g, ' ');

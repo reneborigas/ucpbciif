@@ -16,7 +16,7 @@
                     <strong>{{ log.action_type }}</strong>
                 </div>
                 <div class="row m-b-10" style="margin-left: 0px !important">By {{ log.userName }}</div>
-                <div class="row" style="margin-left: 0px !important">{{ log.details }}</div>
+                <div class="row" style="margin-left: 0px !important" ng-repeat="deatils in log.logDetails">{{ details.action }}</div>
             </td>
             <td>{{ log.action_time | date : format : mediumDate }}</td>
         </tr>

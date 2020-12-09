@@ -3,6 +3,7 @@ from .api import *
 
 router = DefaultRouter()
 router.register(r"create-borrower", CreateBorrowerViewSet)
+router.register(r"fetch-borrower", FetchBorrowerViewSet)
 router.register(r"update-borrower", UpdateBorrowerViewSet)
 router.register(r"borrowers", BorrowerViewSet)
 router.register(r"borrowersreports", BorrowerReportViewSet)

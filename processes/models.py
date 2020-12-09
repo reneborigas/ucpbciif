@@ -1,37 +1,38 @@
 from django.db import models
 from django.utils import timezone
-from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.core.validators import MaxValueValidator, MinValueValidator
 
-class Process(models.Model):     
+
+class Process(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
     code = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="processCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -41,65 +42,67 @@ class Process(models.Model):
         return "%s" % (self.name)
 
 
-class SubProcess(models.Model):     
+class SubProcess(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
     code = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
-    relatedProcesses = models.ManyToManyField('processes.SubProcess',blank=True)
+    relatedProcesses = models.ManyToManyField("processes.SubProcess", blank=True)
 
     process = models.ForeignKey(
         Process,
         on_delete=models.CASCADE,
         related_name="subProcesses",
-    ) 
+    )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="subProcessCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
     )
-    def isCanCreateNewFile(self,borrower):
+
+    def isCanCreateNewFile(self, borrower):
         isAllowed = False
         isAllowedByParent = False
         from documents.models import Document
 
         parentDocument = None
-        if(self.relatedProcesses.last()):
+        if self.relatedProcesses.last():
 
+            lastDocument = (
+                Document.objects.filter(borrower=borrower, subProcess=self.relatedProcesses.last())
+                .order_by("id")
+                .last()
+            )
 
-            lastDocument = Document.objects.filter(
-                borrower=borrower,
-                subProcess = self.relatedProcesses.last()
-
-                ).order_by('id').last()
-
-
-            if(lastDocument):
-                if(lastDocument.documentMovements.last().status.isFinalStatus and not lastDocument.documentMovements.last().status.isNegativeResult):
+            if lastDocument:
+                if (
+                    lastDocument.documentMovements.last().status.isFinalStatus
+                    and not lastDocument.documentMovements.last().status.isNegativeResult
+                ):
                     isAllowedByParent = True
                 else:
                     print("here")
@@ -107,34 +110,35 @@ class SubProcess(models.Model):
 
                 if lastDocument.loan:
                     print(lastDocument.loan.loanStatus)
-                    if lastDocument.loan.loanStatus.name =='CURRENT':
+                    if lastDocument.loan.loanStatus.name == "CURRENT":
                         isAllowedByParent = False
 
-        lastDocument = Document.objects.filter(
-            borrower=borrower,
-            subProcess = self,
+        lastDocument = (
+            Document.objects.filter(
+                borrower=borrower,
+                subProcess=self,
+            )
+            .order_by("id")
+            .last()
+        )
 
-            ).order_by('id').last()
-
-        if(lastDocument):
-            if(lastDocument.documentMovements.last().status.isFinalStatus ): 
+        if lastDocument:
+            if lastDocument.documentMovements.last().status.isFinalStatus:
 
                 isAllowed = True
             else:
-                print("here") 
+                print("here")
                 isAllowed = False
         else:
-            isAllowed=True
+            isAllowed = True
 
-        if( (not lastDocument) and (not self.relatedProcesses.last() )):
-            isAllowed=True
-            isAllowedByParent=True
+        if (not lastDocument) and (not self.relatedProcesses.last()):
+            isAllowed = True
+            isAllowedByParent = True
 
-        if( (lastDocument) and (not self.relatedProcesses.last() )):
-            
-            isAllowedByParent=True
+        if (lastDocument) and (not self.relatedProcesses.last()):
 
-          
+            isAllowedByParent = True
 
         print(self)
         print(isAllowed)
@@ -144,66 +148,66 @@ class SubProcess(models.Model):
 
         return False
 
-
-    def getParentLastDocument(self,borrower):
+    def getParentLastDocument(self, borrower):
         from documents.models import Document
 
+        if self.relatedProcesses.last():
 
-        if(self.relatedProcesses.last()):
+            lastDocument = (
+                Document.objects.filter(
+                    borrower=borrower,
+                    subProcess=self.relatedProcesses.last(),
+                )
+                .order_by("id")
+                .last()
+            )
 
-
-            lastDocument = Document.objects.filter(
-                borrower=borrower,
-                subProcess = self.relatedProcesses.last(),
-
-                ).order_by('id').last()
-
-
-            if(lastDocument):
-                if(lastDocument.documentMovements.last().status.isFinalStatus and not lastDocument.documentMovements.last().status.isNegativeResult):
+            if lastDocument:
+                if (
+                    lastDocument.documentMovements.last().status.isFinalStatus
+                    and not lastDocument.documentMovements.last().status.isNegativeResult
+                ):
                     isAllowedByParent = True
 
-                return lastDocument    
+                return lastDocument
         return None
 
     def __str__(self):
         return "%s" % (self.name)
 
 
-class Statuses(models.Model):  
+class Statuses(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
-   
+
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,
         related_name="statuses",
     )
-    isDefault = models.BooleanField(
-        default=False
-    )    
+    isDefault = models.BooleanField(default=False)
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="statusesCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
@@ -216,88 +220,81 @@ class Statuses(models.Model):
     isNegativeResult = models.BooleanField(
         default=False,
     )
-    
-    def __str__(self):
-        return "%s %s" % (self.name, self.subProcess    )
 
-class ProcessRequirement(models.Model):  
+    def __str__(self):
+        return "%s %s" % (self.name, self.subProcess)
+
+
+class ProcessRequirement(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
-     
+
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,
         related_name="processRequirements",
     )
-    isRequired = models.BooleanField(
-        default=True
-    )
-    isAttachementRequired = models.BooleanField(
-        default=True
-    )    
+    isRequired = models.BooleanField(default=True)
+    isAttachementRequired = models.BooleanField(default=True)
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="requirementsCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
     )
 
-    
     def __str__(self):
-        return "%s - %s" % (self.subProcess,self.name)
+        return "%s - %s" % (self.subProcess, self.name)
 
-class Step(models.Model):  
+
+class Step(models.Model):
     # def _get_self_subProcess(self):
     #     return self.subProcess
-    order= models.PositiveIntegerField(
-        default=0,
-        validators=[MinValueValidator(0), 
-        MaxValueValidator(100)]
-    )
+    order = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
     committee = models.ForeignKey(
-        'committees.Committee',
+        "committees.Committee",
         on_delete=models.CASCADE,
         related_name="committeeSteps",
     )
-    positions = models.ManyToManyField('committees.Position',blank=True)
+    positions = models.ManyToManyField("committees.Position", blank=True)
     subProcess = models.ForeignKey(
         SubProcess,
         on_delete=models.CASCADE,
-        related_name="steps", 
-    )    
+        related_name="steps",
+    )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
-    )    
+        blank=True,
+        null=True,
+    )
     status = models.ForeignKey(
         Statuses,
         on_delete=models.CASCADE,
@@ -305,83 +302,83 @@ class Step(models.Model):
         related_name="stepStatuses",
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="stepCreatedBy",
-        null = True,
-    )    
+        null=True,
+    )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
     )
 
     def __str__(self):
-        return "%s: %s (%s)" % (self.order ,self.name, self.subProcess)
+        return "%s: %s (%s)" % (self.order, self.name, self.subProcess)
 
-        
-class Output(models.Model):  
+
+class Output(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
-    ) 
+        blank=False,
+        null=False,
+    )
     step = models.ForeignKey(
         Step,
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="outputs",
     )
-    callBackLink= models.TextField(
-        blank = True,
-        null = True,
+    callBackLink = models.TextField(
+        blank=True,
+        null=True,
     )
     nextStep = models.ForeignKey(
         Step,
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="nextStepOutputs",
-        blank=True,null=True
+        blank=True,
+        null=True,
     )
-    isDefault = models.BooleanField(
-        default=False
-    )    
+    isDefault = models.BooleanField(default=False)
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="outputCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
     )
 
     def __str__(self):
-        return "%s - %s" % (self.step,self.name)
-        
-class StepRequirement(models.Model):  
+        return "%s - %s" % (self.step, self.name)
+
+
+class StepRequirement(models.Model):
     name = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
     step = models.ForeignKey(
         Step,
@@ -389,164 +386,157 @@ class StepRequirement(models.Model):
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="requirements",
     )
-    isRequired =models.BooleanField(
-        default=True
-    )  
-    isAttachementRequired = models.BooleanField(
-        default=True
-    )
+    isRequired = models.BooleanField(default=True)
+    isAttachementRequired = models.BooleanField(default=True)
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="stepRequirementCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
-    isDeleted = models.BooleanField( 
+    isDeleted = models.BooleanField(
         default=False,
     )
 
     def __str__(self):
-        return "%s - %s" % (self.step,self.name)
+        return "%s - %s" % (self.step, self.name)
+
 
 def attachment_directory_path(instance, filename):
     # ext = filename.split('.')[-1]
     # filename = "%s_%s.%s" % (instance.user.id, instance.questid.id, ext)
-    return 'attachments_{0}/{1}'.format(instance.stepRequirement.id, filename)
+    return "attachments_{0}/{1}".format(instance.stepRequirement.id, filename)
 
-class StepRequirementAttachment(models.Model):  
+
+class StepRequirementAttachment(models.Model):
     fileName = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
-    fileAttachment = models.FileField(
-        null = True,
-        blank=True,
-        upload_to=attachment_directory_path
-    )
+    fileAttachment = models.FileField(null=True, blank=True, upload_to=attachment_directory_path)
     stepRequirement = models.ForeignKey(
         StepRequirement,
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="stepRequirementAttachments",
-    )    
+    )
     document = models.ForeignKey(
-        'documents.Document',
+        "documents.Document",
         on_delete=models.CASCADE,
         related_name="documentStepRequirementAttachments",
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="stepAttachmentCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
     )
 
     def __str__(self):
-        return "%s - %s" % (self.stepRequirement,self.fileName)
+        return "%s - %s" % (self.stepRequirement, self.fileName)
 
 
 def process_attachment_directory_path(instance, filename):
     # ext = filename.split('.')[-1]
     # filename = "%s_%s.%s" % (instance.user.id, instance.questid.id, ext)
-    return 'attachments_{0}/{1}'.format(instance.processRequirement.id, filename)
+    return "attachments_{0}/{1}".format(instance.processRequirement.id, filename)
 
-class ProcessRequirementAttachment(models.Model):  
+
+class ProcessRequirementAttachment(models.Model):
     fileName = models.CharField(
         max_length=255,
-        blank = False,
-        null = False, 
+        blank=False,
+        null=False,
     )
-    fileAttachment = models.FileField(
-        null = True,
-        blank=True,
-        upload_to=process_attachment_directory_path
-    )
+    fileAttachment = models.FileField(null=True, blank=True, upload_to=process_attachment_directory_path)
     processRequirement = models.ForeignKey(
         ProcessRequirement,
         on_delete=models.CASCADE,
         # limit_choices_to={'subProcess': document_.subProcess},
         related_name="processRequirementAttachments",
-    )    
+    )
     document = models.ForeignKey(
-        'documents.Document',
+        "documents.Document",
         on_delete=models.CASCADE,
         related_name="documentProcessRequirementAttachments",
     )
     committee = models.ForeignKey(
-        'committees.Committee',
+        "committees.Committee",
         on_delete=models.CASCADE,
         related_name="processRequirementAttachments",
     )
     description = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     remarks = models.TextField(
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
     createdBy = models.ForeignKey(
-        'users.CustomUser',
+        "users.CustomUser",
         on_delete=models.SET_NULL,
         related_name="processAttachmentCreatedBy",
-        null = True,
+        null=True,
     )
     dateCreated = models.DateTimeField(
         auto_now_add=True,
     )
     dateUpdated = models.DateTimeField(
-        auto_now_add=True,
+        auto_now=True,
     )
     isDeleted = models.BooleanField(
         default=False,
     )
 
     def __str__(self):
-        return "%s - %s" % (self.processRequirement,self.fileName)
-# class PositionStep(models.Model):  
+        return "%s - %s" % (self.processRequirement, self.fileName)
+
+
+# class PositionStep(models.Model):
 
 #     position = models.CharField(
 #         'committees.Position',
 #         on_delete=models.CASCADE,
-          
+
 #     )
 
 #     step = models.ForeignKey(
 #         Step,
 #         on_delete=models.CASCADE,
-         
+
 #     )
 
 #     createdBy = models.ForeignKey(

@@ -1,0 +1,451 @@
+<div>
+    <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Address</div>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="address in borrower.individual.individualAddress">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="addressType">Address Type</label>
+                    <select
+                        class="form-control"
+                        id="addressType"
+                        name="addressType"
+                        ng-model="address.addressType"
+                        ng-options="address.id as address.remarks for address in addressTypes | filter : { $: 'Individual' }"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="streetNo">Street Number</label>
+                    <input type="text" class="form-control" id="streetNo" name="streetNo" placeholder="Street Number" ng-model="address.streetNo" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="postalCode">Postal Code</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="postalCode"
+                        name="postalCode"
+                        placeholder="Postal Code"
+                        ng-model="address.postalCode"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="subdivision">Subdivision</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="subdivision"
+                        name="subdivision"
+                        placeholder="Subdivision"
+                        ng-model="address.subdivision"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="barangay">Barangay</label>
+                    <input type="text" class="form-control" id="barangay" name="barangay" placeholder="Barangay" ng-model="address.barangay" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="city">Town/City</label>
+                    <input type="text" class="form-control" id="city" name="city" placeholder="City" ng-model="address.city" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="province">Province</label>
+                    <input type="text" class="form-control" id="province" name="province" placeholder="Province" ng-model="address.province" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select
+                        class="form-control"
+                        id="country"
+                        name="country"
+                        ng-model="address.country"
+                        ng-options="country.id as country.description for country in countries"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="ownerLessee">Owner/Lessee</label>
+                    <select
+                        class="form-control"
+                        id="ownerLessee"
+                        name="ownerLessee"
+                        ng-model="address.ownerLessee"
+                        ng-options="ol.id as ol.description for ol in ownerLessee"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="occupiedSince">Occupied Since</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="occupiedSince"
+                        name="occupiedSince"
+                        placeholder="Occupied Since"
+                        ng-model="address.occupiedSince"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeAddress(borrower.individual.individualAddress,$index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove Address
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addAddress(borrower.individual.individualAddress)">
+            <i class="fal fa-plus mr-2"></i>
+            Add Address
+        </button>
+    </div>
+    <!-- <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Identification</div>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="identification in individual.individualIdentification">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="identificationType">Identification Type</label>
+                    <select
+                        class="form-control"
+                        id="identificationType"
+                        name="identificationType"
+                        ng-model="identification.identificationType"
+                        ng-options="id.id as id.description for id in identificationTypes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="identificationNumber">Identification Number</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="identificationNumber"
+                        name="identificationNumber"
+                        placeholder="Identification Number"
+                        ng-model="identification.identificationNumber"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeIdentification($index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove Identification
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addIdentification(individual.identification)">
+            <i class="fal fa-plus mr-2"></i>
+            Add Identification
+        </button>
+    </div> -->
+    <!-- <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">ID</div>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="idIndividual in individual.individualID">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="idType">ID Type</label>
+                    <select
+                        class="form-control"
+                        id="idType"
+                        name="idType"
+                        ng-model="idIndividual.idType"
+                        ng-options="id.id as id.description for id in idTypes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="idNumber">ID Number</label>
+                    <input type="text" class="form-control" id="idNumber" name="idNumber" placeholder="ID Number" ng-model="idIndividual.idNumber" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="idIssueDate">ID Issue Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="idIssueDate"
+                        name="idIssueDate"
+                        placeholder="ID Issue Date "
+                        ng-model="idIndividual.idIssueDate"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="idIssueCountry">ID Country Issue</label>
+                    <select
+                        class="form-control"
+                        id="idIssueCountry"
+                        name="idIssueCountry"
+                        ng-model="idIndividual.idIssueCountry"
+                        ng-options="country.id as country.description for country in countries"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="idExpiryDate">ID Expiry Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="idExpiryDate"
+                        name="idExpiryDate"
+                        placeholder="ID Expiry Date "
+                        ng-model="idIndividual.idExpiryDate"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="isIssuedBy">ID Issued By</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="isIssuedBy"
+                        name="isIssuedBy"
+                        placeholder="ID Issued By"
+                        ng-model="idIndividual.isIssuedBy"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeID($index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove ID
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addID(individual.idIndividual)">
+            <i class="fal fa-plus mr-2"></i>
+            Add ID
+        </button>
+    </div> -->
+    <div class="d-flex justify-content-between my-3">
+        <div class="mr-2">
+            <div class="my-2 font-weight-bold text-dark">Contact</div>
+        </div>
+    </div>
+    <div class="pb-5" ng-repeat="contact in borrower.individual.individualContact">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="contactType">Contact Type</label>
+                    <select
+                        class="form-control"
+                        id="contactType"
+                        name="contactType"
+                        ng-model="contact.contactType"
+                        ng-options="contactType.id as contactType.description for contactType in contactTypes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="contactNumber"
+                        name="contactNumber"
+                        placeholder="Contact Number"
+                        ng-model="contact.contactNumber"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <button class="btn btn-outline-warning btn-sm" type="button" ng-click="removeContact(borrower.individual.individualContact,$index)">
+                    <i class="fal fa-minus mr-2"></i>
+                    Remove Contact
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-sm btn-outline-primary" type="button" ng-click="addContact(borrower.individual.individualContact)">
+            <i class="fal fa-plus mr-2"></i>
+            Add Contact
+        </button>
+    </div>
+    <!-- <div class="my-3 font-weight-bold text-dark">Sole Trader</div>
+    <div ng-repeat="soleTrader in individual.soleTrader">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderTradeName">Trade Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="soleTraderTradeName"
+                        name="soleTraderTradeName"
+                        placeholder="Trade Name"
+                        ng-model="soleTrader.tradeName"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderAddressType">Address Type</label>
+                    <select
+                        class="form-control"
+                        id="soleTraderAddressType"
+                        name="soleTraderAddressType"
+                        ng-model="soleTrader.addressType"
+                        ng-options="address.id as address.description for address in addressTypes"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderStreetNo">Street Number</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="soleTraderStreetNo"
+                        name="soleTraderStreetNo"
+                        placeholder="Street Number"
+                        ng-model="soleTrader.streetNo"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderPostalCode">Postal Code</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="soleTraderPostalCode"
+                        name="soleTraderPostalCode"
+                        placeholder="Postal Code"
+                        ng-model="soleTrader.postalCode"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderSubdivision">Subdivision</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="soleTraderSubdivision"
+                        name="soleTraderSubdivision"
+                        placeholder="Subdivision"
+                        ng-model="soleTrader.subdivision"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderBarangay">Barangay</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="soleTraderBarangay"
+                        name="soleTraderBarangay"
+                        placeholder="Barangay"
+                        ng-model="soleTrader.barangay"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderCity">City</label>
+                    <input type="text" class="form-control" id="soleTraderCity" name="soleTraderCity" placeholder="City" ng-model="soleTrader.city" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderProvince">Province</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="soleTraderProvince"
+                        name="soleTraderProvince"
+                        placeholder="Province"
+                        ng-model="soleTrader.province"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderCountry">Country</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="soleTraderCountry"
+                        name="soleTraderCountry"
+                        placeholder="Country"
+                        ng-model="soleTrader.country"
+                    />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderOwnerLessee">Owner/Lessee</label>
+                    <select
+                        class="form-control"
+                        id="soleTraderOwnerLessee"
+                        name="soleTraderOwnerLessee"
+                        ng-model="soleTrader.ownerLessee"
+                        ng-options="ol.id as ol.description for ol in ownerLessee"
+                    ></select>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="soleTraderOccupiedSince">Occupied Since</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="soleTraderOccupiedSince"
+                        name="soleTraderOccupiedSince"
+                        placeholder="Occupied Since"
+                        ng-model="soleTrader.occupiedSince"
+                    />
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>

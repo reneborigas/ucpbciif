@@ -1,6 +1,21 @@
 <div>
     <div class="my-2 font-weight-bold text-dark">Borrower Individual Information</div>
     <div class="row">
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label for="accreditationDate">Accreditation Date</label>
+                <span>*</span>
+                <input
+                    type="date"
+                    class="form-control"
+                    id="accreditationDate"
+                    name="accreditationDate"
+                    ng-model="borrower.accreditationDateFormatted"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="lastname">Last Name</label>
@@ -11,7 +26,7 @@
                     id="lastname"
                     name="lastname"
                     placeholder="Last Name"
-                    ng-model="individual.lastname"
+                    ng-model="borrower.individual.lastname"
                     ng-class="{'is-invalid' : form.wizardForm.lastname.$invalid && form.wizardForm.lastname.$touched , 'is-valid' : form.wizardForm.lastname.$valid && form.wizardForm.lastname.$touched }"
                     required
                 />
@@ -30,7 +45,7 @@
                     id="firstname"
                     name="firstname"
                     placeholder="First Name"
-                    ng-model="individual.firstname"
+                    ng-model="borrower.individual.firstname"
                     ng-class="{'is-invalid' : form.wizardForm.firstname.$invalid && form.wizardForm.firstname.$touched , 'is-valid' : form.wizardForm.firstname.$valid && form.wizardForm.firstname.$touched }"
                     required
                 />
@@ -48,7 +63,7 @@
                     id="middlename"
                     name="middlename"
                     placeholder="Middle Name"
-                    ng-model="individual.middlename"
+                    ng-model="borrower.individual.middlename"
                 />
             </div>
         </div>
@@ -59,7 +74,7 @@
                     class="form-control"
                     id="title"
                     name="title"
-                    ng-model="individual.title"
+                    ng-model="borrower.individual.title"
                     ng-options="title.id as title.description for title in titles"
                 ></select>
             </div>
@@ -67,7 +82,7 @@
         <div class="col-xl-4">
             <div class="form-group">
                 <label for="suffix">Suffix</label>
-                <input type="text" class="form-control" id="suffix" name="suffix" placeholder="Suffix" ng-model="individual.suffix" />
+                <input type="text" class="form-control" id="suffix" name="suffix" placeholder="Suffix" ng-model="borrower.individual.suffix" />
             </div>
         </div>
         <div class="col-xl-4">
@@ -79,7 +94,7 @@
                     id="previousLastName"
                     name="previousLastName"
                     placeholder="Previous Last Name"
-                    ng-model="individual.previousLastName"
+                    ng-model="borrower.individual.previousLastName"
                 />
             </div>
         </div>
@@ -92,7 +107,7 @@
                     class="form-control"
                     id="gender"
                     name="gender"
-                    ng-model="individual.gender"
+                    ng-model="borrower.individual.gender"
                     ng-options="gender.id as gender.description for gender in genders"
                 ></select>
             </div>
@@ -106,7 +121,7 @@
                     id="dateOfBirth"
                     name="dateOfBirth"
                     placeholder="Date of Birth"
-                    ng-model="individual.dateOfBirth"
+                    ng-model="borrower.individual.dateOfBirthFormatted"
                 />
             </div>
         </div>
@@ -119,7 +134,7 @@
                     id="placeOfBirth"
                     name="placeOfBirth"
                     placeholder="Place of Birth"
-                    ng-model="individual.placeOfBirth"
+                    ng-model="borrower.individual.placeOfBirth"
                 />
             </div>
         </div>
@@ -130,7 +145,7 @@
                     class="form-control"
                     id="countryOfBirth"
                     name="countryOfBirth"
-                    ng-model="individual.countryOfBirth"
+                    ng-model="borrower.individual.countryOfBirth"
                     ng-options="country.id as country.description for country in countries"
                 ></select>
             </div>
@@ -142,7 +157,7 @@
                     class="form-control"
                     id="individualNationality"
                     name="individualNationality"
-                    ng-model="individual.nationality"
+                    ng-model="borrower.individual.nationality"
                     ng-options="country.id as country.description for country in countries"
                 ></select>
             </div>
@@ -154,7 +169,7 @@
                     class="form-control"
                     id="individualResident"
                     name="individualResident"
-                    ng-model="individual.resident"
+                    ng-model="borrower.individual.resident"
                     ng-options="res.value as res.text for res in resident"
                 ></select>
             </div>
@@ -168,7 +183,7 @@
                     id="alienCertificateRegistrationNumber"
                     name="alienCertificateRegistrationNumber"
                     placeholder="Alien Certificate Registration Number"
-                    ng-model="individual.alienCertificateRegistrationNumber"
+                    ng-model="borrower.individual.alienCertificateRegistrationNumber"
                 />
             </div>
         </div>
@@ -181,7 +196,7 @@
                     class="form-control"
                     id="civilStatus"
                     name="civilStatus"
-                    ng-model="individual.civilStatus"
+                    ng-model="borrower.individual.civilStatus"
                     ng-options="status.id as status.description for status in civilstatus"
                 ></select>
             </div>
@@ -189,7 +204,7 @@
         <div class="col-xl-4" ng-if="checkIfMarried(individual.civilStatus)">
             <div class="form-group">
                 <label for="dateOfMarriage">Date of Marriage</label>
-                <input type="date" class="form-control" id="dateOfMarriage" name="dateOfMarriage" ng-model="individual.dateOfMarriage" />
+                <input type="date" class="form-control" id="dateOfMarriage" name="dateOfMarriage" ng-model="borrower.individual.dateOfMarriage" />
             </div>
         </div>
         <div class="col-xl-4">
@@ -202,7 +217,7 @@
                     id="numberOfDependents"
                     name="numberOfDependents"
                     placeholder="Number of Dependents"
-                    ng-model="individual.numberOfDependents"
+                    ng-model="borrower.individual.numberOfDependents"
                     numeric-input
                 />
             </div>
@@ -217,7 +232,7 @@
                     id="numberOfChildren"
                     name="numberOfChildren"
                     placeholder="Number of Children"
-                    ng-model="individual.numberOfChildren"
+                    ng-model="borrower.individual.numberOfChildren"
                     numeric-input
                 />
             </div>
@@ -229,7 +244,7 @@
                     class="form-control"
                     id="educationalAttainment"
                     name="educationalAttainment"
-                    ng-model="individual.educationalAttainment"
+                    ng-model="borrower.individual.educationalAttainment"
                     ng-options="att for att in attainment"
                 ></select>
             </div>
@@ -241,7 +256,7 @@
                     class="form-control"
                     id="religion"
                     name="religion"
-                    ng-model="individual.religion"
+                    ng-model="borrower.individual.religion"
                     ng-options="religion.id as religion.name for religion in religions"
                 ></select>
             </div>
@@ -251,13 +266,13 @@
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="tin">TIN Number</label>
-                <input type="text" class="form-control" id="tin" name="tin" placeholder="TIN Number" ng-model="individual.tin" />
+                <input type="text" class="form-control" id="tin" name="tin" placeholder="TIN Number" ng-model="borrower.individual.tin" />
             </div>
         </div>
         <div class="col-xl-6">
             <div class="form-group">
                 <label for="sss">SSS Number</label>
-                <input type="text" class="form-control" id="sss" name="sss" placeholder="SSS Number" ng-model="individual.sss" />
+                <input type="text" class="form-control" id="sss" name="sss" placeholder="SSS Number" ng-model="borrower.individual.sss" />
             </div>
         </div>
     </div>
@@ -276,7 +291,7 @@
             </div>
         </div>
     </div>
-    <div ng-repeat="family in individual.individualFamily">
+    <div ng-repeat="family in borrower.individual.individualFamily">
         <div class="my-2 font-weight-bold text-dark">Spouse (Maiden)</div>
         <div class="row">
             <div class="col-xl-4">
