@@ -403,25 +403,30 @@ class UpdateLoanView(views.APIView):
                     amortizationItem.schedule = schedule
 
                     dayTillCutOff = loan.term.interestPaymentPeriod.paymentCycle - int(
-                        timezone.localtime(schedule).strftime("%d")
+                        # timezone.localtime(schedule).strftime("%d")
+                         schedule.strftime ('%d') 
                     )
 
                     print("interest rates")
 
-                    accruedInterest = (
-                        Decimal((amortizationItem.principal + amortizationItem.principalBalance))
-                        * (loan.interestRate.interestRate / 100)
-                        * dayTillCutOff
-                        / 360
-                    )
-                    print(round(accruedInterest, 2))
+                    # accruedInterest = (
+                    #     Decimal((amortizationItem.principal + amortizationItem.principalBalance))
+                    #     * (loan.interestRate.interestRate / 100)
+                    #     * dayTillCutOff
+                    #     / 360
+                    # )
+                    # print(round(accruedInterest, 2))
 
-                    amortizationItem.accruedInterest = accruedInterest
-                    amortizationItem.deductAccruedInterest = amortizationItem.interest - accruedInterest
+                    # amortizationItem.accruedInterest = accruedInterest
+                    # amortizationItem.deductAccruedInterest = amortizationItem.interest - accruedInterest
                     schedule = schedule + timezone.timedelta(days=loan.term.interestPaymentPeriod.paymentCycle)
 
                     amortizationItem.save()
 
+                if loan.term.principalPaymentPeriod == loan.term.interestPaymentPeriod:
+                    generateAmortizationSchedule(loan, request)
+                else:
+                    generateUnevenAmortizationSchedule(loan, request)
             return Response(
                 {"message": "Loan Updated", "loan": loan.id, "new_value": new_value},
                 status=status.HTTP_202_ACCEPTED,

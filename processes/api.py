@@ -147,12 +147,27 @@ def generateUnevenAmortizationSchedule(loan,request):
     amortization.save()
     currentCycle = 1
     interestLoan = loan.amount
+    print("CurrentCycle")
+    print(currentCycle)
+    print("interestLoan")
+    print(interestLoan)
+    print("Payment Schedules")
+    print(int(noOfPaymentSchedules))    
+    print("=============intitial")
+    principalBalance = interestLoan
     for i in range(int(noOfPaymentSchedules)):
 
         pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
         principaEntry = 0
-        pmtInterest = pmtInterest.getPayment(interestLoan,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
+        pmtInterest = pmtInterest.getPayment(principalBalance,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
+        
+        print(i)
+        print("cycle")
+        print(cycle)
+        print("loan.term.principalPaymentPeriod.paymentCycle")
+        print(loan.term.principalPaymentPeriod.paymentCycle)
         if (cycle  *  (i+1)) == (loan.term.principalPaymentPeriod.paymentCycle * currentCycle) : 
+            print("first if")
         # if i+1 == int(noOfPaymentSchedules)/ int(noOfPrincipalPaymentSchedules):
             
             # pmtPrincipal = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPrincipalPaymentSchedules,noOfPrincipalPaymentSchedules - i)
@@ -164,6 +179,7 @@ def generateUnevenAmortizationSchedule(loan,request):
         dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
        
         accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+        principalBalance = int(principalBalance) - int(principaEntry)
         amortizationItem = AmortizationItem(
             schedule = schedule,
             amortization = amortization,
@@ -176,7 +192,7 @@ def generateUnevenAmortizationSchedule(loan,request):
             penalty = 0,
             vat = 0,
             total = int(principaEntry) + pmtInterest.interest,
-            principalBalance = pmt.nextStartingValue,
+            principalBalance = principalBalance,
             amortizationStatus = AmortizationStatus.objects.get(pk=1), 
         )
         amortizationItem.save()
@@ -370,6 +386,7 @@ class CalculateRestructurePMTView(views.APIView):
         )
 
         amortization.save()
+        
         if principalPaymentCycle == interestPaymentCycle:
             for i in range(int(noOfPaymentSchedules)):
 
@@ -423,12 +440,12 @@ class CalculateRestructurePMTView(views.APIView):
             else:
                 interestLoan = loan.amount
              
-
+            principalBalance = interestLoan
             for i in range(int(noOfPaymentSchedules)):
 
                 pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
                 principaEntry = 0
-                pmtInterest = pmtInterest.getPayment(interestLoan,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
+                pmtInterest = pmtInterest.getPayment(principalBalance,loan.interestRate.interestRate,loan.term.days,noOfPaymentSchedules,noOfPaymentSchedules - i)
                 if (cycle  *  (i+1)) == (loan.term.principalPaymentPeriod.paymentCycle * currentCycle) : 
                 # if i+1 == int(noOfPaymentSchedules)/ int(noOfPrincipalPaymentSchedules):
                     
@@ -438,10 +455,10 @@ class CalculateRestructurePMTView(views.APIView):
                 print(i)
                 lastPayment = schedule - timezone.timedelta(days=cycle)
     
-                dayTillCutOff = cycle - int(timezone.localtime(lastPayment).strftime ('%d') ) 
-
+                # dayTillCutOff = cycle - int(timezone.localtime(lastPayment).strftime ('%d') ) 
+                dayTillCutOff = cycle - int(lastPayment.strftime ('%d') ) 
                 accruedInterest = (int(pmt.principal)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
-
+                principalBalance = int(principalBalance) - int(principaEntry)
                 amortizationItem = AmortizationItem(
                     schedule = schedule,
                     amortization = amortization,
@@ -454,7 +471,7 @@ class CalculateRestructurePMTView(views.APIView):
                     penalty = 0,
                     vat = 0,
                     total = int(principaEntry) + pmtInterest.interest,
-                    principalBalance = pmt.nextStartingValue,
+                    principalBalance = principalBalance,
                     amortizationStatus = AmortizationStatus.objects.get(pk=1), 
                 )
                 amortizationItem.save()
