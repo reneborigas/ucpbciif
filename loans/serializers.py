@@ -317,6 +317,7 @@ class LoanSerializer(ModelSerializer):
     parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
     payments = PaymentSerializer(many=True, read_only=True)
     # borrower = BorrowerSerializer(read_only=True)
+    
     def create(self, validated_data):
 
         loan = Loan.objects.create(**validated_data)

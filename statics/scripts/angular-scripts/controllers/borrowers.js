@@ -409,7 +409,7 @@ define(function () {
                     icon: 'warning',
                     buttons: {
                         cancel: true,
-                        confirm: 'Cancel',
+                        confirm: 'OK',
                     },
                     dangerMode: true,
                 }).then((isConfirm) => {
@@ -1053,7 +1053,20 @@ define(function () {
 
     app.controller(
         'BorrowerInfoController',
-        function BorrowerInfoController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, $q, $window, blockUI) {
+        function BorrowerInfoController(
+            $http,
+            $filter,
+            $scope,
+            toastr,
+            NgTableParams,
+            appFactory,
+            $state,
+            $timeout,
+            $q,
+            $window,
+            blockUI,
+            ExcelMultipleSheets
+        ) {
             $scope.dateToday = new Date();
             $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
                 function (response) {
@@ -1283,6 +1296,12 @@ define(function () {
                     icon: 'fad fa-history',
                     templateUrl: '/statics/partials/pages/borrowers/info/history.html',
                 },
+                {
+                    templateNumber: 6,
+                    name: 'Statement',
+                    icon: 'fad fa-history',
+                    templateUrl: '/statics/partials/pages/borrowers/info/soa.html',
+                },
             ];
 
             $scope.currentTemplate = $scope.templates[0];
@@ -1452,6 +1471,54 @@ define(function () {
                 $scope.subProcessCurrentPage[subProcess.name] = n - 1;
             };
             //  -- End Document Files Pagination --
+
+            // -- Start Export SOA --
+            $scope.previewSOA = function (borrower) {
+                angular.element('#statement-of-account').modal('show');
+                $scope.selectedLoan = borrower.loans[0];
+                // $scope.loadSOA(borrowerId);
+            };
+
+            $scope.goToLoan = function (loan) {
+                $scope.selectedLoan = loan;
+            };
+
+            $scope.exportToExcel = function (tableId) {
+                swal('Excel File Name', {
+                    content: {
+                        element: 'input',
+                        attributes: {
+                            placeholder: '',
+                            type: 'text',
+                        },
+                    },
+                    buttons: {
+                        cancel: 'Cancel',
+                        confirm: 'Export',
+                    },
+                }).then((value) => {
+                    if (value == '') {
+                        swal('Error!', 'Invalid File Name.', 'error');
+                    } else if (value) {
+                        var tables = [tableId, tableId];
+                        var workSheetNames = ['11111', '2222'];
+                        // angular.forEach($scope.loans, function (loan, index) {
+                        //     tables.push('#tableSOA[' + index + ']');
+                        //     worksheetnames.push(loan.pnNo);
+                        // });
+                        var exportHref = ExcelMultipleSheets.tableToExcel(tables, workSheetNames);
+                        $timeout(function () {
+                            var a = document.createElement('a');
+                            a.href = exportHref;
+                            a.download = value + '.xls';
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                        }, 100);
+                    }
+                });
+            };
+            // -- End Export SOA --
 
             var attachmentBlockUI = blockUI.instances.get('attachmentBlockUI');
 
@@ -2210,7 +2277,7 @@ define(function () {
                     icon: 'info',
                     buttons: {
                         cancel: true,
-                        confirm: 'Cancel',
+                        confirm: 'OK',
                     },
                 }).then((isConfirm) => {
                     if (isConfirm) {

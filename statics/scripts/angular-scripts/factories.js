@@ -917,8 +917,99 @@ define(function () {
                 var table = $(tableId),
                     ctx = { worksheet: worksheetName || 'Worksheet', table: table.html() },
                     href = uri + base64(format(template, ctx));
+                console.log(format(template, ctx));
                 return href;
             },
         };
     });
+
+    app.factory('ExcelMultipleSheets', function ($window) {
+        var uri = 'data:application/vnd.ms-excel;base64;,',
+            htmlTemplate =
+                '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head>{worksheets}</head><body>{tables}</body></html>',
+            templateTable = '<table>{table}</table>',
+            templateWorksheets =
+                '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>{worksheets}</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->',
+            templateWorksheet =
+                '<x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>',
+            base64 = function (s) {
+                return $window.btoa(unescape(encodeURIComponent(s)));
+            },
+            format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                });
+            };
+        return {
+            tableToExcel: function (tables, worksheetNames) {
+                var ctx = '',
+                    worksheet = '',
+                    worksheets = '',
+                    href = '',
+                    workbook = '',
+                    table = '',
+                    tableArray = '';
+
+                for (var i = 0; i < tables.length; i++) {
+                    var table = $(tables[i]);
+                    tableArray += format(templateTable, { table: table.html() });
+                    console.log(table.html());
+                    worksheet += format(templateWorksheet, { worksheet: worksheetNames[i] });
+                }
+                worksheets = format(templateWorksheets, { worksheets: worksheet });
+                console.log(worksheets);
+                ctx = { worksheets: worksheets, tables: tableArray };
+                workbook = format(htmlTemplate, ctx);
+                console.log(workbook);
+                href = uri + base64(format(workbook));
+
+                return href;
+            },
+        };
+    });
+
+    // app.factory('ExcelMultipleSheets', function ($window) {
+    //     var uri = 'data:application/vnd.ms-excel;base64;,',
+    //         htmlTemplate =
+    //             '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head>{worksheets}</head><body>{tables}</body></html>',
+    //         templateTable = '<table>{table}</table>',
+    //         templateWorksheets =
+    //             '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>{worksheets}</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->',
+    //         templateWorksheet =
+    //             '<x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>',
+    //         base64 = function (s) {
+    //             return $window.btoa(unescape(encodeURIComponent(s)));
+    //         },
+    //         format = function (s, c) {
+    //             return s.replace(/{(\w+)}/g, function (m, p) {
+    //                 return c[p];
+    //             });
+    //         };
+    //     return {
+    //         tableToExcel: function (tables, worksheetNames) {
+    //             var ctx = '',
+    //                 worksheet = '',
+    //                 worksheets = '',
+    //                 href = '',
+    //                 workbook = '',
+    //                 table = '',
+    //                 tableArray = '';
+
+    //             for (var i = 0; i < tables.length; i++) {
+    //                 var table = $(tables[i]);
+    //                 tableArray += format(templateTable, { table: table.html() });
+    //                 console.log(table.html());
+    //                 worksheet += format(templateWorksheet, { worksheet: worksheetNames[i] });
+    //             }
+    //             worksheets = format(templateWorksheets, { worksheets: worksheet });
+    //             console.log(worksheets);
+    //             ctx = { worksheets: worksheets, tables: tableArray };
+    //             workbook = format(htmlTemplate, ctx);
+    //             console.log(workbook);
+    //             href = uri + base64(format(workbook));
+
+    //             return href;
+    //         },
+    //     };
+    // });
 });

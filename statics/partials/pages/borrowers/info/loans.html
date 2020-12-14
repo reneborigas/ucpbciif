@@ -165,6 +165,9 @@
                     >
                         Print
                     </a>
+                    <a href="#" class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3" ng-click="previewSOA(borrower)">
+                        Statement of Account
+                    </a>
                 </div>
             </div>
             <div class="card-body p-0">
@@ -414,3 +417,122 @@
         </div>
     </div>
 </div>
+<!-- Start SOA Modal -->
+<div id="statement-of-account" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h5 class="modal-title">Statement of Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12">
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h6>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h6>
+                                <h6>17th Floor, UCPB Executive Building, 7907 Makati Avenue, Brgy. Bel Air, Makati City</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-xl-12">
+                            <ul class="nav nav-tabs nav-tabs-line">
+                                <li class="nav-item" ng-repeat="loan in loans">
+                                    <a class="nav-link" role="tab" ng-class="{ 'active' : loan.id == selectedLoan.id }" ng-click="goToLoan(loan)">
+                                        <span class="nav-text mr-3">{{ loan.pnNo }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-left" ng-repeat="loan in loans">
+                                <table class="table table-borderless" id="tableSOA[{{$index}}]" ng-show="loan.id == selectedLoan.id">
+                                    <thead>
+                                        <tr>
+                                            <td colspan="8" class="text-center p-0">Statement of Account</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="text-center p-0">Time Now</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8"></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">ACCOUNT NAME:</td>
+                                            <td colspan="6" class="text-left p-0" colspan="5">{{ loan.borrower_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">ADDRESS:</td>
+                                            <td colspan="6" class="text-left p-0" colspan="5">{{ loan.borrower_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">WINDOW:</td>
+                                            <td colspan="6" class="text-left p-0" colspan="5">{{ loan.loanProgram_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">PN #:</td>
+                                            <td colspan="6" class="text-left p-0" colspan="5">{{ loan.pnNo }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">AMOUNT OF LOAN:</td>
+                                            <td colspan="6" class="text-left p-0" colspan="5">{{ loan.amount | currency :'₱' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">INTEREST RATE:</td>
+                                            <td colspan="6" class="text-left p-0" colspan="5">{{ loan.interestRate }}%</td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td class="p-0">PAST DUE RATE:</td>
+                                            <td class="p-0" colspan="5">{{ loan.borrower_name }}</td>
+                                        </tr> -->
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">DATE RELEASED:</td>
+                                            <td colspan="6" class="text-left p-0">{{ loan.dateReleased | date:'shortDate' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="p-0">MATURITY DATE:</td>
+                                            <td colspan="6" class="text-left p-0">{{ loan.lastAmortizationItem.schedule | date:'shortDate' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colsan="8"></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td class="p-0">DATE:</td>
+                                            <td class="p-0">PARTICULARS:</td>
+                                            <td class="p-0"># DAYS:</td>
+                                            <td class="p-0">TOTAL:</td>
+                                            <td class="p-0">INTEREST:</td>
+                                            <td class="p-0">PENALTY:</td>
+                                            <td class="p-0">PRINCIPAL:</td>
+                                            <td class="p-0">PRIN. BALANCE:</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary font-weight-bold" ng-click="exportToExcel('#tableSOA[0]')">Export to Excel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End SOA Modal -->
