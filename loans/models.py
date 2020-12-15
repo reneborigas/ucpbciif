@@ -648,8 +648,9 @@ class Loan(models.Model):
                 totalInterests = latestAmortization.amortizationItems.filter(amortizationStatus__name="PAID")
                 if totalInterests:
                     return latestAmortization.amortizationItems.filter(amortizationStatus__name="PAID").aggregate(
-                        totalAmortizationPrincipal=Sum(F("principal"))
+                        totalAmortizationPrincipal=Sum(round(F("principal"), 2))
                     )["totalAmortizationPrincipal"]
+
                 else:
                     return 0
         else:

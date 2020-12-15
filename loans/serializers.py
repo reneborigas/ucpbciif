@@ -293,7 +293,7 @@ class LoanSerializer(ModelSerializer):
     amortizations = AmortizationSerializer(many=True, read_only=True)
     term_name = serializers.ReadOnlyField(source="term.name")
     term_code = serializers.ReadOnlyField(source="term.code")
-    
+      
     interestRate_amount = serializers.ReadOnlyField(source="interestRate.interestRate")
     loanProgram_name = serializers.ReadOnlyField(source="loanProgram.name")
     branch = serializers.CharField(read_only=True)
