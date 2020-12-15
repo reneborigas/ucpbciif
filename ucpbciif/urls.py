@@ -101,6 +101,10 @@ urlpatterns = [
     # print
     path("print/<str:state>", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path("print/borrowers/loans/<int:id>", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path(
+        "print/borrowers/statement-of-account/<int:id>",
+        ensure_csrf_cookie(TemplateView.as_view(template_name="base.html")),
+    ),
     path("print/borrowers/creditlines/<int:id>", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path(
         "print/borrowers/payment-history/<int:id>", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))

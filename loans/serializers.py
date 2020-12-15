@@ -199,7 +199,9 @@ class AmortizationSerializer(ModelSerializer):
 
     totalObligations = serializers.CharField(read_only=True)
 
-    totalAmortizationPrincipal = serializers.CharField(read_only=True)
+    # totalAmortizationPrincipal = serializers.CharField(read_only=True)
+    # Decimal Places Round off
+    totalAmortizationPrincipal = serializers.DecimalField(max_digits=20, decimal_places=2, read_only=True)
 
     def create(self, validated_data):
         amortization = Amortization.objects.create(**validated_data)
@@ -317,7 +319,7 @@ class LoanSerializer(ModelSerializer):
     parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
     payments = PaymentSerializer(many=True, read_only=True)
     # borrower = BorrowerSerializer(read_only=True)
-    
+
     def create(self, validated_data):
 
         loan = Loan.objects.create(**validated_data)
