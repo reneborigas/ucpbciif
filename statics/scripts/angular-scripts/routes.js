@@ -1663,6 +1663,26 @@ define(function () {
                         ],
                     },
                 })
+                .state('print.documents.borrower_statement_of_accounts', {
+                    url: '/borrowers/statement-of-account/:borrowerId',
+                    templateUrl: '/statics/partials/pages/borrowers/print/borrowers-soa.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Borrower Statement of Account',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.borrowerId = $stateParams.borrowerId;
+                    },
+                    resolve: {
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/borrowers.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
                 .state('print.documents.borrower_credit_lines', {
                     url: '/borrowers/creditlines/:borrowerId',
                     templateUrl: '/statics/partials/pages/borrowers/print/borrowers-existing-credit-lines.html',

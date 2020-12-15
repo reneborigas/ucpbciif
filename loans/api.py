@@ -158,13 +158,13 @@ class UpdateCreditLineView(views.APIView):
                 creditLine.purpose = purpose
                 new_value = purpose
             security = request.data.get("security")
-            if security: 
+            if security:
                 creditLine.security = security
                 new_value = security
             creditLine.save()
             dateApproved = request.data.get("dateApproved")
 
-            if dateApproved: 
+            if dateApproved:
                 creditLine.dateApproved = dateApproved
                 new_value = dateApproved
                 creditLine.save()
@@ -386,7 +386,6 @@ class UpdateLoanView(views.APIView):
                 new_value = dateExpired
                 loan.save()
 
-
             dateReleased = request.data.get("dateReleased")
             if dateReleased:
                 loan.dateReleased = dateReleased
@@ -404,7 +403,7 @@ class UpdateLoanView(views.APIView):
 
                     dayTillCutOff = loan.term.interestPaymentPeriod.paymentCycle - int(
                         # timezone.localtime(schedule).strftime("%d")
-                         schedule.strftime ('%d') 
+                        schedule.strftime("%d")
                     )
 
                     print("interest rates")
@@ -1052,7 +1051,7 @@ class LoanReportViewSet(ModelViewSet):
             )
 
         for loan in queryset:
-            loan.loanAmount = str(loan.amount) + " | currency :'₱'"
+            loan.loanAmount = str(loan.amount) + " | number :'2'"
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
             loan.totalAmortizationAccruedInterest = loan.getTotalAmortizationAccruedInterest
             loan.loanInterestRate = str(loan.interestRate.interestRate) + "%"
@@ -1228,7 +1227,7 @@ class LoanReportOutstandingBalanceViewSet(ModelViewSet):
                 )
 
             # loan.outStandingBalance = Concat(loan.getOutstandingBalance(), V("|  currency :'₱'"))
-            loan.outstandingBalance = str(loan.getOutstandingBalance()) + " | currency :'₱'"
+            loan.outstandingBalance = str(loan.getOutstandingBalance()) + " | number :'2'"
             loan.currentAmortizationItem = loan.getCurrentAmortizationItem()
             if loan.currentAmortizationItem:
                 loan.currentAmortizationItem.latestCheck = loan.currentAmortizationItem.getPDC()
@@ -1244,10 +1243,10 @@ class LoanReportOutstandingBalanceViewSet(ModelViewSet):
             loan.totalAdditionalInterestPayment = loan.getTotalAdditionalInterestPayment()
 
             loan.totalPrincipalBalance = (
-                str(loan.loanTotalAmortizationPrincipal - loan.totalPrincipalPayment) + " | currency :'₱'"
+                str(loan.loanTotalAmortizationPrincipal - loan.totalPrincipalPayment) + " | number :'2'"
             )
 
-            loan.interestBalance = str(loan.getInterestBalance()) + " | currency :'₱'"
+            loan.interestBalance = str(loan.getInterestBalance()) + " | number :'2'"
 
             # for amortizationItem in loan.latestAmortization.amortizationItems:
             #     amortizationItem.isItemPaid = amortizationItem.isPaid()
@@ -1368,11 +1367,11 @@ class AmortizationItemReportViewSet(ModelViewSet):
             )
 
         for amortization in queryset:
-            amortization.principal = str(amortization.principal) + " | currency :'₱'"
-            amortization.interest = str(amortization.deductAccruedInterest) + " | currency :'₱'"
-            amortization.accruedInterest = str(amortization.accruedInterest) + " | currency :'₱'"
-            amortization.total = str(amortization.total) + " | currency :'₱'"
-            amortization.principalBalance = str(amortization.principalBalance) + " | currency :'₱'"
+            amortization.principal = str(amortization.principal) + " | number :'2'"
+            amortization.interest = str(amortization.deductAccruedInterest) + " | number :'2'"
+            amortization.accruedInterest = str(amortization.accruedInterest) + " | number :'2'"
+            amortization.total = str(amortization.total) + " | number :'2'"
+            amortization.principalBalance = str(amortization.principalBalance) + " | number :'2'"
 
         return queryset
 
@@ -1416,13 +1415,13 @@ class CreditLineOutstandingViewSet(ModelViewSet):
             )
 
         for creditLine in queryset:
-            creditLine.totalAmount = str(creditLine.amount) + " | currency :'₱'"
+            creditLine.totalAmount = str(creditLine.amount) + " | number :'2'"
             creditLine.creditLineInterestRate = str(creditLine.interestRate.interestRate) + "%"
             creditLine.dateCreated = creditLine.dateCreated.strftime("%B %-m %Y")
             creditLine.dateExpired = creditLine.dateExpired.strftime("%B %-m %Y")
             creditLine.dateApproved = creditLine.dateApproved.strftime("%B %-m %Y")
-            creditLine.totalCreditLineBalance = str(creditLine.getRemainingCreditLine()) + " | currency :'₱'"
-            creditLine.totalAvailment = str(creditLine.getTotalAvailment()) + " | currency :'₱'"
+            creditLine.totalCreditLineBalance = str(creditLine.getRemainingCreditLine()) + " | number :'2'"
+            creditLine.totalAvailment = str(creditLine.getTotalAvailment()) + " | number :'2'"
             creditLine._status = creditLine.status.name
 
         return queryset
@@ -1468,7 +1467,7 @@ class CreditLineProcessingReportViewSet(ModelViewSet):
         for creditLine in queryset:
             creditLine.dateCreated = creditLine.dateCreated.strftime("%B %-m %Y")
             creditLine.creditLineInterestRate = str(creditLine.interestRate.interestRate) + "%"
-            creditLine.totalAmount = str(creditLine.amount) + " | currency :'₱'"
+            creditLine.totalAmount = str(creditLine.amount) + " | number :'2'"
             creditLine._status = creditLine.status.name
 
         return queryset
@@ -1520,7 +1519,7 @@ class CreditLineApprovedReportViewSet(ModelViewSet):
             creditLine.dateCreated = creditLine.dateCreated.strftime("%B %-m %Y")
             creditLine.dateExpired = creditLine.dateExpired.strftime("%B %-m %Y")
             creditLine.creditLineInterestRate = str(creditLine.interestRate.interestRate) + "%"
-            creditLine.totalAmount = str(creditLine.amount) + " | currency :'₱'"
+            creditLine.totalAmount = str(creditLine.amount) + " | number :'2'"
             creditLine._status = creditLine.status.name
 
         return queryset

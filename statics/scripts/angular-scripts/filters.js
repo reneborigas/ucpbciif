@@ -50,8 +50,6 @@ define(function () {
         },
     ]);
 
-    
-
     app.filter('trustedHTML', function ($sce) {
         return function (ss) {
             return $sce.trustAsHtml(ss);
@@ -90,6 +88,16 @@ define(function () {
                     .replace(/^./, function (str) {
                         return str.toUpperCase();
                     });
+            };
+        },
+    ]);
+
+    app.filter('dateCompare', [
+        function () {
+            return function (object, dateFrom, dateTo) {
+                console.log(dateFrom);
+                console.log(dateTo);
+                return object;
             };
         },
     ]);

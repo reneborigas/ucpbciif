@@ -1,0 +1,189 @@
+<div class="row" ng-controller="BorrowerPrintController">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
+                    <h2>17th Floor, UCPB Executive Building, 7907 Makati Avenue, Brgy. Bel Air, Makati City</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row p-0">
+            <div class="col-md-12">
+                <div class="table-responsive text-right">
+                    <table class="table table-borderless" ng-repeat="loan in loans">
+                        <thead>
+                            <tr>
+                                <td colspan="8" class="text-center p-0">Statement of Account</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-center p-0">{{ dateToday | date :'longDate' }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">ACCOUNT NAME:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.borrower_name }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">ADDRESS:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.borrower_name }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">WINDOW:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.loanProgram_name }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">PN #:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.pnNo }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">AMOUNT OF LOAN:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.amount | currency :'₱' }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">INTEREST RATE:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.interestRate }}%</td>
+                            </tr>
+                            <!-- <tr>
+                                <td class="p-0">PAST DUE RATE:</td>
+                                <td class="p-0" colspan="5">{{ loan.borrower_name }}</td>
+                            </tr> -->
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">DATE RELEASED:</td>
+                                <td colspan="6" class="text-left p-0">{{ loan.dateReleased | date:'shortDate' }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">MATURITY DATE:</td>
+                                <td colspan="6" class="text-left p-0">{{ loan.lastAmortizationItem.schedule | date:'shortDate' }}</td>
+                            </tr>
+                            <tr>
+                                <td colsan="8"></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="text-center p-0">DATE:</td>
+                                <td class="text-center p-0">PARTICULARS:</td>
+                                <td class="text-center p-0"># DAYS:</td>
+                                <td class="text-center p-0">TOTAL:</td>
+                                <td class="text-center p-0">INTEREST:</td>
+                                <td class="text-center p-0">PENALTY:</td>
+                                <td class="text-center p-0">PRINCIPAL:</td>
+                                <td class="text-center p-0">PRIN. BALANCE:</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
+                                <td class="text-center p-0">BALANCE</td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0">{{ loan.totalPrincipalBalance | number : '2' }}</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr ng-repeat-start="amortization in loan.latestAmortization.amortizationItems">
+                                <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
+                                <td class="text-center p-0">AMOUNT DUE</td>
+                                <td class="text-center p-0">{{ amortization.days }}</td>
+                                <td class="text-right p-0">{{ amortization.total | number : '2' }}</td>
+                                <td class="text-right p-0">{{ amortization.interest | number : '2' }}</td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0">{{ amortization.principal | number : '2' }}</td>
+                                <td class="text-right p-0">{{ amortization.principalBalance | number : '2' }}</td>
+                            </tr>
+                            <tr ng-repeat-start="payment in amortization.payments">
+                                <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
+                                <td class="text-center p-0">ADD'L CHARGES</td>
+                                <td class="text-center p-0">{{ 0 }}</td>
+                                <td class="text-right p-0">{{ 0 | number : '2' }}</td>
+                                <td class="text-right p-0">{{ 0 | number : '2' }}</td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0">{{ 0 | number : '2' }}</td>
+                                <td class="text-right p-0">{{ 0 | number : '2' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind=" (amortization.total +0) > 0 ? (0 | number : 2) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind=" (amortization.interest + 0) > 0 ? ( 0 | number : 2 ) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important"></td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind=" (amortization.principal + 0) > 0 ? (0 | number : 2 ) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0"></td>
+                            </tr>
+                            <tr ng-repeat-end>
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0">PAYMENT</td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0">
+                                    <span>({{ payment.total | number : '2' }})</span>
+                                </td>
+                                <td class="text-right p-0">
+                                    <span>({{ payment.interest | number : '2' }})</span>
+                                </td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0">
+                                    <span>({{ payment.principal | number : '2' }})</span>
+                                </td>
+                                <td class="text-right p-0"></td>
+                            </tr>
+                            <tr ng-repeat-end>
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span
+                                        ng-bind="(amortization.total - amortization.payments[0].total) > 0 ? ((amortization.total - amortization.payments[0].total) | number: 2) : '-'"
+                                    ></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span
+                                        ng-bind="(amortization.interest - amortization.payments[0].interest) > 0 ? ((amortization.interest - amortization.payments[0].interest) | number: 2): '-'"
+                                    ></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important"></td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span
+                                        ng-bind="(amortization.principal - amortization.payments[0].principal) > 0 ? ((amortization.principal - amortization.payments[0].principal) | number: 2) : '-'"
+                                    ></span>
+                                </td>
+                                <td class="text-right p-0"></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr style="border-top: 1pt solid #464e5f !important">
+                                <td class="text-center" colspan="8">
+                                    <div class="">
+                                        <span class="text-dark-75">-- NOTHING FOLLOWS --</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

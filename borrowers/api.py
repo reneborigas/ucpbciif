@@ -247,6 +247,7 @@ class BorrowerViewSet(ModelViewSet):
                     loan.latestAmortization.totalAmortizationPrincipal = (
                         loan.latestAmortization.getTotalAmortizationPrincipal()
                     )
+                    print(loan.latestAmortization.totalAmortizationPrincipal)
 
             if loanProgramId is not None:
                 borrower.totalAvailmentPerProgram = borrower.getTotalAvailmentsPerProgram(loanProgramId)
@@ -360,9 +361,9 @@ class BorrowerReportViewSet(ModelViewSet):
                 queryset = queryset.exclude(pk__in=exclude)
 
         for borrower in queryset:
-            borrower.totalAvailments = str(borrower.getTotalAvailments()) + " | currency :'₱'"
-            borrower.totalOutstandingBalance = str(borrower.getTotalOutstandingBalance()) + " | currency :'₱'"
+            borrower.totalAvailments = str(borrower.getTotalAvailments()) + " | number :'2'"
+            borrower.totalOutstandingBalance = str(borrower.getTotalOutstandingBalance()) + " | number :'2'"
             borrower.payments = borrower.getPayments()
-            borrower.totalPayments = str(borrower.getTotalPayments()) + " | currency :'₱'"
+            borrower.totalPayments = str(borrower.getTotalPayments()) + " | number :'2'"
 
         return queryset

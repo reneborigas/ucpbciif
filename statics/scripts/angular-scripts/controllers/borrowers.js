@@ -1296,12 +1296,12 @@ define(function () {
                     icon: 'fad fa-history',
                     templateUrl: '/statics/partials/pages/borrowers/info/history.html',
                 },
-                {
-                    templateNumber: 6,
-                    name: 'Statement',
-                    icon: 'fad fa-history',
-                    templateUrl: '/statics/partials/pages/borrowers/info/soa.html',
-                },
+                // {
+                //     templateNumber: 6,
+                //     name: 'Statement',
+                //     icon: 'fad fa-history',
+                //     templateUrl: '/statics/partials/pages/borrowers/info/soa.html',
+                // },
             ];
 
             $scope.currentTemplate = $scope.templates[0];
@@ -1418,6 +1418,9 @@ define(function () {
             };
             $scope.previewBorrowerPaymentHistory = function (id) {
                 $window.open('/print/borrowers/payment-history/' + id, '_blank', 'width=800,height=800');
+            };
+            $scope.previewBorrowerSOA = function (id) {
+                $window.open('/print/borrowers/statement-of-account/' + id, '_blank', 'width=800,height=800');
             };
 
             // -- Start Simple Pagination
@@ -2698,6 +2701,18 @@ define(function () {
                         })
                         .then(
                             function (response) {
+                                angular.forEach(response.data, function (loan) {
+                                    var countOfPaidItems = $filter('filter')(
+                                        loan.latestAmortization.amortizationItems,
+                                        {
+                                            amortizationStatus_name: 'PAID',
+                                        },
+                                        true
+                                    );
+                                    loan.latestAmortization.amortizationItems.splice(countOfPaidItems.length + 1, 100);
+                                    console.log(loan.latestAmortization.amortizationItems);
+                                });
+
                                 $scope.loans = response.data;
                             },
                             function (error) {

@@ -257,7 +257,7 @@ class DocumentLoanApplicationReportViewSet(ModelViewSet):
         for document in queryset:
             document.dateCreated = document.dateCreated.strftime("%B %-m %Y")
             document.interestRate = str(document.loan.interestRate) + "%"
-            document.loanAmount = str(document.loan.amount) + " | currency :'₱'"
+            document.loanAmount = str(document.loan.amount) + " | number :'2'"
             document.status = document.getCurrentStatus()
 
         return queryset
