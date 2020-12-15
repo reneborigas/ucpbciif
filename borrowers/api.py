@@ -152,7 +152,18 @@ class BorrowerViewSet(ModelViewSet):
                     When(recordType="ID", then=V("Individual")),
                     output_field=models.CharField(),
                 ),
-                branch=F("area__branchCode"),
+                contactPersonNumber=Case(
+                    When(
+                        Q(recordType="BD"),
+                        then=F("business__businessContactPerson__phoneNo"),
+                    ),
+                ),
+                branch=Case(
+                    When(
+                        Q(recordType="BD"),
+                        then=F("area__branchCode"),
+                    ),
+                ),
                 tin=Case(
                     When(
                         Q(recordType="BD") & Q(business__businessIdentification__identificationType__value="10"),
@@ -222,7 +233,9 @@ class BorrowerViewSet(ModelViewSet):
             queryset = queryset.filter(borrowerId__in=borrowers)
 
         if clientSinceFrom is not None and clientSinceTo is not None:
-            queryset = queryset.filter(clientSince__gte=clientSinceFrom).filter(clientSince__lte=clientSinceTo)
+            queryset = queryset.filter(accreditationDate__gte=clientSinceFrom).filter(
+                accreditationDate__lte=clientSinceTo
+            )
 
         for borrower in queryset:
             borrower.totalAvailments = borrower.getTotalAvailments()

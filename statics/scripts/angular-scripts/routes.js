@@ -709,7 +709,7 @@ define(function () {
                     },
                     resolve: {
                         fetchLoan: function ($http, $q, $stateParams, appFactory) {
-                            return appFactory.getLoan($stateParams.subProcessName).then(function (data) {
+                            return appFactory.getLoan($stateParams.loanId).then(function (data) {
                                 if (!data) {
                                     return $q.reject('Not Found');
                                 }

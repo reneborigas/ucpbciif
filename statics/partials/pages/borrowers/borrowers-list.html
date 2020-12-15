@@ -294,10 +294,10 @@
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"
                                     header-class="'text-center'"
-                                    data-title="'CLIENT SINCE'"
-                                    sortable="'clientSince'"
+                                    data-title="'ACCREDITATION DATE'"
+                                    sortable="'accreditationDate'"
                                 >
-                                    {{ borrower.clientSince | date : 'longDate'}}
+                                    {{ borrower.accreditationDate | date : 'longDate'}}
                                 </td>
                                 <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ACTIONS'">
                                     <a href="" class="btn btn-sm btn-clean btn-icon mr-2" ng-click="view(borrower.borrowerId)">

@@ -986,7 +986,7 @@ define(function () {
                                     'yyyy-MM-dd'
                                 );
                                 $scope.borrower.subjectReferenceDate = appFactory.dateWithoutTime($scope.borrower.subjectReferenceDate, 'yyyy-MM-dd');
-                                $scope.borrower.clientSince = appFactory.dateWithoutTime($scope.borrower.clientSince, 'yyyy-MM-dd');
+                                $scope.borrower.accreditationDate = appFactory.dateWithoutTime($scope.borrower.accreditationDate, 'yyyy-MM-dd');
                                 $http.post('/api/borrowers/business/', $scope.business).then(
                                     function (responseBusiness) {
                                         $scope.borrower.business = responseBusiness.data.id;
@@ -1071,6 +1071,7 @@ define(function () {
             $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
                 function (response) {
                     $scope.borrower = response.data[0];
+                    console.log($scope.borrower);
                     $scope.getBorrowerAttachments($scope.borrowerId);
                     $scope.showAccomodations = false;
                     appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
@@ -1674,7 +1675,7 @@ define(function () {
                             $scope.borrower.business.businessBackground[0].cdaRegistrationDate
                         );
                         $scope.borrower.subjectReferenceDate = new Date($scope.borrower.subjectReferenceDate);
-                        $scope.borrower.clientSince = new Date($scope.borrower.clientSince);
+                        $scope.borrower.accreditationDate = new Date($scope.borrower.accreditationDate);
 
                         angular.forEach($scope.borrower.business.businessAddress, function (address) {
                             address.occupiedSince = new Date(address.occupiedSince);
