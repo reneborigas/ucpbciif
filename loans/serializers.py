@@ -199,7 +199,7 @@ class AmortizationSerializer(ModelSerializer):
 
     totalObligations = serializers.CharField(read_only=True)
 
-    totalAmortizationPrincipal = serializers.CharField(read_only=True)
+    totalAmortizationPrincipal = serializers.DecimalField(max_digits=20, decimal_places=2, read_only=True)
 
     def create(self, validated_data):
         amortization = Amortization.objects.create(**validated_data)
@@ -235,6 +235,7 @@ class StatusSerializer(ModelSerializer):
 
 class CreditLineSerializer(ModelSerializer):
     term_name = serializers.ReadOnlyField(source="term.name")
+    term_code = serializers.ReadOnlyField(source="term.code")
     interestRate_amount = serializers.ReadOnlyField(source="interestRate.interestRate")
     status_name = serializers.ReadOnlyField(source="status.name")
     loanProgram_name = serializers.ReadOnlyField(source="loanProgram.name")
@@ -288,6 +289,7 @@ class LoanSerializer(ModelSerializer):
     borrower_id = serializers.ReadOnlyField(source="borrower.borrowerId")
     amortizations = AmortizationSerializer(many=True, read_only=True)
     term_name = serializers.ReadOnlyField(source="term.name")
+    term_code = serializers.ReadOnlyField(source="term.code")
     interestRate_amount = serializers.ReadOnlyField(source="interestRate.interestRate")
     loanProgram_name = serializers.ReadOnlyField(source="loanProgram.name")
     branch = serializers.CharField(read_only=True)
@@ -317,7 +319,7 @@ class LoanSerializer(ModelSerializer):
     parentLastDocumentCreditLine = CreditLineSerializer(read_only=True)
     payments = PaymentSerializer(many=True, read_only=True)
     # borrower = BorrowerSerializer(read_only=True)
-    
+
     def create(self, validated_data):
 
         loan = Loan.objects.create(**validated_data)

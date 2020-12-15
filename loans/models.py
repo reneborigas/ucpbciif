@@ -156,6 +156,11 @@ class Term(models.Model):
         blank=False,
         null=False,
     )
+    code = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
     days = models.PositiveIntegerField(default=720, validators=[MinValueValidator(1), MaxValueValidator(5000)])
     principalPaymentPeriod = models.ForeignKey(
         PaymentPeriod,
