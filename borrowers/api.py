@@ -187,7 +187,7 @@ class BorrowerViewSet(ModelViewSet):
                         then=F("business__businessContactPerson__phoneNo"),
                     ),
                 ),
-                branch=Case(
+                areaCode=Case(
                     When(
                         Q(recordType="BD"),
                         then=F("area__branchCode"),

@@ -15,6 +15,19 @@
                     />
                 </div>
             </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label for="area">Area</label>
+                    <span>*</span>
+                    <select
+                        class="form-control"
+                        id="area"
+                        name="area"
+                        ng-model="borrower.area"
+                        ng-options="branch.id as branch.branchCode for branch in branches"
+                    ></select>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-xl-6">

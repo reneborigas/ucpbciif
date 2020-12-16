@@ -857,7 +857,7 @@ class BorrowerSerializer(ModelSerializer):
     businessTradeName = serializers.CharField(read_only=True)
     borrowerName = serializers.CharField(read_only=True)
     borrowerType = serializers.CharField(read_only=True)
-    branch = serializers.CharField(read_only=True)
+    areaCode = serializers.CharField(read_only=True)
     tin = serializers.CharField(read_only=True)
     borrowerAddress = serializers.CharField(read_only=True)
     contactPersonNumber = serializers.CharField(read_only=True)

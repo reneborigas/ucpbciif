@@ -2,7 +2,7 @@
     <div class="pb-5">
         <div class="my-2 font-weight-bold text-dark">Borrower Basic Information</div>
         <div class="row">
-            <div class="col-xl-6">
+            <div class="col-xl-4">
                 <div class="form-group">
                     <label for="borrowerType">Borrower Type</label>
                     <span>*</span>
@@ -23,11 +23,24 @@
                     </span>
                 </div>
             </div>
-            <div class="col-xl-6">
+            <div class="col-xl-4">
                 <div class="form-group">
                     <label for="accreditationDate">Accreditation Date</label>
                     <span>*</span>
                     <input type="date" class="form-control" id="accreditationDate" name="accreditationDate" ng-model="borrower.accreditationDate" />
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label for="area">Area</label>
+                    <span>*</span>
+                    <select
+                        class="form-control"
+                        id="area"
+                        name="area"
+                        ng-model="borrower.area"
+                        ng-options="branch.id as branch.branchCode for branch in branches"
+                    ></select>
                 </div>
             </div>
         </div>
