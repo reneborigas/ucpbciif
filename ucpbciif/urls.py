@@ -78,6 +78,11 @@ urlpatterns = [
         "loan-reports/<str:category>/<str:subcategory>",
         ensure_csrf_cookie(TemplateView.as_view(template_name="base.html")),
     ),
+    path("loan-summary", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path(
+        "loan-summary/<str:category>/<str:subcategory>",
+        ensure_csrf_cookie(TemplateView.as_view(template_name="base.html")),
+    ),
     # Settings
     # Committes
     path("committees", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),

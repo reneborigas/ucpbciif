@@ -27,7 +27,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
 from processes.api import generateAmortizationSchedule, generateUnevenAmortizationSchedule
-
+from datetime import date
 from decimal import Decimal
 
 
@@ -447,6 +447,43 @@ class LoanViewSet(ModelViewSet):
                 branch=F("borrower__area__branchCode"),
                 termName=F("term__name"),
                 loanProgramName=F("loanProgram__name"),
+                borrowerAddress=Case(
+                    When(
+                        Q(borrower__recordType="BD"),
+                        then=Concat(
+                            F("borrower__business__businessAddress__streetNo"),
+                            V(" "),
+                            F("borrower__business__businessAddress__barangay"),
+                            V(" "),
+                            F("borrower__business__businessAddress__city"),
+                            V(" "),
+                            F("borrower__business__businessAddress__province"),
+                        ),
+                    ),
+                    When(
+                        Q(borrower__recordType="ID"),
+                        then=Concat(
+                            F("borrower__individual__individualAddress__streetNo"),
+                            V(" "),
+                            F("borrower__individual__individualAddress__barangay"),
+                            V(" "),
+                            F("borrower__individual__individualAddress__city"),
+                            V(" "),
+                            F("borrower__individual__individualAddress__province"),
+                        ),
+                    ),
+                ),
+                securedUnsecured=Case(
+                    When(
+                        Q(borrower__recordType="BD") & Q(borrower__borrowerDocuments__isnull=False),
+                        then=V("Secured"),
+                    ),
+                    When(
+                        Q(borrower__recordType="BD") & Q(borrower__borrowerDocuments__isnull=True),
+                        then=V("Unsecured"),
+                    ),
+                    output_field=models.CharField(),
+                ),
             )
             .prefetch_related(
                 Prefetch("amortizations", queryset=Amortization.objects.order_by("-id")),
@@ -1140,6 +1177,86 @@ class LoanReportViewSet(ModelViewSet):
         return queryset
 
 
+class LoanReportSecurityViewSet(ModelViewSet):
+    queryset = Loan.objects.all()
+    serializer_class = LoanReportSecuritySerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = (
+            Loan.objects.order_by("dateReleased")
+            .exclude(isDeleted=True)
+            .annotate(
+                borrowerName=Case(
+                    When(
+                        Q(borrower__recordType="BD"),
+                        then=F("borrower__business__tradeName"),
+                    ),
+                    When(
+                        Q(borrower__recordType="ID"),
+                        then=Concat(
+                            F("borrower__individual__firstname"),
+                            V(" "),
+                            F("borrower__individual__middlename"),
+                            V(" "),
+                            F("borrower__individual__lastname"),
+                        ),
+                    ),
+                ),
+                borrowerCode=F("borrower__recordType"),
+                area=Case(
+                    When(
+                        Q(borrower__recordType="BD"),
+                        then=F("borrower__area__branchCode"),
+                    ),
+                ),
+                securedUnsecured=Case(
+                    When(
+                        Q(borrower__recordType="BD") & Q(borrower__borrowerDocuments__isnull=False),
+                        then=V("Secured"),
+                    ),
+                    When(
+                        Q(borrower__recordType="BD") & Q(borrower__borrowerDocuments__isnull=True),
+                        then=V("Unsecured"),
+                    ),
+                    output_field=models.CharField(),
+                ),
+                granted=F("dateApproved"),
+            )
+        )
+        secured = self.request.query_params.get("secured", None)
+        startDate = self.request.query_params.get("startDate", None)
+        endDate = self.request.query_params.get("endDate", None)
+
+        if secured is not None:
+            queryset = queryset.annotate(
+                securedUnsecured=Case(
+                    When(
+                        Q(borrower__recordType="BD") & Q(borrower__borrowerDocuments__isnull=False),
+                        then=V("Secured"),
+                    ),
+                    When(
+                        Q(borrower__recordType="BD") & Q(borrower__borrowerDocuments__isnull=True),
+                        then=V("Unsecured"),
+                    ),
+                    output_field=models.CharField(),
+                ),
+            ).filter(securedUnsecured=secured)
+
+        if startDate is not None and endDate is not None:
+            queryset = queryset.filter(Q(dateReleased__gte=startDate) & Q(dateReleased__lte=endDate))
+
+        for loan in queryset:
+            loan.originalPrincipal = str(loan.amount) + " | number :'2'"
+            loan.loanTotalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
+            loan.totalPrincipalPayment = loan.getTotalPrincipalPayment()
+            loan.totalPrincipalBalance = (
+                str(loan.loanTotalAmortizationPrincipal - loan.totalPrincipalPayment) + " | number :'2'"
+            )
+            loan.maturityDate = loan.getLastAmortizationItemSchedule
+        return queryset
+
+
 class LoanReportOutstandingBalanceViewSet(ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanReportOutstandingBalanceSerializer
@@ -1376,6 +1493,64 @@ class AmortizationItemReportViewSet(ModelViewSet):
         return queryset
 
 
+class AmortizationItemAgingViewSet(ModelViewSet):
+    queryset = AmortizationItem.objects.all()
+    serializer_class = AmortizationItemAgingReportSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = AmortizationItem.objects.annotate(
+            borrowerName=Case(
+                When(
+                    Q(amortization__loan__borrower__recordType="BD"),
+                    then=F("amortization__loan__borrower__business__tradeName"),
+                ),
+                When(
+                    Q(amortization__loan__borrower__recordType="ID"),
+                    then=Concat(
+                        F("amortization__loan__borrower__individual__firstname"),
+                        V(" "),
+                        F("amortization__loan__borrower__individual__middlename"),
+                        V(" "),
+                        F("amortization__loan__borrower__individual__lastname"),
+                    ),
+                ),
+            ),
+        ).order_by("-id")
+        maturing = self.request.query_params.get("maturing", None)
+
+        amortizationItems = []
+
+        for amortizationItem in queryset:
+            if amortizationItem.isOnCurrentAmortization():
+                amortizationItems.append(amortizationItem.id)
+
+        queryset = queryset.filter(id__in=amortizationItems)
+
+        if maturing:
+            amortizationItems = []
+            for amortizationItem in queryset:
+                if amortizationItem.isMaturingAmortizationItem():
+                    delta = date.today() - amortizationItem.schedule
+                    if delta.days > 0:
+                        amortizationItems.append(amortizationItem.id)
+
+            queryset = queryset.filter(id__in=amortizationItems)
+
+        for amortization in queryset:
+            delta = date.today() - amortization.schedule
+            amortization.numberOfDays = delta.days
+            amortization.age = amortization.getAging()
+            amortization.agingOrder = amortization.getAgingOrder()
+            amortization.dueDate = amortization.schedule
+            amortization.originalPrincipal = str(amortization.amortization.loan.amount) + " | number :'2'"
+            amortization.principalBalance = str(amortization.principalBalance) + " | number :'2'"
+
+        querset = queryset.order_by("agingOrder")
+
+        return queryset
+
+
 class CreditLineOutstandingViewSet(ModelViewSet):
     queryset = CreditLine.objects.all()
     serializer_class = CreditLineOutstandingReportSerializer
@@ -1399,6 +1574,12 @@ class CreditLineOutstandingViewSet(ModelViewSet):
                             V(" "),
                             F("borrower__individual__lastname"),
                         ),
+                    ),
+                ),
+                area=Case(
+                    When(
+                        Q(borrower__recordType="BD"),
+                        then=F("borrower__area__branchCode"),
                     ),
                 ),
             )
@@ -1521,5 +1702,24 @@ class CreditLineApprovedReportViewSet(ModelViewSet):
             creditLine.creditLineInterestRate = str(creditLine.interestRate.interestRate) + "%"
             creditLine.totalAmount = str(creditLine.amount) + " | number :'2'"
             creditLine._status = creditLine.status.name
+
+        return queryset
+
+
+class LoanProgramAgingCountViewSet(ModelViewSet):
+    queryset = LoanProgram.objects.all()
+    serializer_class = LoanProgramAgingCountSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = LoanProgram.objects.order_by("id")
+
+        for window in queryset:
+            window._1to30Days = window.get_1to30Days()
+            window._31to90Days = window.get_31to90Days()
+            window._91to180Days = window.get_91to180Days()
+            window._181to360Days = window.get_181to360Days()
+            window._over360Days = window.get_over360Days()
+            window._total = window.get_total()
 
         return queryset

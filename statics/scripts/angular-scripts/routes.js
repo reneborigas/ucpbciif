@@ -1101,6 +1101,84 @@ define(function () {
                         $scope.subcategory = appFactory.unSlugify($stateParams.subcategory);
                     },
                 })
+                .state('app.lms-reports-summary', {
+                    url: '/loan-summary',
+                    template: '<ui-view></ui-view>',
+                    abstract: true,
+                    ncyBreadcrumb: {
+                        label: 'Summary',
+                        skip: true,
+                    },
+                    resolve: {
+                        fetchRouteAppPermission: function ($http, $q, appFactory) {
+                            return appFactory.getCurrentUserAppPermission('Loan Management System').then(function (data) {
+                                if (data.length == 0) {
+                                    var appInfo = {
+                                        name: '',
+                                        navBar: '',
+                                    };
+                                    localStorage.selectedApp = JSON.stringify(appInfo);
+                                    return $q.reject('Not Found');
+                                } else {
+                                    var appInfo = {
+                                        name: data[0].name,
+                                        navBar: data[0].navDirectory,
+                                    };
+                                    return (localStorage.selectedApp = JSON.stringify(appInfo));
+                                }
+                            });
+                        },
+                        loadController: [
+                            '$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load({
+                                    files: ['/statics/scripts/angular-scripts/controllers/reports.js'],
+                                });
+                            },
+                        ],
+                    },
+                })
+                .state('app.lms-reports-summary.list', {
+                    url: '',
+                    templateUrl: '/statics/partials/pages/reports/lms/reports-summary-list.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loan Summary',
+                        stateTitle: 'Loan Summary',
+                    },
+                    ncyBreadcrumb: {
+                        label: 'Loan Summary',
+                    },
+                })
+                .state('app.lms-reports-summary.info', {
+                    url: '/:category/:subcategory',
+                    templateUrl: '/statics/partials/pages/reports/lms/reports-summary-info.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Loan Summary Reports Info',
+                        stateTitle: 'Loan Summary Summary Info',
+                    },
+                    ncyBreadcrumb: {
+                        label: '{{ category }} {{ subcategory }}',
+                        parent: 'app.lms-reports-summary.list',
+                    },
+                    params: {
+                        filter: null,
+                        url: null,
+                        params: null,
+                        order: null,
+                        dateFilter: null,
+                        hiddenFields: null,
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.filter = $stateParams.filter;
+                        $scope.url = $stateParams.url;
+                        $scope.params = $stateParams.params;
+                        $scope.order = $stateParams.order;
+                        $scope.dateFilter = $stateParams.dateFilter;
+                        $scope.hiddenFields = $stateParams.hiddenFields;
+                        $scope.category = appFactory.unSlugify($stateParams.category);
+                        $scope.subcategory = appFactory.unSlugify($stateParams.subcategory);
+                    },
+                })
 
                 //Accounting
                 .state('app.invoices', {

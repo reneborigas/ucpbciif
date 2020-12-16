@@ -1,0 +1,20 @@
+<div class="animated fadeIn" ng-controller="LoanSummaryReportListController">
+    <div class="row">
+        <div class="col-xxl-3 col-lg-4" ng-repeat="summary in summaries">
+            <div class="card card-custom card-stretch gutter-b">
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-dark">{{ summary.category }}</h3>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="d-flex align-items-center mb-4 bg-gray-200 bg-hover-primary rounded p-5" ng-repeat="sub in summary.subcategory">
+                        <div class="d-flex flex-column flex-grow-1 mr-2">
+                            <a ng-click="selectSummary(summary.category,sub)" class="font-weight-bold text-dark-75 text-hover-light font-size-lg">
+                                {{ sub.name }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

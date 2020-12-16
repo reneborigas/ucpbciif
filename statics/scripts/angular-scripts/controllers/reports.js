@@ -12,7 +12,7 @@ define(function () {
                     subcategory: [
                         {
                             name: 'In Process',
-                            filter: 'statusName',
+                            filter: '_status',
                             url: '/api/loans/creditlineprocessingreport/',
                             params: {
                                 status: 'REQUESTING',
@@ -27,7 +27,7 @@ define(function () {
                         },
                         {
                             name: 'Approved',
-                            filter: 'statusName',
+                            filter: '_status',
                             url: '/api/loans/creditlineapprovedreport/',
                             params: {},
                             order: {
@@ -40,7 +40,7 @@ define(function () {
                         },
                         {
                             name: 'Denied',
-                            filter: 'statusName',
+                            filter: '_status',
                             url: '/api/loans/creditlineprocessingreport/',
                             params: {
                                 status: 'DENIED',
@@ -73,14 +73,14 @@ define(function () {
                         },
                         {
                             name: 'Per Area',
-                            filter: 'branch',
+                            filter: 'area',
                             url: '/api/loans/creditlineoutstandingreport/',
                             params: {
                                 outstandingBalance: 'TRUE',
                             },
                             order: {
                                 name: 'Area',
-                                expression: 'branch',
+                                expression: 'area',
                                 reverse: false,
                             },
                             dateFilter: true,
@@ -88,7 +88,7 @@ define(function () {
                         },
                         {
                             name: 'Per Window',
-                            filter: 'loanProgram_name',
+                            filter: 'window',
                             url: '/api/loans/creditlineoutstandingreport/',
                             params: {},
                             order: {
@@ -165,12 +165,12 @@ define(function () {
                         },
                         {
                             name: 'Per Area',
-                            filter: 'branch',
+                            filter: 'area',
                             url: '/api/loans/loanreports/',
                             params: {},
                             order: {
                                 name: 'Area',
-                                expression: 'branch',
+                                expression: 'area',
                                 reverse: false,
                             },
                             dateFilter: true,
@@ -231,18 +231,53 @@ define(function () {
                     ],
                 },
                 {
+                    category: 'Loan Security',
+                    subcategory: [
+                        {
+                            name: 'Secured',
+                            filter: 'securedUnsecured',
+                            url: '/api/loans/loanreportssecurity/',
+                            params: {
+                                secured: 'Secured',
+                            },
+                            order: {
+                                name: 'Security',
+                                expression: 'securedUnsecured',
+                                reverse: false,
+                            },
+                            dateFilter: false,
+                            hiddenFields: [],
+                        },
+                        {
+                            name: 'Unsecured',
+                            filter: 'securedUnsecured',
+                            url: '/api/loans/loanreportssecurity/',
+                            params: {
+                                secured: 'Unsecured',
+                            },
+                            order: {
+                                name: 'Security',
+                                expression: 'securedUnsecured',
+                                reverse: false,
+                            },
+                            dateFilter: false,
+                            hiddenFields: [],
+                        },
+                    ],
+                },
+                {
                     category: 'Outstanding Balances',
                     subcategory: [
                         {
                             name: 'Per Area',
-                            filter: 'branch',
+                            filter: '_area',
                             url: '/api/borrowers/borrowersreports/',
                             params: {
                                 outstandingBalance: 'TRUE',
                             },
                             order: {
                                 name: 'Area',
-                                expression: 'branch',
+                                expression: '_area',
                                 reverse: false,
                             },
                             dateFilter: false,
@@ -294,14 +329,14 @@ define(function () {
                     subcategory: [
                         {
                             name: 'Per Area',
-                            filter: 'branch',
+                            filter: 'area',
                             url: '/api/loans/amortizationitemsreports/',
                             params: {
                                 maturing: 'TRUE',
                             },
                             order: {
                                 name: 'Area',
-                                expression: 'branch',
+                                expression: 'area',
                                 reverse: false,
                             },
                             dateFilter: true,
@@ -340,16 +375,35 @@ define(function () {
                     ],
                 },
                 {
+                    category: 'Aging of Pastdue Accounts',
+                    subcategory: [
+                        {
+                            name: 'Aging',
+                            filter: 'age',
+                            url: '/api/loans/amortizationitemsagingreports/',
+                            params: {
+                                maturing: 'TRUE',
+                            },
+                            order: {
+                                name: 'Age',
+                                expression: 'agingOrder',
+                                reverse: false,
+                            },
+                            dateFilter: false,
+                        },
+                    ],
+                },
+                {
                     category: 'Accrued Interest Receivable',
                     subcategory: [
                         {
                             name: 'Per Area',
-                            filter: 'branch',
+                            filter: 'area',
                             url: '/api/loans/amortizationitemsreports/',
                             params: {},
                             order: {
                                 name: 'Area',
-                                expression: 'branch',
+                                expression: 'area',
                                 reverse: false,
                             },
                             dateFilter: true,
@@ -528,7 +582,7 @@ define(function () {
             };
 
             $scope.sortData = function (sort) {
-                $scope.data = $filter('orderBy')($scope.data, 'parent', sort.reverse);
+                $scope.data = $scope.data.reverse();
                 $scope.currentSort = sort;
             };
 
@@ -719,6 +773,41 @@ define(function () {
                             a.remove();
                         }, 100);
                     }
+                });
+            };
+        }
+    );
+
+    app.controller(
+        'LoanSummaryReportListController',
+        function LoanSummaryReportListController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, $interpolate) {
+            $scope.summaries = [
+                {
+                    category: 'Aging Summary of Pastdue Accounts',
+                    subcategory: [
+                        {
+                            name: 'Per Category',
+                            url: '/api/loans/amortizationitemsagingreports/',
+                            params: {
+                                maturing: 'TRUE',
+                            },
+                        },
+                    ],
+                },
+            ];
+
+            $scope.selectSummary = function (category, sub) {
+                var slugCategory = appFactory.slugify(category);
+                var slugSubCategory = appFactory.slugify(sub.name);
+                $state.go('app.lms-reports-summary.info', {
+                    category: slugCategory,
+                    subcategory: slugSubCategory,
+                    filter: sub.filter,
+                    url: sub.url,
+                    params: sub.params,
+                    order: sub.order,
+                    dateFilter: sub.dateFilter,
+                    hiddenFields: sub.hiddenFields,
                 });
             };
         }

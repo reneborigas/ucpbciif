@@ -233,6 +233,12 @@ class DocumentLoanApplicationReportViewSet(ModelViewSet):
                         ),
                     ),
                 ),
+                area=Case(
+                    When(
+                        Q(borrower__recordType="BD"),
+                        then=F("borrower__area__branchCode"),
+                    ),
+                ),
                 loanNo=F("loan__pnNo"),
                 window=F("loan__loanProgram__name"),
                 purpose=F("loan__purpose"),

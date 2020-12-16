@@ -113,11 +113,35 @@
                 </li> -->
             </ul>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" ng-class="{active: $state.includes('app.lms-reports')}" ui-sref="app.lms-reports.list">
-                <i class="fad fa-chart-line"></i>
-                Reports
+        <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.lms-reports') || $state.includes('app.lms-reports-summary')}">
+            <a
+                class="nav-link nav-dropdown-toggle"
+                ng-class="{active: $state.includes('app.lms-reports') || $state.includes('app.lms-reports-summary')}"
+                href="#"
+            >
+                <i class="fad fa-file-chart-line"></i>
+                Loan Reports
             </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.lms-reports.list">
+                        <i class="fad fa-chart-line"></i>
+                        Reports
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.lms-reports-summary.list">
+                        <i class="fad fa-chart-pie"></i>
+                        Summary
+                    </a>
+                </li> -->
+                <!-- <li class="nav-item">
+                    <a class="nav-link pl-16" ui-sref-active="active" ui-sref="app.icons.fontawesome">
+                        <i class="fad fa-handshake"></i>
+                        Collaterals
+                    </a>
+                </li> -->
+            </ul>
         </li>
     </ul>
 </nav>

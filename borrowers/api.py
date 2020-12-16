@@ -130,7 +130,10 @@ class BorrowerViewSet(ModelViewSet):
                 ),
                 "borrowerAttachments",
                 Prefetch("documents", queryset=Document.objects.order_by("dateCreated")),
-                Prefetch("loans", queryset=Loan.objects.order_by("dateReleased")),
+                Prefetch(
+                    "loans",
+                    queryset=Loan.objects.order_by("dateReleased"),
+                ),
                 Prefetch("documents__documentMovements", queryset=DocumentMovement.objects.order_by("-dateCreated")),
             )
             .annotate(
@@ -151,6 +154,32 @@ class BorrowerViewSet(ModelViewSet):
                     When(recordType="BD", then=V("Business")),
                     When(recordType="ID", then=V("Individual")),
                     output_field=models.CharField(),
+                ),
+                borrowerAddress=Case(
+                    When(
+                        Q(recordType="BD"),
+                        then=Concat(
+                            F("business__businessAddress__streetNo"),
+                            V(" "),
+                            F("business__businessAddress__barangay"),
+                            V(" "),
+                            F("business__businessAddress__city"),
+                            V(" "),
+                            F("business__businessAddress__province"),
+                        ),
+                    ),
+                    When(
+                        Q(recordType="ID"),
+                        then=Concat(
+                            F("individual__individualAddress__streetNo"),
+                            V(" "),
+                            F("individual__individualAddress__barangay"),
+                            V(" "),
+                            F("individual__individualAddress__city"),
+                            V(" "),
+                            F("individual__individualAddress__province"),
+                        ),
+                    ),
                 ),
                 contactPersonNumber=Case(
                     When(
@@ -338,7 +367,9 @@ class BorrowerReportViewSet(ModelViewSet):
                         ),
                     ),
                 ),
-                branchCode=F("area__branchCode"),
+                _area=Case(
+                    When(Q(recordType="BD"), then=F("area__branchCode")),
+                ),
             )
             .exclude(isDeleted=True)
             .order_by("borrowerId")

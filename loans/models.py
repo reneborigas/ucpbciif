@@ -2,8 +2,9 @@ from django.db import models
 from django.utils import timezone
 from borrowers.models import Borrower
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Prefetch, F, Case, When, Value as V, Count, Sum, Q
+from django.db.models import Prefetch, F, Case, When, Value as V, Count, Sum, Q, Subquery
 from payments.models import Check
+from datetime import date
 
 
 class Status(models.Model):
@@ -375,6 +376,24 @@ class LoanProgram(models.Model):
             totalAvailments = totalAvailments + loan.totalAmortizationPrincipal
 
         return totalAvailments
+
+    def get_1to30Days(self):
+        return 0
+
+    def get_31to90Days(self):
+        return 0
+
+    def get_91to180Days(self):
+        return 0
+
+    def get_181to360Days(self):
+        return 0
+
+    def get_over360Days(self):
+        return 0
+
+    def get_total(self):
+        return 0
 
 
 class InterestRate(models.Model):
@@ -881,6 +900,25 @@ class Loan(models.Model):
         if latestAmortization:
             return latestAmortization.amortizationItems.order_by("-id").first()
 
+    def getLastAmortizationItemSchedule(self):
+        latestAmortization = (
+            self.amortizations.filter(Q(amortizationStatus__name="UNPAID") | Q(amortizationStatus__name="RESTRUCTURED"))
+            .order_by("-id")
+            .first()
+        )
+        amortizations = self.amortizations.filter(amortizationStatus__name="PAID")
+
+        if latestAmortization:
+            latestAmortizationItem = (
+                latestAmortization.amortizationItems.filter(
+                    Q(amortizationStatus__name="UNPAID") | Q(amortizationStatus__name="PARTIAL")
+                )
+                .order_by("id")
+                .first()
+            )
+            if latestAmortizationItem:
+                return latestAmortizationItem.schedule
+
     def getCurrentAmortization(self):
 
         latestAmortization = self.amortizations.filter(amortizationStatus__name="UNPAID").order_by("-id").first()
@@ -1014,6 +1052,32 @@ class AmortizationItem(models.Model):
             totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
             return totalPayments
         return 0
+
+    def getAging(self):
+        delta = date.today() - self.schedule
+        if int(delta.days) >= 1 and int(delta.days) <= 30:
+            return "1-30 days"
+        elif int(delta.days) >= 31 and int(delta.days) <= 90:
+            return "31-90 days"
+        elif int(delta.days) >= 91 and int(delta.days) <= 180:
+            return "91-180 days"
+        elif int(delta.days) >= 181 and int(delta.days) <= 360:
+            return "181-360 days"
+        else:
+            return "Over 360 days"
+
+    def getAgingOrder(self):
+        delta = date.today() - self.schedule
+        if int(delta.days) >= 1 and int(delta.days) <= 30:
+            return 1
+        elif int(delta.days) >= 31 and int(delta.days) <= 90:
+            return 2
+        elif int(delta.days) >= 91 and int(delta.days) <= 180:
+            return 3
+        elif int(delta.days) >= 181 and int(delta.days) <= 360:
+            return 4
+        else:
+            return 5
 
     class Meta:
         ordering = ("id",)

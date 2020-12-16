@@ -1,6 +1,6 @@
 <div class="row" ng-controller="BorrowerPrintController">
     <div class="col-lg-12">
-        <div class="row">
+        <div class="row mb-6">
             <div class="col-md-12">
                 <div class="text-center">
                     <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
@@ -11,7 +11,7 @@
         <div class="row p-0">
             <div class="col-md-12">
                 <div class="table-responsive text-right">
-                    <table class="table table-borderless" ng-repeat="loan in loans">
+                    <table class="table table-borderless mb-6" ng-repeat="loan in loans">
                         <thead>
                             <tr>
                                 <td colspan="8" class="text-center p-0">Statement of Account</td>
@@ -32,7 +32,7 @@
                             <tr>
                                 <td></td>
                                 <td class="text-left p-0 ml-5">ADDRESS:</td>
-                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.borrower_name }}</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.borrowerAddress }}</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -52,7 +52,7 @@
                             <tr>
                                 <td></td>
                                 <td class="text-left p-0 ml-5">INTEREST RATE:</td>
-                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.interestRate }}%</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.interestRate_amount }}%</td>
                             </tr>
                             <!-- <tr>
                                 <td class="p-0">PAST DUE RATE:</td>
@@ -61,12 +61,12 @@
                             <tr>
                                 <td></td>
                                 <td class="text-left p-0 ml-5">DATE RELEASED:</td>
-                                <td colspan="6" class="text-left p-0">{{ loan.dateReleased | date:'shortDate' }}</td>
+                                <td colspan="6" class="text-left p-0">{{ loan.dateReleased | date:'mediumDate' }}</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td class="text-left p-0 ml-5">MATURITY DATE:</td>
-                                <td colspan="6" class="text-left p-0">{{ loan.lastAmortizationItem.schedule | date:'shortDate' }}</td>
+                                <td colspan="6" class="text-left p-0">{{ loan.lastAmortizationItem.schedule | date:'mediumDate' }}</td>
                             </tr>
                             <tr>
                                 <td colsan="8"></td>
@@ -172,9 +172,20 @@
                                 <td class="text-right p-0"></td>
                             </tr>
                         </tbody>
-                        <tbody>
+                        <!-- <tbody>
                             <tr style="border-top: 1pt solid #464e5f !important">
                                 <td class="text-center" colspan="8">
+                                    <div class="">
+                                        <span class="text-dark-75">-- NOTHING FOLLOWS --</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody> -->
+                    </table>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr style="border-top: 1pt solid #464e5f !important">
+                                <td class="text-center">
                                     <div class="">
                                         <span class="text-dark-75">-- NOTHING FOLLOWS --</span>
                                     </div>

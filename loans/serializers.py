@@ -20,7 +20,7 @@ from borrowers.models import Branch
 #     creditLine_dateExpired = serializers.ReadOnlyField(source='creditLine.dateExpired')
 #     borrower_name = serializers.ReadOnlyField(source='borrower.cooperative.name')
 #     borrower_id = serializers.ReadOnlyField(source='borrower.borrowerId')
-#     term_name = serializers.ReadOnlyField(source='term.name')
+#     term_name = serializers.ReadOnlyField(source='term.code')
 #     interestRate_amount = serializers.ReadOnlyField(source='interestRate.interestRate')
 #     loanProgram_name = serializers.ReadOnlyField(source='loanProgram.name')
 #     totalAmortizationInterest = serializers.CharField(read_only=True)
@@ -236,9 +236,9 @@ class StatusSerializer(ModelSerializer):
 
 
 class CreditLineSerializer(ModelSerializer):
-    term_name = serializers.ReadOnlyField(source="term.name")
+    term_name = serializers.ReadOnlyField(source="term.code")
     term_code = serializers.ReadOnlyField(source="term.code")
-    
+
     interestRate_amount = serializers.ReadOnlyField(source="interestRate.interestRate")
     status_name = serializers.ReadOnlyField(source="status.name")
     loanProgram_name = serializers.ReadOnlyField(source="loanProgram.name")
@@ -291,9 +291,11 @@ class LoanSerializer(ModelSerializer):
     borrower_name = serializers.ReadOnlyField(source="borrower.business.tradeName")
     borrower_id = serializers.ReadOnlyField(source="borrower.borrowerId")
     amortizations = AmortizationSerializer(many=True, read_only=True)
-    term_name = serializers.ReadOnlyField(source="term.name")
+    term_name = serializers.ReadOnlyField(source="term.code")
     term_code = serializers.ReadOnlyField(source="term.code")
-      
+    borrowerAddress = serializers.CharField(read_only=True)
+    securedUnsecured = serializers.CharField(read_only=True)
+
     interestRate_amount = serializers.ReadOnlyField(source="interestRate.interestRate")
     loanProgram_name = serializers.ReadOnlyField(source="loanProgram.name")
     branch = serializers.CharField(read_only=True)
@@ -389,8 +391,8 @@ class LoanReportSerializer(ModelSerializer):
     maturityDate = serializers.CharField(read_only=True)
     borrowerName = serializers.ReadOnlyField(source="borrower.business.tradeName")
     address = serializers.CharField(read_only=True)
-    branch = serializers.ReadOnlyField(source="borrower.area.branchCode")
-    loanTerm = serializers.ReadOnlyField(source="term.name")
+    area = serializers.ReadOnlyField(source="borrower.area.branchCode")
+    loanTerm = serializers.ReadOnlyField(source="term.code")
     loanInterestRate = serializers.CharField(read_only=True)
     window = serializers.ReadOnlyField(source="loanProgram.name")
     status = serializers.ReadOnlyField(source="loanStatus.name")
@@ -414,7 +416,7 @@ class LoanReportSerializer(ModelSerializer):
             "borrowerName",
             "address",
             "maturityDate",
-            "branch",
+            "area",
             "loanAmount",
             "loanTerm",
             "loanInterestRate",
@@ -431,12 +433,42 @@ class LoanReportSerializer(ModelSerializer):
         ]
 
 
-class LoanReportOutstandingBalanceSerializer(ModelSerializer):
+class LoanReportSecuritySerializer(ModelSerializer):
     pnNo = serializers.CharField(read_only=True)
+    borrowerName = serializers.CharField(read_only=True)
+    borrowerCode = serializers.CharField(read_only=True)
+    granted = serializers.CharField(read_only=True)
+    maturityDate = serializers.CharField(read_only=True)
+    loanTerm = serializers.ReadOnlyField(source="term.code")
+    originalPrincipal = serializers.CharField(read_only=True)
+    principalBalance = serializers.CharField(read_only=True)
+    window = serializers.ReadOnlyField(source="loanProgram.name")
+    area = serializers.ReadOnlyField(source="borrower.area.branchCode")
+    securedUnsecured = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Loan
+        fields = [
+            "pnNo",
+            "borrowerName",
+            "borrowerCode",
+            "granted",
+            "maturityDate",
+            "loanTerm",
+            "originalPrincipal",
+            "principalBalance",
+            "window",
+            "area",
+            "securedUnsecured",
+        ]
+
+
+class LoanReportOutstandingBalanceSerializer(ModelSerializer):
+    # pnNo = serializers.CharField(read_only=True)
     releaseDate = serializers.CharField(read_only=True)
     borrowerName = serializers.ReadOnlyField(source="borrower.business.tradeName")
-    branch = serializers.ReadOnlyField(source="borrower.area.branchCode")
-    loanTerm = serializers.ReadOnlyField(source="term.name")
+    area = serializers.ReadOnlyField(source="borrower.area.branchCode")
+    loanTerm = serializers.ReadOnlyField(source="term.code")
     loanInterestRate = serializers.CharField(read_only=True)
     window = serializers.ReadOnlyField(source="loanProgram.name")
     releaseMonth = serializers.CharField(read_only=True)
@@ -452,7 +484,7 @@ class LoanReportOutstandingBalanceSerializer(ModelSerializer):
             "pnNo",
             "releaseDate",
             "borrowerName",
-            "branch",
+            "area",
             "loanTerm",
             "loanInterestRate",
             "window",
@@ -463,11 +495,12 @@ class LoanReportOutstandingBalanceSerializer(ModelSerializer):
 
 
 class AmortizationItemReportSerializer(ModelSerializer):
-    pnNo = serializers.CharField(read_only=True)
+    # pnNo = serializers.CharField(read_only=True)
+    pnNo = serializers.ReadOnlyField(source="amortization.loan.pnNo")
     window = serializers.ReadOnlyField(source="amortization.loan.loanProgram.name")
-    loanTerm = serializers.ReadOnlyField(source="amortization.loan.term.name")
+    loanTerm = serializers.ReadOnlyField(source="amortization.loan.term.code")
     amortizationStatus = serializers.ReadOnlyField(source="amortizationStatus.name")
-    branch = serializers.ReadOnlyField(source="amortization.loan.borrower.area.branchCode")
+    area = serializers.ReadOnlyField(source="amortization.loan.borrower.area.branchCode")
     amortizationSchedule = serializers.CharField(read_only=True)
     principal = serializers.CharField(read_only=True)
     interest = serializers.CharField(read_only=True)
@@ -484,7 +517,7 @@ class AmortizationItemReportSerializer(ModelSerializer):
         model = AmortizationItem
         fields = [
             "pnNo",
-            "branch",
+            "area",
             "schedule",
             "days",
             "principal",
@@ -499,11 +532,40 @@ class AmortizationItemReportSerializer(ModelSerializer):
         ]
 
 
+class AmortizationItemAgingReportSerializer(ModelSerializer):
+    borrowerName = serializers.CharField(read_only=True)
+    area = serializers.ReadOnlyField(source="amortization.loan.borrower.area.branchCode")
+    window = serializers.ReadOnlyField(source="amortization.loan.loanProgram.name")
+    pnNo = serializers.ReadOnlyField(source="amortization.loan.pnNo")
+    dueDate = serializers.CharField(read_only=True)
+    numberOfDays = serializers.CharField(read_only=True)
+    principalBalance = serializers.CharField(read_only=True)
+    originalPrincipal = serializers.CharField(read_only=True)
+    age = serializers.CharField(read_only=True)
+    agingOrder = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = AmortizationItem
+        fields = [
+            "borrowerName",
+            "area",
+            "window",
+            "pnNo",
+            "dueDate",
+            "numberOfDays",
+            "age",
+            "agingOrder",
+            "originalPrincipal",
+            "principalBalance",
+        ]
+
+
 class CreditLineOutstandingReportSerializer(ModelSerializer):
     borrowerName = serializers.CharField(read_only=True)
     _status = serializers.CharField(read_only=True)
+    area = serializers.CharField(read_only=True)
     window = serializers.ReadOnlyField(source="loanProgram.name")
-    paymentTerm = serializers.ReadOnlyField(source="term.name")
+    paymentTerm = serializers.ReadOnlyField(source="term.code")
     totalAmount = serializers.CharField(read_only=True)
     creditLineInterestRate = serializers.CharField(read_only=True)
     dateCreated = serializers.CharField(read_only=True)
@@ -517,6 +579,7 @@ class CreditLineOutstandingReportSerializer(ModelSerializer):
         fields = [
             "dateCreated",
             "borrowerName",
+            "area",
             "window",
             "dateApproved",
             "dateExpired",
@@ -534,7 +597,7 @@ class CreditLineProcessingReportSerializer(ModelSerializer):
     borrowerName = serializers.CharField(read_only=True)
     _status = serializers.CharField(read_only=True)
     window = serializers.ReadOnlyField(source="loanProgram.name")
-    paymentTerm = serializers.ReadOnlyField(source="term.name")
+    paymentTerm = serializers.ReadOnlyField(source="term.code")
     totalAmount = serializers.CharField(read_only=True)
     creditLineInterestRate = serializers.CharField(read_only=True)
     dateCreated = serializers.CharField(read_only=True)
@@ -557,7 +620,7 @@ class CreditLineApprovedReportSerializer(ModelSerializer):
     borrowerName = serializers.CharField(read_only=True)
     _status = serializers.ReadOnlyField(source="status.name")
     window = serializers.ReadOnlyField(source="loanProgram.name")
-    paymentTerm = serializers.ReadOnlyField(source="term.name")
+    paymentTerm = serializers.ReadOnlyField(source="term.code")
     totalAmount = serializers.CharField(read_only=True)
     creditLineInterestRate = serializers.CharField(read_only=True)
     dateCreated = serializers.CharField(read_only=True)
@@ -576,3 +639,16 @@ class CreditLineApprovedReportSerializer(ModelSerializer):
             "dateExpired",
             "_status",
         ]
+
+
+class LoanProgramAgingCountSerializer(ModelSerializer):
+    _1to30Days = serializers.IntegerField(read_only=True)
+    _31to90Days = serializers.IntegerField(read_only=True)
+    _91to180Days = serializers.IntegerField(read_only=True)
+    _181to360Days = serializers.IntegerField(read_only=True)
+    _over360Days = serializers.IntegerField(read_only=True)
+    _total = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = LoanProgram
+        fields = ["code", "_1to30Days", "_31to90Days", "_91to180Days", "_181to360Days", "_over360Days", "_total"]

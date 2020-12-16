@@ -859,7 +859,7 @@ class BorrowerSerializer(ModelSerializer):
     borrowerType = serializers.CharField(read_only=True)
     branch = serializers.CharField(read_only=True)
     tin = serializers.CharField(read_only=True)
-    address = serializers.CharField(read_only=True)
+    borrowerAddress = serializers.CharField(read_only=True)
     contactPersonNumber = serializers.CharField(read_only=True)
 
     individual = IndividualSerializer(many=False, required=False)
@@ -977,11 +977,7 @@ class BranchSerializer(ModelSerializer):
 
 class BorrowerReportSerializer(ModelSerializer):
     borrowerName = serializers.CharField(read_only=True)
-    branch = serializers.ReadOnlyField(source="branch.branchCode")
-
-    window = serializers.ReadOnlyField(source="loans.loanProgram.name")
-    loanTerm = serializers.ReadOnlyField(source="loans.term.name")
-
+    _area = serializers.CharField(read_only=True)
     totalAvailments = serializers.CharField(read_only=True)
     totalOutstandingBalance = serializers.CharField(read_only=True)
     totalPayments = serializers.CharField(read_only=True)
@@ -990,11 +986,9 @@ class BorrowerReportSerializer(ModelSerializer):
         model = Borrower
         fields = [
             "borrowerName",
-            "branch",
+            "_area",
             "totalAvailments",
             "totalOutstandingBalance",
             "totalPayments",
             "accreditationDate",
-            "window",
-            "loanTerm",
         ]

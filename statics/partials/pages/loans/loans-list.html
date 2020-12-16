@@ -240,6 +240,14 @@
                                 <td
                                     class="datatable-cell datatable-cell-left text-right"
                                     header-class="'text-right'"
+                                    data-title="'SECURED/UNSECURED'"
+                                    sortable="'securedUnsecured'"
+                                >
+                                    {{ loan.securedUnsecured | date:'mediumDate' }}
+                                </td>
+                                <td
+                                    class="datatable-cell datatable-cell-left text-right"
+                                    header-class="'text-right'"
                                     data-title="'STATUS'"
                                     sortable="'loanStatus_name'"
                                 >
