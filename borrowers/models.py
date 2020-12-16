@@ -239,6 +239,9 @@ class Family(models.Model):
         auto_now=True,
     )
 
+    def __str__(self):
+        return "%s" % (self.individual)
+
 
 # CIC Compliance Individual and Business Foreign Key
 class Address(models.Model):
@@ -280,6 +283,12 @@ class Address(models.Model):
         auto_now=True,
     )
 
+    def __str__(self):
+        if self.business:
+            return "%s" % (self.business)
+        else:
+            return "%s" % (self.individual)
+
 
 # CIC Compliance Individual and Business Foreign Key
 class Identification(models.Model):
@@ -308,6 +317,12 @@ class Identification(models.Model):
         auto_now=True,
     )
 
+    def __str__(self):
+        if self.business:
+            return "%s" % (self.business)
+        else:
+            return "%s" % (self.individual)
+
 
 # CIC Compliance Individual Foreign Key
 class ID(models.Model):
@@ -327,6 +342,9 @@ class ID(models.Model):
     dateUpdated = models.DateTimeField(
         auto_now=True,
     )
+
+    def __str__(self):
+        return "%s" % (self.individual)
 
 
 # CIC Compliance Individual and Business Foreign Key
@@ -352,6 +370,12 @@ class Contact(models.Model):
     dateUpdated = models.DateTimeField(
         auto_now=True,
     )
+
+    def __str__(self):
+        if self.business:
+            return "%s" % (self.business)
+        else:
+            return "%s" % (self.individual)
 
 
 # CIC Compliance Individual Foreign Key
@@ -398,6 +422,9 @@ class Employment(models.Model):
     natureOfBusiness = models.CharField(max_length=255, null=True, blank=True)
     jobTitle = models.CharField(max_length=255, null=True, blank=True)
 
+    def __str__(self):
+        return "%s" % (self.individual)
+
 
 # CIC Compliance Individual Foreign Key
 class SoleTrader(models.Model):
@@ -433,6 +460,9 @@ class SoleTrader(models.Model):
         auto_now=True,
     )
 
+    def __str__(self):
+        return "%s" % (self.individual)
+
 
 # Individual Foreign Key
 class IndividualBusiness(models.Model):
@@ -458,6 +488,9 @@ class IndividualBusiness(models.Model):
         null=True,
         blank=True,
     )
+
+    def __str__(self):
+        return "%s" % (self.individual)
 
 
 # Business Foreign Key
@@ -502,7 +535,7 @@ class ContactPerson(models.Model):
     )
 
     def __str__(self):
-        return "%s %s %s" % (self.firstname, self.middlename, self.lastname)
+        return "%s" % (self.business)
 
 
 # Business Foreign Key
@@ -582,6 +615,9 @@ class Director(models.Model):
         default=False,
     )
 
+    def __str__(self):
+        return "%s" % (self.business)
+
 
 # Business Foreign Key
 class StandingCommittee(models.Model):
@@ -619,6 +655,9 @@ class StandingCommittee(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
+
+    def __str__(self):
+        return "%s" % (self.business)
 
 
 class Borrower(models.Model):

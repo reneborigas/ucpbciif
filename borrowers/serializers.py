@@ -860,7 +860,7 @@ class BorrowerSerializer(ModelSerializer):
     branch = serializers.CharField(read_only=True)
     tin = serializers.CharField(read_only=True)
     address = serializers.CharField(read_only=True)
-    phoneNo = serializers.CharField(read_only=True)
+    contactPersonNumber = serializers.CharField(read_only=True)
 
     individual = IndividualSerializer(many=False, required=False)
     business = BusinessSerializer(many=False, required=False)
@@ -994,7 +994,7 @@ class BorrowerReportSerializer(ModelSerializer):
             "totalAvailments",
             "totalOutstandingBalance",
             "totalPayments",
-            "clientSince",
+            "accreditationDate",
             "window",
             "loanTerm",
         ]
