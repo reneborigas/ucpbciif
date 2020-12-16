@@ -485,12 +485,12 @@ class CreditLine(models.Model):
         return "%s %s" % (self.borrower, self.amount)
 
     def getRemainingCreditLine(self):
-        totalLoanAvailments = self.loans.filter(loanStatus__name="CURRENT").aggregate(
-            totalLoanAvailments=Sum(F("amount"))
-        )["totalLoanAvailments"]
-        if totalLoanAvailments:
-            return self.amount - int(totalLoanAvailments)
-        return self.amount
+        # totalLoanAvailments = self.loans.filter(loanStatus__name="CURRENT").aggregate(
+        #     totalLoanAvailments=Sum(F("amount"))
+        # )["totalLoanAvailments"]
+        # if totalLoanAvailments:
+        #     return self.amount - int(totalLoanAvailments)
+        return self.amount - self.getTotalAvailment()
 
     # def getTotalAvailment(self):
     #     totalLoanAvailments=  self.loans.filter(loanStatus__name='CURRENT').aggregate(totalLoanAvailments=Sum(F('amount') ))['totalLoanAvailments']
@@ -516,10 +516,17 @@ class CreditLine(models.Model):
             | Q(loanStatus__name="RESTRUCTURED")
         )
         totalAvailments = 0
+        totalPrincipalPayment = 0 
         for loan in loans:
             loan.totalAmortizationPrincipal = loan.getTotalAmortizationPrincipal()
             totalAvailments = totalAvailments + loan.totalAmortizationPrincipal
 
+             
+            totalPrincipalPayment = totalPrincipalPayment + loan.getTotalPrincipalPayment()
+
+        totalAvailments = totalAvailments - totalPrincipalPayment
+        print("totalPrincipalPayment")
+        print(totalPrincipalPayment)
         return totalAvailments
 
 

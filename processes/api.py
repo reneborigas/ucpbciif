@@ -548,7 +548,8 @@ class CalculatePMTView(views.APIView):
         interest = loan.currentAmortizationItem.interest
 
         payment = pmt.payment
-        print(principal)
+        print('principal')
+        print(interest)
 
 
         if daysAdvanced < 0:
@@ -559,7 +560,10 @@ class CalculatePMTView(views.APIView):
         else:
             print(days)
             interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)
-            totalToPay = principal + interest
+            # totalToPay = principal + interest
+            totalToPay =  loan.currentAmortizationItem.total
+            print(totalToPay)
+            print('totalToPay')
             # pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
 
         # principalBalance =pmt.nextStartingValue
@@ -599,7 +603,7 @@ class CalculatePMTView(views.APIView):
         print('dayTillCutOff')
         print(dayTillCutOff)
         accruedInterest = (Decimal(pmt.principal + pmt.nextStartingValue)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
-        print(pmt.principal)
+        print(round(pmt.principal,2))
         additionalInterest = 0
         print("accruedInterest")
         # interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)
@@ -629,7 +633,7 @@ class CalculatePMTView(views.APIView):
             'daysExceed':daysExceed,
             'daysAdvanced':daysAdvanced,
             'penalty':penalty, 
-            'totalToPay':totalToPay,
+            'totalToPay':round(totalToPay,2),
             'totalToPayWithPenalty':totalToPayWithPenalty,
             'status': 'Accepted',
             'principalBalance':principalBalance,
