@@ -2703,17 +2703,53 @@ define(function () {
                         .then(
                             function (response) {
                                 angular.forEach(response.data, function (loan) {
-                                    var countOfPaidItems = $filter('filter')(
-                                        loan.latestAmortization.amortizationItems,
-                                        {
-                                            amortizationStatus_name: 'PAID',
-                                        },
-                                        true
+                                    var firstUnpaidIndex;
+                                    var currentPrincipalBalance = loan.amount;
+                                    for (var i = 0; i < loan.latestAmortization.amortizationItems.length; i++) {
+                                        if (loan.latestAmortization.amortizationItems[i].amortizationStatus_name == 'UNPAID') {
+                                            firstUnpaidIndex = i;
+                                            break;
+                                        }
+                                    }
+                                    loan.latestAmortization.amortizationItems.splice(
+                                        firstUnpaidIndex + 1,
+                                        loan.latestAmortization.amortizationItems.length
                                     );
-                                    loan.latestAmortization.amortizationItems.splice(countOfPaidItems.length + 1, 100);
+
+                                    angular.forEach(loan.latestAmortization.amortizationItems, function (amortizationItem, index) {
+                                        var totalPrincipalPayment = 0;
+                                        var totalInterestPayment = 0;
+                                        var totalPayment = 0;
+                                        amortizationItem.balanceDueTotal = 0;
+                                        angular.forEach(amortizationItem.payments, function (payment) {
+                                            currentPrincipalBalance -= payment.principal;
+                                            totalPrincipalPayment += payment.principal;
+                                            totalInterestPayment += payment.interest;
+                                            totalPayment += payment.total;
+                                        });
+                                        amortizationItem.currentPrincipalBalance = currentPrincipalBalance;
+                                        if (index == 0) {
+                                            amortizationItem.balanceDueTotal = amortizationItem.total - totalPrincipalPayment - totalInterestPayment;
+                                            amortizationItem.balanceDuePrincipal = amortizationItem.principal - totalPrincipalPayment;
+                                            amortizationItem.balanceDueInterest = amortizationItem.interest - totalInterestPayment;
+                                        } else {
+                                            amortizationItem.balanceDueTotal =
+                                                amortizationItem.total -
+                                                totalPrincipalPayment -
+                                                totalInterestPayment +
+                                                loan.latestAmortization.amortizationItems[index - 1].balanceDueTotal;
+                                            amortizationItem.balanceDuePrincipal =
+                                                amortizationItem.principal -
+                                                totalPrincipalPayment -
+                                                loan.latestAmortization.amortizationItems[index - 1].balanceDuePrincipal;
+                                            amortizationItem.balanceDueInterest =
+                                                amortizationItem.interest -
+                                                totalInterestPayment +
+                                                loan.latestAmortization.amortizationItems[index - 1].balanceDueInterest;
+                                        }
+                                    });
                                     console.log(loan.latestAmortization.amortizationItems);
                                 });
-
                                 $scope.loans = response.data;
                             },
                             function (error) {

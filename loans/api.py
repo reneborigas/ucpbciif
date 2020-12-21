@@ -584,6 +584,13 @@ class LoanViewSet(ModelViewSet):
                 amortization.totalObligations = amortization.getTotalObligations
                 amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
 
+                # for payment in amortization.payments.all(): 
+                    
+                #     payment.paidInterest = payment.interestPayment + payment.accruedInterestPayment + payment.additionalInterest
+                #     print(payment.paidInterest )
+                #     print("payment.paidInterest" )
+                #     amortization.save()
+                                             
         if dateFrom is not None and dateTo is not None:
             queryset = queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
 
@@ -671,7 +678,7 @@ class AmortizationItemViewSet(ModelViewSet):
         for amortizationItem in queryset:
             amortizationItem.totalPayment = amortizationItem.getTotalPayment
             amortizationItem.latestCheck = amortizationItem.getPDC()
-
+           
         if status is not None:
             queryset = queryset.filter(status__name=status)
 
@@ -703,6 +710,7 @@ class AmortizationItemViewSet(ModelViewSet):
                 principalBalance__lte=principalBalanceTo
             )
 
+       
         return queryset
 
 

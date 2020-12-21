@@ -516,7 +516,7 @@ class PaymentSerializer(ModelSerializer):
     amortizationItem_schedule = serializers.ReadOnlyField(source="amortizationItem.schedule")
     amortizationItem_principal = serializers.ReadOnlyField(source="amortizationItem.principal")
     amortizationItem_interest = serializers.ReadOnlyField(source="amortizationItem.interest")
-
+    paidInterest = serializers.ReadOnlyField(source="amortizationItem.interest")
     # amortizationItem_additional_interest = serializers.ReadOnlyField(source='amortizationItem.additionalInterest')
     # amortizationItem_penalty = serializers.ReadOnlyField(source='amortizationItem.penalty')
     # amortizationItem_total_with_penalty = serializers.ReadOnlyField(source='amortizationItem.totalToPayWithPenalty')
@@ -524,20 +524,17 @@ class PaymentSerializer(ModelSerializer):
     amortizationItem_total = serializers.ReadOnlyField(source="amortizationItem.totalToPay")
     borrowerName = serializers.CharField(read_only=True)
     pnNo = serializers.CharField(read_only=True)
+   
     borrower_id = serializers.ReadOnlyField(source="loan.borrower.borrowerId")
     # loan_no  = serializers.ReadOnlyField(source='amortizationItem.total')
 
     def create(self, validated_data):
         payment = Payment.objects.create(**validated_data)
 
-
-
-        
         if payment.balance <= 0:
 
             # payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
             amortizationItem = payment.loan.getCurrentAmortizationItem()
-            
             amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=2)  # paid
             amortizationItem.principal = payment.principal
             amortizationItem.daysAdvanced = payment.daysAdvanced
