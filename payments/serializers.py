@@ -530,10 +530,14 @@ class PaymentSerializer(ModelSerializer):
     def create(self, validated_data):
         payment = Payment.objects.create(**validated_data)
 
+
+
+        
         if payment.balance <= 0:
 
             # payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
             amortizationItem = payment.loan.getCurrentAmortizationItem()
+            
             amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=2)  # paid
             amortizationItem.principal = payment.principal
             amortizationItem.daysAdvanced = payment.daysAdvanced

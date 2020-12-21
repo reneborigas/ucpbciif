@@ -449,7 +449,7 @@ define(function () {
                                 function (newTerm, oldTerm) {
                                     console.log(newTerm);
                                     $scope.payment.balance = $scope.getBalance().toFixed(0);;
-                                    $scope.payment.overPayment = $scope.getOverPayment().toFixed(0);;
+                                    $scope.payment.overPayment = $scope.getOverPayment();
                                     $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
                                     $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
                                     $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
@@ -618,7 +618,7 @@ define(function () {
                 $scope.payment.penaltyPayment = parseFloat($scope.payment.penaltyPayment).toFixed(2);
                 $scope.payment.balance = parseFloat($scope.payment.balance).toFixed(0);
                 $scope.payment.overPayment = parseFloat($scope.payment.overPayment).toFixed(0);
-
+                // $scope.payment.isSkipped = false
                 if ($scope.loan.currentAmortizationItem.latestCheck) {
                     $scope.payment.pdc = $scope.loan.currentAmortizationItem.latestCheck.id;
                 }
@@ -644,6 +644,37 @@ define(function () {
                             function () {
                                 toastr.success('Success', 'Payment Successful.');
                                 swal('Success!', 'Payment Successful.', 'success');
+                                $state.go('app.loans.info', { loanId: $scope.payment.loan });
+                            },
+                            function (error) {
+                                // toastr.error(
+                                //     'Error ' + error.status + ' ' + error.statusText,
+                                //     'Could not create payment. Please contact System Administrator.'
+                                // );
+                            }
+                        );
+                    }
+                });
+                // }
+            };
+            $scope.skipPayment = function () {  
+ 
+                swal({
+                    title: 'Skip Payment',
+                    text: 'Continue Skipping Payment for this Amortization Schedule?',
+                    icon: 'info',
+                    buttons: {
+                        cancel: true,
+                        confirm: 'Skip Payment',
+                    },
+                }).then((isConfirm) => {
+                    if (isConfirm) {
+                        $http.post('/api/payments/skippayment/', {
+                            amortizationItemId:$scope.loan.currentAmortizationItem.id, 
+                        } ).then(
+                            function () {
+                                toastr.success('Success', 'Skip Payment Successful.');
+                                swal('Success!', 'Skip Payment Successful.', 'success');
                                 $state.go('app.loans.info', { loanId: $scope.payment.loan });
                             },
                             function (error) {

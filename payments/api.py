@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet , ViewSet
 from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
@@ -16,7 +16,8 @@ from django.db.models import (
     Func,
 )
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
-
+from rest_framework import status, views
+from rest_framework.response import Response
 
 class CheckViewSet(ModelViewSet):
     queryset = Check.objects.all()
@@ -127,6 +128,29 @@ class PaymentTypeViewSet(ModelViewSet):
             queryset = queryset.filter(id=paymentTypeId)
 
         return queryset
+
+class SkipPaymentView(views.APIView):
+
+    # @method_decorator(csrf_protect)
+    def post(self, request):
+
+        amortizationItemId = request.data.get("amortizationItemId")
+         
+        if amortizationItemId:
+            amortizationItem =  AmortizationItem.objects.get(pk=amortizationItemId)
+
+            amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=7) #bayanihan
+            amortizationItem.save()
+
+            return Response(
+                {
+                    "message": "Skip Payment",
+                    "amortizationItemId": amortizationItemId, 
+                },
+                status=status.HTTP_202_ACCEPTED,
+            )
+
+        return Response({"error": "Error on skip payment"}, status.HTTP_400_BAD_REQUEST)
 
 
 class PaymentViewSet(ModelViewSet):

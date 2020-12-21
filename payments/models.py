@@ -273,7 +273,9 @@ class Payment(models.Model):
     isDeleted = models.BooleanField(
         default=False,
     )
-
+    isSkipped = models.BooleanField(
+        default=False,
+    )
     def __str__(self):
         return "%s - %s %s" % (self.id, self.loan, self.total)
 
