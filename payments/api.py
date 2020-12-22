@@ -224,4 +224,9 @@ class PaymentViewSet(ModelViewSet):
         if status is not None:
             queryset = queryset.filter(paymentStatus__name=status)
 
+
+
+        for payment in queryset:
+            payment.paidInterest = payment.interestPayment + payment.accruedInterestPayment + payment.additionalInterest
+           
         return queryset

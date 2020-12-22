@@ -103,18 +103,19 @@
                                 <td class="text-center p-0">{{ amortization.days }}</td>
                                 <td class="text-right p-0">{{ amortization.total | number : '2' }}</td>
                                 <td class="text-right p-0">{{ amortization.interest | number : '2' }}</td>
-                                <td class="text-right p-0"></td>
+                                    <td class="text-right p-0"></td>
                                 <td class="text-right p-0">{{ amortization.principal | number : '2' }}</td>
                                 <td class="text-right p-0"></td>
                             </tr>
                             <tr ng-repeat-start="payment in amortization.payments">
                                 <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
                                 <td class="text-center p-0">ADD'L CHARGES</td>
-                                <td class="text-center p-0">{{ 0 }}</td>
-                                <td class="text-right p-0">{{ 0 | number : '2' }}</td>
-                                <td class="text-right p-0">{{ 0 | number : '2' }}</td>
+                                <td class="text-center p-0">{{ payment.daysExceed }}</td>
+                                <td class="text-right p-0">{{(payment.penaltyPayment*1 + payment.additionalInterest*1) | number : 2  }}</td>
+                                <td class="text-right p-0">{{ payment.additionalInterest | number : '2' }}</td>
+                                <td class="text-right p-0">{{ payment.penaltyPayment | number : '2' }}</td>
                                 <td class="text-right p-0"></td>
-                                <td class="text-right p-0">{{ 0 | number : '2' }}</td>
+                                
                                 <td class="text-right p-0">{{ 0 | number : '2' }}</td>
                             </tr>
                             <tr>
@@ -134,16 +135,20 @@
                                 <td class="text-right p-0"></td>
                             </tr>
                             <tr ng-repeat-end>
-                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0">  {{ payment.datePayment | date: 'd/M/yy' }} </td>
                                 <td class="text-center p-0">PAYMENT</td>
                                 <td class="text-center p-0"></td>
                                 <td class="text-right p-0">
                                     <span>({{ payment.total | number : '2' }})</span>
                                 </td>
                                 <td class="text-right p-0">
-                                    <span>({{ payment.interest | number : '2' }})</span>
+                                    <span>({{ (payment.paidInterest*1 + payment.additionalInterest*1) | number : 2 }})</span>
+                                    
                                 </td>
-                                <td class="text-right p-0"></td>
+                               
+                                <td class="text-right p-0">
+                                    <span>({{ payment.penaltyPayment | number : '2' }})</span>
+                                </td>
                                 <td class="text-right p-0">
                                     <span>({{ payment.principal | number : '2' }})</span>
                                 </td>
@@ -165,7 +170,7 @@
                                 </td>
                                 <td class="text-right p-0">{{ amortization.currentPrincipalBalance| number : 2 }}</td>
                             </tr>
-                            <tr ng-repeat-end>
+                            <!-- <tr ng-if="amortization.amortizationStatus_name=='BAYANIHAN'">
                                 <td class="text-center p-0"></td>
                                 <td class="text-center p-0" ng-bind="$last ? 'BALANCE DUE' : 'BALANCE'"></td>
                                 <td class="text-center p-0"></td>

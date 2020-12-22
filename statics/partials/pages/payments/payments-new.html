@@ -663,7 +663,7 @@
                                         name="checkNo"
                                         ng-model="payment.checkNo"
                                         ng-class="{'is-invalid' : newPaymentForm.checkNo.$invalid && newPaymentForm.checkNo.$touched, 'is-valid' : newPaymentForm.checkNo.$valid && newPaymentForm.checkNo.$touched }"
-                                       
+                                        required
                                     />
                                     <span
                                         class="form-text text-muted"
@@ -682,7 +682,7 @@
                                         name="bankAccount"
                                         ng-model="payment.bankAccount"
                                         ng-class="{'is-invalid' : newPaymentForm.bankAccount.$invalid && newPaymentForm.bankAccount.$touched, 'is-valid' : newPaymentForm.bankAccount.$valid && newPaymentForm.bankAccount.$touched }"
-                                         
+                                        required
                                     />
                                     <span
                                         class="form-text text-muted"
@@ -1122,14 +1122,6 @@
                         <div>
                             <button
                                 class="btn btn-success text-uppercase p-2 pl-3 pr-3"
-                                ng-click="skipPayment()" 
-                            >
-                                Skip Payment
-                            </button>
-                        </div>
-                        <div>
-                            <button
-                                class="btn btn-success text-uppercase p-2 pl-3 pr-3"
                                 ng-click="save()"
                                 ng-disabled="insufficient || payment.total <= 0 "
                                  
@@ -1375,12 +1367,12 @@
                                                 {{ amortization.penalty | currency :'₱'}}
                                             </span>
 
-                                            <span
+                                            <!-- <span
                                                 class="text-dark-75 font-weight-bolder font-size-lg"
                                                 ng-if="amortization.penalty > 0"
                                             >
                                                 (+{{ amortization.daysExceed }} days)
-                                            </span>
+                                            </span> -->
                                         </div>
                                     </td>
                                     <!-- <td>

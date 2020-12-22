@@ -753,11 +753,9 @@ class Loan(models.Model):
 
     def getOutstandingBalance(self):
         totalPayments = 0
-        totalPayments = self.getTotalPayment()
-        print(totalPayments)
-        # if self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]:
-        #     totalPayments = self.getTotalPayment
-        
+        if self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]:
+            totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
+
         if self.isRestructured:
             latestAmortization = (
                 self.amortizations.filter(amortizationStatus__name="RESTRUCTURED").order_by("-id").first()
@@ -800,28 +798,10 @@ class Loan(models.Model):
         return 0
 
     def getTotalPayment(self):
-
-        if self.isRestructured:
-            latestAmortization = (
-                self.amortizations.filter(amortizationStatus__name="RESTRUCTURED").order_by("-id").first()
-            )
-        
-        else:
-            latestAmortization = self.amortizations.filter(amortizationStatus__name="UNPAID").order_by("-id").first()
-            
         totalPayments = 0
-        bayanihan = latestAmortization.amortizationItems.filter(amortizationStatus__name="BAYANIHAN").aggregate(
-                    totalAmortizationPayment=Sum(F("total"))
-                )["totalAmortizationPayment"]
         if self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]:
-            totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]  
-            if bayanihan:
-                return totalPayments + bayanihan
+            totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
             return totalPayments
-
-        if bayanihan:
-                return  bayanihan 
-
 
         return 0
 
@@ -1077,8 +1057,6 @@ class AmortizationItem(models.Model):
 
         if self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]:
             totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
-
-            
             return totalPayments
         return 0
 
