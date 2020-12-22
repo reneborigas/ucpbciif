@@ -2796,3 +2796,11 @@ button.badge-bottom-left:before {
     top: auto;
     bottom: -7px;
 } */
+
+
+@media print {
+	body,
+	html {
+		font-size: 13px!important
+	}
+}

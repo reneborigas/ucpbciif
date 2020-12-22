@@ -97,7 +97,7 @@
                             </tr>
                         </tbody>
                         <tbody>
-                            <tr ng-repeat-start="amortization in loan.latestAmortization.amortizationItems">
+                            <tr ng-repeat-start="amortization in loan.latestAmortization.amortizationItems track by $index">
                                 <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
                                 <td class="text-center p-0">AMOUNT DUE</td>
                                 <td class="text-center p-0">{{ amortization.days }}</td>
@@ -105,7 +105,7 @@
                                 <td class="text-right p-0">{{ amortization.interest | number : '2' }}</td>
                                 <td class="text-right p-0"></td>
                                 <td class="text-right p-0">{{ amortization.principal | number : '2' }}</td>
-                                <td class="text-right p-0">{{ amortization.principalBalance | number : '2' }}</td>
+                                <td class="text-right p-0"></td>
                             </tr>
                             <tr ng-repeat-start="payment in amortization.payments">
                                 <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
@@ -119,7 +119,7 @@
                             </tr>
                             <tr>
                                 <td class="text-center p-0"></td>
-                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0">AMOUNT DUE</td>
                                 <td class="text-center p-0"></td>
                                 <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
                                     <span ng-bind=" (amortization.total +0) > 0 ? (0 | number : 2) : '-'"></span>
@@ -147,26 +147,40 @@
                                 <td class="text-right p-0">
                                     <span>({{ payment.principal | number : '2' }})</span>
                                 </td>
+                                <td class="text-right p-0">{{ amortization.currentPrincipalBalance | number : 2 }}</td>
+                            </tr>
+                            <tr ng-if="amortization.amortizationStatus_name=='BAYANIHAN'">
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0">BAYANIHAN</td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0">
+                                    <span>-</span>
+                                </td>
+                                <td class="text-right p-0">
+                                    <span>-</span>
+                                </td>
                                 <td class="text-right p-0"></td>
+                                <td class="text-right p-0">
+                                    <span>-</span>
+                                </td>
+                                <td class="text-right p-0">{{ amortization.currentPrincipalBalance| number : 2 }}</td>
                             </tr>
                             <tr ng-repeat-end>
                                 <td class="text-center p-0"></td>
-                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0" ng-bind="$last ? 'BALANCE DUE' : 'BALANCE'"></td>
                                 <td class="text-center p-0"></td>
                                 <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
-                                    <span
-                                        ng-bind="(amortization.total - amortization.payments[0].total) > 0 ? ((amortization.total - amortization.payments[0].total) | number: 2) : '-'"
-                                    ></span>
+                                    <span ng-bind="( amortization.balanceDueTotal ) > 0 ? ( amortization.balanceDueTotal | number: 2) : '-'"></span>
                                 </td>
                                 <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
                                     <span
-                                        ng-bind="(amortization.interest - amortization.payments[0].interest) > 0 ? ((amortization.interest - amortization.payments[0].interest) | number: 2): '-'"
+                                        ng-bind="( amortization.balanceDuePrincipal ) > 0 ? ( amortization.balanceDuePrincipal | number: 2): '-'"
                                     ></span>
                                 </td>
                                 <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important"></td>
                                 <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
                                     <span
-                                        ng-bind="(amortization.principal - amortization.payments[0].principal) > 0 ? ((amortization.principal - amortization.payments[0].principal) | number: 2) : '-'"
+                                        ng-bind="( amortization.balanceDueInterest ) > 0 ? ( amortization.balanceDueInterest | number: 2) : '-'"
                                     ></span>
                                 </td>
                                 <td class="text-right p-0"></td>
