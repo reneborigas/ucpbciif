@@ -19,7 +19,14 @@ admin.site.register(PaymentPeriod)
 admin.site.register(Status)
 admin.site.register(CreditLine)
 admin.site.register(Amortization)
-admin.site.register(AmortizationItem)
+ 
+ 
+class AmortizationItemAdmin(admin.ModelAdmin):
+    list_display = ('id','loanId','schedule','principal' ,'deductAccruedInterest','accruedInterest','interest','additionalInterest','penalty','total','principalBalance','amortizationStatus')
+    class Meta:
+        model=AmortizationItem 
+          
+admin.site.register(AmortizationItem,AmortizationItemAdmin) 
 admin.site.register(AmortizationStatus)
 admin.site.register(InterestRate)
 admin.site.register(LoanStatus)

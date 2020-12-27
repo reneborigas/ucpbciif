@@ -838,7 +838,7 @@
                                     <td>
                                             <div class="text-right px-2">
                                                 <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                    {{ payment.interestPayment | currency :'₱'}}
+                                                    {{ payment.interestPayment + payment.accruedInterestPayment | currency :'₱'}}
                                                 </span>
                                             </div>
                                     </td>

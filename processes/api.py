@@ -546,7 +546,7 @@ class CalculatePMTView(views.APIView):
         # principal = pmt.principal
         principal = loan.currentAmortizationItem.principal
         interest = loan.currentAmortizationItem.interest
-
+        accruedInterest = loan.currentAmortizationItem.accruedInterest
         payment = pmt.payment
         print('principal')
         print(interest)
@@ -559,7 +559,8 @@ class CalculatePMTView(views.APIView):
             totalToPay = principal + interest
         else:
             print(days)
-            interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)
+            #daysadvaced
+            # interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)
             # totalToPay = principal + interest
             totalToPay =  loan.currentAmortizationItem.total
             print(totalToPay)
@@ -574,14 +575,14 @@ class CalculatePMTView(views.APIView):
         if latestPayment:
             if latestPayment.balance >= 1:
                 principal = latestPayment.balance
-                interest = latestPayment.interest - latestPayment.interestPayment
+                # interest = latestPayment.interest - latestPayment.interestPayment
                 totalToPay = principal + interest
                 loanAmount = latestPayment.balance
                 payment = principal
                 principalBalance = latestPayment.principalBalance
 
             if latestPayment.overPayment >=1:
-                principal =  pmt.principal - latestPayment.overPayment
+                # principal =  pmt.principal - latestPayment.overPayment
                 totalToPay = principal + interest
 
             diff =  datePayment.replace(tzinfo=None) - latestPayment.datePayment.replace(tzinfo=None) 
@@ -602,8 +603,8 @@ class CalculatePMTView(views.APIView):
         print( int(datePayment.replace(tzinfo=None).strftime ('%d') )  )
         print('dayTillCutOff')
         print(dayTillCutOff)
-        accruedInterest = (Decimal(pmt.principal + pmt.nextStartingValue)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
-        print(round(pmt.principal,2))
+        # accruedInterest = (Decimal(pmt.principal + pmt.nextStartingValue)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+        # print(round(pmt.principal,2))
         additionalInterest = 0
         print("accruedInterest")
         # interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)

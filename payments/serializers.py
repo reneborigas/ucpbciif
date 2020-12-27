@@ -523,7 +523,7 @@ class PaymentSerializer(ModelSerializer):
 
     amortizationItem_total = serializers.ReadOnlyField(source="amortizationItem.totalToPay")
     borrowerName = serializers.CharField(read_only=True)
-    pnNo = serializers.CharField(read_only=True)
+    pnNo = serializers.CharField(read_only=True) 
    
     borrower_id = serializers.ReadOnlyField(source="loan.borrower.borrowerId")
     # loan_no  = serializers.ReadOnlyField(source='amortizationItem.total')
@@ -534,12 +534,13 @@ class PaymentSerializer(ModelSerializer):
         if payment.balance <= 0:
 
             # payment.amortization.amortizationStatus = AmortizationStatus.objects.get(pk=2) #paid
-            amortizationItem = payment.loan.getCurrentAmortizationItem()
+            amortizationItemCurrent = payment.loan.getCurrentAmortizationItem()
+            amortizationItem = AmortizationItem.objects.get(pk=amortizationItemCurrent.pk)
             amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=2)  # paid
-            amortizationItem.principal = payment.principal
-            amortizationItem.daysAdvanced = payment.daysAdvanced
-            amortizationItem.additionalInterest = payment.additionalInterest
-            amortizationItem.penalty = payment.penalty
+            # amortizationItem.principal = payment.principal
+            # amortizationItem.daysAdvanced = payment.daysAdvanced
+            # amortizationItem.additionalInterest = payment.additionalInterest
+            # amortizationItem.penalty = payment.penalty
             amortizationItem.save()
         payment.amortization.save()
 
@@ -548,12 +549,16 @@ class PaymentSerializer(ModelSerializer):
 
         # payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
         if payment.balance >= 1:
-            amortizationItem = payment.loan.getCurrentAmortizationItem()
+            print("payment new")
+            amortizationItemCurrent = payment.loan.getCurrentAmortizationItem()
+            amortizationItem = AmortizationItem.objects.get(pk=amortizationItemCurrent.pk)
             amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=3)  # partial
-            amortizationItem.principal = amortizationItem.principal
-            amortizationItem.interest = payment.interestPayment
-            amortizationItem.accruedInterest = payment.accruedInterestPayment
-            amortizationItem.total = amortizationItem.interest + amortizationItem.principal
+            # amortizationItem.principal = amortizationItem.principal
+            # amortizationItem.interest = payment.interestPayment
+            # amortizationItem.accruedInterest = payment.accruedInterestPayment
+            # amortizationItem.total = amortizationItem.interest + amortizationItem.principal
+            print(amortizationItem.principal)
+            print('amortizationItem.principal')
             amortizationItem.save()
         # else:
         #     payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))

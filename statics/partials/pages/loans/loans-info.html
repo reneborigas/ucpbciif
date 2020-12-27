@@ -612,7 +612,7 @@
                         ng-click="restructureAmortization(loan.id)"
                         ng-if="(loan.dateReleased && !loan.isRestructured )"
                     >
-                        Restucture Amortization
+                        Restructure Amortization
                     </a>
                     <button
                         class="btn btn-sm btn-info font-weight-bolder text-uppercase mr-3"
@@ -2398,7 +2398,7 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">
-                                                {{ payment.interestPayment | currency :'₱'}}
+                                                {{ payment.interestPayment*1 + payment.accruedInterestPayment*1 | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>

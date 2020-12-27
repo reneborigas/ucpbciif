@@ -771,7 +771,7 @@ class Loan(models.Model):
 
         else:
             latestAmortization = self.amortizations.filter(amortizationStatus__name="UNPAID").order_by("-id").first()
-
+            
             if latestAmortization:
                 return (
                     latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F("total")))[
@@ -882,6 +882,8 @@ class Loan(models.Model):
 
             check = 0
             cash = 0
+            interestPayment = 0
+            accruedInterestPayment =0 
             if latestAmortizationItem:
                 if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("check")))["totalPayments"]:
                     check = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("check")))["totalPayments"]
@@ -889,10 +891,18 @@ class Loan(models.Model):
                 if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("cash")))["totalPayments"]:
                     cash = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("cash")))["totalPayments"]
 
-                paidPrincipal = cash + check
-                print(paidPrincipal)
-                latestAmortizationItem.principal = latestAmortizationItem.principal - paidPrincipal
+                if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("interestPayment")))["totalPayments"]:
+                    interestPayment = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("interestPayment")))["totalPayments"]
+                if latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("accruedInterestPayment")))["totalPayments"]:
+                    accruedInterestPayment = latestAmortizationItem.payments.aggregate(totalPayments=Sum(F("accruedInterestPayment")))["totalPayments"]
 
+                paidPrincipal = cash + check
+                
+                # print(paidPrincipal)
+                latestAmortizationItem.principal = latestAmortizationItem.principal - paidPrincipal
+                latestAmortizationItem.interest = latestAmortizationItem.interest - interestPayment - accruedInterestPayment
+                latestAmortizationItem.accruedInterest = latestAmortizationItem.accruedInterest - accruedInterestPayment 
+                latestAmortizationItem.total = latestAmortizationItem.principal  + latestAmortizationItem.interest     
             return latestAmortizationItem
 
     def getLastAmortizationItem(self):
@@ -1040,7 +1050,10 @@ class AmortizationItem(models.Model):
             self.schedule,
             self.amortizationStatus,
         )
-
+    def loanId(self):
+        return "%s" % (
+            self.amortization.loan.id, 
+        )
     def getPDC(self):
         latestPDC = self.checks.all().first()
         print(latestPDC)
