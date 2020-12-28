@@ -2797,10 +2797,26 @@ button.badge-bottom-left:before {
     bottom: -7px;
 } */
 
-
 @media print {
 	body,
 	html {
-		font-size: 13px!important
+		font-size: 13px!important;
 	}
+	.row {
+		float: none !important; 
+		position: static !important; 
+		display: inline; 
+		box-sizing: content-box !important;
+	}
+	.hide-scrollbar {
+		overflow-x: visible !important;
+	}
+	.page-break-avoid {
+		page-break-inside: avoid;
+	}
+	.page-break-after {
+		display:block; 
+		page-break-after:always;
+	}
+
 }

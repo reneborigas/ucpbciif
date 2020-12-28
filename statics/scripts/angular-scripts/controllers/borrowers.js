@@ -2696,7 +2696,6 @@ define(function () {
             $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
                 function (response) {
                     $scope.borrower = response.data[0];
-                    console.log($scope.borrower.borrowerId);
                     $http
                         .get('/api/loans/loans/', {
                             params: { borrowerId: $scope.borrowerId, status: 'CURRENT' },
@@ -2704,76 +2703,75 @@ define(function () {
                         .then(
                             function (response) {
                                 angular.forEach(response.data, function (loan) {
-                                    var firstUnpaidIndex;
-                                    var currentPrincipalBalance = loan.amount;
+                                    var firstUnpaidIndex = 0;
                                     for (var i = 0; i < loan.latestAmortization.amortizationItems.length; i++) {
                                         if (loan.latestAmortization.amortizationItems[i].amortizationStatus_name == 'UNPAID') {
                                             firstUnpaidIndex = i;
                                             break;
+                                        } else {
+                                            firstUnpaidIndex = i;
                                         }
                                     }
-                                    if (firstUnpaidIndex) {
-                                        loan.latestAmortization.amortizationItems.splice(
-                                            firstUnpaidIndex + 1,
-                                            loan.latestAmortization.amortizationItems.length
-                                        );
-                                    } else {
-                                        loan.latestAmortization.amortizationItems.splice(
-                                            loan.latestAmortization.amortizationItems.length,
-                                            loan.latestAmortization.amortizationItems.length
-                                        );
-                                    }
+                                    loan.latestAmortization.amortizationItems.splice(
+                                        firstUnpaidIndex + 1,
+                                        loan.latestAmortization.amortizationItems.length
+                                    );
 
                                     angular.forEach(loan.latestAmortization.amortizationItems, function (amortizationItem, index) {
+                                        amortizationItem.balanceTotal = 0;
+                                        amortizationItem.balanceInterest = 0;
+                                        amortizationItem.balancePenalty = 0;
+                                        amortizationItem.balancePrincipal = 0;
+
                                         var totalPrincipalPayment = 0;
                                         var totalInterestPayment = 0;
                                         var totalPayment = 0;
-                                        amortizationItem.balanceDueTotal = 0;
+                                        var totalPenalty = 0;
                                         angular.forEach(amortizationItem.payments, function (payment) {
-                                            currentPrincipalBalance -= payment.principal;
-                                            totalPrincipalPayment += payment.principal;
-                                            totalInterestPayment += payment.interestPayment + payment.accruedInterestPayment;
-                                            totalPayment += payment.total;
+                                            totalPayment += parseFloat(payment.total);
+                                            totalInterestPayment += parseFloat(payment.interestPayment) + parseFloat(payment.accruedInterestPayment);
+                                            totalPenalty += parseFloat(payment.penalty);
+                                            totalPrincipalPayment += parseFloat(payment.principal);
                                         });
                                         // amortizationItem.currentPrincipalBalance = payment.balance;
-                                        if (index == 0) {
-                                            amortizationItem.balanceDueTotal = amortizationItem.total - totalPrincipalPayment - totalInterestPayment;
-                                            amortizationItem.balanceDuePrincipal = amortizationItem.principal - totalPrincipalPayment;
-                                            amortizationItem.balanceDueInterest = amortizationItem.interest - totalInterestPayment;
-                                        }
-                                        //
-                                        else if (index == 7) {
-                                            amortizationItem.balanceDueTotal =
-                                                amortizationItem.total -
-                                                totalPrincipalPayment -
-                                                totalInterestPayment +
-                                                loan.latestAmortization.amortizationItems[index - 1].balanceDueTotal;
-                                            amortizationItem.balanceDuePrincipal =
-                                                amortizationItem.principal -
-                                                totalPrincipalPayment -
-                                                loan.latestAmortization.amortizationItems[index - 1].balanceDuePrincipal;
-                                            amortizationItem.balanceDueInterest =
-                                                amortizationItem.interest -
-                                                totalInterestPayment +
-                                                loan.latestAmortization.amortizationItems[index - 1].balanceDueInterest;
-                                            //
-                                        } else {
-                                            amortizationItem.balanceDueTotal =
-                                                amortizationItem.total -
-                                                totalPrincipalPayment -
-                                                totalInterestPayment +
-                                                loan.latestAmortization.amortizationItems[index - 1].balanceDueTotal;
-                                            amortizationItem.balanceDuePrincipal =
-                                                amortizationItem.principal -
-                                                totalPrincipalPayment -
-                                                loan.latestAmortization.amortizationItems[index - 1].balanceDuePrincipal;
-                                            amortizationItem.balanceDueInterest =
-                                                amortizationItem.interest -
-                                                totalInterestPayment +
-                                                loan.latestAmortization.amortizationItems[index - 1].balanceDueInterest;
-                                        }
+                                        amortizationItem.balanceTotal = amortizationItem.total - totalPrincipalPayment - totalInterestPayment;
+                                        amortizationItem.balanceInterest = amortizationItem.interest - totalInterestPayment;
+                                        amortizationItem.balancePenalty = amortizationItem.penalty - totalPenalty;
+                                        amortizationItem.balancePrincipal = amortizationItem.principal - totalPrincipalPayment;
+                                        // if (index == 0) {
+                                        //     amortizationItem.balanceDueTotal = amortizationItem.total - totalPrincipalPayment - totalInterestPayment;
+                                        //     amortizationItem.balanceDuePrincipal = amortizationItem.principal - totalPrincipalPayment;
+                                        //     amortizationItem.balanceDueInterest = amortizationItem.interest - totalInterestPayment;
+                                        // } else if (index == 7) {
+                                        //     amortizationItem.balanceDueTotal =
+                                        //         amortizationItem.total -
+                                        //         totalPrincipalPayment -
+                                        //         totalInterestPayment +
+                                        //         loan.latestAmortization.amortizationItems[index - 1].balanceDueTotal;
+                                        //     amortizationItem.balanceDuePrincipal =
+                                        //         amortizationItem.principal -
+                                        //         totalPrincipalPayment -
+                                        //         loan.latestAmortization.amortizationItems[index - 1].balanceDuePrincipal;
+                                        //     amortizationItem.balanceDueInterest =
+                                        //         amortizationItem.interest -
+                                        //         totalInterestPayment +
+                                        //         loan.latestAmortization.amortizationItems[index - 1].balanceDueInterest;
+                                        // } else {
+                                        //     amortizationItem.balanceDueTotal =
+                                        //         amortizationItem.total -
+                                        //         totalPrincipalPayment -
+                                        //         totalInterestPayment +
+                                        //         loan.latestAmortization.amortizationItems[index - 1].balanceDueTotal;
+                                        //     amortizationItem.balanceDuePrincipal =
+                                        //         amortizationItem.principal -
+                                        //         totalPrincipalPayment -
+                                        //         loan.latestAmortization.amortizationItems[index - 1].balanceDuePrincipal;
+                                        //     amortizationItem.balanceDueInterest =
+                                        //         amortizationItem.interest -
+                                        //         totalInterestPayment +
+                                        //         loan.latestAmortization.amortizationItems[index - 1].balanceDueInterest;
+                                        // }
                                     });
-                                    console.log(loan.latestAmortization.amortizationItems);
                                 });
                                 $scope.loans = response.data;
                             },
