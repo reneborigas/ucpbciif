@@ -2705,6 +2705,7 @@ define(function () {
                                 angular.forEach(response.data, function (loan) {
                                     var firstUnpaidIndex = 0;
                                     for (var i = 0; i < loan.latestAmortization.amortizationItems.length; i++) {
+                                        if (loan)
                                         if (loan.latestAmortization.amortizationItems[i].amortizationStatus_name == 'UNPAID') {
                                             firstUnpaidIndex = i;
                                             break;

@@ -106,7 +106,7 @@
                             </tr>
                         </tbody>
                         <tbody>
-                            <tr ng-repeat-start="amortization in loan.latestAmortization.amortizationItems track by $index">
+                            <tr ng-repeat-start="amortization in loan.latestAmortization.amortizationItems track by $index | orderBy:'$index':true ">
                                 <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important">
                                     {{ amortization.schedule | date: 'd/M/yy' }}
                                 </td>
