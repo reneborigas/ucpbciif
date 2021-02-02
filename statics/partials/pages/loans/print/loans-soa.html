@@ -1,0 +1,228 @@
+<div class="row" ng-controller="StatementOfAccountPrintController">
+    <div class="col-lg-12 page-break-after" ng-repeat="loan in loans | orderBy:'$index' ">
+        <div class="row mb-6">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h3 class="font-weight-boldest">UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h3>
+                    <h5>17th Floor, UCPB Executive Building, 7907 Makati Avenue,</h5>
+                    <h5>Brgy. Bel Air, Makati City</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row p-0">
+            <div class="col-md-12">
+                <div class="table-responsive text-right overflow-x-hidden">
+                    <table class="table table-borderless mb-6">
+                        <thead>
+                            <tr>
+                                <td colspan="8" class="text-center p-0"><h3 class="font-weight-boldest">STATEMENT OF ACCOUNT</h3></td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-center p-0">
+                                    <h5 class="font-weight-boldest">As of {{ dateToday | date :'longDate' }}</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5"><span class="font-weight-boldest">ACCOUNT NAME:</span></td>
+                                <td colspan="6" class="text-left p-0" colspan="5">
+                                    <span class="font-weight-boldest">{{ loan.borrower_name }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">ADDRESS:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.borrowerAddress }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">WINDOW:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.loanProgram_name }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">PN #:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.pnNo }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">AMOUNT OF LOAN:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.amount | currency :'₱' }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">INTEREST RATE:</td>
+                                <td colspan="6" class="text-left p-0" colspan="5">{{ loan.interestRate_amount }}%</td>
+                            </tr>
+                            <!-- <tr>
+                                <td class="p-0">PAST DUE RATE:</td>
+                                <td class="p-0" colspan="5">{{ loan.borrower_name }}</td>
+                            </tr> -->
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">DATE RELEASED:</td>
+                                <td colspan="6" class="text-left p-0">{{ loan.dateReleased | date:'mediumDate' }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-left p-0 ml-5">MATURITY DATE:</td>
+                                <td colspan="6" class="text-left p-0">{{ loan.lastAmortizationItem.schedule | date:'mediumDate' }}</td>
+                            </tr>
+                            <tr>
+                                <td colsan="8"></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest">DATE</span></td>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest">PARTICULARS</span></td>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest"># DAYS</span></td>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest">TOTAL</span></td>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest">INTEREST</span></td>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest">PENALTY</span></td>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest">PRINCIPAL</span></td>
+                                <td class="text-center p-0 border border-dark"><span class="font-weight-boldest">PRIN. BALANCE</span></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important">
+                                    {{ loan.latestAmortization.amortizationItems[0].schedule | date: 'd/M/yy' }}
+                                </td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0 pr-2 font-weight-boldest" style="border-right: 1pt solid #464e5f !important">
+                                    {{ loan.amount | number : '2' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr ng-repeat-start="amortization in loan.latestAmortization.amortizationItems track by $index">
+                                <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important">
+                                    {{ amortization.schedule | date: 'd/M/yy' }}
+                                </td>
+                                <td class="text-center p-0">AMOUNT DUE</td>
+                                <td class="text-center p-0">{{ amortization.days }}</td>
+                                <td class="text-right p-0">{{ amortization.total | number : '2' }}</td>
+                                <td class="text-right p-0">{{ amortization.interest | number : '2' }}</td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0">{{ amortization.principal | number : '2' }}</td>
+                                <td class="text-right p-0 pr-2" style="border-right: 1pt solid #464e5f !important"></td>
+                            </tr>
+                            <tr ng-repeat-start="payment in amortization.payments">
+                                <!-- <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
+                                <td class="text-center p-0">ADD'L CHARGES</td>
+                                <td class="text-center p-0">{{ payment.daysExceed }}</td>
+                                <td class="text-right p-0">{{(payment.penalty*1 + payment.additionalInterest*1) | number : 2 }}</td>
+                                <td class="text-right p-0">{{ payment.additionalInterest | number : '2' }}</td>
+                                <td class="text-right p-0">{{ payment.penalty | number : '2' }}</td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0">{{ 0 | number : '2' }}</td> -->
+                                <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important">
+                                    {{ payment.datePayment | date: 'd/M/yy' }}
+                                </td>
+                                <td class="text-center p-0">INTEREST CHARGES</td>
+                                <td class="text-center p-0">{{ payment.daysExceed }}</td>
+                                <td class="text-right p-0">{{ (payment.additionalInterest*1 + payment.penalty*1) | number : 2 }}</td>
+                                <td class="text-right p-0">{{ payment.additionalInterest | number : '2' }}</td>
+                                <td class="text-right p-0">{{ payment.penalty | number : '2' }}</td>
+                                <td class="text-right p-0"></td>
+                                <td class="text-right p-0 pr-2" style="border-right: 1pt solid #464e5f !important"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span
+                                        ng-bind=" (payment.totalToPayWithPenalty) > 0 ? ((payment.totalToPayWithPenalty + 0 )| number : 2) : '-'"
+                                    ></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span
+                                        ng-bind=" (payment.interest*1 + payment.additionalInterest*1) > 0 ? ((payment.interest*1 + payment.additionalInterest*1) | number : 2 ) : '-'"
+                                    ></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind=" (payment.penalty) > 0 ? ((payment.penalty) | number : 2 ) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind=" (amortization.principal + 0) > 0 ? ((amortization.principal + 0)| number : 2 ) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0 pr-2" style="border-right: 1pt solid #464e5f !important"></td>
+                            </tr>
+                            <tr ng-repeat-end>
+                                <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important"></td>
+                                <td class="text-center p-0">PAYMENT</td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0">
+                                    <span ng-bind="'(' + (payment.total | number : '2') + ')'"></span>
+                                </td>
+                                <td class="text-right p-0">
+                                    <span ng-bind="'(' + ((payment.paidInterest*1 + payment.additionalInterest*1) | number : '2') + ')'"></span>
+                                </td>
+
+                                <td class="text-right p-0">
+                                    <span ng-bind="'(' + (payment.penaltyPayment | number : '2') + ')'"></span>
+                                </td>
+                                <td class="text-right p-0">
+                                    <span ng-bind="'(' + (payment.principal | number : '2') + ')'"></span>
+                                </td>
+                                <td class="text-right p-0 pr-2 font-weight-boldest" style="border-right: 1pt solid #464e5f !important">
+                                    <span ng-bind=" (payment.principalBalance | number : '2') "></span>
+                                </td>
+                            </tr>
+                            <tr ng-repeat-end>
+                                <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important"></td>
+                                <td class="text-center p-0" ng-bind="$last ? 'BALANCE DUE' : ''"></td>
+                                <td class="text-center p-0"></td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind="( amortization.balanceTotal ) > 0 ? ( amortization.balanceTotal | number: 2) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind="( amortization.balanceInterest ) > 0 ? ( amortization.balanceInterest | number: 2): '-'"></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind="( amortization.balancePenalty ) > 0 ? ( amortization.balancePenalty | number: 2) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0" style="border-top: 1pt solid #464e5f !important">
+                                    <span ng-bind="( amortization.balancePrincipal ) > 0 ? ( amortization.balancePrincipal | number: 2) : '-'"></span>
+                                </td>
+                                <td class="text-right p-0 pr-2" style="border-right: 1pt solid #464e5f !important"></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr style="border-top: 1pt solid #464e5f !important">
+                                <td class="text-center" colspan="8">
+                                    <div class="">
+                                        <span class="text-dark-75">-- NOTHING FOLLOWS --</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <table class="table table-borderless">
+                        <tbody>
+                            <tr style="border-top: 1pt solid #464e5f !important">
+                                <td class="text-center">
+                                    <div class="">
+                                        <span class="text-dark-75">-- NOTHING FOLLOWS --</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

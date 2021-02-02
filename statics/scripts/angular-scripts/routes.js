@@ -1857,6 +1857,16 @@ define(function () {
                         $scope.loanId = $stateParams.loanId;
                     },
                 })
+                .state('print.documents.statement_of_account', {
+                    url: '/loans/statement-of-account/:loanId',
+                    templateUrl: '/statics/partials/pages/loans/print/loans-soa.html',
+                    data: {
+                        pageTitle: 'UCPB CIIF | Statement of Account',
+                    },
+                    controller: function ($scope, $stateParams, appFactory) {
+                        $scope.loanId = $stateParams.loanId;
+                    },
+                })
                 .state('print.documents.datatable', {
                     url: '/:state',
                     templateUrl: '/statics/partials/pages/print/datatable-dynamic-print.html',

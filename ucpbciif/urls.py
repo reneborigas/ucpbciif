@@ -125,6 +125,9 @@ urlpatterns = [
     ),
     path("print/loans/payment-history/<int:id>", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
     path("print/loans/check/<int:id>", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))),
+    path(
+        "print/loans/statement-of-account/<int:id>", ensure_csrf_cookie(TemplateView.as_view(template_name="base.html"))
+    ),
     # App Urls
     path("api/auth/", include("auth.urls")),
     path("api/accounting/", include("accounting.urls"), name="accounting"),

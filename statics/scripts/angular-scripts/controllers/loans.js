@@ -393,6 +393,10 @@ define(function () {
                 $window.open('/print/loans/check/' + id, '_blank', 'width=800,height=800');
             };
 
+            $scope.previewSOA = function (id) {
+                $window.open('/print/loans/statement-of-account/' + id, '_blank', 'width=800,height=800');
+            };
+
             $scope.edit = function (id, value, title) {
                 $scope.update.id = id;
                 $scope.modalTitle = title;
@@ -608,7 +612,7 @@ define(function () {
                         loanId: $scope.update.id,
                         dateExpired: $scope.update.dateExpired,
                     })
-                    .then( 
+                    .then(
                         function (response) {
                             angular.element('#edit-expiry-date').modal('hide');
                             $('body').removeClass('modal-open');
@@ -624,7 +628,6 @@ define(function () {
                         }
                     );
             };
-
 
             $http.get('/api/payments/checkstatuses/').then(
                 function (response) {
@@ -1437,6 +1440,65 @@ define(function () {
                         toastr.error(
                             'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Loan Information. Please contact System Administrator.'
+                        );
+                    }
+                );
+        }
+    );
+
+    app.controller(
+        'StatementOfAccountPrintController',
+        function StatementOfAccountPrintController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout, appFactory, $window) {
+            $scope.dateToday = new Date();
+
+            $http
+                .get('/api/loans/loans/', {
+                    params: { loanId: $scope.loanId },
+                })
+                .then(
+                    function (response) {
+                        angular.forEach(response.data, function (loan) {
+                            var firstUnpaidIndex = 0;
+                            for (var i = 0; i < loan.latestAmortization.amortizationItems.length; i++) {
+                                if (loan)
+                                    if (loan.latestAmortization.amortizationItems[i].amortizationStatus_name == 'UNPAID') {
+                                        firstUnpaidIndex = i;
+                                        break;
+                                    } else {
+                                        firstUnpaidIndex = i;
+                                    }
+                            }
+                            loan.latestAmortization.amortizationItems.splice(firstUnpaidIndex + 1, loan.latestAmortization.amortizationItems.length);
+
+                            angular.forEach(loan.latestAmortization.amortizationItems, function (amortizationItem, index) {
+                                amortizationItem.balanceTotal = 0;
+                                amortizationItem.balanceInterest = 0;
+                                amortizationItem.balancePenalty = 0;
+                                amortizationItem.balancePrincipal = 0;
+
+                                var totalPrincipalPayment = 0;
+                                var totalInterestPayment = 0;
+                                var totalPayment = 0;
+                                var totalPenalty = 0;
+                                angular.forEach(amortizationItem.payments, function (payment) {
+                                    totalPayment += parseFloat(payment.total);
+                                    totalInterestPayment += parseFloat(payment.interestPayment) + parseFloat(payment.accruedInterestPayment);
+                                    totalPenalty += parseFloat(payment.penalty);
+                                    totalPrincipalPayment += parseFloat(payment.principal);
+                                });
+                                // amortizationItem.currentPrincipalBalance = payment.balance;
+                                amortizationItem.balanceTotal = amortizationItem.total - totalPrincipalPayment - totalInterestPayment;
+                                amortizationItem.balanceInterest = amortizationItem.interest - totalInterestPayment;
+                                amortizationItem.balancePenalty = amortizationItem.penalty - totalPenalty;
+                                amortizationItem.balancePrincipal = amortizationItem.principal - totalPrincipalPayment;
+                            });
+                        });
+                        $scope.loans = response.data;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Loans Information. Please contact System Administrator.'
                         );
                     }
                 );

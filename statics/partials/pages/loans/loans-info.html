@@ -24,6 +24,14 @@
                                 <a
                                     href="#"
                                     class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                                    ng-click="previewSOA(loan.id)"
+                                    ng-if="loan.dateReleased && !loan.isRestructured"
+                                >
+                                    Print Statement of Account
+                                </a>
+                                <a
+                                    href="#"
+                                    class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
                                     ng-click=" newLoanRelease(borrower.borrowerId,loan.id)"
                                     ng-if="!loan.dateReleased && loan.loanStatus !=8 && loan.loanStatus !=9"
                                 >
