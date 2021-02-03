@@ -137,7 +137,7 @@
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             ng-disabled="loan.payments.length >0"
-                                            ng-click="editApprovalDate(loan.id,loan.creditLine_dateApproved)" 
+                                            ng-click="editApprovalDate(loan.id,loan.creditLine_dateApproved)"
                                         >
                                             {{ loan.creditLine_dateApproved | date: 'mediumDate' }}
                                         </button>
@@ -149,8 +149,8 @@
                                             class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold"
                                             title="Edit Expiry Date"
                                             data-toggle="tooltip"
-                                            data-placement="top" 
-                                            ng-click="editExpiryDate(loan.id,loan.creditLine_dateExpired)" 
+                                            data-placement="top"
+                                            ng-click="editExpiryDate(loan.id,loan.creditLine_dateExpired)"
                                         >
                                             {{ loan.creditLine_dateExpired | date: 'mediumDate' }}
                                         </button>
@@ -809,7 +809,6 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                
                                                 {{ amortization.accruedInterest | currency :'₱'}}
                                             </span>
                                         </div>
@@ -821,7 +820,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -1721,7 +1720,7 @@
     <!-- End Modal Purpose Security -->
     <!-- Start Modal Add PDC -->
     <div id="add-pdc" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Post Dated Check</h4>
@@ -1973,7 +1972,7 @@
     <!-- End Modal Add PDC-->
     <!-- Start Modal View PDC -->
     <div id="view-pdc" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Post Dated Check</h4>
@@ -2137,47 +2136,45 @@
         </div>
     </div>
     <!-- End Modal Edit Approval Date -->
-
-
-     <!-- Start Modal Edit Expiry Date -->
-     <div
-     id="edit-expiry-date"
-     class="modal fade"
-     data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="staticBackdrop"
-     aria-hidden="true"
- >
-     <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h4 class="modal-title">Edit Expiry Date</h4>
-                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-             </div>
-             <div class="modal-body">
-                 <div class="pb-1">
-                     <div class="form-group">
-                         <label>Expiry Date</label>
-                         <input type="date" class="form-control form-control-solid" ng-model="update.dateExpired" />
-                     </div>
-                 </div>
-             </div>
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
-                 <button
-                     class="btn btn-primary font-weight-bold"
-                     type="button"
-                     data-dismiss="modal"
-                     ng-click="updateExpiryDate(update.dateExpired)"
-                 >
-                     Update
-                 </button>
-             </div>
-         </div>
-     </div>
- </div>
- <!-- End Modal Edit Expiry Date -->
+    <!-- Start Modal Edit Expiry Date -->
+    <div
+        id="edit-expiry-date"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Expiry Date</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="pb-1">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="date" class="form-control form-control-solid" ng-model="update.dateExpired" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="updateExpiryDate(update.dateExpired)"
+                    >
+                        Update
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal Edit Expiry Date -->
     <!-- Start Modal Edit Release Date -->
     <div
         id="edit-release-date"
@@ -2217,7 +2214,7 @@
         </div>
     </div>
     <!-- End Modal Edit Release Date -->
-    <!-- Start Modal Edit Release Date -->
+    <!-- Start Modal Amortization Schedule Payment -->
     <div
         id="amortization-payment"
         class="modal fade"
@@ -2500,5 +2497,5 @@
             </div>
         </div>
     </div>
-    <!-- End Modal Purpose Security -->
+    <!-- End Modal Amortization Schedule Payment -->
 </div>

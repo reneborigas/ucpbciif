@@ -1324,6 +1324,16 @@ define(function () {
         'AmortizationHistoryPrintController',
         function AmortizationHistoryPrintController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout, appFactory, $window) {
             $scope.dateToday = new Date();
+
+            $scope.loadCurrentUserInfo = function () {
+                var user = {};
+                appFactory.getCurrentUserInfo().then(function (data) {
+                    user['name'] = data.fullName;
+                    user['position'] = data.committeePosition;
+                });
+                return user;
+            };
+
             $http
                 .get('/api/loans/loans/', {
                     params: { loanId: $scope.loanId },
@@ -1359,7 +1369,7 @@ define(function () {
                             .then(
                                 function (response) {
                                     $scope.loans = response.data;
-
+                                    $scope.user = $scope.loadCurrentUserInfo();
                                     // $timeout(function () {
                                     //     $window.print();
                                     // }, 500);
@@ -1404,6 +1414,16 @@ define(function () {
         'AmortizationSchedulePrintController',
         function AmortizationSchedulePrintController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout, appFactory, $window) {
             $scope.dateToday = new Date();
+
+            $scope.loadCurrentUserInfo = function () {
+                var user = {};
+                appFactory.getCurrentUserInfo().then(function (data) {
+                    user['name'] = data.fullName;
+                    user['position'] = data.committeePosition;
+                });
+                return user;
+            };
+
             $http
                 .get('/api/loans/loans/', {
                     params: { loanId: $scope.loanId },
@@ -1423,6 +1443,7 @@ define(function () {
                                     appFactory.getLoanProgramsByid($scope.borrower.borrowerId).then(function (data) {
                                         console.log(data);
                                         $scope.windows = data;
+                                        $scope.user = $scope.loadCurrentUserInfo();
                                         $timeout(function () {
                                             $window.print();
                                         }, 500);
@@ -1450,6 +1471,15 @@ define(function () {
         'StatementOfAccountPrintController',
         function StatementOfAccountPrintController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout, appFactory, $window) {
             $scope.dateToday = new Date();
+
+            $scope.loadCurrentUserInfo = function () {
+                var user = {};
+                appFactory.getCurrentUserInfo().then(function (data) {
+                    user['name'] = data.fullName;
+                    user['position'] = data.committeePosition;
+                });
+                return user;
+            };
 
             $http
                 .get('/api/loans/loans/', {
@@ -1494,6 +1524,10 @@ define(function () {
                             });
                         });
                         $scope.loans = response.data;
+                        $scope.user = $scope.loadCurrentUserInfo();
+                        $timeout(function () {
+                            $window.print();
+                        }, 500);
                     },
                     function (error) {
                         toastr.error(

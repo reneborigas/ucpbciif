@@ -92,7 +92,7 @@
                         <tbody>
                             <tr>
                                 <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important">
-                                    {{ loan.latestAmortization.amortizationItems[0].schedule | date: 'd/M/yy' }}
+                                    {{ loan.latestAmortization.amortizationItems[0].schedule | date: 'M/d/yy' }}
                                 </td>
                                 <td class="text-center p-0"></td>
                                 <td class="text-center p-0"></td>
@@ -108,7 +108,7 @@
                         <tbody>
                             <tr ng-repeat-start="amortization in loan.latestAmortization.amortizationItems track by $index">
                                 <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important">
-                                    {{ amortization.schedule | date: 'd/M/yy' }}
+                                    {{ amortization.schedule | date: 'M/d/yy' }}
                                 </td>
                                 <td class="text-center p-0">AMOUNT DUE</td>
                                 <td class="text-center p-0">{{ amortization.days }}</td>
@@ -119,7 +119,7 @@
                                 <td class="text-right p-0 pr-2" style="border-right: 1pt solid #464e5f !important"></td>
                             </tr>
                             <tr ng-repeat-start="payment in amortization.payments">
-                                <!-- <td class="text-center p-0">{{ amortization.schedule | date: 'd/M/yy' }}</td>
+                                <!-- <td class="text-center p-0">{{ amortization.schedule | date: 'M/d/yy' }}</td>
                                 <td class="text-center p-0">ADD'L CHARGES</td>
                                 <td class="text-center p-0">{{ payment.daysExceed }}</td>
                                 <td class="text-right p-0">{{(payment.penalty*1 + payment.additionalInterest*1) | number : 2 }}</td>
@@ -128,7 +128,7 @@
                                 <td class="text-right p-0"></td>
                                 <td class="text-right p-0">{{ 0 | number : '2' }}</td> -->
                                 <td class="text-center p-0" style="border-left: 1pt solid #464e5f !important">
-                                    {{ payment.datePayment | date: 'd/M/yy' }}
+                                    {{ payment.datePayment | date: 'M/d/yy' }}
                                 </td>
                                 <td class="text-center p-0">INTEREST CHARGES</td>
                                 <td class="text-center p-0">{{ payment.daysExceed }}</td>
@@ -221,6 +221,46 @@
                             </tr>
                         </tbody>
                     </table> -->
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td width="40%">
+                            <h6>Prepared by:</h6>
+                        </td>
+                        <td width="30%"></td>
+                        <td width="30%">
+                            <h6>Noted by:</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pt-0 pb-0" width="40%">
+                            <h6>{{ user.name | uppercase }}</h6>
+                        </td>
+                        <td class="pt-0 pb-0" width="30%"></td>
+                        <td class="pt-0 pb-0" width="30%">
+                            <!-- <h6>{{ user.name | uppercase }}</h6> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pt-0" width="40%">
+                            <h6>{{ user.position }}</h6>
+                        </td>
+                        <td class="pt-0" width="30%"></td>
+                        <td class="pt-0" width="30%">
+                            <!-- <h6>{{ user.position }}</h6> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row mb-6">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h6 class="font-italic">Any errors and omissions shall be subject to final verification</h6>
                 </div>
             </div>
         </div>

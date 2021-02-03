@@ -1089,6 +1089,7 @@ define(function () {
                         order: null,
                         dateFilter: null,
                         hiddenFields: null,
+                        total: null,
                     },
                     controller: function ($scope, $stateParams, appFactory) {
                         $scope.filter = $stateParams.filter;
@@ -1097,6 +1098,7 @@ define(function () {
                         $scope.order = $stateParams.order;
                         $scope.dateFilter = $stateParams.dateFilter;
                         $scope.hiddenFields = $stateParams.hiddenFields;
+                        $scope.total = $stateParams.total;
                         $scope.category = appFactory.unSlugify($stateParams.category);
                         $scope.subcategory = appFactory.unSlugify($stateParams.subcategory);
                     },

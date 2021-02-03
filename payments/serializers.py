@@ -510,6 +510,12 @@ class PaymentTypeSerializer(ModelSerializer):
         fields = "__all__"
 
 
+class FilteredPaymentSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.order_by("id")
+        return super(FilteredPaymentSerializer, self).to_representation(data)
+
+
 class PaymentSerializer(ModelSerializer):
     paymentType_name = serializers.ReadOnlyField(source="paymentType.name")
     paymentStatus_name = serializers.ReadOnlyField(source="paymentStatus.name")
@@ -523,8 +529,8 @@ class PaymentSerializer(ModelSerializer):
 
     amortizationItem_total = serializers.ReadOnlyField(source="amortizationItem.totalToPay")
     borrowerName = serializers.CharField(read_only=True)
-    pnNo = serializers.CharField(read_only=True) 
-   
+    pnNo = serializers.CharField(read_only=True)
+
     borrower_id = serializers.ReadOnlyField(source="loan.borrower.borrowerId")
     # loan_no  = serializers.ReadOnlyField(source='amortizationItem.total')
 
@@ -558,7 +564,7 @@ class PaymentSerializer(ModelSerializer):
             # amortizationItem.accruedInterest = payment.accruedInterestPayment
             # amortizationItem.total = amortizationItem.interest + amortizationItem.principal
             print(amortizationItem.principal)
-            print('amortizationItem.principal')
+            print("amortizationItem.principal")
             amortizationItem.save()
         # else:
         #     payment.amortization.amortizationItems.update(amortizationStatus=AmortizationStatus.objects.get(pk=2))
@@ -588,5 +594,6 @@ class PaymentSerializer(ModelSerializer):
         return instance
 
     class Meta:
+        list_serializer_class = FilteredPaymentSerializer
         model = Payment
         fields = "__all__"

@@ -111,7 +111,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th ng-repeat="(key,val) in obj.children[0]" ng-if="!!val &&  hideFields(key)">
+                                    <th ng-repeat="(key,val) in obj.children[0]" ng-if="!!val && hideFields(key)">
                                         <div class="">
                                             <span class="text-dark-75 font-size-sm">{{ key | normalizeString }}</span>
                                         </div>
@@ -124,6 +124,13 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <!-- <tr ng-repeat="total in obj.total track by $index">
+                                    <td ng-repeat="(key,val) in total track by $index" ng-if="!!val && hideFields(key)">
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm">{{ interpolateField(val) }}</span>
+                                        </div>
+                                    </td>
+                                </tr> -->
                             </tbody>
                             <tbody ng-if="data.length == 0">
                                 <tr>

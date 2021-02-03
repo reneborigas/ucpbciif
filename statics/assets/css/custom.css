@@ -2800,7 +2800,7 @@ button.badge-bottom-left:before {
 @media print {
 	body,
 	html {
-		font-size: 13px!important;
+		font-size: 13.5px!important;
 	}
 	.row {
 		float: none !important; 

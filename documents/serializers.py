@@ -102,7 +102,7 @@ class DocumentSerializer(ModelSerializer):
 
     def create(self, validated_data):
 
-        committee = Committee.objects.get(user_id=validated_data.get("committeeId", "1"))
+        committee = Committee.objects.get(user=validated_data.get("committeeId", "1"))
         print(validated_data)
         status = Statuses.objects.get(pk=1)
         # subProcess = SubProcess.objects.get(pk=validated_data.get("subProcess")[''] )

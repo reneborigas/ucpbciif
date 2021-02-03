@@ -24,6 +24,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: [],
+                            total: ['totalAmount'],
                         },
                         {
                             name: 'Approved',
@@ -70,6 +71,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: [],
+                            total: ['totalAmount', 'totalAvailment', 'totalCreditLineBalance'],
                         },
                         {
                             name: 'Per Area',
@@ -518,6 +520,7 @@ define(function () {
                     order: sub.order,
                     dateFilter: sub.dateFilter,
                     hiddenFields: sub.hiddenFields,
+                    total: sub.total,
                 });
             };
         }
@@ -554,7 +557,7 @@ define(function () {
                         function (response) {
                             $scope.response = $filter('orderBy')(response.data, $scope.order.expression, $scope.order.reverse);
                             console.log($scope.response);
-                            $scope.groupArray($scope.response, $scope.filter.toString());
+                            $scope.groupArray($scope.response, $scope.filter.toString(), $scope.total);
                             $scope.setUpSorting();
                         },
                         function (error) {
@@ -598,7 +601,7 @@ define(function () {
                 }).then(
                     function (response) {
                         $scope.response = $filter('orderBy')(response.data, $scope.order.expression, $scope.order.reverse);
-                        $scope.groupArray($scope.response, $scope.filter.toString());
+                        $scope.groupArray($scope.response, $scope.filter.toString(), $scope.total);
                         $scope.setUpSorting();
                     },
                     function (error) {
@@ -632,7 +635,7 @@ define(function () {
                 },
             };
 
-            $scope.groupArray = function (array, filter) {
+            $scope.groupArray = function (array, filter, totalFields) {
                 var array = array;
                 var filter = filter;
 
@@ -643,11 +646,27 @@ define(function () {
                 }, {});
 
                 var myArray = Object.keys(groups).map(function (key) {
-                    return { parent: key, children: groups[key] };
+                    var total = [];
+                    angular.forEach(totalFields, function (fields) {
+                        var decimalValue = 0;
+                        var obj = {};
+                        angular.forEach(groups[key], function (group) {
+                            console.log(group[fields]);
+                            var stringValue = group[fields].replace(" | number :'2'", '');
+                            decimalValue += parseFloat(stringValue);
+                            obj[fields] = decimalValue + " | number :'2'";
+                        });
+                        total.push(obj);
+                    });
+                    return { parent: key, children: groups[key], total: total };
                 });
+                console.log(myArray);
+
+                // var myArray = Object.keys(groups).map(function (key) {
+                //     return { parent: key, children: groups[key] };
+                // });
 
                 $scope.data = myArray;
-                console.log($scope.data);
                 if ($scope.data.length > 0) {
                     $scope.getHeaders($scope.data[0].children[0]);
                 }

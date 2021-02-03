@@ -775,6 +775,7 @@ define(function () {
         };
 
         $scope.save = function () {
+            console.log($scope.loan);
             swal({
                 title: 'Create Document',
                 text: 'Do you want to save and create this loan?',

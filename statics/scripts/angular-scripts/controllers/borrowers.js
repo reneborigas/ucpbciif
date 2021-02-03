@@ -2580,7 +2580,6 @@ define(function () {
                         };
 
                         $scope.save = function () {
-                            console.log($scope.document);
                             if ($scope.form.newLoanApplicationForm.$valid && $scope.checkDetails()) {
                                 swal({
                                     title: 'Create New Loan Application',
@@ -2693,6 +2692,16 @@ define(function () {
         'BorrowerPrintController',
         function BorrowerPrintController($http, $filter, $scope, toastr, NgTableParams, $state, $timeout, appFactory, $window) {
             $scope.dateToday = new Date();
+
+            $scope.loadCurrentUserInfo = function () {
+                var user = {};
+                appFactory.getCurrentUserInfo().then(function (data) {
+                    user['name'] = data.fullName;
+                    user['position'] = data.committeePosition;
+                });
+                return user;
+            };
+
             $http.get('/api/borrowers/borrowers/', { params: { borrowerId: $scope.borrowerId } }).then(
                 function (response) {
                     $scope.borrower = response.data[0];
@@ -2706,12 +2715,12 @@ define(function () {
                                     var firstUnpaidIndex = 0;
                                     for (var i = 0; i < loan.latestAmortization.amortizationItems.length; i++) {
                                         if (loan)
-                                        if (loan.latestAmortization.amortizationItems[i].amortizationStatus_name == 'UNPAID') {
-                                            firstUnpaidIndex = i;
-                                            break;
-                                        } else {
-                                            firstUnpaidIndex = i;
-                                        }
+                                            if (loan.latestAmortization.amortizationItems[i].amortizationStatus_name == 'UNPAID') {
+                                                firstUnpaidIndex = i;
+                                                break;
+                                            } else {
+                                                firstUnpaidIndex = i;
+                                            }
                                     }
                                     loan.latestAmortization.amortizationItems.splice(
                                         firstUnpaidIndex + 1,
@@ -2775,6 +2784,10 @@ define(function () {
                                     });
                                 });
                                 $scope.loans = response.data;
+                                $scope.user = $scope.loadCurrentUserInfo();
+                                $timeout(function () {
+                                    $window.print();
+                                }, 500);
                             },
                             function (error) {
                                 toastr.error(

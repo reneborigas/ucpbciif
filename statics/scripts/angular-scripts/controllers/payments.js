@@ -393,10 +393,7 @@ define(function () {
                                     parseFloat($scope.payment.cash) +
                                     parseFloat($scope.payment.interestPayment) +
                                     parseFloat($scope.payment.accruedInterestPayment) +
-                                    parseFloat($scope.payment.check) 
-                                    ;
-
-                                   
+                                    parseFloat($scope.payment.check);
                             };
 
                             $scope.$watch(
@@ -424,8 +421,6 @@ define(function () {
                                     $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
                                     $scope.payment.penaltyBalance = $scope.getPenaltyBalance().toFixed(2);
                                     console.log($scope.payment.outStandingBalance);
-
-
                                 },
                                 true
                             );
@@ -437,6 +432,7 @@ define(function () {
                                 },
                                 true
                             );
+
                             $scope.$watch(
                                 'payment.interestPayment',
                                 function (newTerm, oldTerm) {
@@ -444,11 +440,12 @@ define(function () {
                                 },
                                 true
                             );
+
                             $scope.$watch(
                                 'payment.total',
                                 function (newTerm, oldTerm) {
                                     console.log(newTerm);
-                                    $scope.payment.balance = $scope.getBalance().toFixed(0);;
+                                    $scope.payment.balance = $scope.getBalance().toFixed(0);
                                     $scope.payment.overPayment = $scope.getOverPayment();
                                     $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
                                     $scope.payment.interestBalance = $scope.getInterestBalance().toFixed(2);
@@ -457,6 +454,7 @@ define(function () {
                                 },
                                 true
                             );
+
                             $scope.$watch(
                                 'payment.penaltyBalance',
                                 function (newTerm, oldTerm) {
@@ -467,6 +465,7 @@ define(function () {
                                 },
                                 true
                             );
+
                             $scope.$watch(
                                 'payment.interestBalance',
                                 function (newTerm, oldTerm) {
@@ -622,7 +621,7 @@ define(function () {
                 if ($scope.loan.currentAmortizationItem.latestCheck) {
                     $scope.payment.pdc = $scope.loan.currentAmortizationItem.latestCheck.id;
                 }
-                 
+
                 // console.log($scope.payment.balance);
                 // console.log($scope.payment.overPayment);
                 // console.log($scope.payment.outStandingBalance);
@@ -657,8 +656,7 @@ define(function () {
                 });
                 // }
             };
-            $scope.skipPayment = function () {  
- 
+            $scope.skipPayment = function () {
                 swal({
                     title: 'Skip Payment',
                     text: 'Continue Skipping Payment for this Amortization Schedule?',
@@ -669,21 +667,23 @@ define(function () {
                     },
                 }).then((isConfirm) => {
                     if (isConfirm) {
-                        $http.post('/api/payments/skippayment/', {
-                            amortizationItemId:$scope.loan.currentAmortizationItem.id, 
-                        } ).then(
-                            function () {
-                                toastr.success('Success', 'Skip Payment Successful.');
-                                swal('Success!', 'Skip Payment Successful.', 'success');
-                                $state.go('app.loans.info', { loanId: $scope.payment.loan });
-                            },
-                            function (error) {
-                                // toastr.error(
-                                //     'Error ' + error.status + ' ' + error.statusText,
-                                //     'Could not create payment. Please contact System Administrator.'
-                                // );
-                            }
-                        );
+                        $http
+                            .post('/api/payments/skippayment/', {
+                                amortizationItemId: $scope.loan.currentAmortizationItem.id,
+                            })
+                            .then(
+                                function () {
+                                    toastr.success('Success', 'Skip Payment Successful.');
+                                    swal('Success!', 'Skip Payment Successful.', 'success');
+                                    $state.go('app.loans.info', { loanId: $scope.payment.loan });
+                                },
+                                function (error) {
+                                    // toastr.error(
+                                    //     'Error ' + error.status + ' ' + error.statusText,
+                                    //     'Could not create payment. Please contact System Administrator.'
+                                    // );
+                                }
+                            );
                     }
                 });
                 // }
@@ -724,9 +724,29 @@ define(function () {
             $scope.previewAmortizationSchedule = function (id) {
                 $window.open('/print/files/amortization/' + id, '_blank', 'width=800,height=800');
             };
-
             $scope.cancel = function (id) {
                 $state.go('app.loans.info', { loanId: id });
+            };
+
+            // OverPayment
+            $scope.addAdditionalPayment = function () {
+                $scope.payment.remainingOverPayment = 0;
+                $scope.payment.currentOverPayment = 0;
+                angular.element('#additional-payment').modal('show');
+            };
+
+            $scope.$watch(
+                'payment.overPaymentToApply',
+                function (newTerm, oldTerm) {
+                    $scope.payment.remainingOverPayment = $scope.payment.currentOverPayment - $scope.payment.overPaymentToApply;
+                },
+                true
+            );
+
+            $scope.applyOverPayment = function (overPaymentToApply) {
+                console.log(overPaymentToApply);
+                $scope.payment.overPayment = parseFloat(overPaymentToApply).toFixed(2);
+                angular.element('#additional-payment').modal('hide');
             };
         }
     );
