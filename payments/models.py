@@ -237,6 +237,7 @@ class Payment(models.Model):
     balance = models.DecimalField(max_digits=24, decimal_places=2, blank=False)
     outStandingBalance = models.DecimalField(max_digits=24, decimal_places=2, blank=False)
     overPayment = models.DecimalField(max_digits=24, decimal_places=2, blank=False)
+    paymentFromOverPayment = models.DecimalField(max_digits=24, decimal_places=2, blank=False)
     paymentStatus = models.ForeignKey(
         PaymentStatus,
         on_delete=models.CASCADE,

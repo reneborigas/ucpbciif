@@ -620,6 +620,21 @@ class Loan(models.Model):
     def getLatestPayment(self):
         return self.payments.filter(paymentStatus__name="TENDERED").order_by("-id").first()
 
+    def getTotalOverPayment(self):
+        if self.payments.filter(paymentStatus__name="TENDERED"):
+            totalOverPayment =  self.payments.filter(paymentStatus__name="TENDERED").aggregate(
+                        totalOverPayment=Sum(F("overPayment"))
+                        )["totalOverPayment"]
+            
+
+            totalPaymentFromOverPayment =  self.payments.filter(paymentStatus__name="TENDERED").aggregate(
+                        totalPaymentFromOverPayment=Sum(F("paymentFromOverPayment"))
+                        )["totalPaymentFromOverPayment"]
+
+            return totalOverPayment - totalPaymentFromOverPayment
+        else:
+            return 0
+
     def getTotalAmortizationAccruedInterest(self):
         if self.isRestructured:
             latestAmortization = (
@@ -1015,7 +1030,7 @@ class AmortizationItem(models.Model):
         null=True,
     )
 
-    
+
     days = models.PositiveIntegerField(blank=False, null=False, default=0)
     daysExceed = models.PositiveIntegerField(blank=False, null=False, default=0)
     daysAdvanced = models.PositiveIntegerField(blank=False, null=False, default=0)

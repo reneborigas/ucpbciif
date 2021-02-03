@@ -518,17 +518,21 @@ class CalculatePMTView(views.APIView):
         termDays = loan.latestAmortization.termDays
         loanAmount = loan.amount
         principal = loan.currentAmortizationItem.principal
+         
         latestPayment = loan.getLatestPayment()
+
+        totalOverPayment = loan.getTotalOverPayment()
         if latestPayment: 
             loanAmount = latestPayment.outStandingBalance 
-            if latestPayment.overPayment >=1:
-                # principal =  pmt.principal - latestPayment.overPayment
+            # if latestPayment.overPayment >=1:
+                 
+            #     # principal =  pmt.principal - latestPayment.overPayment
 
-                if principal == 0:
+            #     if principal == 0:
 
-                    principal = 0
-                else:
-                    principal = (principal - latestPayment.overPayment)  
+            #         principal = 0
+            #     else:
+            #         principal = (principal - latestPayment.overPayment)  
         pmt = PMT()
      
         # loanAmount = loan.amount
@@ -677,6 +681,10 @@ class CalculatePMTView(views.APIView):
                 
         print(accruedInterest)
         print("accruedInterest")
+        
+        print(totalOverPayment)
+        print("totalOverPayment")
+
         totalInterest = interest + additionalInterest
         totalToPay = principal + interest
         totalToPayWithPenalty= (totalToPay) + (additionalInterest) + (penalty)
@@ -692,6 +700,7 @@ class CalculatePMTView(views.APIView):
             'daysExceed':daysExceed,
             'daysAdvanced':daysAdvanced,
             'penalty':penalty, 
+            'totalOverPayment':totalOverPayment,
             'totalToPay':round(totalToPay,2),
             'totalToPayWithPenalty':totalToPayWithPenalty,
             'status': 'Accepted',
