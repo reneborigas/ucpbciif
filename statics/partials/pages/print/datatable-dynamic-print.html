@@ -5,7 +5,7 @@
                 <div class="text-center">
                     <h2>UCBP-CIIF FINANCE AND DEVELOPMENT CORPORATION</h2>
                     <h2 class="text-uppercase">{{ title }}</h2>
-                    <span>as of {{ dateToday | date :'mediumDate' }}</span>
+                    <h5>as of {{ dateToday | date :'mediumDate' }}</h5>
                 </div>
             </div>
         </div>
@@ -51,7 +51,9 @@
                             <tr ng-repeat="cellValue in cellValues track by $index">
                                 <td ng-repeat="cell in cellValue track by $index">
                                     <div class="">
-                                        <span class="text-dark-75">{{ cell}}</span>
+                                        <span class="text-dark-75" ng-class="{'font-weight-bolder' : $parent.$first || $parent.$last}">
+                                            {{ cell}}
+                                        </span>
                                     </div>
                                 </td>
                             </tr>

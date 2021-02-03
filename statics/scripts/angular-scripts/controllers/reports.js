@@ -38,6 +38,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: [],
+                            total: ['totalAmount'],
                         },
                         {
                             name: 'Denied',
@@ -53,6 +54,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: [],
+                            total: ['totalAmount'],
                         },
                     ],
                 },
@@ -87,6 +89,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: [],
+                            total: ['totalAmount', 'totalAvailment', 'totalCreditLineBalance'],
                         },
                         {
                             name: 'Per Window',
@@ -100,6 +103,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: [],
+                            total: ['totalAmount', 'totalAvailment', 'totalCreditLineBalance'],
                         },
                     ],
                 },
@@ -146,6 +150,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: [],
+                            total: ['loanAmount'],
                         },
                     ],
                 },
@@ -164,6 +169,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['releaseMonth'],
+                            total: ['loanAmount'],
                         },
                         {
                             name: 'Per Area',
@@ -177,6 +183,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['releaseMonth'],
+                            total: ['loanAmount'],
                         },
                         {
                             name: 'Per Loan Category',
@@ -190,6 +197,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['releaseMonth'],
+                            total: ['loanAmount'],
                         },
                         {
                             name: 'By Loan Term',
@@ -203,6 +211,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['releaseMonth'],
+                            total: ['loanAmount'],
                         },
                         {
                             name: 'By Interest Rate',
@@ -216,6 +225,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['releaseMonth'],
+                            total: ['loanAmount'],
                         },
                         {
                             name: 'By Month',
@@ -229,6 +239,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['releaseMonth'],
+                            total: ['loanAmount'],
                         },
                     ],
                 },
@@ -249,6 +260,7 @@ define(function () {
                             },
                             dateFilter: false,
                             hiddenFields: [],
+                            total: ['originalPrincipal'],
                         },
                         {
                             name: 'Unsecured',
@@ -264,6 +276,7 @@ define(function () {
                             },
                             dateFilter: false,
                             hiddenFields: [],
+                            total: ['originalPrincipal'],
                         },
                     ],
                 },
@@ -284,6 +297,7 @@ define(function () {
                             },
                             dateFilter: false,
                             hiddenFields: [],
+                            total: ['totalAvailments', 'totalOutstandingBalance', 'totalPayments'],
                         },
                         {
                             name: 'Per Loan Category',
@@ -297,6 +311,7 @@ define(function () {
                             },
                             dateFilter: false,
                             hiddenFields: [],
+                            total: ['outstandingBalance', 'interestBalance', 'totalPrincipalBalance'],
                         },
                         {
                             name: 'By Loan Term',
@@ -310,6 +325,7 @@ define(function () {
                             },
                             dateFilter: false,
                             hiddenFields: [],
+                            total: ['outstandingBalance', 'interestBalance', 'totalPrincipalBalance'],
                         },
                         {
                             name: 'By Interest Rate',
@@ -323,6 +339,7 @@ define(function () {
                             },
                             dateFilter: false,
                             hiddenFields: [],
+                            total: ['outstandingBalance', 'interestBalance', 'totalPrincipalBalance'],
                         },
                     ],
                 },
@@ -343,6 +360,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['amortizationSchedule'],
+                            total: ['principal', 'interest', 'accruedInterest', 'total', 'principalBalance'],
                         },
                         {
                             name: 'Per Loan Category',
@@ -358,6 +376,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['amortizationSchedule'],
+                            total: ['principal', 'interest', 'accruedInterest', 'total', 'principalBalance'],
                         },
                         {
                             name: 'By Month',
@@ -373,6 +392,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['amortizationSchedule'],
+                            total: ['principal', 'interest', 'accruedInterest', 'total', 'principalBalance'],
                         },
                     ],
                 },
@@ -392,6 +412,8 @@ define(function () {
                                 reverse: false,
                             },
                             dateFilter: false,
+                            hiddenFields: [],
+                            total: ['originalPrincipal', 'principalBalance'],
                         },
                     ],
                 },
@@ -410,6 +432,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['amortizationSchedule'],
+                            total: ['principal', 'interest', 'accruedInterest', 'total', 'principalBalance'],
                         },
                         {
                             name: 'Per Loan Category',
@@ -423,6 +446,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['amortizationSchedule'],
+                            total: ['principal', 'interest', 'accruedInterest', 'total', 'principalBalance'],
                         },
                         {
                             name: 'By Month',
@@ -436,6 +460,7 @@ define(function () {
                             },
                             dateFilter: true,
                             hiddenFields: ['amortizationSchedule'],
+                            total: ['principal', 'interest', 'accruedInterest', 'total', 'principalBalance'],
                         },
                     ],
                 },
@@ -646,25 +671,18 @@ define(function () {
                 }, {});
 
                 var myArray = Object.keys(groups).map(function (key) {
-                    var total = [];
+                    var total = angular.copy(groups[key][0]);
                     angular.forEach(totalFields, function (fields) {
                         var decimalValue = 0;
-                        var obj = {};
                         angular.forEach(groups[key], function (group) {
-                            console.log(group[fields]);
                             var stringValue = group[fields].replace(" | number :'2'", '');
                             decimalValue += parseFloat(stringValue);
-                            obj[fields] = decimalValue + " | number :'2'";
+                            console.log(group);
                         });
-                        total.push(obj);
+                        total[fields] = decimalValue + " | number :'2'";
                     });
                     return { parent: key, children: groups[key], total: total };
                 });
-                console.log(myArray);
-
-                // var myArray = Object.keys(groups).map(function (key) {
-                //     return { parent: key, children: groups[key] };
-                // });
 
                 $scope.data = myArray;
                 if ($scope.data.length > 0) {
@@ -679,6 +697,20 @@ define(function () {
                     return $interpolate(field)($scope);
                 } else {
                     return field;
+                }
+            };
+
+            $scope.interpolateFieldOrHide = function (key, value) {
+                if ($scope.total.indexOf(key) >= 0) {
+                    var field = value.toString();
+                    if (field.indexOf('|') != -1) {
+                        field = '{{' + field + '}}';
+                        return $interpolate(field)($scope);
+                    } else {
+                        return field;
+                    }
+                } else {
+                    return null;
                 }
             };
 
@@ -736,9 +768,10 @@ define(function () {
                         var cellLength = ngCells.length;
                         var cells = [];
                         for (var j = 0; j < cellLength; j++) {
-                            if (ngCells.item(j).innerText) {
-                                cells.push(ngCells.item(j).innerText);
-                            }
+                            cells.push(ngCells.item(j).innerText);
+                            // if (ngCells.item(j).innerText) {
+                            //     cells.push(ngCells.item(j).innerText);
+                            // }
                         }
                         values.push(cells);
                     }

@@ -100,7 +100,7 @@
                     <div class="datatable datatable-default datatable-subtable table-responsive">
                         <table class="table table-borderless" id="tableReports">
                             <thead ng-repeat-start="obj in data"></thead>
-                            <tbody ng-repeat-end>
+                            <tbody ng-repeat-end style="border-bottom: 1pt solid #464e5f !important">
                                 <tr>
                                     <td colspan="100%">
                                         <div class="">
@@ -124,13 +124,18 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <!-- <tr ng-repeat="total in obj.total track by $index">
-                                    <td ng-repeat="(key,val) in total track by $index" ng-if="!!val && hideFields(key)">
+                                <tr ng-if="total.length > 0">
+                                    <td>
                                         <div class="">
-                                            <span class="text-dark-75 font-size-sm">{{ interpolateField(val) }}</span>
+                                            <span class="text-dark-75 font-size-sm font-weight-bolder">TOTAL</span>
                                         </div>
                                     </td>
-                                </tr> -->
+                                    <td ng-repeat="(key,val) in obj.total" ng-if="!!val && $index !=0">
+                                        <div class="">
+                                            <span class="text-dark-75 font-size-sm font-weight-bolder">{{ interpolateFieldOrHide(key,val) }}</span>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tbody ng-if="data.length == 0">
                                 <tr>
