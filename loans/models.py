@@ -674,9 +674,22 @@ class Loan(models.Model):
         else:
             latestAmortization = self.amortizations.filter(amortizationStatus__name="UNPAID").order_by("-id").first()
             if latestAmortization:
-                return latestAmortization.amortizationItems.aggregate(totalAmortizationInterest=Sum(F("interest")))[
-                    "totalAmortizationInterest"
-                ]
+                totalAmortizationInterest = 0
+                for amortizationItem in latestAmortization.amortizationItems.all():
+                   
+                    
+                    paymentInterest = 0
+                    if amortizationItem.payments.aggregate(totalAmortizationInterest=Sum(F("interest")))["totalAmortizationInterest"]:
+
+
+                        paymentInterest = amortizationItem.payments.aggregate(totalAmortizationInterest=Sum(F("interest")))[ "totalAmortizationInterest"]
+                        totalAmortizationInterest = totalAmortizationInterest + paymentInterest
+                       
+                        
+                    else:
+                        totalAmortizationInterest = totalAmortizationInterest + amortizationItem.interest
+                   
+                return totalAmortizationInterest
         return 0
 
     def getTotalAmortizationPrincipal(self):
@@ -768,8 +781,8 @@ class Loan(models.Model):
 
     def getOutstandingBalance(self):
         totalPayments = 0
-        if self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]:
-            totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
+        
+        totalPayments = self.getTotalPayment()
 
         if self.isRestructured:
             latestAmortization = (
@@ -785,16 +798,19 @@ class Loan(models.Model):
                 return 0
 
         else:
-            latestAmortization = self.amortizations.filter(amortizationStatus__name="UNPAID").order_by("-id").first()
+            # latestAmortization = self.amortizations.filter(amortizationStatus__name="UNPAID").order_by("-id").first()
             
-            if latestAmortization:
-                return (
-                    latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F("total")))[
-                        "totalAmortizationPayment"
-                    ]
-                    - totalPayments
-                )
+            # if latestAmortization:
+            #     return (
+            #         latestAmortization.amortizationItems.aggregate(totalAmortizationPayment=Sum(F("total")))[
+            #             "totalAmortizationPayment"
+            #         ]
+            #         - totalPayments
+            #     )
 
+            latestPayment = self.getLatestPayment()
+            
+            return   latestPayment.principalBalance +  self.interestBalance()
         return 0
 
     def getInterestBalance(self):
@@ -804,6 +820,8 @@ class Loan(models.Model):
         if latestPayment:
 
             # return self.getTotalAmortizationInterest() -  latestPayment.amortizationItem.interest
+
+
             return (
                 self.getTotalAmortizationInterest()
                 - self.payments.filter(paymentStatus__name="TENDERED").aggregate(totalPaidInterest=Sum(F("interest")))[
@@ -812,13 +830,29 @@ class Loan(models.Model):
             )
         return 0
 
+    # def getTotalPayment(self):
+    #     totalPayments = 0
+    #     if self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]:
+    #         totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
+    #         return totalPayments
+
+    #     return 0
+
     def getTotalPayment(self):
         totalPayments = 0
-        if self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]:
-            totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
-            return totalPayments
 
+        if self.payments:
+            totalPayments = 0
+            for payment in self.payments.all():
+                totalPayments = totalPayments + (payment.total - (payment.overPayment))
+            # totalPayments = self.payments.aggregate(totalPayments=Sum(F("total")))["totalPayments"]
+                print(payment.overPayment)
+                print("Hahaha")
+
+            print(totalPayments)
+            return totalPayments
         return 0
+
 
     def getTotalPrincipalPayment(self):
         totalPayments = 0
@@ -826,6 +860,7 @@ class Loan(models.Model):
             totalPayments = (
                 self.payments.aggregate(totalPayments=Sum(F("cash")))["totalPayments"]
                 + self.payments.aggregate(totalPayments=Sum(F("check")))["totalPayments"]
+                  + self.payments.aggregate(totalPayments=Sum(F("paymentFromOverPayment")))["totalPayments"]
             )
             return totalPayments
 
