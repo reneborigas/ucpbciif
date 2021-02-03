@@ -517,10 +517,18 @@ class CalculatePMTView(views.APIView):
         cycle = loan.latestAmortization.cycle
         termDays = loan.latestAmortization.termDays
         loanAmount = loan.amount
+        principal = loan.currentAmortizationItem.principal
         latestPayment = loan.getLatestPayment()
         if latestPayment: 
             loanAmount = latestPayment.outStandingBalance 
+            if latestPayment.overPayment >=1:
+                # principal =  pmt.principal - latestPayment.overPayment
 
+                if principal == 0:
+
+                    principal = 0
+                else:
+                    principal = (principal - latestPayment.overPayment)  
         pmt = PMT()
      
         # loanAmount = loan.amount
@@ -544,7 +552,7 @@ class CalculatePMTView(views.APIView):
         interest = 0
 
         # principal = pmt.principal
-        principal = loan.currentAmortizationItem.principal
+       
         interest = loan.currentAmortizationItem.interest
         accruedInterest = loan.currentAmortizationItem.accruedInterest
         payment = pmt.payment
@@ -560,13 +568,42 @@ class CalculatePMTView(views.APIView):
         else:
             print(days)
             #daysadvaced
-            # interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)
+           
             # totalToPay = principal + interest
             totalToPay =  loan.currentAmortizationItem.total
             print(totalToPay)
             print('totalToPay')
             # pmt = pmt.getPayment(loanAmount,loan.interestRate.interestRate,days,noOfPaymentSchedules,noOfPaymentSchedules - loan.payments.count())
+        if daysAdvanced > 0:
 
+            lastDatePayment = dateSchedule - timezone.timedelta(days=cycle)
+    
+            dayTillCutOff = (cycle - daysAdvanced) - int(lastDatePayment.strftime ('%d') ) 
+            if principal == 0:
+                # interest =    loanAmount *  (loan.interestRate.interestRate/100) * Decimal(cycle - daysAdvanced /360)
+                interest =   (loanAmount * (loan.interestRate.interestRate/100) * (cycle - daysAdvanced) /360)
+            
+                # accruedInterest =   (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+                # accruedInterest = (loanAmount) *  (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+                print("gere")
+            else:
+                interest =   (principal * (loan.interestRate.interestRate/100) * (cycle - daysAdvanced) /360)
+            
+                print("gere")
+                # accruedInterest = (principal) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+            
+    
+            print(loanAmount)
+            print('loanAmount')
+            print(interest)
+            print('interest')
+            print(lastDatePayment)
+            print('lastDatePayment')
+            print(dayTillCutOff)
+            print('dayTillCutOff')
+            print(accruedInterest)
+            print('accruedInterest')
+            print((cycle - daysAdvanced))
         # principalBalance =pmt.nextStartingValue
         principalBalance = loan.currentAmortizationItem.principalBalance
 
@@ -583,7 +620,12 @@ class CalculatePMTView(views.APIView):
 
             if latestPayment.overPayment >=1:
                 # principal =  pmt.principal - latestPayment.overPayment
-                totalToPay = principal + interest
+
+                if principal == 0:
+
+                    totalToPay = (principal)+ interest
+                else:
+                    totalToPay = (principal - latestPayment.overPayment) + interest
 
             diff =  datePayment.replace(tzinfo=None) - latestPayment.datePayment.replace(tzinfo=None) 
 
@@ -591,22 +633,24 @@ class CalculatePMTView(views.APIView):
             print('totalDays')
             
             print(totalDays)
-            dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )     
-        
-        else:
+            # dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )     
+            # print(dayTillCutOff)
+            # print("dayTillCutOffC")
+        # else:
              
-            totalDays = days   
+        totalDays = days   
 
         
-            dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )   
-
-        print( int(datePayment.replace(tzinfo=None).strftime ('%d') )  )
-        print('dayTillCutOff')
+        dayTillCutOff = totalDays - int(datePayment.replace(tzinfo=None).strftime ('%d') )   
         print(dayTillCutOff)
+        print("dayTillCutOffv")
+        print( int(datePayment.replace(tzinfo=None).strftime ('%d') )  )
+        
+        
         # accruedInterest = (Decimal(pmt.principal + pmt.nextStartingValue)) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
         # print(round(pmt.principal,2))
         additionalInterest = 0
-        print("accruedInterest")
+        print("additionalInterest")
         # interest =  interest - (loanAmount * (loan.interestRate.interestRate/100) * daysAdvanced/360)
         if daysExceed < 0:
             daysExceed = 0
@@ -618,10 +662,24 @@ class CalculatePMTView(views.APIView):
         if additionalInterest>0:
             penalty =  ( Decimal(totalToPay) + Decimal(float(additionalInterest)))  *  Decimal(12/100) * daysExceed/360
 
-        totalToPayWithPenalty= (totalToPay) + (additionalInterest) + (penalty)
+        
+
+        if principal == 0:
+                # interest =    loanAmount *  (loan.interestRate.interestRate/100) * Decimal(cycle - daysAdvanced /360)
+              
+                # accruedInterest =   (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+                accruedInterest = (loanAmount) *  (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+                print("asf")
+        else:
+               
+                accruedInterest = (principal) * (loan.interestRate.interestRate/100) *  dayTillCutOff/360
+                print("asddf")
+                
+        print(accruedInterest)
+        print("accruedInterest")
         totalInterest = interest + additionalInterest
-        
-        
+        totalToPay = principal + interest
+        totalToPayWithPenalty= (totalToPay) + (additionalInterest) + (penalty)
         return Response({
             'datePayment':datePayment,
             'dateSchedule':dateSchedule,  

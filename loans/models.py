@@ -1014,6 +1014,8 @@ class AmortizationItem(models.Model):
         blank=True,
         null=True,
     )
+
+    
     days = models.PositiveIntegerField(blank=False, null=False, default=0)
     daysExceed = models.PositiveIntegerField(blank=False, null=False, default=0)
     daysAdvanced = models.PositiveIntegerField(blank=False, null=False, default=0)

@@ -569,6 +569,18 @@ class PaymentSerializer(ModelSerializer):
         #         generateUnevenAmortizationSchedule(payment.loan,payment,payment.amortization)
         # else:
         #
+        # if payment.overPayment >= 1:
+        #     print("payment over")
+        #     amortizationItemCurrent = payment.loan.getCurrentAmortizationItem()
+            
+        #     amortizationItems = AmortizationItem.objects.filter(amortization=amortizationItemCurrent.amortization,principal__gt=0,amortizationStatus=1).order_by('id').first()
+        #     print(amortizationItems)
+        #     if amortizationItems:
+        #         amortizationItems.principal = principal - payment.overPayment
+        #         amortizationItems.save()
+
+
+
         return payment
 
     def update(self, instance, validated_data):
