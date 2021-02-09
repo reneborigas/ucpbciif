@@ -808,8 +808,8 @@ class Loan(models.Model):
             #     )
 
             latestPayment = self.getLatestPayment()
-
-            return latestPayment.principalBalance + self.interestBalance()
+            if latestPayment:
+                return latestPayment.principalBalance + self.interestBalance()
         return 0
 
     def getInterestBalance(self):
