@@ -822,12 +822,13 @@ class Loan(models.Model):
             # return self.getTotalAmortizationInterest() -  latestPayment.amortizationItem.interest
 
 
-            return (
-                self.getTotalAmortizationInterest()
-                - self.payments.filter(paymentStatus__name="TENDERED").aggregate(totalPaidInterest=Sum(F("interest")))[
-                    "totalPaidInterest"
-                ]
-            )
+            # return (
+            #     self.getTotalAmortizationInterest()
+            #     - self.payments.filter(paymentStatus__name="TENDERED").aggregate(totalPaidInterest=Sum(F("interest")))[
+            #         "totalPaidInterest"
+            #     ]
+            # )
+            return 0
         return 0
 
     # def getTotalPayment(self):

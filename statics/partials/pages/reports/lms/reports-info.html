@@ -130,7 +130,7 @@
                                             <span class="text-dark-75 font-size-sm font-weight-bolder">TOTAL</span>
                                         </div>
                                     </td>
-                                    <td ng-repeat="(key,val) in obj.total" ng-if="!!val && $index !=0">
+                                    <td ng-repeat="(key,val) in obj.total" ng-if="!!val && $index !=0 && hideFields(key)">
                                         <div class="">
                                             <span class="text-dark-75 font-size-sm font-weight-bolder">{{ interpolateFieldOrHide(key,val) }}</span>
                                         </div>

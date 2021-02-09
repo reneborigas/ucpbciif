@@ -390,7 +390,6 @@ class LoanReportSerializer(ModelSerializer):
     releaseDate = serializers.CharField(read_only=True)
     maturityDate = serializers.CharField(read_only=True)
     borrowerName = serializers.ReadOnlyField(source="borrower.business.tradeName")
-    address = serializers.CharField(read_only=True)
     area = serializers.ReadOnlyField(source="borrower.area.branchCode")
     loanTerm = serializers.ReadOnlyField(source="term.code")
     loanInterestRate = serializers.CharField(read_only=True)
@@ -410,11 +409,9 @@ class LoanReportSerializer(ModelSerializer):
     class Meta:
         model = Loan
         fields = [
-            "releaseMonth",
             "pnNo",
             "releaseDate",
             "borrowerName",
-            "address",
             "maturityDate",
             "area",
             "loanAmount",
@@ -430,6 +427,7 @@ class LoanReportSerializer(ModelSerializer):
             "edstSale",
             "edstTransaction",
             "status",
+            "releaseMonth",
         ]
 
 
