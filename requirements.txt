@@ -1,0 +1,17 @@
+asgiref==3.2.3
+chardet==3.0.4
+Django==2.1.7
+django-csvimport==2.12
+django-form-utils==1.0.3
+django-moneyfield==0.2.1
+django-six==1.0.4
+djangorestframework==3.9.2
+gunicorn==20.0.4
+nginx==0.0.1
+Pillow==5.4.1
+psycopg2-binary==2.7.6.1
+python-slugify==4.0.1
+pytz==2018.9
+sqlparse==0.3.0
+text-unidecode==1.3
+xlwt==1.3.0
