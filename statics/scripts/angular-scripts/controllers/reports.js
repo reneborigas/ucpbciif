@@ -23,7 +23,7 @@ define(function () {
                                 reverse: false,
                             },
                             dateFilter: true,
-                            hiddenFields: [],
+                            hiddenFields: ['_status'],
                             total: ['totalAmount'],
                         },
                         {
@@ -37,7 +37,7 @@ define(function () {
                                 reverse: false,
                             },
                             dateFilter: true,
-                            hiddenFields: [],
+                            hiddenFields: ['_status'],
                             total: ['totalAmount'],
                         },
                         {
@@ -53,7 +53,7 @@ define(function () {
                                 reverse: false,
                             },
                             dateFilter: true,
-                            hiddenFields: [],
+                            hiddenFields: ['_status'],
                             total: ['totalAmount'],
                         },
                     ],
@@ -685,6 +685,7 @@ define(function () {
                 });
 
                 $scope.data = myArray;
+                console.log($scope.data);
                 if ($scope.data.length > 0) {
                     $scope.getHeaders($scope.data[0].children[0]);
                 }

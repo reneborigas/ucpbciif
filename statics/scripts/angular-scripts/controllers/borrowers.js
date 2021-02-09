@@ -1082,6 +1082,7 @@ define(function () {
                             totalCurrentCreditLineAmount += parseFloat(window.creditLineAmount || 0);
                             totalCurrentCreditLineBalance += parseFloat(window.availableBalance);
                         });
+                        console.log($scope.windows);
                         $scope.borrower.totalCurrentCreditLineBalance = totalCurrentCreditLineBalance;
                         $scope.borrower.totalCurrentCreditLineAmount = totalCurrentCreditLineAmount;
                         $scope.showAccomodations = true;
