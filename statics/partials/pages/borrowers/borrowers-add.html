@@ -45,7 +45,7 @@
                                                     <button
                                                         class="btn btn-success text-uppercase p-2 pl-3 pr-3"
                                                         ng-disabled="checkForm()"
-                                                        ng-if="currentStep == '5'"
+                                                        ng-if="currentStep == steps.length"
                                                         ng-click="save()"
                                                     >
                                                         Submit
@@ -53,7 +53,7 @@
                                                     <button
                                                         class="btn btn-primary text-uppercase p-2 pl-3 pr-3"
                                                         ng-click="nextStep()"
-                                                        ng-if="currentStep != '5'"
+                                                        ng-if="currentStep != steps.length"
                                                     >
                                                         Next Step
                                                     </button>
