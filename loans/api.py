@@ -572,6 +572,7 @@ class LoanViewSet(ModelViewSet):
             loan.totalPrincipalBalance = loan.loanTotalAmortizationPrincipal - loan.totalPrincipalPayment
 
             loan.interestBalance = loan.getInterestBalance
+            # loan.principalBalance = loan.getPrincipalBalance
 
             # for amortizationItem in loan.latestAmortization.amortizationItems:
             #     amortizationItem.isItemPaid = amortizationItem.isPaid()

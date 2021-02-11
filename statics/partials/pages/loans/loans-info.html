@@ -299,7 +299,7 @@
 
                             <span class="font-weight-bolder font-size-h5" ng-if="loan.isRestructured">{{ 0 | currency :'₱'}}</span>
                             <span class="font-weight-bolder font-size-h5" ng-if="!loan.latestPayment && !loan.isRestructured">
-                                {{ loan.totalObligations | currency :'₱'}}
+                                {{ loan.totalPrincipalBalance | currency :'₱'}}
                             </span>
                         </div>
                     </div>
