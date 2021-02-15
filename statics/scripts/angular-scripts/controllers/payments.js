@@ -744,13 +744,12 @@ define(function () {
             // OverPayment
             $scope.addAdditionalPayment = function () {
                 // $scope.payment.remainingOverPayment = 0;
-                $scope.payment.remainingOverPayment = $scope.payment.currentOverPayment;
+
                 angular.element('#additional-payment').modal('show');
             };
 
             $scope.applyOverPayment = function (paymentFromOverPayment) {
                 console.log(paymentFromOverPayment);
-
                 // $scope.payment.paymentFromOverPayment = parseFloat(overPaymentToApply).toFixed(2);
                 // $scope.getTotalPayment();
                 angular.element('#additional-payment').modal('hide');
