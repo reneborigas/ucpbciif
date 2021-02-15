@@ -2317,6 +2317,36 @@ define(function () {
                 return $scope.committees;
             };
 
+            $scope.showCreditLineList = function () {
+                angular.element('#credit-line-list').modal('show');
+            };
+
+            $scope.applyCreditLineAssignment = function (selectedCreditLine) {
+                angular.forEach($scope.borrowerCreditLineList, function (creditLine) {
+                    if (creditLine.id == selectedCreditLine.id) {
+                        $scope.creditLine = {
+                            creditlineid: creditLine.id,
+                            amount: parseFloat(creditLine.amount),
+                            interestRate: creditLine.interestRate,
+                            term: creditLine.term,
+                            interestRate_amount: creditLine.interestRate_amount,
+                            loanProgram: creditLine.loanProgram,
+                            loanProgram_name: creditLine.loanProgram_name,
+                            purpose: creditLine.purpose,
+                            security: creditLine.security,
+                            totalAvailment: creditLine.totalAvailment,
+                            remainingCreditLine: creditLine.amount - creditLine.totalAvailment,
+                            borrower: $scope.borrowerId,
+                            term_name: creditLine.term_name,
+                            createdBy: appFactory.getCurrentUser(),
+                        };
+
+                        $scope.loan.creditLine = $scope.creditLine.creditlineid;
+                    }
+                });
+                angular.element('#credit-line-list').modal('hide');
+            };
+
             $scope.selectedCommittee = [];
 
             $scope.loadBorrower = function () {
@@ -2330,6 +2360,16 @@ define(function () {
                 $http.get('/api/borrowers/borrowers/', { params: $scope.params }).then(
                     function (response) {
                         $scope.borrower = response.data[0];
+                        console.log($scope.creditLine);
+                        $scope.selectedCreditLine = {
+                            id: $scope.creditLine.creditlineid,
+                        };
+                        console.log($scope.selectedCreditLine);
+                        if ($scope.borrower.creditLines.length > 1) {
+                            $scope.borrowerCreditLineList = $scope.borrower.creditLines.filter(function (creditLine) {
+                                return creditLine.amount - creditLine.totalAvailment > 0;
+                            });
+                        }
                         // $scope.borrower.cooperative.paidUpCapitalInitial = parseFloat($scope.borrower.cooperative.paidUpCapitalInitial);
                         // $scope.borrower.cooperative.authorized = parseFloat($scope.borrower.cooperative.authorized);
                         // $scope.borrower.cooperative.parValue = parseFloat($scope.borrower.cooperative.parValue);
@@ -2358,6 +2398,7 @@ define(function () {
                     }
                 );
             };
+
             $http
                 .get('/api/processes/subprocesses/', {
                     params: { subProcessId: $scope.subProcessId, borrowerId: $scope.borrowerId },
@@ -2365,7 +2406,7 @@ define(function () {
                 .then(
                     function (response) {
                         $scope.subProcess = response.data[0];
-
+                        console.log($scope.subProcess);
                         $scope.document = {
                             name: '',
                             description: '',
@@ -2378,7 +2419,7 @@ define(function () {
                             committee: appFactory.getCurrentUser(),
                             loan: '',
                         };
-                        console.log($scope.creditLine);
+
                         if ($scope.creditLine) {
                             $scope.creditLine = {
                                 creditlineid: $scope.creditLine.id,
@@ -2560,6 +2601,7 @@ define(function () {
                                     }
                                 );
                         };
+
                         $scope.checkDetails = function () {
                             if ($scope.subProcess.parentLastDocumentCreditLine) {
                                 if ($scope.subProcess.parentLastDocumentCreditLine) {
@@ -2581,6 +2623,7 @@ define(function () {
                         };
 
                         $scope.save = function () {
+                            console.log($scope.creditLine);
                             if ($scope.form.newLoanApplicationForm.$valid && $scope.checkDetails()) {
                                 swal({
                                     title: 'Create New Loan Application',

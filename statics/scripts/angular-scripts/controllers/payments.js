@@ -269,10 +269,9 @@ define(function () {
     app.controller(
         'NewPaymentController',
         function NewPaymentController($http, $filter, $scope, toastr, NgTableParams, appFactory, $state, $timeout, blockUI, $q, $window) {
-            
             appFactory.getPaymentType().then(function (data) {
                 $scope.paymentTypes = data;
-                
+
                 console.log($scope.loanId);
                 $http
                     .get('/api/loans/loans/', {
@@ -281,7 +280,7 @@ define(function () {
                     .then(
                         function (response) {
                             $scope.loan = response.data[0];
-                            
+
                             $scope.payment = {
                                 loan: $scope.loan.id,
                                 amortization: $scope.loan.latestAmortization.id,
@@ -299,7 +298,7 @@ define(function () {
                                 checkNo: '',
                                 interestPayment: '0',
                                 penaltyPayment: '0',
-                                principalPayment:'0',
+                                principalPayment: '0',
                                 exemptAdditionalInterest: '0',
                                 exemptPenalty: '0',
                                 bankACcount: '',
@@ -322,7 +321,7 @@ define(function () {
                                     $scope.payment.check = 0;
                                     $scope.payment.interestPayment = 0;
                                     $scope.payment.penaltyPayment = 0;
-                                    $scope.payment.paymentFromOverPayment =0;
+                                    $scope.payment.paymentFromOverPayment = 0;
                                     $http
                                         .post('/api/processes/calculatepmt/', {
                                             params: {
@@ -359,7 +358,7 @@ define(function () {
                                                     parseFloat($scope.payment.check) +
                                                     parseFloat($scope.payment.interestPayment) +
                                                     parseFloat($scope.payment.accruedInterestPayment) +
-                                                    // parseFloat($scope.payment.paymentFromOverPayment) + 
+                                                    // parseFloat($scope.payment.paymentFromOverPayment) +
                                                     parseFloat($scope.payment.penaltyPayment);
                                                 // check
                                                 if ($scope.payment.paymentType == 2) {
@@ -367,7 +366,7 @@ define(function () {
                                                 } else {
                                                     $scope.payment.cash = $scope.payment.principal.toFixed(2);
                                                 }
-                                                
+
                                                 $scope.payment.interestPayment =
                                                     $scope.payment.totalInterest.toFixed(2) - $scope.payment.accruedInterest.toFixed(2);
                                                 $scope.payment.penaltyPayment = $scope.payment.penalty;
@@ -379,9 +378,6 @@ define(function () {
 
                                                 $scope.payment.overPayment = $scope.getOverPayment();
                                                 $scope.payment.outStandingBalance = parseFloat($scope.getOutStandingBalance()).toFixed(2);
-
-
-                                                
                                             },
                                             function (error) {
                                                 toastr.error(
@@ -401,8 +397,8 @@ define(function () {
                                     parseFloat($scope.payment.cash) +
                                     parseFloat($scope.payment.interestPayment) +
                                     parseFloat($scope.payment.accruedInterestPayment) +
-                                    parseFloat($scope.payment.paymentFromOverPayment) + 
-                                    parseFloat($scope.payment.check); 
+                                    parseFloat($scope.payment.paymentFromOverPayment) +
+                                    parseFloat($scope.payment.check);
                             };
 
                             $scope.$watch(
@@ -424,7 +420,7 @@ define(function () {
                                 function (newTerm, oldTerm) {
                                     $scope.payment.remainingOverPayment = $scope.payment.currentOverPayment - $scope.payment.paymentFromOverPayment;
                                     $scope.getTotalPayment();
-                                    console.log("asd");
+                                    console.log('asd');
                                 },
                                 true
                             );
@@ -748,14 +744,13 @@ define(function () {
             // OverPayment
             $scope.addAdditionalPayment = function () {
                 // $scope.payment.remainingOverPayment = 0;
-                 
+                $scope.payment.remainingOverPayment = $scope.payment.currentOverPayment;
                 angular.element('#additional-payment').modal('show');
             };
 
-           
-
             $scope.applyOverPayment = function (paymentFromOverPayment) {
                 console.log(paymentFromOverPayment);
+
                 // $scope.payment.paymentFromOverPayment = parseFloat(overPaymentToApply).toFixed(2);
                 // $scope.getTotalPayment();
                 angular.element('#additional-payment').modal('hide');

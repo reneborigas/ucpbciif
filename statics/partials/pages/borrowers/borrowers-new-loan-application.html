@@ -65,19 +65,26 @@
     </div>
     <div class="col-xl-9">
         <div class="card card-custom gutter-b" ng-if="subProcess.parentLastDocumentCreditLine">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Credit Line Details
+                        <span class="text-muted pt-2 font-size-sm d-block"></span>
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+                    <button
+                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase"
+                        ng-click="showCreditLineList()"
+                        ng-if="borrowerCreditLineList.length > 0"
+                    >
+                        Change Credit Line Assignment
+                    </button>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="d-flex">
                     <div class="flex-grow-1">
-                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                            <div class="mr-3">
-                                <div class="d-flex flex-wrap my-2">
-                                    <span class="text-muted font-weight-bold mr-2">Loan Facility :</span>
-
-                                    {{ borrower.borrowerName }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="separator separator-solid my-7"></div>
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                                 <span class="mr-4">
@@ -158,14 +165,14 @@
                 <div class="separator separator-solid my-7"></div>
                 <div class="d-flex align-items-center flex-wrap">
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                            <span class="mr-4">
-                                <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
-                            </span>
-                            <div class="d-flex flex-column text-dark-75">
-                                <span class="font-weight-bolder font-size-sm">PN No./Loan No.</span>
-                                <span class="font-weight-bolder font-size-h5">{{ loan.pnNo }}</span>
-                            </div>
+                        <span class="mr-4">
+                            <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
+                        </span>
+                        <div class="d-flex flex-column text-dark-75">
+                            <span class="font-weight-bolder font-size-sm">PN No./Loan No.</span>
+                            <span class="font-weight-bolder font-size-h5">{{ loan.pnNo }}</span>
                         </div>
+                    </div>
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-calendar-week icon-2x text-muted font-weight-bold"></i>
@@ -175,7 +182,7 @@
                             <span class="font-weight-bolder font-size-h5">{{ loan.loanProgram_name }}</span>
                         </div>
                     </div>
-                    
+
                     <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
                         <span class="mr-4">
                             <i class="fad fa-coins icon-2x text-muted font-weight-bold"></i>
@@ -386,26 +393,24 @@
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Approval Date</label>
                                     <div class="col-lg-9 col-xl-6">
-
-                                        <input type="date" id="newCreditLineDetailsDateApproved"
-                                        name="newCreditLineDetailsDateApproved"
-                                        class="form-control" ng-model="creditLine.dateApproved"
-                                        ng-class="{'is-invalid' : form.newCreditLineDetailsForm.newCreditLineDetailsDateApproved.$invalid &&
+                                        <input
+                                            type="date"
+                                            id="newCreditLineDetailsDateApproved"
+                                            name="newCreditLineDetailsDateApproved"
+                                            class="form-control"
+                                            ng-model="creditLine.dateApproved"
+                                            ng-class="{'is-invalid' : form.newCreditLineDetailsForm.newCreditLineDetailsDateApproved.$invalid &&
                                         form.newCreditLineDetailsForm.newCreditLineDetailsDateApproved.$touched, 'is-valid' : form.newCreditLineDetailsForm.newCreditLineDetailsDateApproved.$valid && form.newCreditLineDetailsForm.newCreditLineDetailsDateApproved.$touched }"
-                                            
                                         />
-                                        
+
                                         <!-- <span
                                             class="form-text text-muted fade"
                                             ng-show="form.newCreditLineDetailsForm.newCreditLineDetailsDateApproved.$touched && form.newCreditLineDetailsForm.newCreditLineDetailsDateApproved.$invalid"
                                         > -->
-                                            <!-- Please input date approved.
+                                        <!-- Please input date approved.
                                         </span> -->
                                     </div>
                                 </div>
- 
-
-
                             </div>
                         </form>
                     </div>
@@ -450,29 +455,27 @@
                                     </div>
                                 </div> -->
                                 <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-right">PN No./Loan No.</label>
-                                        <div class="col-lg-3 col-xl-6">
-                                            <input
-                                                type="text"
-                                                
-                                                class="form-control"
-                                                id="pnNo"
-                                                name="pnNo"
-                                                placeholder="0000"
-                                                ng-model="loan.pnNo"
-                                                ng-class="{'is-invalid' : form.newLoanDetailsForm.pnNo.$invalid && form.newLoanDetailsForm.pnNo.$touched && loan.amount <=0, 'is-valid' : form.newLoanDetailsForm.pnNo.$valid && form.newLoanDetailsForm.pnNo.$touched }"
-                                                required
-                                                 
-                                            />
-                                            <span
-                                                class="form-text text-muted"
-                                                ng-show="form.newLoanDetailsForm.pnNo.$touched && form.newLoanDetailsForm.pnNo.$invalid"
-                                            >
-                                                Please enter PN No./Loan No..
-                                            </span>
-                                        </div>
+                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">PN No./Loan No.</label>
+                                    <div class="col-lg-3 col-xl-6">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="pnNo"
+                                            name="pnNo"
+                                            placeholder="0000"
+                                            ng-model="loan.pnNo"
+                                            ng-class="{'is-invalid' : form.newLoanDetailsForm.pnNo.$invalid && form.newLoanDetailsForm.pnNo.$touched && loan.amount <=0, 'is-valid' : form.newLoanDetailsForm.pnNo.$valid && form.newLoanDetailsForm.pnNo.$touched }"
+                                            required
+                                        />
+                                        <span
+                                            class="form-text text-muted"
+                                            ng-show="form.newLoanDetailsForm.pnNo.$touched && form.newLoanDetailsForm.pnNo.$invalid"
+                                        >
+                                            Please enter PN No./Loan No..
+                                        </span>
                                     </div>
-    
+                                </div>
+
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Amount</label>
                                     <div class="col-lg-3 col-xl-6">
@@ -622,7 +625,7 @@
                                         <span class="form-control-plaintext font-weight-bold">{{document.name}}</span>
                                     </div>
                                 </div>
-                                <div class="form-group row"> 
+                                <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label text-right">Process</label>
                                     <div class="col-lg-3 col-xl-6">
                                         <span class="form-control-plaintext font-weight-bold">{{subProcess.name}}</span>
@@ -697,6 +700,125 @@
                             </div>
                         </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        id="credit-line-list"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Credit Line List</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body" block-ui="amortizationSchedulePaymentBlockUI">
+                    <div class="table-responsive">
+                        <table class="table table-align-middle table-bordered">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Date Approved</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Program</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Amount</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Total Availment</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Remaining Amount</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Interest</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Term</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="creditLine in borrowerCreditLineList">
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <input type="radio" ng-value="creditLine.id" ng-model="selectedCreditLine.id" />
+                                            <span></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">
+                                                {{ creditLine.dateApproved | date : 'mediumDate' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">{{ creditLine.loanProgram_name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">{{ creditLine.amount | currency :'₱' }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">
+                                                {{ creditLine.totalAvailment | currency :'₱' }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">
+                                                {{ creditLine.amount - creditLine.totalAvailment | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">{{ creditLine.interestRate_amount }}%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">{{ creditLine.term_name }}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="applyCreditLineAssignment(selectedCreditLine)">Apply</button>
                 </div>
             </div>
         </div>

@@ -294,7 +294,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Principal Balance</span>
                             <span class="font-weight-bolder font-size-h5" ng-if="(loan.latestPayment && !loan.isRestructured)">
-                                {{ loan.latestPayment.outStandingBalance | currency :'₱'}}
+                                {{ loan.latestPayment.outStandingBalance | currency :'₱'}} 
                             </span>
 
                             <span class="font-weight-bolder font-size-h5" ng-if="loan.isRestructured">{{ 0 | currency :'₱'}}</span>

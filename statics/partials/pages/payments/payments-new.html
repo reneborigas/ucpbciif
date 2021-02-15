@@ -521,7 +521,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="form-group row" >
+                            <div class="form-group row">
                                 <div class="col-lg-3">
                                     <label>Payment From OverPayment:</label>
                                     <input
@@ -538,13 +538,13 @@
                                     />
                                 </div>
                             </div>
-                            <div class="form-group row mb-4" ng-show="payment.currentOverPayment > 0">
+                            <div class="form-group row mb-4">
                                 <div class="col-lg-6">
                                     <a class="btn btn-light-primary font-weight-bold mr-2" ng-click="addAdditionalPayment()">
                                         Add Payment From OverPayment ({{payment.currentOverPayment | currency :'₱'}})
-                                    </a> 
+                                    </a>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="form-group row">
                                 <table>
                                     <tr>
@@ -832,7 +832,9 @@
                                         </td>
                                         <td>
                                             <div class="text-right px-2">
-                                                <span class="text-dark-75 font-size-lg">{{(payment.cash + payment.check + payment.paymentFromOverPayment) | currency :'₱'}}</span>
+                                                <span class="text-dark-75 font-size-lg">
+                                                    {{(payment.cash + payment.check + payment.paymentFromOverPayment) | currency :'₱'}}
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>
@@ -881,7 +883,8 @@
                                         <td>
                                             <div class="text-right px-2">
                                                 <span class="text-dark-75 font-size-lg">
-                                                    {{payment.principal - (payment.cash + payment.check + payment.paymentFromOverPayment  ) | currency :'₱'}}
+                                                    {{payment.principal - (payment.cash + payment.check + payment.paymentFromOverPayment ) | currency
+                                                    :'₱'}}
                                                 </span>
                                             </div>
                                         </td>
@@ -1652,7 +1655,7 @@
                                 <tr>
                                     <td>
                                         <div class="text-left px-2">
-                                            <span class="text-dark-75 font-weight-bold font-size-sm">OverPayment</span>
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">Accrued Interest</span>
                                         </div>
                                     </td>
                                     <td>
@@ -1666,7 +1669,48 @@
                                                 ng-model="payment.paymentFromOverPayment"
                                                 required
                                                 price
-                                                ng-disabled="payment.interestBalance >= 1"
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="text-left px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">Interest</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <input
+                                                type="text"
+                                                class="form-control text-right"
+                                                placeholder="0"
+                                                id="overPayment"
+                                                name="overPayment"
+                                                ng-model="payment.paymentFromOverPayment"
+                                                required
+                                                price
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="text-left px-2">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">Principal</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center px-2">
+                                            <input
+                                                type="text"
+                                                class="form-control text-right"
+                                                placeholder="0"
+                                                id="overPayment"
+                                                name="overPayment"
+                                                ng-model="payment.paymentFromOverPayment"
+                                                required
+                                                price
                                             />
                                         </div>
                                     </td>

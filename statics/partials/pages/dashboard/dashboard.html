@@ -21,21 +21,23 @@
                         </ul> -->
                     </div>
                 </div>
-                <div class="card-body pt-3 pb-0" 
+                <div
+                    class="card-body pt-3 pb-0"
                     data-scroll="true"
                     data-height="400"
                     data-mobile-height="200"
-                    style="max-height: 400px; overflow-y: auto;">
+                    style="max-height: 400px; overflow-y: auto"
+                >
                     <div class="table-responsive">
                         <table class="table table-borderless table-vertical-center">
                             <thead>
                                 <tr>
-                                    <th class="p-0" style="width: 50px;"></th>
-                                    <th class="p-0" style="min-width: 200px;"></th>
-                                    <th class="p-0" style="min-width: 100px;"></th>
-                                    <th class="p-0" style="min-width: 125px;"></th>
-                                    <th class="p-0" style="min-width: 110px;"></th>
-                                    <th class="p-0" style="min-width: 150px;"></th>
+                                    <th class="p-0" style="width: 50px"></th>
+                                    <th class="p-0" style="min-width: 200px"></th>
+                                    <th class="p-0" style="min-width: 100px"></th>
+                                    <th class="p-0" style="min-width: 125px"></th>
+                                    <th class="p-0" style="min-width: 110px"></th>
+                                    <th class="p-0" style="min-width: 150px"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,9 +61,7 @@
                                         >
                                             <div class="font-weight-bold">
                                                 {{ notification.message }}
-                                                <span ng-if="notification.action_type">
-                                                    {{ notification.action_type }}
-                                                </span>
+                                                <span ng-if="notification.action_type">{{ notification.action_type }}</span>
                                             </div>
                                         </a>
 
@@ -73,9 +73,7 @@
                                         </div>
                                     </td>
                                     <td class="text-right">
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                            {{ notification.committeeName }}
-                                        </span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ notification.committeeName }}</span>
                                         <span class="text-muted font-weight-bold">{{ notification.positionName }}</span>
                                     </td>
                                     <!-- <td class="text-right">
@@ -106,13 +104,8 @@
                 "
             >
                 <div class="card-body">
-                    <i
-                        class="fad fa-users icon-xl"
-                        style="--fa-primary-color: #3699ff; --fa-secondary-color: #3694ffd3;"
-                    ></i>
-                    <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
-                        {{ dashboarddata.borrowerCount}}
-                    </span>
+                    <i class="fad fa-users icon-xl" style="--fa-primary-color: #3699ff; --fa-secondary-color: #3694ffd3"></i>
+                    <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{ dashboarddata.borrowerCount}}</span>
                     <span class="font-weight-bold text-muted font-size-sm">Members</span>
                 </div>
             </div>
@@ -201,9 +194,7 @@
                             </g>
                         </svg>
                     </span>
-                    <span
-                        class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block"
-                    >
+                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">
                         {{ dashboarddata.totalBalance | currency :'₱'}}
                     </span>
                     <span class="font-weight-bold text-white font-size-sm">Overall Collectibles</span>
@@ -211,7 +202,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-xl-6">
             <div class="card card-custom card-stretch gutter-b">
                 <div class="card-header h-auto border-0">
@@ -278,7 +269,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="row">
         <div class="col-xxl-12">
             <div class="card">
