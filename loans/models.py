@@ -424,7 +424,6 @@ class InterestRate(models.Model):
     def __str__(self):
         return "%s" % (self.interestRate)
 
-
 class CreditLine(models.Model):
     borrower = models.ForeignKey(
         "borrowers.Borrower",
@@ -634,7 +633,7 @@ class Loan(models.Model):
             return 0
 
     def getTotalAmortizationAccruedInterest(self):
-         
+
         if self.isRestructured:
             latestAmortization = (
                 self.amortizations.filter(amortizationStatus__name="RESTRUCTURED").order_by("-id").first()
@@ -669,6 +668,7 @@ class Loan(models.Model):
 
                 return totalAmortizationInterest
         return 0
+
     def getTotalAmortizationInterest(self):
         if self.isRestructured:
             latestAmortization = (
@@ -836,24 +836,20 @@ class Loan(models.Model):
 
             # return self.getTotalAmortizationInterest() -  latestPayment.amortizationItem.interest
 
-
-            interestPayment = self.payments.filter(paymentStatus__name="TENDERED").aggregate(accruedInterestPayment=Sum(F("accruedInterestPayment")))[
-                    "accruedInterestPayment"
-                ] + self.payments.filter(paymentStatus__name="TENDERED").aggregate(interestPayment=Sum(F("interestPayment")))[
-                    "interestPayment"
-                ]
-          
-            return (
-                self.getTotalAmortizationInterest()
-                - interestPayment
+            interestPayment = (
+                self.payments.filter(paymentStatus__name="TENDERED").aggregate(
+                    accruedInterestPayment=Sum(F("accruedInterestPayment"))
+                )["accruedInterestPayment"]
+                + self.payments.filter(paymentStatus__name="TENDERED").aggregate(
+                    interestPayment=Sum(F("interestPayment"))
+                )["interestPayment"]
             )
-            
+
+            return self.getTotalAmortizationInterest() - interestPayment
+
             # return 0
 
-
-        return self.getTotalAmortizationInterest() 
-
-
+        return self.getTotalAmortizationInterest()
 
     def getPrincipalBalance(self):
 
@@ -863,25 +859,24 @@ class Loan(models.Model):
 
             # return self.getTotalAmortizationInterest() -  latestPayment.amortizationItem.interest
 
-
-            principalPayment = self.payments.filter(paymentStatus__name="TENDERED").aggregate(cashPayment=Sum(F("cash")))[
+            principalPayment = (
+                self.payments.filter(paymentStatus__name="TENDERED").aggregate(cashPayment=Sum(F("cash")))[
                     "cashPayment"
-                ] + self.payments.filter(paymentStatus__name="TENDERED").aggregate(checkPayment=Sum(F("check")))[
+                ]
+                + self.payments.filter(paymentStatus__name="TENDERED").aggregate(checkPayment=Sum(F("check")))[
                     "checkPayment"
-                ] + self.payments.filter(paymentStatus__name="TENDERED").aggregate(paymentFromOverPayment=Sum(F("paymentFromOverPayment")))[
-                    "paymentFromOverPayment"
-                ] 
-                
+                ]
+                + self.payments.filter(paymentStatus__name="TENDERED").aggregate(
+                    paymentFromOverPayment=Sum(F("paymentFromOverPayment"))
+                )["paymentFromOverPayment"]
+            )
+
             # self.payments.filter(paymentStatus__name="TENDERED").aggregate(totalPaidInterest=Sum(F("interest")))[
             #         "totalPaidInterest"
             #     ]
 
-
-            return (
-                self.amount - principalPayment
-            )
+            return self.amount - principalPayment
             # return 0
-
 
         return self.amount
 

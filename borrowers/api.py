@@ -297,6 +297,157 @@ class BorrowerViewSet(ModelViewSet):
         return queryset
 
 
+class BorrowerListViewSet(ModelViewSet):
+    queryset = Borrower.objects.all()
+    serializer_class = BorrowerListSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = (
+            Borrower.objects.prefetch_related(
+                Prefetch(
+                    "loans",
+                    queryset=Loan.objects.order_by("dateReleased"),
+                ),
+            )
+            .annotate(
+                borrowerName=Case(
+                    When(Q(recordType="BD"), then=F("business__tradeName")),
+                    When(
+                        Q(recordType="ID"),
+                        then=Concat(
+                            F("individual__firstname"),
+                            V(" "),
+                            F("individual__middlename"),
+                            V(" "),
+                            F("individual__lastname"),
+                        ),
+                    ),
+                ),
+                # borrowerType=Case(
+                #     When(recordType="BD", then=V("Business")),
+                #     When(recordType="ID", then=V("Individual")),
+                #     output_field=models.CharField(),
+                # ),
+                # borrowerAddress=Case(
+                #     When(
+                #         Q(recordType="BD"),
+                #         then=Concat(
+                #             F("business__businessAddress__streetNo"),
+                #             V(" "),
+                #             F("business__businessAddress__barangay"),
+                #             V(" "),
+                #             F("business__businessAddress__city"),
+                #             V(" "),
+                #             F("business__businessAddress__province"),
+                #         ),
+                #     ),
+                #     When(
+                #         Q(recordType="ID"),
+                #         then=Concat(
+                #             F("individual__individualAddress__streetNo"),
+                #             V(" "),
+                #             F("individual__individualAddress__barangay"),
+                #             V(" "),
+                #             F("individual__individualAddress__city"),
+                #             V(" "),
+                #             F("individual__individualAddress__province"),
+                #         ),
+                #     ),
+                # ),
+                contactPersonNumber=Case(
+                    When(
+                        Q(recordType="BD"),
+                        then=F("business__businessContactPerson__phoneNo"),
+                    ),
+                ),
+                areaCode=Case(
+                    When(
+                        Q(recordType="BD"),
+                        then=F("area__branchCode"),
+                    ),
+                ),
+                # tin=Case(
+                #     When(
+                #         Q(recordType="BD") & Q(business__businessIdentification__identificationType__value="10"),
+                #         then=F("business__businessIdentification__identificationNumber"),
+                #     ),
+                #     When(
+                #         Q(recordType="ID") & Q(individual__individualIdentification__identificationType__value="10"),
+                #         then=F("individual__individualIdentification__identificationNumber"),
+                #     ),
+                # ),
+            )
+            .exclude(isDeleted=True)
+            .order_by("-borrowerId")
+        )
+
+        borrowerId = self.request.query_params.get("borrowerId", None)
+        branch = self.request.query_params.get("branch", None)
+        loanProgramId = self.request.query_params.get("loanProgramId", None)
+        totalAvailmentsFrom = self.request.query_params.get("totalAvailmentsFrom", None)
+        totalAvailmentsTo = self.request.query_params.get("totalAvailmentsTo", None)
+        totalOutstandingBalanceFrom = self.request.query_params.get("totalOutstandingBalanceFrom", None)
+        totalOutstandingBalanceTo = self.request.query_params.get("totalOutstandingBalanceTo", None)
+        totalPaymentsFrom = self.request.query_params.get("totalPaymentsFrom", None)
+        totalPaymentsTo = self.request.query_params.get("totalPaymentsTo", None)
+        clientSinceFrom = self.request.query_params.get("clientSinceFrom", None)
+        clientSinceTo = self.request.query_params.get("clientSinceTo", None)
+
+        if borrowerId is not None:
+            queryset = queryset.filter(borrowerId=borrowerId)
+
+        if branch is not None:
+            queryset = queryset.filter(area=branch)
+
+        if totalAvailmentsFrom is not None and totalAvailmentsTo is not None:
+            borrowers = []
+            for borrower in queryset:
+                borrower.totalAvailments = borrower.getTotalAvailments()
+                if (int(borrower.totalAvailments) >= int(totalAvailmentsFrom)) and (
+                    int(borrower.totalAvailments) <= int(totalAvailmentsTo)
+                ):
+                    borrowers.append(borrower.pk)
+
+            queryset = queryset.filter(borrowerId__in=borrowers)
+
+        if totalOutstandingBalanceFrom is not None and totalOutstandingBalanceTo is not None:
+            borrowers = []
+            for borrower in queryset:
+                borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+                if (int(borrower.totalOutstandingBalance) >= int(totalOutstandingBalanceFrom)) and (
+                    int(borrower.totalOutstandingBalance) <= int(totalOutstandingBalanceTo)
+                ):
+                    borrowers.append(borrower.pk)
+
+            queryset = queryset.filter(borrowerId__in=borrowers)
+
+        if totalPaymentsFrom is not None and totalPaymentsTo is not None:
+            borrowers = []
+            for borrower in queryset:
+                borrower.payments = borrower.getPayments()
+                borrower.totalPayments = borrower.getTotalPayments()
+                if (int(borrower.totalPayments) >= int(totalPaymentsFrom)) and (
+                    int(borrower.totalPayments) <= int(totalPaymentsTo)
+                ):
+                    borrowers.append(borrower.pk)
+
+            queryset = queryset.filter(borrowerId__in=borrowers)
+
+        if clientSinceFrom is not None and clientSinceTo is not None:
+            queryset = queryset.filter(accreditationDate__gte=clientSinceFrom).filter(
+                accreditationDate__lte=clientSinceTo
+            )
+
+        for borrower in queryset:
+            borrower.totalAvailments = borrower.getTotalAvailments()
+            borrower.totalOutstandingBalance = borrower.getTotalOutstandingBalance()
+            borrower.payments = borrower.getPayments()
+            borrower.totalPayments = borrower.getTotalPayments()
+
+        return queryset
+
+
 class BusinessViewSet(ModelViewSet):
     queryset = Business.objects.all()
     serializer_class = BusinessSerializer

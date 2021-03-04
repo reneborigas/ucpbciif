@@ -521,6 +521,18 @@ class LoanViewSet(ModelViewSet):
         if statusFilter is not None:
             queryset = queryset.filter(Q(loanStatus__name=statusFilter))
 
+        if dateFrom is not None and dateTo is not None:
+            queryset = queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
+
+        if loanFrom is not None and loanTo is not None:
+            queryset = queryset.filter(amount__gte=loanFrom).filter(amount__lte=loanTo)
+
+        if loanProgram is not None:
+            queryset = queryset.filter(loanProgram=loanProgram)
+
+        if loanProgramName is not None:
+            queryset = queryset.filter(loanProgram__name=loanProgramName)
+
         for loan in queryset:
             loan.totalAmortizationInterest = loan.getTotalAmortizationInterest
             loan.totalAmortizationAccruedInterest = loan.getTotalAmortizationAccruedInterest
@@ -585,24 +597,12 @@ class LoanViewSet(ModelViewSet):
                 amortization.totalObligations = amortization.getTotalObligations
                 amortization.totalAmortizationPrincipal = amortization.getTotalAmortizationPrincipal
 
-                # for payment in amortization.payments.all(): 
-                    
+                # for payment in amortization.payments.all():
+
                 #     payment.paidInterest = payment.interestPayment + payment.accruedInterestPayment + payment.additionalInterest
                 #     print(payment.paidInterest )
                 #     print("payment.paidInterest" )
                 #     amortization.save()
-                                             
-        if dateFrom is not None and dateTo is not None:
-            queryset = queryset.filter(dateReleased__date__gte=dateFrom).filter(dateReleased__date__lte=dateTo)
-
-        if loanFrom is not None and loanTo is not None:
-            queryset = queryset.filter(amount__gte=loanFrom).filter(amount__lte=loanTo)
-
-        if loanProgram is not None:
-            queryset = queryset.filter(loanProgram=loanProgram)
-
-        if loanProgramName is not None:
-            queryset = queryset.filter(loanProgram__name=loanProgramName)
 
         return queryset
 
@@ -679,7 +679,7 @@ class AmortizationItemViewSet(ModelViewSet):
         for amortizationItem in queryset:
             amortizationItem.totalPayment = amortizationItem.getTotalPayment
             amortizationItem.latestCheck = amortizationItem.getPDC()
-           
+
         if status is not None:
             queryset = queryset.filter(status__name=status)
 
@@ -711,7 +711,6 @@ class AmortizationItemViewSet(ModelViewSet):
                 principalBalance__lte=principalBalanceTo
             )
 
-       
         return queryset
 
 

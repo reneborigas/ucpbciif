@@ -144,7 +144,7 @@ class Document(models.Model):
     committeeId = None
 
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s - %s" % (self.name, self.borrower)
 
     def getCurrentStatus(self):
         return self.documentMovements.all().order_by("-id").first().status

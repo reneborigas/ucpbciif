@@ -217,7 +217,6 @@
                                     sortable="'amount'"
                                 >
                                     <span ng-if="!loan.dateReleased">{{ loan.amount | currency :'₱'}}</span>
-
                                     <span ng-if="loan.dateReleased">{{ loan.loanTotalAmortizationPrincipal | currency :'₱'}}</span>
                                 </td>
 

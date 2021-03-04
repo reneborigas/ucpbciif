@@ -25,42 +25,39 @@
             <td class="datatable-cell datatable-cell-center" header-class="'text-center'" data-title="'DATE CREATED'" sortable="'dateCreated'">
                 {{ document.dateCreated | date : 'mediumDate' }}
             </td>
-            <td class="datatable-cell datatable-cell-center" header-class="'text-center'" data-title="'REFERENCE NO.'" sortable="'referenceNo'">
-                {{ }}
-            </td>
             <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'BORROWER'" sortable="'borrowerName'">
                 {{ document.borrowerName }}
             </td>
             <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'WINDOW'" sortable="'loanProgram_name'">
                 {{ document.creditLine.loanProgram_name }}
             </td>
-            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CATEGORY'" sortable="'category'">
+            <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'CATEGORY'" sortable="'category'">
                 {{ document.creditLine.category }}
-            </td>
-            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PURPOSE'" sortable="'purpose'">
+            </td> -->
+            <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'PURPOSE'" sortable="'purpose'">
                 {{ document.creditLine.purpose }}
-            </td>
+            </td> -->
             <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'AREA'" sortable="'area'">
                 {{ document.creditLine.area }}
             </td>
-            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'AO/LS'" sortable="'committee'">
+            <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'AO/LS'" sortable="'committee'">
                 {{ document.creditLine.committee }}
-            </td>
+            </td> -->
             <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'INTEREST'" sortable="'interestRate_amount'">
                 {{ document.creditLine.interestRate_amount | staticPercentage }}
             </td>
             <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TERM'" sortable="'term_name'">
                 {{ document.creditLine.term_name }}
             </td>
-            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'NEW'" sortable="''">
+            <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'NEW'" sortable="''">
                 {{ document.creditLine.new }}
-            </td>
-            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'RENEWAL'" sortable="''">
+            </td> -->
+            <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'RENEWAL'" sortable="''">
                 {{ document.creditLine.renewal }}
-            </td>
-            <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ADDITIONAL'" sortable="''">
+            </td> -->
+            <!-- <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'ADDITIONAL'" sortable="''">
                 {{ document.creditLine.additional }}
-            </td>
+            </td> -->
             <td class="datatable-cell datatable-cell-left" header-class="'text-left'" data-title="'TOTAL AMOUNT'" sortable="'amount'">
                 {{ document.creditLine.amount | currency :'₱' }}
             </td>

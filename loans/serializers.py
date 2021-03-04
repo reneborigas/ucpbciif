@@ -238,13 +238,20 @@ class StatusSerializer(ModelSerializer):
 class CreditLineSerializer(ModelSerializer):
     term_name = serializers.ReadOnlyField(source="term.code")
     term_code = serializers.ReadOnlyField(source="term.code")
-
     interestRate_amount = serializers.ReadOnlyField(source="interestRate.interestRate")
     status_name = serializers.ReadOnlyField(source="status.name")
     loanProgram_name = serializers.ReadOnlyField(source="loanProgram.name")
     borrower_name = serializers.ReadOnlyField(source="borrower.business.tradeName")
+    area = serializers.ReadOnlyField(source="borrower.area.branchCode")
     remainingCreditLine = serializers.CharField(read_only=True)
-    totalAvailment = serializers.CharField(read_only=True)
+    totalAvailment = serializers.SerializerMethodField()
+    remainingCreditLine = serializers.SerializerMethodField()
+
+    def get_remainingCreditLine(self, obj):
+        return obj.getRemainingCreditLine()
+
+    def get_totalAvailment(self, obj):
+        return obj.getTotalAvailment()
 
     def create(self, validated_data):
         creditLine = CreditLine.objects.create(**validated_data)
@@ -298,6 +305,7 @@ class LoanSerializer(ModelSerializer):
 
     interestRate_amount = serializers.ReadOnlyField(source="interestRate.interestRate")
     loanProgram_name = serializers.ReadOnlyField(source="loanProgram.name")
+    area = serializers.ReadOnlyField(source="borrower.area.branchCode")
     branch = serializers.CharField(read_only=True)
     totalAmortizationInterest = serializers.CharField(read_only=True)
     totalAmortizationAccruedInterest = serializers.CharField(read_only=True)

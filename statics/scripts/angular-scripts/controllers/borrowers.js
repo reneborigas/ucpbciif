@@ -22,7 +22,7 @@ define(function () {
                     {
                         counts: [10, 20, 30, 50, 100],
                         getData: function (params) {
-                            return $http.get('/api/borrowers/borrowers/', { params: $scope.params }).then(
+                            return $http.get('/api/borrowers/borrowerslist/', { params: $scope.params }).then(
                                 function (response) {
                                     var filteredData = params.filter() ? $filter('filter')(response.data, params.filter()) : response.data;
                                     var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
@@ -2438,6 +2438,7 @@ define(function () {
                                 borrower: $scope.borrowerId,
                                 createdBy: appFactory.getCurrentUser(),
                             };
+
                             $scope.loan = {
                                 loanid: null,
                                 amount: '',
@@ -2457,10 +2458,9 @@ define(function () {
                             $scope.$watch(
                                 'loan.amount',
                                 function (newTerm, oldTerm) {
-                                    if (newTerm > $scope.subProcess.parentLastDocumentCreditLine.remainingCreditLine) {
-                                        //Error
+                                    // To change
+                                    if (newTerm > $scope.creditLine.remainingCreditLine) {
                                         console.log('invalid');
-
                                         $scope.exceeded = true;
                                     } else {
                                         $scope.exceeded = false;
@@ -2512,7 +2512,6 @@ define(function () {
                                 interestRate: $scope.subProcess.parentLastDocumentCreditLine.interestRate,
                                 term: $scope.subProcess.parentLastDocumentCreditLine.term,
                                 termid: $scope.subProcess.parentLastDocumentCreditLine.term.id,
-
                                 loanProgram: $scope.subProcess.parentLastDocumentCreditLine.loanProgram,
                                 purpose: $scope.creditLine.purpose,
                                 security: $scope.creditLine.security,
@@ -2639,6 +2638,7 @@ define(function () {
                                             $scope.document.name = data;
                                             if ($scope.creditLine.creditlineid) {
                                                 console.log('Credit Line Exists');
+                                                $scope.loan.creditLine = $scope.creditLine.creditlineid;
                                                 $scope.document.creditlineid = $scope.creditLine.creditlineid;
 
                                                 if ($scope.loan.loanid) {

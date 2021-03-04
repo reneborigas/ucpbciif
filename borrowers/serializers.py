@@ -907,6 +907,29 @@ class BorrowerSerializer(ModelSerializer):
         fields = "__all__"
 
 
+class BorrowerListSerializer(ModelSerializer):
+    # individualName = serializers.CharField(read_only=True)
+    # businessTradeName = serializers.CharField(read_only=True)
+    borrowerName = serializers.CharField(read_only=True)
+    borrowerType = serializers.CharField(read_only=True)
+    areaCode = serializers.CharField(read_only=True)
+    # tin = serializers.CharField(read_only=True)
+    borrowerAddress = serializers.CharField(read_only=True)
+    contactPersonNumber = serializers.CharField(read_only=True)
+
+    totalAvailments = serializers.CharField(read_only=True)
+    totalAvailmentPerProgram = serializers.CharField(read_only=True)
+    totalOutstandingBalance = serializers.CharField(read_only=True)
+    totalPayments = serializers.CharField(read_only=True)
+    # loans = LoanSerializer(many=True, read_only=True)
+    # creditLines = CreditLineSerializer(many=True, read_only=True)
+    # payments = PaymentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Borrower
+        fields = "__all__"
+
+
 class CreateBorrowerSerializer(ModelSerializer):
     individualName = serializers.CharField(read_only=True)
     businessTradeName = serializers.CharField(read_only=True)

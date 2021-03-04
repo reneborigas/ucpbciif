@@ -75,7 +75,7 @@
                                     </span>
                                     <span
                                         class="text-dark ml-2"
-                                        ng-if="loan.payments.length == 0 && !loan.isRestructured"
+                                        ng-if="loan.payments.length == 0 && !loan.isRestructured && loan.amortizations.length > 0"
                                         ng-click="editInterest(loan.id,loan.interestRate)"
                                         data-toggle="modal"
                                         data-target="#edit-loan-interest"
@@ -88,7 +88,7 @@
                                     <span class="font-weight-bolder text-dark">{{ loan.term_name }}</span>
                                     <span
                                         class="text-dark ml-2"
-                                        ng-if="loan.payments.length == 0 && !loan.isRestructured"
+                                        ng-if="loan.payments.length == 0 && !loan.isRestructured  && loan.amortizations.length > 0"
                                         ng-click="editTerm(loan.id,loan.term)"
                                         data-toggle="modal"
                                         data-target="#edit-loan-term"
@@ -294,7 +294,7 @@
                         <div class="d-flex flex-column text-dark-75">
                             <span class="font-weight-bolder font-size-sm">Principal Balance</span>
                             <span class="font-weight-bolder font-size-h5" ng-if="(loan.latestPayment && !loan.isRestructured)">
-                                {{ loan.latestPayment.outStandingBalance | currency :'₱'}} 
+                                {{ loan.latestPayment.outStandingBalance | currency :'₱'}}
                             </span>
 
                             <span class="font-weight-bolder font-size-h5" ng-if="loan.isRestructured">{{ 0 | currency :'₱'}}</span>
@@ -678,6 +678,11 @@
                                     </th>
                                     <th>
                                         <div class="text-right px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Total Interest</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="text-right px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">Add. Interest</span>
                                         </div>
                                     </th>
@@ -820,7 +825,13 @@
                                             </span>
                                         </div>
                                     </td>
-
+                                    <td>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ amortization.interest | currency :'₱'}}
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
@@ -923,11 +934,13 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <!-- <td>
+                                    <td>
                                         <div class="text-right px-2">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.totalAmortizationInterest | currency :'₱'}}
+                                            </span>
                                         </div>
-                                    </td> -->
+                                    </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
@@ -939,8 +952,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right">
-                                            <span class="text-dark-75 font-weight-bolder font-size-lg"></span>
+                                        <div class="text-right px-2">
+                                            <span class="text-dark-75 font-weight-bolder font-size-lg">
+                                                {{ loan.totalObligations | currency :'₱'}}
+                                            </span>
                                         </div>
                                     </td>
                                     <td>
