@@ -179,9 +179,7 @@ class AmortizationItemSerializer(ModelSerializer):
         return amortizationitem
 
     def update(self, instance, validated_data):
-        # instance.loanAmount = validated_data.get("loanAmount", instance.loanAmount)
-        # instance.loanName = validated_data.get("loanName", instance.loanName)
-        # instance.borrower =  validated_data.get("borrower", instance.borrower)
+        instance.amortizationStatus = validated_data.get("amortizationStatus", instance.amortizationStatus)
         instance.save()
 
         return instance

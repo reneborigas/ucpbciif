@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet , ViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework import permissions, parsers
 from .serializers import *
 from .models import *
@@ -18,6 +18,7 @@ from django.db.models import (
 from django.db.models.functions import Coalesce, Cast, TruncDate, Concat
 from rest_framework import status, views
 from rest_framework.response import Response
+
 
 class CheckViewSet(ModelViewSet):
     queryset = Check.objects.all()
@@ -108,9 +109,13 @@ class PaymentStatusViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = PaymentStatus.objects.order_by("id")
         paymentStatusId = self.request.query_params.get("paymentStatusId", None)
+        paymentStatusName = self.request.query_params.get("paymentStatusName", None)
 
         if paymentStatusId is not None:
             queryset = queryset.filter(id=paymentStatusId)
+
+        if paymentStatusName is not None:
+            queryset = queryset.filter(name=paymentStatusName)
 
         return queryset
 
@@ -123,11 +128,16 @@ class PaymentTypeViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = PaymentType.objects.order_by("id")
         paymentTypeId = self.request.query_params.get("paymentTypeId", None)
+        paymentTypeName = self.request.query_params.get("paymentTypeName", None)
 
         if paymentTypeId is not None:
             queryset = queryset.filter(id=paymentTypeId)
 
+        if paymentTypeName is not None:
+            queryset = queryset.filter(name=paymentTypeName)
+
         return queryset
+
 
 class SkipPaymentView(views.APIView):
 
@@ -135,17 +145,17 @@ class SkipPaymentView(views.APIView):
     def post(self, request):
 
         amortizationItemId = request.data.get("amortizationItemId")
-         
-        if amortizationItemId:
-            amortizationItem =  AmortizationItem.objects.get(pk=amortizationItemId)
 
-            amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=7) #bayanihan
+        if amortizationItemId:
+            amortizationItem = AmortizationItem.objects.get(pk=amortizationItemId)
+
+            amortizationItem.amortizationStatus = AmortizationStatus.objects.get(pk=7)  # bayanihan
             amortizationItem.save()
 
             return Response(
                 {
                     "message": "Skip Payment",
-                    "amortizationItemId": amortizationItemId, 
+                    "amortizationItemId": amortizationItemId,
                 },
                 status=status.HTTP_202_ACCEPTED,
             )
@@ -224,9 +234,7 @@ class PaymentViewSet(ModelViewSet):
         if status is not None:
             queryset = queryset.filter(paymentStatus__name=status)
 
-
-
         for payment in queryset:
             payment.paidInterest = payment.interestPayment + payment.accruedInterestPayment + payment.additionalInterest
-           
+
         return queryset

@@ -30,7 +30,7 @@
                             </tr>
                             <tr style="border-bottom: 1pt solid #464e5f !important">
                                 <td class="p-0 pb-4">PN No/Loan No.:</td>
-                                <td class="p-0 pb-4" colspan="2">{{ loan.id }}</td>
+                                <td class="p-0 pb-4" colspan="2">{{ loan.pnNo }}</td>
                                 <td class="p-0 pb-4">Loan Term:</td>
                                 <td class="p-0 pb-4" colspan="2">{{ loan.term.days }}</td>
                                 <td class="p-0 pb-4">Interest Original:</td>
@@ -157,8 +157,9 @@
                                 <td>
                                     <div class="">
                                         <span class="text-dark-75 font-size-sm">
-                                            <span ng-if="payment.paymentType_name == 'Cash Payment'">Cr-Pay-Csh</span>
-                                            <span ng-if="payment.paymentType_name == 'Check Payment'">Cr-Pay-Chk</span>
+                                            <span ng-if="payment.paymentType_name == 'Cash'">Cr-Pay-Csh</span>
+                                            <span ng-if="payment.paymentType_name == 'Check'">Cr-Pay-Chk</span>
+                                            <span ng-if="payment.paymentType_name == 'DM-Adj'">Cr-Pay-Chk</span>
                                         </span>
                                     </div>
                                 </td>
@@ -225,7 +226,7 @@
                                 <td class="">
                                     <div class="">
                                         <span class="text-dark-75 font-size-sm font-weight-bolder">
-                                            {{ loan.totalInterestPayment - loan.totalAccruedInterestPayment | currency :'₱' }}
+                                            {{ loan.totalAccruedInterestPayment - loan.totalAccruedInterestPayment | currency :'₱' }}
                                         </span>
                                     </div>
                                 </td>

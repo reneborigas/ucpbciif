@@ -578,19 +578,20 @@ class PaymentSerializer(ModelSerializer):
         # if payment.overPayment >= 1:
         #     print("payment over")
         #     amortizationItemCurrent = payment.loan.getCurrentAmortizationItem()
-            
+
         #     amortizationItems = AmortizationItem.objects.filter(amortization=amortizationItemCurrent.amortization,principal__gt=0,amortizationStatus=1).order_by('id').first()
         #     print(amortizationItems)
         #     if amortizationItems:
         #         amortizationItems.principal = principal - payment.overPayment
         #         amortizationItems.save()
 
-
-
         return payment
 
     def update(self, instance, validated_data):
+        instance.paymentType = validated_data.get("paymentType", instance.paymentType)
+        instance.paymentStatus = validated_data.get("paymentStatus", instance.paymentStatus)
 
+        instance.save()
         return instance
 
     class Meta:

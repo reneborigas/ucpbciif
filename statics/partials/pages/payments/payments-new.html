@@ -447,7 +447,6 @@
                                         ng-class="{'is-invalid' : newPaymentForm.accruedInterestPayment.$invalid && newPaymentForm.accruedInterestPayment.$touched   || exceeded, 'is-valid' : newPaymentForm.accruedInterestPayment.$valid && newPaymentForm.accruedInterestPayment.$touched && !exceeded }"
                                         required
                                         price
-                                        ng-disabled="payment.penaltyBalance >= 1"
                                     />
                                     <span
                                         class="form-text text-muted"
@@ -470,7 +469,6 @@
                                         ng-class="{'is-invalid' : newPaymentForm.interestPayment.$invalid && newPaymentForm.interestPayment.$touched   || exceeded, 'is-valid' : newPaymentForm.interestPayment.$valid && newPaymentForm.interestPayment.$touched && !exceeded }"
                                         required
                                         price
-                                        ng-disabled="payment.penaltyBalance >= 1"
                                     />
                                     <span
                                         class="form-text text-muted"
@@ -493,7 +491,6 @@
                                         ng-class="{'is-invalid' : newPaymentForm.cash.$invalid && newPaymentForm.cash.$touched   || exceeded, 'is-valid' : newPaymentForm.cash.$valid && newPaymentForm.cash.$touched && !exceeded }"
                                         required
                                         price
-                                        ng-disabled="payment.interestBalance >= 1"
                                     />
                                     <span class="form-text text-muted" ng-show="newPaymentForm.cash.$touched && newPaymentForm.cash.$invalid">
                                         Please enter cash tendered.
@@ -513,7 +510,6 @@
                                         ng-class="{'is-invalid' : newPaymentForm.check.$invalid && newPaymentForm.check.$touched   || exceeded, 'is-valid' : newPaymentForm.check.$valid && newPaymentForm.check.$touched && !exceeded }"
                                         required
                                         price
-                                        ng-disabled="payment.interestBalance >= 1"
                                     />
 
                                     <span class="form-text text-muted" ng-show="newPaymentForm.check.$touched && newPaymentForm.check.$invalid">

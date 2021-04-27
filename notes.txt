@@ -51,9 +51,23 @@ Verification Code to Franchise Activation PIN
 
 1. Running AIR Balance per Borrower per day
 2. Voiding Payments/Bounced Check
-3. Manually Edit of Amortization Items
+    Sample:
+        Loan = 18110004
+        Amortization Item = 429
+        Payment ID = 10
+    - Amortization Item Update fails due to Payment Serializer Create function Line 557
+    - Offset Payment counts to Total Amount Paid by Borrower
+3. Manually Edit of Amortization Items -  DONE
+    - Needs function call for PMT on Input to fetch proper Amortization Item Amounts
+    - UI Still shows up to 3 decimal points
+    - Does not update the whole value of the loan, just the value of the Amortization item
+    - Still needs Entry Logs Once Approved
 4. Disable Payment Priority for Penalty (i.e. Penalty Payments can be paid on Last Amortization Schedule)
+    - Removed ng-disabled on AI, Interest and Principal Payment when Penalty Payment is Zero during Payment with Penalty
+
 5. Input Current AIR Balance at the End of Month
+
+
 
 AIR Balance Updated Formula
 Interest Rate per Day formula on Column "U" on Excel file

@@ -248,6 +248,8 @@ define(function () {
                             $scope.loan.outStandingBalance = parseFloat($scope.loan.outStandingBalance);
                             console.log($scope.loan.outStandingBalance <= 0);
                             $scope.currentAmortization = $scope.loan.amortizations[0];
+                            $scope.isEditAmortizationItems = false;
+                            $scope.editAmortizationItemsLabel = 'Edit';
                             $http
                                 .get('/api/borrowers/borrowers/', {
                                     params: { borrowerId: $scope.loan.borrower },
@@ -341,30 +343,6 @@ define(function () {
 
             var amortizationSchedulePaymentBlockUI = blockUI.instances.get('amortizationSchedulePaymentBlockUI');
 
-            $scope.viewAmortizationPayment = function (amortizationItemId) {
-                $scope.showAmortizationSchedule = false;
-                angular.element('#amortization-payment').modal('show');
-                amortizationSchedulePaymentBlockUI.start('Fetching Amortization Payments...');
-                $http
-                    .get('/api/loans/amortizationitems/', {
-                        params: { amortizationItemId: amortizationItemId },
-                    })
-                    .then(
-                        function (response) {
-                            $scope.amortizationItem = response.data[0];
-                            $timeout(function () {
-                                $scope.showAmortizationSchedule = true;
-                                amortizationSchedulePaymentBlockUI.stop();
-                            }, 1000);
-                        },
-                        function (error) {
-                            toastr.error(
-                                'Error ' + error.status + ' ' + error.statusText,
-                                'Could not retrieve Loan Information. Please contact System Administrator.'
-                            );
-                        }
-                    );
-            };
             $scope.restructureAmortization = function (id) {
                 $state.go('app.loans.restructeamortization', { loanId: id });
             };
@@ -752,6 +730,216 @@ define(function () {
                     );
                 });
             };
+
+            // -- Start View Payments --
+
+            // Fucntion to view Payment Details
+            $scope.viewAmortizationPayment = function (amortizationItemIndex, amortizationItemId) {
+                $scope.showAmortizationSchedule = false;
+                angular.element('#amortization-payment').modal('show');
+                amortizationSchedulePaymentBlockUI.start('Fetching Amortization Payments...');
+                $http
+                    .get('/api/loans/amortizationitems/', {
+                        params: { amortizationItemId: amortizationItemId },
+                    })
+                    .then(
+                        function (response) {
+                            $scope.selectedAmortizationItem = response.data[0];
+                            $scope.selectedAmortizationItemIndex = amortizationItemIndex;
+                            $timeout(function () {
+                                $scope.showAmortizationSchedule = true;
+                                amortizationSchedulePaymentBlockUI.stop();
+                            }, 1000);
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve Loan Information. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            };
+
+            $scope.voidPayment = function (selectedAmortizationItem, currentPayment) {
+                swal({
+                    title: 'Void Payment',
+                    text: 'Do you want to void this payment?',
+                    icon: 'info',
+                    dangerMode: true,
+                    buttons: {
+                        cancel: true,
+                        confirm: 'Void',
+                    },
+                }).then((isConfirm) => {
+                    if (isConfirm) {
+                        // Update Payment Status to Voided
+                        var payment = {
+                            paymentStatus: 3,
+                        };
+                        $http.patch('/api/payments/payments/' + currentPayment.id + '/', payment).then(
+                            function (response) {
+                                // Update Amortization Item to Unpaid Status
+                                var amortizationItem = {
+                                    amortizationStatus: 1,
+                                };
+                                return $http.patch('/api/loans/amortizationitems/' + selectedAmortizationItem.id + '/', amortizationItem).then(
+                                    function (response) {
+                                        $scope.loan.latestAmortization.amortizationItems[$scope.selectedAmortizationItemIndex] = response.data; //Does not update the whole value of the value, just the value of the Amortization item
+                                        // Create New Record to offset Payment
+                                        // Create Offset Payment Object with Alterations to PaymentType,PaymentStatus,datePayment,
+                                        var offsetPayment = {
+                                            loan: currentPayment.loan,
+                                            amortization: currentPayment.amortization,
+                                            amortizationItem: currentPayment.amortizationItem,
+                                            principal: currentPayment.principal,
+                                            days: currentPayment.days,
+                                            interest: currentPayment.interest,
+                                            totalToPay: currentPayment.totalToPay,
+                                            principalBalance: currentPayment.principalBalance,
+                                            check: currentPayment.check,
+                                            cash: currentPayment.cash,
+                                            total: currentPayment.total,
+                                            balance: currentPayment.balance,
+                                            checkNo: currentPayment.checkNo,
+                                            interestPayment: currentPayment.interestPayment,
+                                            penaltyPayment: currentPayment.penaltyPayment,
+                                            principalPayment: currentPayment.principalPayment,
+                                            exemptAdditionalInterest: currentPayment.exemptAdditionalInterest,
+                                            exemptPenalty: currentPayment.exemptPenalty,
+                                            bankACcount: currentPayment.bankACcount,
+                                            datePayment: new Date(),
+                                            outStandingBalance: currentPayment.outStandingBalance,
+                                            remarks: currentPayment.remarks,
+                                            description: currentPayment.description,
+                                            createdBy: appFactory.getCurrentUser(),
+                                            accruedInterest: currentPayment.accruedInterest,
+                                            accruedInterestPayment: currentPayment.accruedInterestPayment,
+                                            additionalInterest: currentPayment.additionalInterest,
+                                            overPayment: currentPayment.overPayment,
+                                            paymentFromOverPayment: currentPayment.paymentFromOverPayment,
+                                            penalty: currentPayment.penalty,
+                                            totalToPayWithPenalty: currentPayment.totalToPayWithPenalty,
+                                            paymentType: 5,
+                                            paymentStatus: 2,
+                                        };
+                                        // appFactory.getPaymentTypeByName('DM-Adj').then(function (data) {
+                                        //     offsetPayment.paymentType = data;
+                                        // });
+                                        // appFactory.getPaymentStatusByName('TENDERED').then(function (data) {
+                                        //     offsetPayment.paymentStatus = data;
+                                        // });
+                                        console.log(offsetPayment);
+                                        // Post offset Payment Record
+                                        return $http.post('/api/payments/payments/', offsetPayment).then(
+                                            function () {
+                                                angular.element('#edit-amortization-item').modal('hide');
+                                                $('body').removeClass('modal-open');
+                                                $('.modal-backdrop').remove();
+                                                toastr.success('Success', 'Payment Voided.');
+                                            },
+                                            function (error) {
+                                                toastr.error(
+                                                    'Error ' + error.status + ' ' + error.statusText,
+                                                    'Could not create offset payment. Please contact System Administrator.'
+                                                );
+                                            }
+                                        );
+                                    },
+                                    function (error) {
+                                        toastr.error(
+                                            'Error ' + error.status + ' ' + error.statusText,
+                                            'Could not void payment. Please contact System Administrator.'
+                                        );
+                                    }
+                                );
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not void payment. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    }
+                });
+            };
+
+            // -- End View Payments --
+
+            // -- Start Edit Amortization Items --
+
+            // Function to enable Edit of Amortization Items based on loan.latestAmortization
+            $scope.editAmortizationItems = function () {
+                if ($scope.isEditAmortizationItems == false) {
+                    $scope.isEditAmortizationItems = true;
+                    $scope.editAmortizationItemsLabel = 'Cancel';
+                } else {
+                    $scope.isEditAmortizationItems = false;
+                    $scope.editAmortizationItemsLabel = 'Edit';
+                }
+            };
+
+            // Function to edit selected AmortizationItem based on loan.latestAmortization.amortizationItems[$index].id
+            $scope.editAmortizationItem = function (amortizationItemIndex, amortizationItemId) {
+                // Fetches Amortization Item by id
+                $http
+                    .get('/api/loans/amortizationitems/', {
+                        params: { amortizationItemId: amortizationItemId },
+                    })
+                    .then(
+                        function (response) {
+                            $scope.amortizationItemToEdit = response.data[0];
+                            $scope.amortizationItemToEdit.schedule = new Date($scope.amortizationItemToEdit.schedule); // Converts schedule to Date Object for Date Picker
+                            $scope.selectedAmortizationItemToEditIndex = amortizationItemIndex;
+                            angular.element('#edit-amortization-item').modal('show'); // Opens Edit Amortization Item Modal
+                        },
+                        function (error) {
+                            toastr.error(
+                                'Error ' + error.status + ' ' + error.statusText,
+                                'Could not retrieve Check Information. Please contact System Administrator.'
+                            );
+                        }
+                    );
+            };
+
+            // Function to call PMT Object on Input Change to compute Amount
+            $scope.fetchPMT = function () {
+                console.log('test');
+            };
+
+            // Function to Update Amortization Item
+            $scope.saveAmortizationItem = function (amortizationItem) {
+                swal({
+                    title: 'Update Amortization Item',
+                    text: 'Do you want to update amortization item values?',
+                    icon: 'info',
+                    buttons: {
+                        cancel: true,
+                        confirm: 'Update',
+                    },
+                }).then((isConfirm) => {
+                    if (isConfirm) {
+                        amortizationItem.schedule = appFactory.dateWithoutTime(amortizationItem.schedule, 'yyyy-MM-dd');
+                        $http.patch('/api/loans/amortizationitems/' + amortizationItem.id + '/', amortizationItem).then(
+                            function (response) {
+                                angular.element('#edit-amortization-item').modal('hide');
+                                $('body').removeClass('modal-open');
+                                $('.modal-backdrop').remove();
+                                $scope.loan.latestAmortization.amortizationItems[$scope.selectedAmortizationItemToEditIndex] = response.data; //Does not update the whole value of the value, just the value of the Amortization item
+                                toastr.success('Success', 'Amortization Item Updated.');
+                            },
+                            function (error) {
+                                toastr.error(
+                                    'Error ' + error.status + ' ' + error.statusText,
+                                    'Could not update Amortization Item. Please contact System Administrator.'
+                                );
+                            }
+                        );
+                    }
+                });
+            };
+
+            // -- End Edit Amortization Items --
         }
     );
 

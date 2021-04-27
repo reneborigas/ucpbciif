@@ -614,6 +614,13 @@
                     </span>
                 </h3>
                 <div class="card-toolbar">
+                    <button
+                        class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
+                        ng-click="editAmortizationItems()"
+                        ng-if="(loan.dateReleased && !loan.isRestructured )"
+                    >
+                        {{ editAmortizationItemsLabel }}
+                    </button>
                     <a
                         href="#"
                         class="btn btn-sm btn-light-success font-weight-bolder text-uppercase mr-3"
@@ -706,9 +713,14 @@
                                             <span class="text-dark-75 text-uppercase font-size-lg">Status</span>
                                         </div>
                                     </th>
-                                    <th>
+                                    <th ng-if="!isEditAmortizationItems">
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 text-uppercase font-size-lg">PDC</span>
+                                        </div>
+                                    </th>
+                                    <th ng-if="isEditAmortizationItems">
+                                        <div class="text-center px-2">
+                                            <span class="text-dark-75 text-uppercase font-size-lg">Actions</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -780,7 +792,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems  ">
+                                <tr ng-repeat="amortization in loan.latestAmortization.amortizationItems">
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">{{$index+1 }}</span>
@@ -860,20 +872,16 @@
                                     </td>
                                     <td>
                                         <div class="text-center px-2">
-                                            <!-- <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{ amortization.amortizationStatus_name}}
-                                            </span> -->
                                             <button
                                                 class="btn btn-sm font-weight-bold"
-                                                ng-class="{'btn-light-primary' : amortization.amortizationStatus_name == 'PAID', 'btn-light-warning' : amortization.amortizationStatus_name == 'PARTIAL', 'btn-clean text-dark' : amortization.amortizationStatus_name == 'UNPAID'}"
-                                                ng-disabled="amortization.amortizationStatus_name == 'UNPAID'"
-                                                ng-click="viewAmortizationPayment(amortization.id)"
+                                                ng-class="{'btn-light-primary' : amortization.amortizationStatus_name == 'PAID', 'btn-light-warning' : amortization.amortizationStatus_name == 'PARTIAL', 'btn-secondary' : amortization.amortizationStatus_name == 'UNPAID'}"
+                                                ng-click="viewAmortizationPayment($index,amortization.id)"
                                             >
                                                 {{ amortization.amortizationStatus_name}}
                                             </button>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td ng-if="!isEditAmortizationItems">
                                         <div class="text-center px-2">
                                             <a
                                                 href="#"
@@ -894,6 +902,16 @@
                                                     ng-click="addPDC($index+1,amortization)"
                                                 ></i>
                                             </a>
+                                        </div>
+                                    </td>
+                                    <td ng-if="isEditAmortizationItems">
+                                        <div class="text-center px-2">
+                                            <button
+                                                class="btn btn-sm btn-light-primary font-weight-bold"
+                                                ng-click="editAmortizationItem($index,amortization.id)"
+                                            >
+                                                Edit
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -985,7 +1003,6 @@
                 </a>
             </div>
         </div>
-
         <div class="card card-custom gutter-b" ng-if="loan.dateReleased" ng-init="showPaymentHistory = true">
             <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
@@ -1266,7 +1283,6 @@
                 </a>
             </div>
         </div>
-
         <div class="card card-custom gutter-b" ng-if="loan.dateReleased" ng-init="showAmortizationHistory = true">
             <div class="card-header align-items-center border-0">
                 <h3 class="card-title align-items-start flex-column">
@@ -1796,7 +1812,7 @@
                                         class="form-text text-muted"
                                         ng-show="form.addPDCForm.bankBranch.$touched && form.addPDCForm.bankBranch.$invalid"
                                     >
-                                        Please input bacnk branch.
+                                        Please input bank branch.
                                     </span>
                                 </div>
                             </div>
@@ -2278,21 +2294,21 @@
                                     <td>
                                         <div class="pl-16">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{amortizationItem.schedule | date:'mediumDate'}}
+                                                {{selectedAmortizationItem.schedule | date:'mediumDate'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right pl-16">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{amortizationItem.principal | currency :'₱'}}
+                                                {{selectedAmortizationItem.principal | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{amortizationItem.interest | currency :'₱'}}
+                                                {{selectedAmortizationItem.interest | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
@@ -2300,90 +2316,101 @@
                                     <td>
                                         <div class="text-right px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-lg">
-                                                {{amortizationItem.total | currency :'₱'}}
+                                                {{selectedAmortizationItem.total | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="table-responsive" ng-class="!showAmortizationSchedule ? 'py-10' : 'p-0'">
                         <table class="table table-align-middle table-bordered" ng-if="showAmortizationSchedule">
                             <thead>
                                 <tr>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Payment Date</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Additional Interest</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Penalty</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Total Payable</span>
                                         </div>
                                     </th>
-
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Payment Type</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Penalty Payment</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Interest Payment</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Principal Payment</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Exemption</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Total Payment</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Balance</span>
                                         </div>
                                     </th>
                                     <th class="align-middle">
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 text-uppercase font-size-sm">Overpayment</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-1">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Status</span>
+                                        </div>
+                                    </th>
+                                    <th class="align-middle">
+                                        <div class="text-center px-1">
+                                            <span class="text-dark-75 text-uppercase font-size-sm">Actions</span>
                                         </div>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="payment in amortizationItem.payments">
+                                <tr ng-repeat="payment in selectedAmortizationItem.payments">
                                     <td>
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">
                                                 {{ payment.datePayment | date: 'mediumDate' }}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">
                                                 {{ payment.additionalInterest | currency :'₱'}}
                                             </span>
@@ -2391,12 +2418,12 @@
                                     </td>
 
                                     <td>
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">{{ payment.penalty | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-center px-2">
+                                        <div class="text-center px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">
                                                 {{ payment.totalToPayWithPenalty | currency :'₱'}}
                                             </span>
@@ -2404,57 +2431,71 @@
                                     </td>
 
                                     <td>
-                                        <div class="px-2">
+                                        <div class="px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">{{ payment.paymentType_name }}</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">
                                                 {{ payment.penaltyPayment | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">
                                                 {{ payment.interestPayment*1 + payment.accruedInterestPayment*1 | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">
                                                 {{ payment.principal - payment.balance | currency :'₱'}}
                                             </span>
                                         </div>
                                     </td>
-
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm" ng-if="principal.isPaymentExtension">
                                                 Payment Extension
                                             </span>
                                         </div>
                                     </td>
-
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">{{ payment.total | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">{{ payment.balance | currency :'₱'}}</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right px-2">
+                                        <div class="text-right px-1">
                                             <span class="text-dark-75 font-weight-bold font-size-sm">{{ payment.overPayment | currency :'₱'}}</span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="text-right px-1">
+                                            <span class="text-dark-75 font-weight-bold font-size-sm">{{ payment.paymentStatus_name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-right px-1">
+                                            <button
+                                                class="btn btn-sm btn-light-primary font-weight-bold"
+                                                ng-click="voidPayment(selectedAmortizationItem,payment)"
+                                                ng-disabled="payment.paymentType == 5 || payment.paymentStatus == 3"
+                                            >
+                                                Void
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
-                                <tr class="table-success">
+                                <!-- <tr class="table-success">
                                     <td>
                                         <div class="text-center px-2">
                                             <span class="text-dark-75 font-weight-bolder font-size-sm">Total</span>
@@ -2472,45 +2513,201 @@
                                             <span class="text-dark-75 font-weight-bolder font-size-sm"></span>
                                         </div>
                                     </td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
-                        <!-- <div
-                            class="d-flex justify-content-center align-items-center flex-wrap"
-                            ng-if="pageRangeDocument((borrower.documents | filter: {subProcess:{id:subProcess.id}}).length).length > 1"
-                        >
-                            <div class="d-flex flex-wrap py-2 mr-3">
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) == 0"
-                                    ng-click="gotoPrevDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-left icon-sm"></i>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs border-0 btn-hover-primary mr-2 my-1"
-                                    ng-class="{ 'active' : n == currentPageDocument(subProcess) + 1 }"
-                                    ng-repeat="n in pageRangeDocument(borrower.documents.length)"
-                                    ng-click="jumpToPageDocument(n,subProcess)"
-                                >
-                                    <small>{{n}}</small>
-                                </button>
-                                <button
-                                    href="#"
-                                    class="btn btn-circle btn-icon btn-xs btn-light-primary mr-2 my-1"
-                                    ng-disabled="currentPageDocument(subProcess) >=borrower.documents.length/pageSizeDocument - 1"
-                                    ng-click="gotoNextDocument(subProcess)"
-                                >
-                                    <i class="fas fa-chevron-right icon-sm"></i>
-                                </button>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- End Modal Amortization Schedule Payment -->
+    <!-- Start Edit Amortization Item -->
+    <div
+        id="edit-amortization-item"
+        class="modal fade"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdrop"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Amortization Item</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form name="form.editAmortizationItemForm">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="schedule">Schedule</label>
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        id="schedule"
+                                        name="schedule"
+                                        placeholder="Registration Date"
+                                        ng-model="amortizationItemToEdit.schedule"
+                                        ng-change="fetchPMT()"
+                                        ng-class="{'is-invalid' : form.editAmortizationItemForm.schedule.$invalid &&
+                                        form.editAmortizationItemForm.schedule.$touched, 'is-valid' : form.editAmortizationItemForm.schedule.$valid && form.editAmortizationItemForm.schedule.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.editAmortizationItemForm.schedule.$touched && form.editAmortizationItemForm.schedule.$invalid"
+                                    >
+                                        Please select Amortization Item Schedule
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="days"># of Days</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="days"
+                                        name="days"
+                                        placeholder="Bank Branch"
+                                        ng-model="amortizationItemToEdit.days"
+                                        ng-change="fetchPMT()"
+                                        ng-class="{'is-invalid' : form.editAmortizationItemForm.days.$invalid &&
+                                        form.editAmortizationItemForm.days.$touched, 'is-valid' : form.editAmortizationItemForm.days.$valid && form.editAmortizationItemForm.days.$touched }"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="principal">Principal</label>
+                                    <input
+                                        type="text"
+                                        min="0"
+                                        class="form-control"
+                                        id="principal"
+                                        name="principal"
+                                        placeholder="Principal Amount"
+                                        ng-model="amortizationItemToEdit.principal"
+                                        ng-change="fetchPMT()"
+                                        price
+                                        ng-class="{'is-invalid' : form.editAmortizationItemForm.principal.$invalid &&
+                                        form.editAmortizationItemForm.principal.$touched, 'is-valid' : form.editAmortizationItemForm.principal.$valid && form.editAmortizationItemForm.principal.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.editAmortizationItemForm.principal.$touched && form.editAmortizationItemForm.principal.$invalid"
+                                    >
+                                        Please input Amortization Item Principal.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="accruedInterest">Accrued Interest</label>
+                                    <input
+                                        type="text"
+                                        min="0"
+                                        class="form-control"
+                                        id="accruedInterest"
+                                        name="accruedInterest"
+                                        placeholder="Accrued Interest Amount"
+                                        ng-model="amortizationItemToEdit.accruedInterest"
+                                        ng-change="fetchPMT()"
+                                        price
+                                        ng-class="{'is-invalid' : form.editAmortizationItemForm.accruedInterest.$invalid &&
+                                        form.editAmortizationItemForm.accruedInterest.$touched, 'is-valid' : form.editAmortizationItemForm.accruedInterest.$valid && form.editAmortizationItemForm.accruedInterest.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.editAmortizationItemForm.accruedInterest.$touched && form.editAmortizationItemForm.accruedInterest.$invalid"
+                                    >
+                                        Please input Amortization Item Accrued Interest.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="deductAccruedInterest">Interest</label>
+                                    <input
+                                        type="text"
+                                        min="0"
+                                        class="form-control"
+                                        id="deductAccruedInterest"
+                                        name="deductAccruedInterest"
+                                        placeholder="Interest Amount"
+                                        ng-model="amortizationItemToEdit.deductAccruedInterest"
+                                        ng-change="fetchPMT()"
+                                        price
+                                        ng-class="{'is-invalid' : form.editAmortizationItemForm.deductAccruedInterest.$invalid &&
+                                        form.editAmortizationItemForm.deductAccruedInterest.$touched, 'is-valid' : form.editAmortizationItemForm.deductAccruedInterest.$valid && form.editAmortizationItemForm.deductAccruedInterest.$touched }"
+                                        required
+                                    />
+                                    <span
+                                        class="form-text text-muted"
+                                        ng-show="form.editAmortizationItemForm.deductAccruedInterest.$touched && form.editAmortizationItemForm.deductAccruedInterest.$invalid"
+                                    >
+                                        Please input Amortization Item Interest.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="interest">Total Interest</label>
+                                    <input
+                                        type="text"
+                                        min="0"
+                                        class="form-control"
+                                        id="interest"
+                                        name="interest"
+                                        placeholder="Total Interest Amount"
+                                        ng-model="amortizationItemToEdit.interest"
+                                        price
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="total">Total Amortization Amount</label>
+                                    <input
+                                        type="text"
+                                        min="0"
+                                        class="form-control"
+                                        id="total"
+                                        name="total"
+                                        placeholder="Total Amortization Amount"
+                                        ng-model="amortizationItemToEdit.total"
+                                        price
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Close</button>
+                    <button
+                        class="btn btn-primary font-weight-bold"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="saveAmortizationItem(amortizationItemToEdit)"
+                        ng-disabled="form.editAmortizationItemForm.$invalid"
+                    >
+                        Update
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Edit Amortization Item-->
 </div>

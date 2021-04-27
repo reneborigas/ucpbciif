@@ -421,6 +421,7 @@ define(function () {
                     }
                 );
             },
+
             getCurrentUser: function () {
                 var values = JSON.parse(localStorage.getItem('currentUser'));
                 return values['id'];
@@ -519,6 +520,19 @@ define(function () {
                     }
                 );
             },
+            getPaymentStatusByName: function (paymentStatusName) {
+                return $http.get('/api/payments/paymentstatus/', { params: { paymentStatusName: paymentStatusName } }).then(
+                    function (response) {
+                        return response.data[0].id;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve Payment Status. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
             getPaymentType: function () {
                 return $http.get('/api/payments/paymenttypes/').then(
                     function (response) {
@@ -528,6 +542,19 @@ define(function () {
                         toastr.error(
                             'Error ' + error.status + ' ' + error.statusText,
                             'Could not retrieve Payment Type list. Please contact System Administrator.'
+                        );
+                    }
+                );
+            },
+            getPaymentTypeByName: function (paymentTypeName) {
+                return $http.get('/api/payments/paymenttypes/', { params: { paymentTypeName: paymentTypeName } }).then(
+                    function (response) {
+                        return response.data[0].id;
+                    },
+                    function (error) {
+                        toastr.error(
+                            'Error ' + error.status + ' ' + error.statusText,
+                            'Could not retrieve  Payment Type. Please contact System Administrator.'
                         );
                     }
                 );
